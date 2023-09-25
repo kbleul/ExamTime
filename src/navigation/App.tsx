@@ -7,6 +7,8 @@ import Profile from '../screens/App/Profile/index';
 import ViewSubjectDetails from '../screens/App/Courses/components/Pages/ViewSubjectDetails';
 import ViewCourseContent from '../screens/App/Courses/components/Pages/ViewCourseContent';
 import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
+import Login from '../screens/Auth/Login';
+import Signup from '../screens/Auth/Signup';
 
 const AppRoutes: React.FC<StackType> = ({Stack}) => {
   return (
@@ -26,6 +28,7 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
         component={Courses}
         options={{headerShown: false}}
       />
+
       <Stack.Screen
         name="View-Course"
         component={ViewSubjectDetails}
@@ -44,6 +47,16 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
       <Stack.Screen
         name="Profile-Edit"
         component={ProfileEditIndex}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={Signup}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

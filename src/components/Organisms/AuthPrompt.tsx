@@ -1,9 +1,12 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ImageBackground} from 'react-native';
 ('../../../assets/Images/courses/2.png');
 const AuthPrompt = () => {
+  const navigator = useNavigation();
+
   return (
     <ImageBackground
       style={styles.adsContainer}
@@ -20,11 +23,14 @@ const AuthPrompt = () => {
           aliqua.
         </Text>
         <View style={styles.adsBtnContainer}>
-          <TouchableOpacity style={styles.adsBtns}>
+          <TouchableOpacity style={styles.adsBtns} touchSoundDisabled>
             <Text style={styles.adsBtnsText}>Subscribe</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.adsBtns, styles.adsBtns_secondary]}>
-            <Text style={styles.adsBtnsText}>Subscribe</Text>
+          <TouchableOpacity
+            style={[styles.adsBtns, styles.adsBtns_secondary]}
+            touchSoundDisabled
+            onPress={() => navigator.navigate('Signup')}>
+            <Text style={styles.adsBtnsText}>Register</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
