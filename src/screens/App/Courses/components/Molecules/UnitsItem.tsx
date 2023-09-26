@@ -12,8 +12,6 @@ type UnitsItemProps = {
   setShowAuthPromp: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const onPressNavigate = () => {};
-
 const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
   const navigation = useNavigation();
 
@@ -42,7 +40,9 @@ const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
             <TouchableOpacity
               onPress={() => {
                 unitData.unit === 'Unit 1'
-                  ? navigation.navigate('View-Course-Content')
+                  ? navigation.navigate('View-Course-Content', {
+                      isVideo: unitCourse.isVideo,
+                    })
                   : setShowAuthPromp(true);
               }}
               touchSoundDisabled

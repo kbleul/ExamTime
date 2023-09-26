@@ -27,7 +27,7 @@ const ViewSubjectDetails = () => {
       style={
         showAuthPromp ? [styles.container, styles.prompOn] : styles.container
       }>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <BackWithItem type="Courses" isTrial={true} />
 
         <View style={styles.topSectionContainer}>
@@ -35,6 +35,7 @@ const ViewSubjectDetails = () => {
 
           <View style={styles.selectorContainer}>
             <TouchableOpacity
+              touchSoundDisabled
               onPress={() => setSelectedGrade(Grades[0])}
               style={
                 selectedGrade === Grades[0]
@@ -51,6 +52,7 @@ const ViewSubjectDetails = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              touchSoundDisabled
               onPress={() => setSelectedGrade(Grades[1])}
               style={
                 selectedGrade === Grades[1]
@@ -83,6 +85,7 @@ const ViewSubjectDetails = () => {
       {showAuthPromp && (
         <View style={styles.adsPrompContainer}>
           <TouchableOpacity
+            touchSoundDisabled
             style={styles.cancleContainer}
             onPress={() => setShowAuthPromp(false)}>
             <Octicons name="x-circle-fill" size={26} color="black" />

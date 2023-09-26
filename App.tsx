@@ -5,12 +5,19 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
 import Routes from './src/navigation/Index';
+import {Platform, StatusBar} from 'react-native';
 
 function App(): JSX.Element {
   useEffect(() => {
+    if (Platform.OS === 'android') {
+      StatusBar.setBarStyle('dark-content');
+    } else if (Platform.OS === 'ios') {
+      StatusBar.setBarStyle('dark-content');
+    }
     BootSplash.hide({fade: true});
   }, []);
 
+  useEffect(() => {}, []);
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>

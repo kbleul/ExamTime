@@ -29,8 +29,8 @@ const AuthPrompt = () => {
           <TouchableOpacity
             style={[styles.adsBtns, styles.adsBtns_secondary]}
             touchSoundDisabled
-            onPress={() => navigator.navigate('Signup')}>
-            <Text style={styles.adsBtnsText}>Register</Text>
+            onPress={() => navigator.navigate('Login')}>
+            <Text style={styles.adsBtnsText}>Login</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>

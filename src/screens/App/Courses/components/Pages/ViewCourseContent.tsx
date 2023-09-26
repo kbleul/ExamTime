@@ -1,13 +1,14 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
 import {View} from 'react-native';
 import BackWithItem from '../../../../../components/Organisms/BackWithItem';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Text} from 'react-native';
 import MainBottomNav from '../../../../../components/Organisms/MainBottomNav';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
-const ViewCourseContent = () => {
-  const isVideo = false;
+const ViewCourseContent = ({route}) => {
+  const {isVideo} = route.params;
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -17,9 +18,16 @@ const ViewCourseContent = () => {
           <Text style={styles.title}>Introduction</Text>
 
           {isVideo ? (
-            <View style={styles.textContainer}></View>
+            <View style={styles.videoContainer}>
+              <ActivityIndicator style={styles.loading} />
+              <YoutubePlayer
+                height={230}
+                play={false}
+                videoId={'84WIaK3bl_s'}
+              />
+            </View>
           ) : (
-            <View style={styles.textContainer}>
+            <View>
               <Text style={styles.paragraph}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -134,13 +142,20 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 8,
   },
-  textContainer: {},
   paragraph: {
     fontSize: 16,
     fontFamily: 'Montserrat-Regular',
     color: '#000',
     marginBottom: 20,
     lineHeight: 24,
+  },
+  videoContainer: {
+    position: 'relative',
+  },
+  loading: {
+    position: 'absolute',
+    top: '30%',
+    left: '45%',
   },
   nextButtonContainer: {
     width: '100%',
