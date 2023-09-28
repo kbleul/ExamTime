@@ -10,7 +10,7 @@ import {Platform, StatusBar} from 'react-native';
 function App(): JSX.Element {
   useEffect(() => {
     if (Platform.OS === 'android') {
-      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBarStyle('light-content');
     } else if (Platform.OS === 'ios') {
       StatusBar.setBarStyle('dark-content');
     }

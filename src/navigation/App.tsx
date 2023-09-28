@@ -7,8 +7,8 @@ import Profile from '../screens/App/Profile/index';
 import ViewSubjectDetails from '../screens/App/Courses/components/Pages/ViewSubjectDetails';
 import ViewCourseContent from '../screens/App/Courses/components/Pages/ViewCourseContent';
 import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
-import Login from '../screens/Auth/Login';
-import Signup from '../screens/Auth/Signup';
+import Login from '../screens/Auth/Login/Login';
+import Signup from '../screens/Auth/Signup/Signup';
 
 const AppRoutes: React.FC<StackType> = ({Stack}) => {
   return (
