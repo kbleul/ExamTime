@@ -1,9 +1,17 @@
-import React from 'react';
-import {Text, View, TextInput, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {formStyles, formSubHeaderStyles} from '../../Styles';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import {useNavigation} from '@react-navigation/native';
+import {userType} from '../../Types';
 
 type FormData = {
   password: string;
@@ -24,7 +32,10 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Passwords must match'),
 });
 
-const SetNewPassword = () => {
+const SetNewPassword: React.FC<{
+  user: userType | null;
+}> = ({user}) => {
+  const navigator = useNavigation();
   const {
     control,
     handleSubmit,
@@ -32,11 +43,13 @@ const SetNewPassword = () => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+  const [isLoading, setIsLoading] = useState(false);
 
+  //1234Password%
   const onSubmit = async (data: FormData) => {
+    setIsLoading(true);
     try {
-      const url =
-        'https://dev.think-hubet.com/user/createpassword/202657be-771a-4738-9b55-94dec51dabac'; // Replace with your API endpoint
+      const url = `https://dev.think-hubet.com/user/createpassword/${user?.id}`; // Replace with your API endpoint
 
       const response = await fetch(url, {
         method: 'PUT',
@@ -50,12 +63,15 @@ const SetNewPassword = () => {
       });
 
       if (!response.ok) {
-        console.log('not ok');
+        throw new Error('Set password failed');
       }
 
       const responseData = await response.json();
+      navigator.navigate('signup-success');
       console.log('PAssword set successfully:', responseData);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error('Error submitting form:', error);
     }
   };
@@ -73,7 +89,11 @@ const SetNewPassword = () => {
           <Controller
             control={control}
             render={({field: {onChange}}) => (
-              <TextInput style={formStyles.input} onChangeText={onChange} />
+              <TextInput
+                style={formStyles.input}
+                onChangeText={onChange}
+                secureTextEntry
+              />
             )}
             name="password"
           />
@@ -89,7 +109,11 @@ const SetNewPassword = () => {
           <Controller
             control={control}
             render={({field: {onChange}}) => (
-              <TextInput style={formStyles.input} onChangeText={onChange} />
+              <TextInput
+                style={formStyles.input}
+                onChangeText={onChange}
+                secureTextEntry
+              />
             )}
             name="confirmPassword"
           />
@@ -105,8 +129,13 @@ const SetNewPassword = () => {
         <TouchableOpacity
           style={formStyles.submitBtn}
           touchSoundDisabled
-          onPress={handleSubmit(onSubmit)}>
-          <Text style={formStyles.submitText}>Next</Text>
+          onPress={handleSubmit(onSubmit)}
+          disabled={isLoading}>
+          {isLoading ? (
+            <ActivityIndicator color={'#FFF'} />
+          ) : (
+            <Text style={formStyles.submitText}>Next</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>

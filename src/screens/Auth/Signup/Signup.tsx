@@ -1,31 +1,38 @@
 import React, {useState} from 'react';
 import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import StepIndicator from './components/Organisms/StepIndicator';
+import StepIndicator from './components/Molecules/StepIndicator';
 import {StyleSheet} from 'react-native';
 import SocialOptions from '../components/Organisms/SocialOptions';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
-import ContentDispatcher from './components/Organisms/ContentDispatcher';
+import ContentDispatcher from './components/Helper/ContentDispatcher';
 
 export default function Signup() {
   const navigator = useNavigation();
 
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.topHeader}>
-          <TouchableOpacity onPress={() => navigator.goBack()}>
-            <Ionicons name="chevron-back-outline" color="#000" size={28} />
-          </TouchableOpacity>
+          {currentStep === 1 && (
+            <TouchableOpacity onPress={() => navigator.goBack()}>
+              <Ionicons name="chevron-back-outline" color="#000" size={28} />
+            </TouchableOpacity>
+          )}
           <Text style={styles.headerText}>Create your account</Text>
         </View>
 
         <StepIndicator currentStep={currentStep} />
 
-        <ContentDispatcher currentStep={currentStep} />
+        <ContentDispatcher
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+        />
 
         {currentStep === 1 && <SocialOptions />}
       </ScrollView>
@@ -37,6 +44,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     flex: 1,
+  },
+  scrollContainer: {
+    paddingBottom: 40,
   },
   topHeader: {
     flexDirection: 'row',

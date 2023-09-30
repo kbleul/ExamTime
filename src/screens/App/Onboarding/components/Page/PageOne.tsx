@@ -21,6 +21,7 @@ const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
       </View>
 
       <TouchableOpacity
+        touchSoundDisabled
         onPress={() => setPageCounter(2)}
         style={style.buttonContainer}>
         <View style={style.buttonContainer_second}>

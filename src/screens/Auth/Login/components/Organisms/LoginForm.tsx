@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   TextInput,
@@ -11,6 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
 const LoginForm = () => {
+  const [showPassword, setShowPassword] = useState(true);
   return (
     <View style={styles.formContainer}>
       <Text style={styles.signinText}>Sign in</Text>
@@ -28,14 +29,24 @@ const LoginForm = () => {
         <TextInput
           autoComplete="password"
           placeholder="Password"
+          secureTextEntry={showPassword}
           style={[styles.bigBox, styles.bigBoxSecondary]}
         />
-        <Ionicons
-          name="eye-outline"
-          size={20}
-          color="#858585"
-          style={styles.smallBox}
-        />
+        {showPassword ? (
+          <TouchableOpacity
+            style={styles.smallBox}
+            touchSoundDisabled
+            onPress={() => setShowPassword(false)}>
+            <Ionicons name="eye-outline" size={28} color="#858585" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.smallBox}
+            touchSoundDisabled
+            onPress={() => setShowPassword(true)}>
+            <Ionicons name="eye-off-outline" size={28} color="#858585" />
+          </TouchableOpacity>
+        )}
       </View>
 
       <View style={styles.optionsContainer}>

@@ -9,6 +9,8 @@ import ViewCourseContent from '../screens/App/Courses/components/Pages/ViewCours
 import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
 import Login from '../screens/Auth/Login/Login';
 import Signup from '../screens/Auth/Signup/Signup';
+import NetworkError from '../screens/Shared/NetworkError';
+import SignupCompleted from '../screens/Auth/Signup/components/Organisms/SignupCompleted';
 
 const AppRoutes: React.FC<StackType> = ({Stack}) => {
   return (
@@ -57,6 +59,16 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
       <Stack.Screen
         name="Signup"
         component={Signup}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="network-error"
+        component={NetworkError}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="signup-success"
+        component={SignupCompleted}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

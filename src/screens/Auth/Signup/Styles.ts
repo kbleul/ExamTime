@@ -72,25 +72,37 @@ export const formStyles = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  submitBtn: {
+  submitBtnContainer: {
     width: '100%',
     alignItems: 'flex-end',
     justifyContent: 'center',
     marginTop: 15,
   },
-  submitText: {
-    paddingHorizontal: 70,
-    paddingVertical: 11,
+  submitBtn: {
     backgroundColor: '#1E90FF',
     borderRadius: 10,
+    width: 200,
+    paddingVertical: 11,
+  },
+  submitText: {
     color: '#FFFFFF',
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 18,
+    textAlign: 'center',
   },
   error: {
     color: '#f08273',
     paddingHorizontal: 8,
     textAlign: 'right',
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    fontSize: 14,
+    fontFamily: 'Montserrat-Regular',
   },
 });
 
@@ -101,6 +113,7 @@ export const formSubHeaderStyles = StyleSheet.create({
     color: 'black',
     paddingHorizontal: 20,
     marginTop: 30,
+    marginBottom: 8,
   },
   subHeading: {
     fontFamily: 'Montserrat-Regular',
@@ -127,5 +140,15 @@ export const OPTStyles = StyleSheet.create({
     fontFamily: 'Montserrat-Regular',
     fontSize: 24,
     textAlign: 'center',
+  },
+  inputError: {
+    borderColor: 'red',
+  },
+  erroerText: {
+    textAlign: 'right',
+    fontFamily: 'Montserrat-Regular',
+    color: 'red',
+    marginTop: 10,
+    paddingHorizontal: 40,
   },
 });

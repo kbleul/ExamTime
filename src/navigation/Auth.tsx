@@ -2,6 +2,7 @@ import React from 'react';
 import Login from '../screens/Auth/Signup/Signup';
 import Signup from '../screens/Auth/Login/Login';
 import {StackType} from './types';
+import NetworkError from '../screens/Shared/NetworkError';
 
 const AuthRoutes: React.FC<StackType> = ({Stack}) => {
   return (
@@ -14,6 +15,11 @@ const AuthRoutes: React.FC<StackType> = ({Stack}) => {
       <Stack.Screen
         name="Signup"
         component={Signup}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="network-error"
+        component={NetworkError}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

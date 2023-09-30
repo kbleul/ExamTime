@@ -1,10 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {formStyles} from '../../Styles';
+import {seterProps} from '../../Types';
+import {useNavigation} from '@react-navigation/native';
 
 type FormData = {
   firstName: string;
@@ -49,7 +57,8 @@ const genderOptions = [
   {label: 'Female', value: 'Female'},
 ];
 
-const SignupForm = () => {
+const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
+  const navigator = useNavigation();
   const {
     control,
     handleSubmit,
@@ -71,10 +80,10 @@ const SignupForm = () => {
   const onSubmit = async (data: FormData) => {
     if (validate_Gender_and_Region()) {
       try {
+        setIsLoading(true);
         console.log('object', gender, region);
 
-        const url = 'https://dev.think-hubet.com/user/create'; // Replace with your API endpoint
-
+        const url = 'https://dev.think-hubet.com/user/create';
         const requestBody = {
           ...data,
           region: region?.toLowerCase(),
@@ -90,21 +99,29 @@ const SignupForm = () => {
           },
           body: JSON.stringify(requestBody),
         });
-
+        console.log('dddd');
         if (!response.ok) {
-          console.log('not ok');
+          console.log('ddddz', response.status, requestBody);
+
+          throw new Error('Faild to register user');
         }
 
         const responseData = await response.json();
         console.log('Form submitted successfully:', responseData);
+        setCurrentStep(prev => ++prev);
+        setUser(responseData.user);
+        setIsLoading(false);
       } catch (error) {
-        console.error('Error submitting form:', error);
+        setIsLoading(false);
       }
     }
   };
+
+  const [refetchRegions, setRefetchRegions] = useState(false);
   const [regionsListItems, setRegionsListItems] = useState<
     regionItemsType[] | []
   >([]);
+  const [isLoadingRegions, setIsLoadingRegions] = useState(true);
 
   const [gender, setGender] = useState<string | null>(null);
   const [region, setRegion] = useState<string | null>(null);
@@ -114,23 +131,37 @@ const SignupForm = () => {
   const [isFocusGender, setIsFocusGender] = useState(false);
   const [isFocusRegion, setIsFocusRegion] = useState(false);
 
-  const fetchRegions = async () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchRegions = useCallback(async () => {
     try {
       const url = 'https://dev.think-hubet.com/region/region'; // Replace with your API endpoint
+      const timeoutMs = 10000; // Set your desired timeout in milliseconds (e.g., 10 seconds)
+
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      const timeout = setTimeout(() => {
+        controller.abort(); // Abort the fetch request on timeout
+      }, timeoutMs);
 
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
+        signal, // Pass the abort signal to the fetch request
       });
 
+      clearTimeout(timeout); // Clear the timeout since the request completed
+
       if (!response.ok) {
-        console.log('not ok');
+        console.log('HTTP Error:', response.status, response.statusText);
+        throw new Error('HTTP Error'); // You can throw a custom error if needed
       }
 
       const responseData = await response.json();
-      console.log('regions fetched successfully:', responseData);
+      console.log('Regions fetched successfully:', responseData);
 
       const tempRegionsList: regionItemsType[] = [];
 
@@ -142,14 +173,25 @@ const SignupForm = () => {
       });
 
       setRegionsListItems([...tempRegionsList]);
-    } catch (error) {
-      console.error('Error FETCHING regions:', error);
+      setIsLoadingRegions(false);
+    } catch (error: any) {
+      if (
+        error?.name === 'AbortError' ||
+        (error instanceof TypeError && error.message === 'Network error failed')
+      ) {
+        setRefetchRegions(prev => !prev);
+        setIsLoadingRegions(true);
+        setIsLoading(false);
+        navigator.navigate('network-error');
+      }
+
+      console.log(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchRegions();
-  }, []);
+  }, [refetchRegions, fetchRegions]);
 
   return (
     <View style={formStyles.container}>
@@ -201,6 +243,7 @@ const SignupForm = () => {
             <View style={formStyles.phoneContainer}>
               <Text style={formStyles.phoneSmallBox}>+251</Text>
               <TextInput
+                keyboardType="numeric"
                 style={[formStyles.input, formStyles.inputPhone]}
                 onChangeText={onChange}
                 placeholder="*********"
@@ -270,6 +313,12 @@ const SignupForm = () => {
       <View style={formStyles.inputContainer}>
         <Text style={formStyles.label}>Region</Text>
 
+        {isLoadingRegions && (
+          <View style={formStyles.loadingContainer}>
+            <ActivityIndicator size={14} />
+            <Text style={formStyles.loadingText}>Loading regions ...</Text>
+          </View>
+        )}
         <Dropdown
           style={[formStyles.dropdown, isFocusRegion && {borderColor: 'blue'}]}
           placeholderStyle={formStyles.placeholderStyle}
@@ -298,12 +347,19 @@ const SignupForm = () => {
         )}
       </View>
 
-      <TouchableOpacity
-        style={formStyles.submitBtn}
-        touchSoundDisabled
-        onPress={handleSubmit(onSubmit)}>
-        <Text style={formStyles.submitText}>Next</Text>
-      </TouchableOpacity>
+      <View style={formStyles.submitBtnContainer}>
+        <TouchableOpacity
+          style={formStyles.submitBtn}
+          touchSoundDisabled
+          onPress={handleSubmit(onSubmit)}
+          disabled={isLoading}>
+          {isLoading ? (
+            <ActivityIndicator color={'#FFF'} />
+          ) : (
+            <Text style={formStyles.submitText}>Next</Text>
+          )}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

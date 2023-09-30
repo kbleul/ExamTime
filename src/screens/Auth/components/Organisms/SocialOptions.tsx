@@ -18,16 +18,16 @@ const SocialOptions = () => {
 
       <View style={styles.optionsIconContainer}>
         <TouchableOpacity touchSoundDisabled>
-          <AntDesign name="google" color={'#5865F2'} size={28} />
+          <AntDesign name="google" color={'#5865F2'} size={32} />
         </TouchableOpacity>
         <TouchableOpacity touchSoundDisabled>
-          <FontAwesome5Brands name="facebook" color={'#1877F2'} size={28} />
+          <FontAwesome5Brands name="facebook" color={'#1877F2'} size={32} />
         </TouchableOpacity>
         <TouchableOpacity touchSoundDisabled>
-          <AntDesign name="twitter" color={'#2AABEE'} size={28} />
+          <AntDesign name="twitter" color={'#2AABEE'} size={32} />
         </TouchableOpacity>
         <TouchableOpacity touchSoundDisabled>
-          <AntDesign name="apple1" color={'#000'} size={28} />
+          <AntDesign name="apple1" color={'#000'} size={32} />
         </TouchableOpacity>
       </View>
     </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 100,
     borderColor: '#c9c7c7',
-    paddingVertical: 5,
+    paddingVertical: 8,
     paddingHorizontal: 30,
     marginTop: 20,
   },
