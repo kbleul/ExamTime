@@ -32,13 +32,14 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
       const onBoardingValue = await get_from_localStorage(
         LocalStorageDataKeys.onBoarding,
       );
-      setShowOnboarding(onBoardingValue);
 
       const tempTrial = await checkIsTrial();
 
       tempTrial === trialStatus.expired
         ? setIsTrialOver(true)
         : setIsTrialOver(false);
+
+      setShowOnboarding(onBoardingValue);
     };
 
     check_onBoarding_and_trialMode();

@@ -23,6 +23,7 @@ export const formStyles = StyleSheet.create({
     height: 42,
     paddingHorizontal: 20,
     fontSize: 16,
+    color: '#000',
   },
   phoneContainer: {
     width: '100%',
@@ -46,6 +47,7 @@ export const formStyles = StyleSheet.create({
     borderLeftWidth: 1,
     borderRadius: 0,
     width: '100%',
+    color: '#000',
   },
   dropdown: {
     height: 42,
@@ -54,15 +56,18 @@ export const formStyles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 8,
     textTransform: 'uppercase',
+    color: '#d4d4d4',
   },
   icon: {
     marginRight: 5,
   },
   placeholderStyle: {
     fontSize: 16,
+    color: '#d4d4d4',
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: 'black',
   },
   iconStyle: {
     width: 20,
@@ -71,6 +76,10 @@ export const formStyles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: '#d4d4d4',
+  },
+  itemListStyle: {
+    color: '#000',
   },
   submitBtnContainer: {
     width: '100%',
@@ -103,6 +112,7 @@ export const formStyles = StyleSheet.create({
   loadingText: {
     fontSize: 14,
     fontFamily: 'Montserrat-Regular',
+    color: '#b3b3b3',
   },
 });
 

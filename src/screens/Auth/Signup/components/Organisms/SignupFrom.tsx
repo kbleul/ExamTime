@@ -81,7 +81,14 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
     if (validate_Gender_and_Region()) {
       try {
         setIsLoading(true);
-        console.log('object', gender, region);
+        const timeoutMs = 10000; // Set your desired timeout in milliseconds (e.g., 10 seconds)
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        const timeout = setTimeout(() => {
+          controller.abort(); // Abort the fetch request on timeout
+        }, timeoutMs);
 
         const url = 'https://dev.think-hubet.com/user/create';
         const requestBody = {
@@ -98,8 +105,12 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(requestBody),
+          signal, // Pass the abort signal to the fetch request
         });
         console.log('dddd');
+
+        clearTimeout(timeout); // Clear the timeout since the request completed
+
         if (!response.ok) {
           console.log('ddddz', response.status, requestBody);
 
@@ -112,7 +123,15 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
         setUser(responseData.user);
         setIsLoading(false);
       } catch (error) {
+        console.log('Error:', error);
         setIsLoading(false);
+        if (
+          error instanceof TypeError &&
+          (error.message === 'Network request failed' ||
+            error.message === 'AbortError')
+        ) {
+          navigator.navigate('network-error');
+        }
       }
     }
   };
@@ -176,13 +195,12 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
       setIsLoadingRegions(false);
     } catch (error: any) {
       if (
-        error?.name === 'AbortError' ||
-        (error instanceof TypeError && error.message === 'Network error failed')
+        error instanceof TypeError &&
+        (error.message === 'Network request failed' ||
+          error.message === 'AbortError')
       ) {
-        setRefetchRegions(prev => !prev);
-        setIsLoadingRegions(true);
-        setIsLoading(false);
         navigator.navigate('network-error');
+        setRefetchRegions(prev => !prev);
       }
 
       console.log(error);
@@ -204,6 +222,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
               style={formStyles.input}
               onChangeText={onChange}
               placeholder="First name"
+              placeholderTextColor={'#d4d4d4'}
             />
           )}
           name="firstName"
@@ -224,6 +243,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
               style={formStyles.input}
               onChangeText={onChange}
               placeholder="Last name"
+              placeholderTextColor={'#d4d4d4'}
             />
           )}
           name="lastName"
@@ -247,6 +267,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
                 style={[formStyles.input, formStyles.inputPhone]}
                 onChangeText={onChange}
                 placeholder="*********"
+                placeholderTextColor={'#d4d4d4'}
               />
             </View>
           )}
@@ -268,6 +289,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
               style={formStyles.input}
               onChangeText={onChange}
               placeholder="example@gmail.com"
+              placeholderTextColor={'#d4d4d4'}
             />
           )}
           name="email"
@@ -287,6 +309,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
           placeholderStyle={formStyles.placeholderStyle}
           selectedTextStyle={formStyles.selectedTextStyle}
           inputSearchStyle={formStyles.inputSearchStyle}
+          itemTextStyle={formStyles.itemListStyle}
           iconStyle={formStyles.iconStyle}
           data={genderOptions}
           search
@@ -324,6 +347,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
           placeholderStyle={formStyles.placeholderStyle}
           selectedTextStyle={formStyles.selectedTextStyle}
           inputSearchStyle={formStyles.inputSearchStyle}
+          itemTextStyle={formStyles.itemListStyle}
           iconStyle={formStyles.iconStyle}
           data={regionsListItems}
           search
