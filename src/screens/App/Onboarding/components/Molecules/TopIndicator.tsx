@@ -3,6 +3,8 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {PagesCounterType} from '../Page/types';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import {setObject_to_localStorage} from '../../../../../utils/Functions/Set';
+import {onboarding_save_navToHome} from '../Logic';
 const TopIndicator: React.FC<PagesCounterType> = ({
   pageCounter,
   setPageCounter,
@@ -27,10 +29,7 @@ const TopIndicator: React.FC<PagesCounterType> = ({
       </View>
 
       {pageCounter === 3 ? (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Home');
-          }}>
+        <TouchableOpacity onPress={() => onboarding_save_navToHome(navigation)}>
           <Text style={style.text}>Skip</Text>
         </TouchableOpacity>
       ) : (

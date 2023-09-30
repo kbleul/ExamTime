@@ -1,8 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ImageBackground} from 'react-native';
+import {LocalStorageDataKeys} from '../../utils/Data/data';
+import {calculateDateDifference} from '../../screens/App/Onboarding/components/Logic';
 ('../../../assets/Images/courses/2.png');
 const AuthPrompt = () => {
   const navigator = useNavigation();
@@ -23,7 +26,18 @@ const AuthPrompt = () => {
           aliqua.
         </Text>
         <View style={styles.adsBtnContainer}>
-          <TouchableOpacity style={styles.adsBtns} touchSoundDisabled>
+          <TouchableOpacity
+            style={styles.adsBtns}
+            touchSoundDisabled
+            onPress={async () => {
+              // console.log(
+              //   calculateDateDifference('Sat Sep 28 2023 06:14:03 GMT-0400'),
+              // );
+              await AsyncStorage.removeItem(LocalStorageDataKeys.onBoarding);
+              await AsyncStorage.removeItem(
+                LocalStorageDataKeys.trialStartDate,
+              );
+            }}>
             <Text style={styles.adsBtnsText}>Subscribe</Text>
           </TouchableOpacity>
           <TouchableOpacity

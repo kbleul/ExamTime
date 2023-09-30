@@ -11,6 +11,7 @@ import {
   DummyDataSocial,
 } from '../../../../../utils/Data/data';
 import {ScrollView} from 'react-native-gesture-handler';
+import {onboarding_save_navToHome} from '../Logic';
 
 const Grade12Catagories = ['Natural', 'Social'];
 
@@ -106,9 +107,7 @@ const PageThree: React.FC<PageThreeProps> = ({
           <GradeButton
             text="Get Started"
             index={5}
-            onPress={() => {
-              navigation.navigate('Home');
-            }}
+            onPress={() => onboarding_save_navToHome(navigation)}
             isActive={true}
           />
         </View>

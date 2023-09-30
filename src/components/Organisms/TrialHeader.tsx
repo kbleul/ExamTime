@@ -1,8 +1,28 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {get_from_localStorage} from '../../utils/Functions/Get';
+import {LocalStorageDataKeys, allowedTrialDays} from '../../utils/Data/data';
+import {calculateDateDifference} from '../../screens/App/Onboarding/components/Logic';
 
 const TrialHeader: React.FC<{type: string}> = ({type}) => {
+  const [trialDayCounter, setTrialDayCounter] = useState<number | null>(null);
+
+  useEffect(() => {
+    const getTrialDay = async () => {
+      const trialDay = await get_from_localStorage(
+        LocalStorageDataKeys.trialStartDate,
+      );
+
+      if (trialDay.status && trialDay.value) {
+        const remainingDays = calculateDateDifference(trialDay?.value);
+        setTrialDayCounter(allowedTrialDays - remainingDays);
+      }
+    };
+
+    getTrialDay();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -10,7 +30,9 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
         <Text style={styles.typeText}>{type}</Text>
       </View>
       <View style={styles.leftContainer}>
-        <Text style={styles.leftContainer_text}>2 days left</Text>
+        <Text style={styles.leftContainer_text}>
+          {trialDayCounter && trialDayCounter} days left
+        </Text>
         <MaterialCommunityIcons
           name="timer-sand-complete"
           color="#E2725B"

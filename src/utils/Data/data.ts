@@ -53,3 +53,16 @@ export const ProfileMenuItems: ProfileMenuItems = {
     color: '#74FF51',
   },
 };
+
+export const allowedTrialDays = 3;
+
+export const trialStatus = {
+  expired: 'expired',
+  started: 'started',
+  trial: 'trial',
+};
+
+export const LocalStorageDataKeys = {
+  onBoarding: 'onBoarding',
+  trialStartDate: 'trialStartDate',
+};

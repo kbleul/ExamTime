@@ -28,12 +28,4 @@ function App(): JSX.Element {
   );
 }
 
-// const Home = () => {
-//   return (
-//     <View>
-//       <Text>Home is here</Text>
-//     </View>
-//   );
-// };
-
 export default App;
