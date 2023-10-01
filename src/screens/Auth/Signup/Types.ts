@@ -16,4 +16,5 @@ export type seterProps = {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   setUser: React.Dispatch<React.SetStateAction<userType | null>>;
   user?: userType | null;
+  isReset?: boolean;
 };

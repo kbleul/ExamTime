@@ -78,6 +78,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
   };
 
   const onSubmit = async (data: FormData) => {
+    setSignupError(null);
     if (validate_Gender_and_Region()) {
       try {
         setIsLoading(true);
@@ -123,7 +124,14 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
         setUser(responseData.user);
         setIsLoading(false);
       } catch (error) {
-        console.log('Error:', error);
+        if (
+          error instanceof Error &&
+          (error.message === 'Failed to register user' ||
+            error.message === 'Faild to register user')
+        ) {
+          setSignupError('Phone number is already registered');
+        }
+        console.log('Error:', error.message, 'Failed to register user');
         setIsLoading(false);
         if (
           error instanceof TypeError &&
@@ -141,6 +149,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
     regionItemsType[] | []
   >([]);
   const [isLoadingRegions, setIsLoadingRegions] = useState(true);
+  const [signupError, setSignupError] = useState<string | null>(null);
 
   const [gender, setGender] = useState<string | null>(null);
   const [region, setRegion] = useState<string | null>(null);
@@ -193,6 +202,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
 
       setRegionsListItems([...tempRegionsList]);
       setIsLoadingRegions(false);
+      setSignupError(null);
     } catch (error: any) {
       if (
         error instanceof TypeError &&
@@ -201,6 +211,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
       ) {
         navigator.navigate('network-error');
         setRefetchRegions(prev => !prev);
+        setSignupError(null);
       }
 
       console.log(error);
@@ -371,6 +382,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
         )}
       </View>
 
+      {signupError && <Text style={formStyles.error}>{signupError}</Text>}
       <View style={formStyles.submitBtnContainer}>
         <TouchableOpacity
           style={formStyles.submitBtn}

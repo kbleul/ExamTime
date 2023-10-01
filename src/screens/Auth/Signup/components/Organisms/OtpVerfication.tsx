@@ -8,6 +8,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   setCurrentStep,
   setUser,
   user,
+  isReset,
 }) => {
   const [OtpValues, setOtpValues] = useState(['', '', '', '', '']);
   const inputRefs = useRef<Array<TextInput | null>>([
@@ -48,19 +49,20 @@ const VerificationCodeForm: React.FC<seterProps> = ({
           },
           body: JSON.stringify({
             verificationCode: parsedCode,
-            forForgotPassword: false,
+            forForgotPassword: isReset ? true : false,
           }),
         });
 
         if (!response.ok) {
           console.log('not ok');
+          throw new Error(response?.message);
         }
 
         const responseData = await response.json();
         setCurrentStep(prev => ++prev);
         setUser(responseData.user);
         console.log('OTP:', responseData);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error submitting form:', error);
       }
     } else {

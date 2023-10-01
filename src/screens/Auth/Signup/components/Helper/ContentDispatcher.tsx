@@ -24,7 +24,7 @@ const ContentDispatcher: React.FC<{
       );
 
     case 3:
-      return <SetNewPassword user={user} />;
+      return <SetNewPassword setCurrentStep={setCurrentStep} user={user} />;
 
     default:
       return <></>;

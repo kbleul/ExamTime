@@ -33,8 +33,10 @@ const schema = yup.object().shape({
 });
 
 const SetNewPassword: React.FC<{
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   user: userType | null;
-}> = ({user}) => {
+  isReset?: boolean;
+}> = ({setCurrentStep, user, isReset}) => {
   const navigator = useNavigation();
   const {
     control,
@@ -51,6 +53,15 @@ const SetNewPassword: React.FC<{
     try {
       const url = `https://dev.think-hubet.com/user/createpassword/${user?.id}`; // Replace with your API endpoint
 
+      const timeoutMs = 10000; // Set your desired timeout in milliseconds (e.g., 10 seconds)
+
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      const timeout = setTimeout(() => {
+        controller.abort(); // Abort the fetch request on timeout
+      }, timeoutMs);
+
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -58,9 +69,12 @@ const SetNewPassword: React.FC<{
         },
         body: JSON.stringify({
           password: data.password,
-          forForgotPassword: false,
+          forForgotPassword: isReset ? true : false,
         }),
+        signal,
       });
+
+      clearTimeout(timeout); // Clear the timeout since the request completed
 
       if (!response.ok) {
         throw new Error('Set password failed');
@@ -68,11 +82,19 @@ const SetNewPassword: React.FC<{
 
       const responseData = await response.json();
       navigator.navigate('signup-success');
-      console.log('PAssword set successfully:', responseData);
+      setCurrentStep(1);
+
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       console.error('Error submitting form:', error);
+      if (
+        error instanceof TypeError &&
+        (error.message === 'Network request failed' ||
+          error.message === 'AbortError')
+      ) {
+        navigator.navigate('network-error');
+      }
     }
   };
 
@@ -127,7 +149,7 @@ const SetNewPassword: React.FC<{
         </View>
 
         <TouchableOpacity
-          style={formStyles.submitBtn}
+          style={[formStyles.submitBtn, formStyles.submitBtnPassword]}
           touchSoundDisabled
           onPress={handleSubmit(onSubmit)}
           disabled={isLoading}>

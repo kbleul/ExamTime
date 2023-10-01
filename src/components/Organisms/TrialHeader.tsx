@@ -15,6 +15,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       );
 
       if (trialDay.status && trialDay.value) {
+        console.log(trialDay);
         const remainingDays = calculateDateDifference(trialDay?.value);
         setTrialDayCounter(allowedTrialDays - remainingDays);
       }

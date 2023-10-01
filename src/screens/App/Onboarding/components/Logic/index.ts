@@ -20,7 +20,9 @@ export const calculateDateDifference = (date: string) => {
 export const checkIsTrial = async () => {
   let status;
   // Check if trial start date is stored in AsyncStorage
-  const trialStartDate = await AsyncStorage.getItem('trialStartDate');
+  const trialStartDate = await AsyncStorage.getItem(
+    LocalStorageDataKeys.trialStartDate,
+  );
 
   if (!trialStartDate) {
     // Set trial start date if not already set
@@ -53,6 +55,7 @@ export const onboarding_save_navToHome = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
 ) => {
   set_to_localStorage(LocalStorageDataKeys.onBoarding, true);
-  // startTrialCounter()
+  // createGustUser
+
   navigation.navigate('Home');
 };

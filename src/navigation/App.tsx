@@ -16,6 +16,7 @@ import {get_from_localStorage} from '../utils/Functions/Get/index';
 import SplashScreen from '../screens/Shared/SplashScreen';
 import {LocalStorageDataKeys, trialStatus} from '../utils/Data/data';
 import {checkIsTrial} from '../screens/App/Onboarding/components/Logic';
+import ForgotPassword from '../screens/Auth/Login/Pages/ForgotPassword';
 
 type getOnboardingReturnType = {
   status: boolean;
@@ -100,6 +101,11 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="forgot-password"
+        component={ForgotPassword}
         options={{headerShown: false}}
       />
       <Stack.Screen

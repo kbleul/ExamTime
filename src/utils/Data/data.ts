@@ -63,6 +63,8 @@ export const trialStatus = {
 };
 
 export const LocalStorageDataKeys = {
+  token: 'token',
+  userData: 'userData',
   onBoarding: 'onBoarding',
   trialStartDate: 'trialStartDate',
 };

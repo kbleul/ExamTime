@@ -5,7 +5,6 @@ import {StyleSheet} from 'react-native';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ImageBackground} from 'react-native';
 import {LocalStorageDataKeys} from '../../utils/Data/data';
-import {calculateDateDifference} from '../../screens/App/Onboarding/components/Logic';
 ('../../../assets/Images/courses/2.png');
 const AuthPrompt = () => {
   const navigator = useNavigation();

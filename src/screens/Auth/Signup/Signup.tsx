@@ -7,6 +7,7 @@ import SocialOptions from '../components/Organisms/SocialOptions';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import ContentDispatcher from './components/Helper/ContentDispatcher';
+import AuthNavigatorOption from '../components/Organisms/AuthNavigatorOption';
 
 export default function Signup() {
   const navigator = useNavigation();
@@ -20,7 +21,7 @@ export default function Signup() {
         showsVerticalScrollIndicator={false}>
         <View style={styles.topHeader}>
           {currentStep === 1 && (
-            <TouchableOpacity onPress={() => navigator.goBack()}>
+            <TouchableOpacity onPress={() => navigator.navigate('Login')}>
               <Ionicons name="chevron-back-outline" color="#000" size={28} />
             </TouchableOpacity>
           )}
@@ -35,6 +36,12 @@ export default function Signup() {
         />
 
         {currentStep === 1 && <SocialOptions />}
+
+        <AuthNavigatorOption
+          headingText="Already have an account?"
+          buttonText="Login"
+          onPress={() => navigator.navigate('Login')}
+        />
       </ScrollView>
     </SafeAreaView>
   );

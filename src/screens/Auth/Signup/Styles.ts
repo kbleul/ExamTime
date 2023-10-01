@@ -93,6 +93,13 @@ export const formStyles = StyleSheet.create({
     width: 200,
     paddingVertical: 11,
   },
+  submitBtnPassword: {
+    backgroundColor: '#1E90FF',
+    borderRadius: 10,
+    width: 200,
+    paddingVertical: 11,
+    alignSelf: 'flex-end',
+  },
   submitText: {
     color: '#FFFFFF',
     fontFamily: 'Montserrat-SemiBold',
