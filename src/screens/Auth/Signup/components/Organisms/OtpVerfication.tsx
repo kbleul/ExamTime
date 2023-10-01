@@ -19,6 +19,8 @@ const VerificationCodeForm: React.FC<seterProps> = ({
     null,
   ]);
   const [timer, setTimer] = useState(60);
+  const [isResend, setISResend] = useState(false);
+
   // const [isCorrectCode, setIsCorrectCode] = useState(true);
 
   const isCorrectCode = useRef(true);
@@ -29,6 +31,42 @@ const VerificationCodeForm: React.FC<seterProps> = ({
       return true;
     } else {
       return false;
+    }
+  };
+
+  const resendOtp = async () => {
+    try {
+      const url = `https://dev.think-hubet.com/user/resend/${user?.id}`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        console.log('not ok');
+        throw new Error(response?.message);
+      }
+
+      const responseData = await response.json();
+
+      if (user) {
+        const newUser = {
+          ...user,
+          verificationCode: responseData?.user?.verificationCode.toString(),
+        };
+        setUser({...newUser});
+        setOtpValues(['', '', '', '', '']);
+        setTimer(60);
+        isCorrectCode.current = true;
+        setISResend(prev => !prev);
+      }
+
+      console.log('OTP:', responseData);
+    } catch (error: any) {
+      console.error('Error submitting form:', error);
     }
   };
 
@@ -126,7 +164,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
     }, 60000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isResend]);
 
   return (
     <View>
@@ -167,7 +205,10 @@ const VerificationCodeForm: React.FC<seterProps> = ({
       )}
       <View style={styles.timerContainer}>
         {timer < 1 ? (
-          <TouchableOpacity style={styles.resendButton} touchSoundDisabled>
+          <TouchableOpacity
+            style={styles.resendButton}
+            touchSoundDisabled
+            onPress={resendOtp}>
             <Text style={styles.resendText}>Resend code</Text>
           </TouchableOpacity>
         ) : (

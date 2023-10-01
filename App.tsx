@@ -6,14 +6,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
 import Routes from './src/navigation/Index';
 import {Platform, StatusBar} from 'react-native';
+import {AuthProvider} from './src/context/auth';
 
 function App(): JSX.Element {
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      StatusBar.setBarStyle('light-content');
-    } else if (Platform.OS === 'ios') {
-      StatusBar.setBarStyle('dark-content');
-    }
     BootSplash.hide({fade: true});
   }, []);
 
@@ -22,7 +18,9 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <GluestackUIProvider config={config.theme}>
-        <Routes Stack={Stack} />
+        <AuthProvider>
+          <Routes Stack={Stack} />
+        </AuthProvider>
       </GluestackUIProvider>
     </NavigationContainer>
   );

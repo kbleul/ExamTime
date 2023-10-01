@@ -24,6 +24,7 @@ const Index = () => {
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: 30,
   },
 });
 

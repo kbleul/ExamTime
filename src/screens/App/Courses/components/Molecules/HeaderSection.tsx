@@ -2,6 +2,8 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import TrialHeader from '../../../../../components/Organisms/TrialHeader';
 import {CourseCatagories} from '../../../../../utils/Data/data';
+import SignedUpHeader from '../../../../../components/Organisms/SignedUpHeader';
+import {useGlobalState} from '../../../../../context/auth';
 
 type HeaderSectionType = {
   selectedCatagory: string;
@@ -12,9 +14,14 @@ const HeaderSection: React.FC<HeaderSectionType> = ({
   selectedCatagory,
   setSelectedCatagory,
 }) => {
+  const {user} = useGlobalState();
   return (
     <>
-      <TrialHeader type={'Courses'} />
+      {user ? (
+        <SignedUpHeader type="Courses" />
+      ) : (
+        <TrialHeader type="Courses" />
+      )}
 
       <View style={style.selectorContainer}>
         <TouchableOpacity

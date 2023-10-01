@@ -15,10 +15,12 @@ import MainBottomNav from '../../../../../components/Organisms/MainBottomNav';
 import ProgressBar from '../Molecules/ProgressBar';
 import UnitsAccordion from '../Molecules/UnitsAccordion';
 import AuthPrompt from '../../../../../components/Organisms/AuthPrompt';
+import {useGlobalState} from '../../../../../context/auth';
 
 const Grades = ['Grade 5', 'Grade 6'];
 
 const ViewSubjectDetails = () => {
+  const {user} = useGlobalState();
   const [selectedGrade, setSelectedGrade] = useState(Grades[0]);
   const [showAuthPromp, setShowAuthPromp] = useState(false);
 
@@ -28,7 +30,7 @@ const ViewSubjectDetails = () => {
         showAuthPromp ? [styles.container, styles.prompOn] : styles.container
       }>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <BackWithItem type="Courses" isTrial={true} />
+        <BackWithItem type="Courses" isTrial={user ? false : true} />
 
         <View style={styles.topSectionContainer}>
           <Image source={img} style={styles.topImg} />
@@ -103,6 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
+    paddingVertical: 30,
   },
   prompOn: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',

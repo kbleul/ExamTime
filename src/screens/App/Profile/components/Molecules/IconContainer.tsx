@@ -1,20 +1,28 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MenuItemDispatch from '../Organisms/MenuItemDispatch';
-import {ProfileMenuItems} from '../../../../../utils/Data/data';
+import {ProfileMenuItemsAuth} from '../../../../../utils/Data/data';
 import {useNavigation} from '@react-navigation/native';
+import {useGlobalState} from '../../../../../context/auth';
 
-const IconContainer: React.FC<{item: string; bgColor: string}> = ({
-  item,
-  bgColor,
-}) => {
+const IconContainer: React.FC<{
+  item: string;
+  bgColor: string;
+  setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({item, bgColor, setShowLogoutDialog}) => {
   const navigator = useNavigation();
+  const {user} = useGlobalState();
+
   return (
     <TouchableOpacity
       style={styles.buttonsContainer}
       onPress={() => {
-        item === ProfileMenuItems.Profile.name &&
+        item === ProfileMenuItemsAuth.Profile.name &&
           navigator.navigate('Profile-Edit');
+
+        user &&
+          item === ProfileMenuItemsAuth.Logout.name &&
+          setShowLogoutDialog(true);
       }}>
       <View style={[styles.iconContainer, {backgroundColor: bgColor}]}>
         <MenuItemDispatch itemName={item} />

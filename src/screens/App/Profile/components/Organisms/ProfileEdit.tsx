@@ -61,19 +61,19 @@ const ProfileEdit = () => {
             style={styles.inputContiner}
             onChangeText={(e: any) => setPassword(e?.target?.value)}
             value={password}
-            autoComplete="current-password"
+            placeholder="Current password"
           />
           <TextInput
             style={styles.inputContiner}
             onChangeText={(e: any) => setNewPassword(e?.target?.value)}
             value={newPassword}
-            autoComplete="new-password"
+            placeholder="New password"
           />
           <TextInput
             style={styles.inputContiner}
             onChangeText={(e: any) => setConfirmNewPassword(e?.target?.value)}
             value={confirmNewPassword}
-            autoComplete="new-password"
+            placeholder="Confirm password"
           />
 
           <TouchableOpacity

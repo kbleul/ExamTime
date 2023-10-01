@@ -6,6 +6,7 @@ import Index from '../..';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {useNavigation} from '@react-navigation/native';
+import {useGlobalState} from '../../../../../context/auth';
 
 type UnitsItemProps = {
   unitData: any;
@@ -14,9 +15,23 @@ type UnitsItemProps = {
 
 const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
   const navigation = useNavigation();
+  const {user} = useGlobalState();
 
   const [showMore, setShowMore] = useState(false);
 
+  const handleViewCourse = (unit: any) => {
+    if (user) {
+      navigation.navigate('View-Course-Content', {
+        isVideo: unit.isVideo,
+      });
+    } else {
+      unitData.unit === 'Unit 1'
+        ? navigation.navigate('View-Course-Content', {
+            isVideo: unit.isVideo,
+          })
+        : setShowAuthPromp(true);
+    }
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -38,13 +53,7 @@ const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
         <View>
           {unitData?.courses?.map((unitCourse: any, index: number) => (
             <TouchableOpacity
-              onPress={() => {
-                unitData.unit === 'Unit 1'
-                  ? navigation.navigate('View-Course-Content', {
-                      isVideo: unitCourse.isVideo,
-                    })
-                  : setShowAuthPromp(true);
-              }}
+              onPress={() => handleViewCourse(unitCourse)}
               touchSoundDisabled
               key={unitCourse.title + 'tail' + Index}
               style={styles.moreContainer}>
@@ -53,7 +62,7 @@ const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                   style={
-                    unitData.unit === 'Unit 1'
+                    user || unitData.unit === 'Unit 1'
                       ? styles.moreTitle
                       : [styles.moreTitle, styles.moreTitleLocked]
                   }>
@@ -64,7 +73,7 @@ const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
                 </Text>
               </View>
 
-              {unitData.unit === 'Unit 1' ? (
+              {user || unitData.unit === 'Unit 1' ? (
                 <>
                   {++index === 1 ? (
                     <Feather name="check-square" size={22} color="#1E90FF" />

@@ -4,6 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {get_from_localStorage} from '../../utils/Functions/Get';
 import {LocalStorageDataKeys, allowedTrialDays} from '../../utils/Data/data';
 import {calculateDateDifference} from '../../screens/App/Onboarding/components/Logic';
+import {HeaderStyle} from '../../styles/Theme/HeaderBox';
 
 const TrialHeader: React.FC<{type: string}> = ({type}) => {
   const [trialDayCounter, setTrialDayCounter] = useState<number | null>(null);
@@ -25,13 +26,13 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.trialText}>Trial Mode</Text>
-        <Text style={styles.typeText}>{type}</Text>
+    <View style={HeaderStyle.container}>
+      <View style={HeaderStyle.subContainer}>
+        <Text style={HeaderStyle.trialText}>Trial Mode</Text>
+        <Text style={HeaderStyle.typeText}>{type}</Text>
       </View>
-      <View style={styles.leftContainer}>
-        <Text style={styles.leftContainer_text}>
+      <View style={HeaderStyle.leftContainer}>
+        <Text style={HeaderStyle.leftContainer_text}>
           {trialDayCounter && trialDayCounter} days left
         </Text>
         <MaterialCommunityIcons
@@ -43,46 +44,5 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    padding: 5,
-  },
-  subContainer: {},
-  trialText: {
-    fontSize: 24,
-    margin: 2,
-    color: '#000',
-    fontFamily: 'Montserrat-SemiBold',
-  },
-  typeText: {
-    margin: 4,
-    marginBottom: 6,
-    fontSize: 18,
-    color: '#000',
-    fontFamily: 'Montserrat-SemiBold',
-  },
-  leftContainer: {
-    margin: 2,
-    marginTop: 5,
-    borderWidth: 1,
-    borderColor: '#E2725B',
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  leftContainer_text: {
-    color: '#E2725B',
-    marginRight: 2,
-    fontSize: 14,
-    fontFamily: 'Montserrat-Regular',
-  },
-});
 
 export default TrialHeader;

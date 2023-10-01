@@ -21,6 +21,7 @@ import {
   set_to_localStorage,
 } from '../../../../../utils/Functions/Set';
 import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
+import {useGlobalState} from '../../../../../context/auth';
 
 type FormData = {
   phoneNumber: string;
@@ -66,6 +67,7 @@ const LoginForm = () => {
   });
 
   const navigator = useNavigation();
+  const {login} = useGlobalState();
   const [showPassword, setShowPassword] = useState(true);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -100,17 +102,7 @@ const LoginForm = () => {
 
       setIsLoading(false);
       setLoginError(null);
-
-      set_to_localStorage(
-        LocalStorageDataKeys.token,
-        responseData?.accessToken,
-      );
-
-      setObject_to_localStorage(
-        LocalStorageDataKeys.userData,
-        responseData?.user,
-      );
-
+      login(responseData?.accessToken, responseData?.user);
       navigator.navigate('Home');
     } catch (error: any) {
       setIsLoading(false);

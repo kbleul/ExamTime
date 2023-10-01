@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
+    paddingVertical: 30,
   },
   pdfContainer: {
     backgroundColor: 'white',

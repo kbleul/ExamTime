@@ -28,10 +28,6 @@ export const DummyDataSocial = [
 export const CourseCatagories: CourseCatagoriesType = ['Study', 'Challenge'];
 
 export const ProfileMenuItems: ProfileMenuItems = {
-  Profile: {
-    name: 'Profile',
-    color: '#1E90FF',
-  },
   'Subscription Plan': {
     name: 'Subscription Plan',
     color: '#008E97',
@@ -54,6 +50,17 @@ export const ProfileMenuItems: ProfileMenuItems = {
   },
 };
 
+export const ProfileMenuItemsAuth: ProfileMenuItems = {
+  Profile: {
+    name: 'Profile',
+    color: '#1E90FF',
+  },
+  ...ProfileMenuItems,
+  Logout: {
+    name: 'Logout',
+    color: '#B5C3E5',
+  },
+};
 export const allowedTrialDays = 3;
 
 export const trialStatus = {

@@ -28,16 +28,8 @@ const AuthPrompt = () => {
           <TouchableOpacity
             style={styles.adsBtns}
             touchSoundDisabled
-            onPress={async () => {
-              // console.log(
-              //   calculateDateDifference('Sat Sep 28 2023 06:14:03 GMT-0400'),
-              // );
-              await AsyncStorage.removeItem(LocalStorageDataKeys.onBoarding);
-              await AsyncStorage.removeItem(
-                LocalStorageDataKeys.trialStartDate,
-              );
-            }}>
-            <Text style={styles.adsBtnsText}>Subscribe</Text>
+            onPress={() => navigator.navigate('Signup')}>
+            <Text style={styles.adsBtnsText}>Signup</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.adsBtns, styles.adsBtns_secondary]}
