@@ -74,4 +74,5 @@ export const LocalStorageDataKeys = {
   userData: 'userData',
   onBoarding: 'onBoarding',
   trialStartDate: 'trialStartDate',
+  userGrade: 'userGrade',
 };

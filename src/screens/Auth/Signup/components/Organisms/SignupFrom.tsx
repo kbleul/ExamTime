@@ -13,6 +13,9 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {formStyles} from '../../Styles';
 import {seterProps} from '../../Types';
 import {useNavigation} from '@react-navigation/native';
+import {get_from_localStorage} from '../../../../../utils/Functions/Get';
+import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type FormData = {
   firstName: string;
@@ -91,12 +94,18 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
           controller.abort(); // Abort the fetch request on timeout
         }, timeoutMs);
 
+        const userGrade = await get_from_localStorage(
+          LocalStorageDataKeys.userGrade,
+        );
+
+        console.log(`User grade: ${userGrade.value}`);
+
         const url = 'https://dev.think-hubet.com/user/create';
         const requestBody = {
           ...data,
           region: region?.toLowerCase(),
           gender: gender?.toUpperCase(),
-          grade: 'grade_8',
+          grade: userGrade?.value,
         };
 
         requestBody.phoneNumber = '+251' + data.phoneNumber;
@@ -123,6 +132,8 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
         setCurrentStep(prev => ++prev);
         setUser(responseData.user);
         setIsLoading(false);
+
+        AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
       } catch (error) {
         if (
           error instanceof Error &&

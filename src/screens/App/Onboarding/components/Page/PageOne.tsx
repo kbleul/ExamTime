@@ -1,41 +1,57 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import img from '../../../../../assets/Images/onboarding/1.png';
 import {PagesProps} from './types';
 
 const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
   return (
-    <View>
-      <View style={style.container}>
-        <Image source={img} style={style.img} />
-      </View>
-
-      <View style={style.contentContainer}>
-        <Text style={style.contentTitle}>Exam Time</Text>
-
-        <Text style={style.contentText}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </Text>
-      </View>
-
-      <TouchableOpacity
-        touchSoundDisabled
-        onPress={() => setPageCounter(2)}
-        style={style.buttonContainer}>
-        <View style={style.buttonContainer_second}>
-          <View style={style.buttonContainer_three}>
-            <AntDesign name="arrowright" style={style.arrowIcon} size={30} />
-          </View>
+    <View style={style.container}>
+      <ScrollView contentContainerStyle={style.scrollContainer}>
+        <View style={style.imgContainer}>
+          <Image source={img} style={style.img} />
         </View>
-      </TouchableOpacity>
+
+        <View style={style.contentContainer}>
+          <Text style={style.contentTitle}>Exam Time</Text>
+
+          <Text style={style.contentText}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          touchSoundDisabled
+          onPress={() => setPageCounter(2)}
+          style={style.buttonContainer}>
+          <View style={style.buttonContainer_second}>
+            <View style={style.buttonContainer_three}>
+              <AntDesign name="arrowright" style={style.arrowIcon} size={30} />
+            </View>
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
 
 const style = StyleSheet.create({
   container: {
+    paddingTop: 30,
+    flex: 1,
+  },
+  scrollContainer: {
+    height: '105%',
+  },
+  imgContainer: {
     width: '100%',
     height: '50%',
     marginTop: '5%',
@@ -73,7 +89,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: '13%',
+    marginTop: '20%',
   },
   buttonContainer_second: {
     width: 60,

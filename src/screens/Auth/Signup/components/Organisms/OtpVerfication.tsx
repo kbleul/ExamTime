@@ -174,6 +174,10 @@ const VerificationCodeForm: React.FC<seterProps> = ({
       <Text style={[formSubHeaderStyles.subHeading, styles.header]}>
         Enter the verification code we just sent on your Phone number{' '}
         <Text style={styles.phone}>{user?.phoneNumber}</Text>
+        <Text style={styles.phone}>
+          {' '}
+          {'               '}code - {user?.verificationCode}
+        </Text>
       </Text>
       <View style={OPTStyles.inputContainer}>
         {inputRefs.current.map((ref, index) => (
@@ -222,6 +226,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 const styles = StyleSheet.create({
   header: {
     marginHorizontal: 6,
+    color: 'black',
   },
   phone: {
     color: '#008E97',
@@ -238,6 +243,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
     fontFamily: 'Montserrat-Regular',
     fontSize: 18,
+    color: 'black',
   },
   resendButton: {
     marginTop: 40,

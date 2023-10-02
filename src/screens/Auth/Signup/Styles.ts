@@ -157,6 +157,7 @@ export const OPTStyles = StyleSheet.create({
     fontFamily: 'Montserrat-Regular',
     fontSize: 24,
     textAlign: 'center',
+    color: '#000',
   },
   inputError: {
     borderColor: 'red',

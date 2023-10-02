@@ -41,6 +41,7 @@ const ForgotPassword = () => {
 const styles = StyleSheet.create({
   contianer: {
     flex: 1,
+    paddingTop: 30,
   },
 });
 export default ForgotPassword;

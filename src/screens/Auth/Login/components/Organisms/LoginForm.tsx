@@ -187,7 +187,7 @@ const LoginForm = () => {
 
       <View style={styles.optionsContainer}>
         <TouchableOpacity touchSoundDisabled style={styles.rememberMeContainer}>
-          <Feather name="square" size={18} />
+          <Feather name="square" size={18} color="#b3b3b3" />
           <Text style={styles.remembermeText}>remember me</Text>
         </TouchableOpacity>
 

@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   topSectionSubContainer: {
     height: '65%',
+    minHeight: 100,
     borderBottomRightRadius: 22,
     borderBottomLeftRadius: 22,
     backgroundColor: '#1E90FF',

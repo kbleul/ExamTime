@@ -1,11 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ImageBackground} from 'react-native';
-import {LocalStorageDataKeys} from '../../utils/Data/data';
-('../../../assets/Images/courses/2.png');
 const AuthPrompt = () => {
   const navigator = useNavigation();
 

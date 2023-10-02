@@ -23,7 +23,7 @@ function ShareApp() {
           <FontAwesome5Brands name="discord" color={'#5865F2'} size={32} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <AntDesign name="link" size={32} />
+          <AntDesign name="link" size={32} color={'#000'} />
         </TouchableOpacity>
       </View>
     </View>

@@ -1,9 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import GradeButton from '../Atoms/GradeButton';
 import {PagesCounterType, PagesGradesProps, PagesProps} from './types';
 import img from '../../../../../assets/Images/onboarding/2.png';
 import TopIndicator from '../Molecules/TopIndicator';
+import {set_to_localStorage} from '../../../../../utils/Functions/Set';
+import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
 
 const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   pageCounter,
@@ -11,44 +13,53 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   selectedGrade,
   setSelectedGrade,
 }) => {
+  const saveGrade = (grade: string) => {
+    set_to_localStorage(LocalStorageDataKeys.userGrade, grade);
+    setPageCounter(3);
+  };
   return (
-    <View>
-      <TopIndicator setPageCounter={setPageCounter} pageCounter={pageCounter} />
+    <View style={style.container}>
+      <ScrollView contentContainerStyle={style.scrollContainer}>
+        <TopIndicator
+          setPageCounter={setPageCounter}
+          pageCounter={pageCounter}
+        />
 
-      <View style={style.imgContainer}>
-        <Image source={img} style={style.img} />
-      </View>
-      <View style={style.titleContainer}>
-        <Text style={style.title}>What Grade are you in ?</Text>
-      </View>
-      <View>
-        <GradeButton
-          text="Grade 6"
-          index={1}
-          setSelected={setSelectedGrade}
-          onPress={() => setPageCounter(3)}
-          isActive={selectedGrade === 1}
-        />
-        <GradeButton
-          text="Grade 8"
-          index={2}
-          setSelected={setSelectedGrade}
-          onPress={() => setPageCounter(3)}
-          isActive={selectedGrade === 2}
-        />
-        <GradeButton
-          text="Grade 12"
-          index={3}
-          setSelected={setSelectedGrade}
-          onPress={() => setPageCounter(3)}
-          isActive={selectedGrade === 3}
-        />
-      </View>
+        <View style={style.imgContainer}>
+          <Image source={img} style={style.img} />
+        </View>
+        <View style={style.titleContainer}>
+          <Text style={style.title}>What Grade are you in ?</Text>
+        </View>
+        <View>
+          <GradeButton
+            text="Grade 8"
+            index={2}
+            setSelected={setSelectedGrade}
+            onPress={() => saveGrade('grade_8')}
+            isActive={selectedGrade === 2}
+          />
+          <GradeButton
+            text="Grade 12"
+            index={3}
+            setSelected={setSelectedGrade}
+            onPress={() => saveGrade('grade_12_natural')}
+            isActive={selectedGrade === 3}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };
 
 const style = StyleSheet.create({
+  container: {
+    paddingTop: 30,
+    flex: 1,
+  },
+  scrollContainer: {
+    height: '105%',
+  },
   imgContainer: {
     width: '100%',
     height: '40%',
@@ -63,7 +74,7 @@ const style = StyleSheet.create({
   },
   titleContainer: {
     marginTop: '10%',
-    marginBottom: '5%',
+    marginBottom: '10%',
   },
   title: {
     fontFamily: 'Montserrat-Bold',

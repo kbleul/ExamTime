@@ -34,91 +34,100 @@ const PageThree: React.FC<PageThreeProps> = ({
   );
 
   return (
-    <ScrollView
-      contentContainerStyle={style.container}
-      showsHorizontalScrollIndicator>
-      <TopIndicator setPageCounter={setPageCounter} pageCounter={pageCounter} />
+    <View style={style.container}>
+      <ScrollView
+        contentContainerStyle={style.scrollContainer}
+        showsHorizontalScrollIndicator>
+        <TopIndicator
+          setPageCounter={setPageCounter}
+          pageCounter={pageCounter}
+        />
 
-      {selectedGrade === 3 && (
-        <View style={style.selectorContainer}>
-          <TouchableOpacity
-            onPress={() => setSelectedCatagory(Grade12Catagories[0])}
-            style={
-              selectedCatagory === Grade12Catagories[0]
-                ? [style.buttons, style.activeButton]
-                : style.buttons
-            }>
-            <Text
+        {selectedGrade === 3 && (
+          <View style={style.selectorContainer}>
+            <TouchableOpacity
+              onPress={() => setSelectedCatagory(Grade12Catagories[0])}
               style={
                 selectedCatagory === Grade12Catagories[0]
-                  ? style.buttonText
-                  : [style.buttonText, style.activeButtonText]
+                  ? [style.buttons, style.activeButton]
+                  : style.buttons
               }>
-              {Grade12Catagories[0]}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setSelectedCatagory(Grade12Catagories[1])}
-            style={
-              selectedCatagory === Grade12Catagories[1]
-                ? [style.buttons, style.activeButton]
-                : style.buttons
-            }>
-            <Text
+              <Text
+                style={
+                  selectedCatagory === Grade12Catagories[0]
+                    ? style.buttonText
+                    : [style.buttonText, style.activeButtonText]
+                }>
+                {Grade12Catagories[0]}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectedCatagory(Grade12Catagories[1])}
               style={
                 selectedCatagory === Grade12Catagories[1]
-                  ? style.buttonText
-                  : [style.buttonText, style.activeButtonText]
+                  ? [style.buttons, style.activeButton]
+                  : style.buttons
               }>
-              {Grade12Catagories[1]}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
+              <Text
+                style={
+                  selectedCatagory === Grade12Catagories[1]
+                    ? style.buttonText
+                    : [style.buttonText, style.activeButtonText]
+                }>
+                {Grade12Catagories[1]}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
-      <View style={style.imgContainer}>
-        <Image source={img} style={style.img} />
-      </View>
-      <View style={style.titleContainer}>
-        <Text style={style.title}>What do you want to study?</Text>
-      </View>
-      <View>
-        <View style={style.buttonsSubcontainer}>
-          {selectedCatagory === Grade12Catagories[0]
-            ? DummyDataScience.map((subject, index) => (
-                <SubjectButton
-                  key={subject.subjName + index}
-                  text={subject.subjName}
-                  selectedGrades={selectedGrades}
-                  setSelectedGrades={setSelectedGrades}
-                />
-              ))
-            : DummyDataSocial.map((subject, index) => (
-                <SubjectButton
-                  key={subject.subjName + index}
-                  text={subject.subjName}
-                  selectedGrades={selectedGrades}
-                  setSelectedGrades={setSelectedGrades}
-                />
-              ))}
+        <View style={style.imgContainer}>
+          <Image source={img} style={style.img} />
         </View>
+        <View style={style.titleContainer}>
+          <Text style={style.title}>What do you want to study?</Text>
+        </View>
+        <View>
+          <View style={style.buttonsSubcontainer}>
+            {selectedCatagory === Grade12Catagories[0]
+              ? DummyDataScience.map((subject, index) => (
+                  <SubjectButton
+                    key={subject.subjName + index}
+                    text={subject.subjName}
+                    selectedGrades={selectedGrades}
+                    setSelectedGrades={setSelectedGrades}
+                  />
+                ))
+              : DummyDataSocial.map((subject, index) => (
+                  <SubjectButton
+                    key={subject.subjName + index}
+                    text={subject.subjName}
+                    selectedGrades={selectedGrades}
+                    setSelectedGrades={setSelectedGrades}
+                  />
+                ))}
+          </View>
 
-        <View style={style.buttonsSubcontainer}>
-          <GradeButton
-            text="Get Started"
-            index={5}
-            onPress={() => onboarding_save_navToHome(navigation)}
-            isActive={true}
-          />
+          <View style={style.buttonsSubcontainer}>
+            <GradeButton
+              text="Get Started"
+              index={5}
+              onPress={() => onboarding_save_navToHome(navigation)}
+              isActive={true}
+            />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const style = StyleSheet.create({
   container: {
+    paddingTop: 30,
     flex: 1,
+  },
+  scrollContainer: {
+    height: '125%',
   },
   selectorContainer: {
     flexDirection: 'row',
@@ -158,8 +167,7 @@ const style = StyleSheet.create({
     height: '100%',
   },
   titleContainer: {
-    marginTop: '3%',
-    marginBottom: '4%',
+    marginTop: '7%',
   },
   title: {
     fontFamily: 'Montserrat-Bold',
@@ -174,12 +182,8 @@ const style = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexWrap: 'wrap',
-    marginBottom: 10,
+    marginTop: '10%',
     paddingHorizontal: 20,
-  },
-  mainCOntainer: {
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
   },
 });
 
