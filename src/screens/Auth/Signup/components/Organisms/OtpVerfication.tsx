@@ -3,6 +3,7 @@ import {View, TextInput, Text, TouchableOpacity} from 'react-native';
 import {OPTStyles, formSubHeaderStyles} from '../../Styles';
 import {seterProps} from '../../Types';
 import {StyleSheet} from 'react-native';
+import Config from 'react-native-config';
 
 const VerificationCodeForm: React.FC<seterProps> = ({
   setCurrentStep,
@@ -36,7 +37,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 
   const resendOtp = async () => {
     try {
-      const url = `https://dev.think-hubet.com/user/resend/${user?.id}`;
+      const url = `${Config.API_URL}user/resend/${user?.id}`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -78,7 +79,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
       isCorrectCode.current = true;
       console.log('here');
       try {
-        const url = `https://dev.think-hubet.com/user/verify/${user?.id}`;
+        const url = `${Config.API_URL}user/verify/${user?.id}`;
 
         const response = await fetch(url, {
           method: 'PUT',

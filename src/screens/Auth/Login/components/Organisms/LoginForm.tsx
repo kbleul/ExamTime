@@ -22,6 +22,7 @@ import {
 } from '../../../../../utils/Functions/Set';
 import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
 import {useGlobalState} from '../../../../../context/auth';
+import Config from 'react-native-config';
 
 type FormData = {
   phoneNumber: string;
@@ -78,7 +79,7 @@ const LoginForm = () => {
     setLoginError(null);
 
     try {
-      const url = `https://dev.think-hubet.com/user/login`;
+      const url = `${Config.API_URL}user/login`;
 
       const response = await fetch(url, {
         method: 'POST',

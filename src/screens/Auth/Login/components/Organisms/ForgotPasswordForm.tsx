@@ -13,6 +13,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
 import {userType} from '../../../Signup/Types';
+import Config from 'react-native-config';
 
 type FormData = {
   phoneNumber: string;
@@ -61,7 +62,7 @@ const ForgotPasswordForm: React.FC<{
     setSubmitError(null);
 
     try {
-      const url = `https://dev.think-hubet.com/user/forgotpassword`;
+      const url = `${Config.API_URL}user/forgotpassword`;
 
       const response = await fetch(url, {
         method: 'POST',

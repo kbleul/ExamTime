@@ -12,6 +12,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
 import {userType} from '../../Types';
+import Config from 'react-native-config';
 
 type FormData = {
   password: string;
@@ -51,7 +52,7 @@ const SetNewPassword: React.FC<{
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
-      const url = `https://dev.think-hubet.com/user/createpassword/${user?.id}`; // Replace with your API endpoint
+      const url = `${Config.API_URL}user/createpassword/${user?.id}`; // Replace with your API endpoint
 
       const timeoutMs = 10000; // Set your desired timeout in milliseconds (e.g., 10 seconds)
 

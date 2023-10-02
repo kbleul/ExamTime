@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {get_from_localStorage} from '../../../../../utils/Functions/Get';
 import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 
 type FormData = {
   firstName: string;
@@ -100,7 +101,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
 
         console.log(`User grade: ${userGrade.value}`);
 
-        const url = 'https://dev.think-hubet.com/user/create';
+        const url = `${Config.API_URL}user/create`;
         const requestBody = {
           ...data,
           region: region?.toLowerCase(),
@@ -174,7 +175,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
 
   const fetchRegions = useCallback(async () => {
     try {
-      const url = 'https://dev.think-hubet.com/region/region'; // Replace with your API endpoint
+      const url = `${Config.API_URL}region/region`; // Replace with your API endpoint
       const timeoutMs = 10000; // Set your desired timeout in milliseconds (e.g., 10 seconds)
 
       const controller = new AbortController();

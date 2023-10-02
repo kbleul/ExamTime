@@ -1,13 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import GradeButton from './components/Atoms/GradeBtn';
-import {DummyDataScience, LocalStorageDataKeys} from '../../../utils/Data/data';
+import {DummyDataScience} from '../../../utils/Data/data';
 import SubjectsBox from './components/Molecules/subjectsBox';
 import TrialHeader from '../../../components/Organisms/TrialHeader';
 import AuthPrompt from '../../../components/Organisms/AuthPrompt';
 import SignedUpHeader from '../../../components/Organisms/SignedUpHeader';
 import {useGlobalState} from '../../../context/auth';
+import Config from 'react-native-config';
+console.log(Config.API_URL);
 
 const Index = () => {
   const {user, isLoading} = useGlobalState();

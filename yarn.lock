@@ -9415,6 +9415,11 @@ react-native-bootsplash@^5.0.3:
     ts-dedent "^2.2.0"
     xml-formatter "^3.5.0"
 
+react-native-config@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.npmjs.org/react-native-config/-/react-native-config-1.5.1.tgz"
+  integrity sha512-g1xNgt1tV95FCX+iWz6YJonxXkQX0GdD3fB8xQtR1GUBEqweB9zMROW77gi2TygmYmUkBI7LU4pES+zcTyK4HA==
+
 react-native-element-dropdown@^2.10.0:
   version "2.10.0"
   resolved "https://registry.npmjs.org/react-native-element-dropdown/-/react-native-element-dropdown-2.10.0.tgz"
