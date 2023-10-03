@@ -24,10 +24,12 @@ import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
 import {useGlobalState} from '../../../../../context/auth';
 import Config from 'react-native-config';
 
-type FormData = {
-  phoneNumber: string;
-  password: string;
-};
+import {useDispatch} from 'react-redux';
+import {useLoginMutation} from '../../../../../reduxToolkit/Services/auth';
+import {loginSuccess} from '../../../../../reduxToolkit/Features/auth/authSlice';
+import {isOnline} from '../../../../../utils/Functions/Helper';
+import {handleLogin} from '../../Logic';
+import {FormData} from '../../Types';
 
 const schema = yup.object().shape({
   phoneNumber: yup
@@ -68,11 +70,14 @@ const LoginForm = () => {
   });
 
   const navigator = useNavigation();
-  const {login} = useGlobalState();
+  // const {login} = useGlobalState();
   const [showPassword, setShowPassword] = useState(true);
 
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState<boolean | null>(null);
+
+  const dispatch = useDispatch();
+  const [login, {isLoading, isError, error}] = useLoginMutation();
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
@@ -201,11 +206,16 @@ const LoginForm = () => {
         </TouchableOpacity>
       </View>
 
+      {error && <Text>{error?.data?.message}</Text>}
       <TouchableOpacity touchSoundDisabled style={styles.submitContainer}>
         {isLoading ? (
           <ActivityIndicator color={'#FFF'} />
         ) : (
-          <Text style={styles.submitBtnText} onPress={handleSubmit(onSubmit)}>
+          <Text
+            style={styles.submitBtnText}
+            onPress={handleSubmit(data =>
+              handleLogin(data, dispatch, login, loginSuccess, navigator),
+            )}>
             Login
           </Text>
         )}

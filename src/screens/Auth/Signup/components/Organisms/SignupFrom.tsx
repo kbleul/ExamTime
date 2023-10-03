@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {formStyles} from '../../Styles';
-import {seterProps} from '../../Types';
+import {seterProps} from '../../../../../Types';
 import {useNavigation} from '@react-navigation/native';
 import {get_from_localStorage} from '../../../../../utils/Functions/Get';
 import {LocalStorageDataKeys} from '../../../../../utils/Data/data';

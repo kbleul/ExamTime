@@ -11,7 +11,7 @@ import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
-import {userType} from '../../Types';
+import {userType} from '../../../../../Types';
 import Config from 'react-native-config';
 
 type FormData = {

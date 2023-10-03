@@ -4,7 +4,7 @@ import LoginHeader from '../components/Molecules/LoginHeader';
 import {useNavigation} from '@react-navigation/native';
 import ForgotPasswordForm from '../components/Organisms/ForgotPasswordForm';
 import VerificationCodeForm from '../../Signup/components/Organisms/OtpVerfication';
-import {userType} from '../../Signup/Types';
+import {userType} from '../../../../Types';
 import SetNewPassword from '../../Signup/components/Organisms/SetNewPassword';
 
 const ForgotPassword = () => {

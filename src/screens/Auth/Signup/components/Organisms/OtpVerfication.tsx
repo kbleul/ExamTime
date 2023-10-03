@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, TextInput, Text, TouchableOpacity} from 'react-native';
 import {OPTStyles, formSubHeaderStyles} from '../../Styles';
-import {seterProps} from '../../Types';
+import {seterProps} from '../../../../../Types';
 import {StyleSheet} from 'react-native';
 import Config from 'react-native-config';
 

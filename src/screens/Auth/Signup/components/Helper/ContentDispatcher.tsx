@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import SignupFrom from '../Organisms/SignupFrom';
 import SetNewPassword from '../Organisms/SetNewPassword';
 import OtpVerfication from '../Organisms/OtpVerfication';
-import {userType} from '../../Types';
+import {userType} from '../../../../../Types';
 
 const ContentDispatcher: React.FC<{
   currentStep: number;

@@ -1,44 +1,38 @@
-import {createAction, createSlice, Action, AnyAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {userType} from '../../../types';
 
-const login = createAction('login');
-const logout = createAction('logout');
-
-interface RejectedAction extends Action {
-  error: Error;
+interface AuthState {
+  isChecked: boolean;
+  user: userType | null;
+  token: string | null;
 }
 
-function isRejectedAction(action: AnyAction): action is RejectedAction {
-  return action.type.endsWith('rejected');
-}
-
-const initialState = {
-  loading: false,
-  userInfo: {}, // for user object
-  userToken: null, // for storing the JWT
-  error: null,
-  success: false, // for monitoring the registration process.
+const initialState: AuthState = {
+  isChecked: false,
+  user: null,
+  token: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
-  extraReducers: builder => {
-    builder
-      .addCase(login, (state, action) => {
-        // action is inferred correctly here if using TS
-      })
-      // You can chain calls, or have separate `builder.addCase()` lines each time
-      .addCase(logout, (state, action) => {})
-      // You can match a range of action types
-      .addMatcher(
-        isRejectedAction,
-        // `action` will be inferred as a RejectedAction due to isRejectedAction being defined as a type guard
-        (state, action) => {},
-      )
-      // and provide a default case if no other handlers matched
-      .addDefaultCase((state, action) => {});
+  reducers: {
+    loginSuccess: (
+      state,
+      action: PayloadAction<{user: userType; token: string}>,
+    ) => {
+      state.isChecked = true;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+    },
+    logoutSuccess: state => {
+      state.isChecked = false;
+      state.user = null;
+      state.token = null;
+    },
   },
 });
+
+export const {loginSuccess, logoutSuccess} = authSlice.actions;
 
 export default authSlice.reducer;

@@ -7,7 +7,7 @@ import React, {
   ReactNode,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {userType} from '../screens/Auth/Signup/Types';
+import {userType} from '../Types';
 import {LocalStorageDataKeys} from '../utils/Data/data';
 import {
   setObject_to_localStorage,
