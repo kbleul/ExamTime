@@ -35,9 +35,9 @@ const schema = yup.object().shape({
 
 const SetNewPassword: React.FC<{
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  user: userType | null;
+  unregisteredUser: userType | null;
   isReset?: boolean;
-}> = ({setCurrentStep, user, isReset}) => {
+}> = ({setCurrentStep, unregisteredUser, isReset}) => {
   const navigator = useNavigation();
   const {
     control,
@@ -52,7 +52,7 @@ const SetNewPassword: React.FC<{
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
-      const url = `${Config.API_URL}user/createpassword/${user?.id}`; // Replace with your API endpoint
+      const url = `${Config.API_URL}user/createpassword/${unregisteredUser?.id}`; // Replace with your API endpoint
 
       const timeoutMs = 10000; // Set your desired timeout in milliseconds (e.g., 10 seconds)
 

@@ -1,13 +1,20 @@
 import NetInfo from '@react-native-community/netinfo';
+import {NavigationProp} from '@react-navigation/native';
 
-export const isOnline = async () => {
+export const checkIsOnline = async (
+  navigator: NavigationProp<ReactNavigation.RootParamList>,
+) => {
   try {
     const state = await NetInfo.fetch();
     console.log('reach', state.isInternetReachable);
-    return state.isConnected && state.isInternetReachable ? true : false;
+
+    if (!state.isConnected || !state.isInternetReachable) {
+      navigator.navigate('network-error');
+    }
+    return;
   } catch (error) {
     // Handle any errors (e.g., request timeout)
-    console.error('Error checking network status:', error);
-    return false; // Assume offline on error
+    navigator.navigate('network-error');
+    return; // Assume offline on error
   }
 };

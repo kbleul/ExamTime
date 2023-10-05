@@ -16,18 +16,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import {formStyles} from '../../../Signup/Styles';
 import {useNavigation} from '@react-navigation/native';
-import {
-  setObject_to_localStorage,
-  set_to_localStorage,
-} from '../../../../../utils/Functions/Set';
-import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
-import {useGlobalState} from '../../../../../context/auth';
-import Config from 'react-native-config';
 
 import {useDispatch} from 'react-redux';
 import {useLoginMutation} from '../../../../../reduxToolkit/Services/auth';
 import {loginSuccess} from '../../../../../reduxToolkit/Features/auth/authSlice';
-import {isOnline} from '../../../../../utils/Functions/Helper';
 import {handleLogin} from '../../Logic';
 import {FormData} from '../../Types';
 
@@ -73,65 +65,13 @@ const LoginForm = () => {
   // const {login} = useGlobalState();
   const [showPassword, setShowPassword] = useState(true);
 
-  // const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState<boolean | null>(null);
-
   const dispatch = useDispatch();
   const [login, {isLoading, isError, error}] = useLoginMutation();
-
-  const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    setLoginError(null);
-
-    try {
-      const url = `${Config.API_URL}user/login`;
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phoneNumber: '+251' + data.phoneNumber,
-          password: data.password,
-        }),
-      });
-      console.log(data.password, data.phoneNumber);
-      if (!response.ok) {
-        const responseData = await response.json();
-        console.log('object', responseData);
-        throw new Error('User login failed');
-      }
-
-      const responseData = await response.json();
-      console.log('object2', responseData);
-
-      setIsLoading(false);
-      setLoginError(null);
-      login(responseData?.accessToken, responseData?.user);
-      navigator.navigate('Home');
-    } catch (error: any) {
-      setIsLoading(false);
-      console.error('Error submitting form:', error);
-      if (
-        error instanceof TypeError &&
-        (error.message === 'Network request failed' ||
-          error.message === 'AbortError')
-      ) {
-        navigator.navigate('network-error');
-        return;
-      }
-
-      setLoginError(error?.message);
-    }
-  };
 
   return (
     <View style={styles.formContainer}>
       <Text style={styles.signinText}>Sign in</Text>
-      {loginError && (
-        <Text style={[formStyles.error, styles.error]}>{loginError} !</Text>
-      )}
+
       <View>
         <Controller
           control={control}

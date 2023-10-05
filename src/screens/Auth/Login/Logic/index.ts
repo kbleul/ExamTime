@@ -1,6 +1,6 @@
 import {ActionCreatorWithPayload, AnyAction, Dispatch} from '@reduxjs/toolkit';
 import {userType} from '../../../../types';
-import {isOnline} from '../../../../utils/Functions/Helper';
+import {checkIsOnline} from '../../../../utils/Functions/Helper';
 import {FormData} from '../Types';
 import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
@@ -35,7 +35,8 @@ export const handleLogin = async (
         token: response.accessToken,
       }),
     );
-    // No need to manually dispatch loginSuccess here
+
+    navigator.navigate('Home');
   } catch (error) {
     console.log(error?.error);
     if (
@@ -44,16 +45,5 @@ export const handleLogin = async (
     ) {
       navigator.navigate('network-error');
     }
-  }
-};
-
-export const checkIsOnline = async (
-  navigator: NavigationProp<ReactNavigation.RootParamList>,
-) => {
-  const isonLine = await isOnline();
-  console.log(isonLine);
-  if (!isonLine) {
-    navigator.navigate('network-error');
-    return;
   }
 };

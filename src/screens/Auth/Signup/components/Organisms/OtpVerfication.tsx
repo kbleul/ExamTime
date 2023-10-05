@@ -7,8 +7,8 @@ import Config from 'react-native-config';
 
 const VerificationCodeForm: React.FC<seterProps> = ({
   setCurrentStep,
-  setUser,
-  user,
+  setUnregisteredUser,
+  unregisteredUser,
   isReset,
 }) => {
   const [OtpValues, setOtpValues] = useState(['', '', '', '', '']);
@@ -27,8 +27,8 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   const isCorrectCode = useRef(true);
 
   const checkCode = (code: string) => {
-    console.log(code, user?.verificationCode);
-    if (user?.verificationCode?.toString() === code) {
+    console.log(code, unregisteredUser?.verificationCode);
+    if (unregisteredUser?.verificationCode?.toString() === code) {
       return true;
     } else {
       return false;
@@ -37,7 +37,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 
   const resendOtp = async () => {
     try {
-      const url = `${Config.API_URL}user/resend/${user?.id}`;
+      const url = `${Config.API_URL}user/resend/${unregisteredUser?.id}`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -53,12 +53,12 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 
       const responseData = await response.json();
 
-      if (user) {
+      if (unregisteredUser) {
         const newUser = {
-          ...user,
+          ...unregisteredUser,
           verificationCode: responseData?.user?.verificationCode.toString(),
         };
-        setUser({...newUser});
+        setUnregisteredUser({...newUser});
         setOtpValues(['', '', '', '', '']);
         setTimer(60);
         isCorrectCode.current = true;
@@ -79,7 +79,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
       isCorrectCode.current = true;
       console.log('here');
       try {
-        const url = `${Config.API_URL}user/verify/${user?.id}`;
+        const url = `${Config.API_URL}user/verify/${unregisteredUser?.id}`;
 
         const response = await fetch(url, {
           method: 'PUT',
@@ -99,7 +99,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 
         const responseData = await response.json();
         setCurrentStep(prev => ++prev);
-        setUser(responseData.user);
+        setUnregisteredUser(responseData.user);
         console.log('OTP:', responseData);
       } catch (error: any) {
         console.error('Error submitting form:', error);
@@ -174,11 +174,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
       </Text>
       <Text style={[formSubHeaderStyles.subHeading, styles.header]}>
         Enter the verification code we just sent on your Phone number{' '}
-        <Text style={styles.phone}>{user?.phoneNumber}</Text>
-        <Text style={styles.phone}>
-          {' '}
-          {'               '}code - {user?.verificationCode}
-        </Text>
+        <Text style={styles.phone}>{unregisteredUser?.phoneNumber}</Text>
       </Text>
       <View style={OPTStyles.inputContainer}>
         {inputRefs.current.map((ref, index) => (

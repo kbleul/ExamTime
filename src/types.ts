@@ -23,7 +23,37 @@ export type userType = {
 
 export type seterProps = {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  setUser: React.Dispatch<React.SetStateAction<userType | null>>;
-  user?: userType | null;
+  setUnregisteredUser: React.Dispatch<React.SetStateAction<userType | null>>;
+  unregisteredUser?: userType | null;
   isReset?: boolean;
+};
+
+export type SignupDataType = {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email?: string;
+  gender: 'Male' | 'Female';
+  region: string;
+  grade: string;
+};
+
+export type LoginDataType = {
+  phoneNumber: string;
+  password: string;
+};
+
+export type OTPDataType = {
+  userId: string;
+  code: string;
+  forgotPassword: string;
+};
+
+export type CreatePasswordataType = {
+  userId: string;
+  password: string;
+  forgotPassword: string;
+};
+export type ResendCodeDataType = {
+  userId: string;
 };

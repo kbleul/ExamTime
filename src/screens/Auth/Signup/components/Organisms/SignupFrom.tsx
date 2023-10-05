@@ -11,20 +11,11 @@ import {
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {formStyles} from '../../Styles';
-import {seterProps} from '../../../../../Types';
 import {useNavigation} from '@react-navigation/native';
-import {get_from_localStorage} from '../../../../../utils/Functions/Get';
-import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
-
-type FormData = {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
-  gender: 'Male' | 'Female';
-};
+import {SignupDataType, seterProps} from '../../../../../types';
+import {handleCreateUser} from '../Logic';
+import {useCreateUserMutation} from '../../../../../reduxToolkit/Services/auth';
 
 type regionItemsType = {
   label: string;
@@ -61,107 +52,24 @@ const genderOptions = [
   {label: 'Female', value: 'Female'},
 ];
 
-const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
+const SignupForm: React.FC<seterProps> = ({
+  setCurrentStep,
+  setUnregisteredUser,
+}) => {
   const navigator = useNavigation();
   const {
     control,
     handleSubmit,
     formState: {errors},
-  } = useForm<FormData>({
+  } = useForm<SignupDataType>({
     resolver: yupResolver(schema),
   });
-
-  const validate_Gender_and_Region = () => {
-    if (!gender || !region) {
-      !gender && setGenderError('Gender is required');
-      !region && setRegionError('Region is required');
-
-      return false;
-    }
-    return true;
-  };
-
-  const onSubmit = async (data: FormData) => {
-    setSignupError(null);
-    if (validate_Gender_and_Region()) {
-      try {
-        setIsLoading(true);
-        const timeoutMs = 10000; // Set your desired timeout in milliseconds (e.g., 10 seconds)
-
-        const controller = new AbortController();
-        const signal = controller.signal;
-
-        const timeout = setTimeout(() => {
-          controller.abort(); // Abort the fetch request on timeout
-        }, timeoutMs);
-
-        const userGrade = await get_from_localStorage(
-          LocalStorageDataKeys.userGrade,
-        );
-
-        console.log(`User grade: ${userGrade.value}`);
-
-        const url = `${Config.API_URL}user/create`;
-        const requestBody = {
-          ...data,
-          region: region?.toLowerCase(),
-          gender: gender?.toUpperCase(),
-          grade: userGrade?.value,
-        };
-
-        requestBody.phoneNumber = '+251' + data.phoneNumber;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestBody),
-          signal, // Pass the abort signal to the fetch request
-        });
-        console.log('dddd');
-
-        clearTimeout(timeout); // Clear the timeout since the request completed
-
-        if (!response.ok) {
-          console.log('ddddz', response.status, requestBody);
-
-          throw new Error('Faild to register user');
-        }
-
-        const responseData = await response.json();
-        console.log('Form submitted successfully:', responseData);
-        setCurrentStep(prev => ++prev);
-        setUser(responseData.user);
-        setIsLoading(false);
-
-        AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
-      } catch (error) {
-        if (
-          error instanceof Error &&
-          (error.message === 'Failed to register user' ||
-            error.message === 'Faild to register user')
-        ) {
-          setSignupError('Phone number is already registered');
-        }
-        console.log('Error:', error.message, 'Failed to register user');
-        setIsLoading(false);
-        if (
-          error instanceof TypeError &&
-          (error.message === 'Network request failed' ||
-            error.message === 'AbortError')
-        ) {
-          navigator.navigate('network-error');
-        }
-      }
-    }
-  };
 
   const [refetchRegions, setRefetchRegions] = useState(false);
   const [regionsListItems, setRegionsListItems] = useState<
     regionItemsType[] | []
   >([]);
   const [isLoadingRegions, setIsLoadingRegions] = useState(true);
-  const [signupError, setSignupError] = useState<string | null>(null);
 
   const [gender, setGender] = useState<string | null>(null);
   const [region, setRegion] = useState<string | null>(null);
@@ -171,7 +79,7 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
   const [isFocusGender, setIsFocusGender] = useState(false);
   const [isFocusRegion, setIsFocusRegion] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [createUser, {isLoading, isError, error}] = useCreateUserMutation();
 
   const fetchRegions = useCallback(async () => {
     try {
@@ -214,19 +122,17 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
 
       setRegionsListItems([...tempRegionsList]);
       setIsLoadingRegions(false);
-      setSignupError(null);
-    } catch (error: any) {
+    } catch (err: any) {
       if (
-        error instanceof TypeError &&
-        (error.message === 'Network request failed' ||
-          error.message === 'AbortError')
+        err instanceof TypeError &&
+        (err.message === 'Network request failed' ||
+          err.message === 'AbortError')
       ) {
         navigator.navigate('network-error');
         setRefetchRegions(prev => !prev);
-        setSignupError(null);
       }
 
-      console.log(error);
+      console.log(err);
     }
   }, []);
 
@@ -394,12 +300,25 @@ const SignupForm: React.FC<seterProps> = ({setCurrentStep, setUser}) => {
         )}
       </View>
 
-      {signupError && <Text style={formStyles.error}>{signupError}</Text>}
+      {error && <Text>{error?.data?.message}</Text>}
+
       <View style={formStyles.submitBtnContainer}>
         <TouchableOpacity
           style={formStyles.submitBtn}
           touchSoundDisabled
-          onPress={handleSubmit(onSubmit)}
+          onPress={handleSubmit(data =>
+            handleCreateUser(
+              data,
+              createUser,
+              navigator,
+              gender,
+              setGenderError,
+              region,
+              setRegionError,
+              setCurrentStep,
+              setUnregisteredUser,
+            ),
+          )}
           disabled={isLoading}>
           {isLoading ? (
             <ActivityIndicator color={'#FFF'} />
