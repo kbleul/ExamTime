@@ -46,14 +46,24 @@ export type LoginDataType = {
 export type OTPDataType = {
   userId: string;
   code: string;
-  forgotPassword: string;
+  forgotPassword: boolean;
 };
 
-export type CreatePasswordataType = {
+export type CreatePassworDataType = {
   userId: string;
   password: string;
-  forgotPassword: string;
+  forForgotPassword: boolean;
 };
 export type ResendCodeDataType = {
   userId: string;
+};
+
+export type CreatePasswordFormDataType = {
+  password: string;
+  confirmPassword: string;
+};
+
+export type regionItemsType = {
+  label: string;
+  value: string;
 };

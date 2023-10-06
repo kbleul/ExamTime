@@ -1,9 +1,20 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, TextInput, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {OPTStyles, formSubHeaderStyles} from '../../Styles';
 import {seterProps} from '../../../../../Types';
 import {StyleSheet} from 'react-native';
-import Config from 'react-native-config';
+import {
+  useResendCodeMutation,
+  useVerifyCodeMutation,
+} from '../../../../../reduxToolkit/Services/auth';
+import {useNavigation} from '@react-navigation/native';
+import {handleVerfiyCode, resendOtp} from '../Logic';
 
 const VerificationCodeForm: React.FC<seterProps> = ({
   setCurrentStep,
@@ -11,6 +22,13 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   unregisteredUser,
   isReset,
 }) => {
+  const navigator = useNavigation();
+  const [verifyCode, {isLoading, isError, error}] = useVerifyCodeMutation();
+  const [
+    resendCode,
+    {isLoading: isLoadingResend, isError: isErrorResend, error: errorResend},
+  ] = useResendCodeMutation();
+
   const [OtpValues, setOtpValues] = useState(['', '', '', '', '']);
   const inputRefs = useRef<Array<TextInput | null>>([
     null,
@@ -25,91 +43,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   // const [isCorrectCode, setIsCorrectCode] = useState(true);
 
   const isCorrectCode = useRef(true);
-
-  const checkCode = (code: string) => {
-    console.log(code, unregisteredUser?.verificationCode);
-    if (unregisteredUser?.verificationCode?.toString() === code) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const resendOtp = async () => {
-    try {
-      const url = `${Config.API_URL}user/resend/${unregisteredUser?.id}`;
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        console.log('not ok');
-        throw new Error(response?.message);
-      }
-
-      const responseData = await response.json();
-
-      if (unregisteredUser) {
-        const newUser = {
-          ...unregisteredUser,
-          verificationCode: responseData?.user?.verificationCode.toString(),
-        };
-        setUnregisteredUser({...newUser});
-        setOtpValues(['', '', '', '', '']);
-        setTimer(60);
-        isCorrectCode.current = true;
-        setISResend(prev => !prev);
-      }
-
-      console.log('OTP:', responseData);
-    } catch (error: any) {
-      console.error('Error submitting form:', error);
-    }
-  };
-
-  const verifyUser = async () => {
-    const parsedCode =
-      OtpValues[0] + OtpValues[1] + OtpValues[2] + OtpValues[3] + OtpValues[4];
-
-    if (checkCode(parsedCode)) {
-      isCorrectCode.current = true;
-      console.log('here');
-      try {
-        const url = `${Config.API_URL}user/verify/${unregisteredUser?.id}`;
-
-        const response = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            verificationCode: parsedCode,
-            forForgotPassword: isReset ? true : false,
-          }),
-        });
-
-        if (!response.ok) {
-          console.log('not ok');
-          throw new Error(response?.message);
-        }
-
-        const responseData = await response.json();
-        setCurrentStep(prev => ++prev);
-        setUnregisteredUser(responseData.user);
-        console.log('OTP:', responseData);
-      } catch (error: any) {
-        console.error('Error submitting form:', error);
-      }
-    } else {
-      if (isCorrectCode.current) {
-        isCorrectCode.current = false;
-      }
-    }
-  };
+  const sentOtp = useRef('     ');
 
   const focusNextInput = (index: number) => {
     if (index < inputRefs.current.length - 1) {
@@ -126,8 +60,24 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   const checkIfFUll = (arr: string[]) => {
     const hasEmpty = arr.some((i: string) => i === '');
 
-    if (!hasEmpty) {
-      verifyUser();
+    const optValue =
+      OtpValues[0] + OtpValues[1] + OtpValues[2] + OtpValues[3] + OtpValues[4];
+
+    if (!hasEmpty && optValue !== sentOtp.current) {
+      sentOtp.current = optValue;
+      handleVerfiyCode(
+        {
+          userId: unregisteredUser?.id,
+          code: optValue,
+          forgotPassword: isReset ? true : false,
+        },
+        isCorrectCode,
+        verifyCode,
+        navigator,
+        setCurrentStep,
+        unregisteredUser,
+        setUnregisteredUser,
+      );
     }
   };
   const handleKeyPress = (index: number, key: string) => {
@@ -201,6 +151,10 @@ const VerificationCodeForm: React.FC<seterProps> = ({
         ))}
       </View>
 
+      {(isLoading || isLoadingResend) && <ActivityIndicator />}
+      {error && <Text>{error?.data?.message}</Text>}
+      {errorResend && <Text>{errorResend?.data?.message}</Text>}
+
       {!isCorrectCode.current && (
         <Text style={OPTStyles.erroerText}>Incorred code</Text>
       )}
@@ -209,7 +163,18 @@ const VerificationCodeForm: React.FC<seterProps> = ({
           <TouchableOpacity
             style={styles.resendButton}
             touchSoundDisabled
-            onPress={resendOtp}>
+            onPress={() =>
+              resendOtp(
+                unregisteredUser,
+                setUnregisteredUser,
+                resendCode,
+                setOtpValues,
+                setTimer,
+                isCorrectCode,
+                setISResend,
+                navigator,
+              )
+            }>
             <Text style={styles.resendText}>Resend code</Text>
           </TouchableOpacity>
         ) : (

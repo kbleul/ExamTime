@@ -1,13 +1,49 @@
 import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
 import {checkIsOnline} from '../../../../../utils/Functions/Helper';
-import {SignupDataType, userType} from '../../../../../types';
+import {
+  CreatePassworDataType,
+  OTPDataType,
+  SignupDataType,
+  regionItemsType,
+  userType,
+} from '../../../../../types';
 import {get_from_localStorage} from '../../../../../utils/Functions/Get';
 import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[1];
+type VerifyCodeMutationFnMutationFn = ReturnType<typeof useLoginMutation>[2];
+type ResendCodeMutationFn = ReturnType<typeof useLoginMutation>[3];
+type CreatePasswordMutationFn = ReturnType<typeof useLoginMutation>[4];
+type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
 
+export const fetchRegions = async (
+  getRegions: GetRegionsMutationFn,
+  setRegionsListItems: React.Dispatch<
+    React.SetStateAction<regionItemsType[] | []>
+  >,
+  navigator: NavigationProp<ReactNavigation.RootParamList>,
+) => {
+  try {
+    checkIsOnline(navigator);
+
+    const response = await getRegions().unwrap();
+    console.log('get,', response);
+    const tempRegionsList: regionItemsType[] = [];
+
+    response.map((region: {region: string}) => {
+      tempRegionsList.push({
+        label: region.region.toUpperCase(),
+        value: region.region.toUpperCase(),
+      });
+    });
+
+    setRegionsListItems([...tempRegionsList]);
+  } catch (err) {
+    console.log(err);
+  }
+};
 export const handleCreateUser = async (
   data: SignupDataType,
   createUser: CreateUserMutationFn,
@@ -40,12 +76,9 @@ export const handleCreateUser = async (
       console.log(';;', response);
 
       setUnregisteredUser(response.user);
-      AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
+      //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
       setCurrentStep(prev => ++prev);
-
-      //   setCurrentStep(prev => ++prev);
-      //   setUnregisteredUser(response.user);
     } catch (error) {
       console.log('pppp', error);
       if (
@@ -73,43 +106,39 @@ const validate_Gender_and_Region = (
   return true;
 };
 
+//verify otp
+
+const checkCode = (code: string, unregisteredUser: userType | null) => {
+  console.log(code, unregisteredUser?.verificationCode);
+  if (unregisteredUser?.verificationCode?.toString() === code) {
+    console.log('yesss');
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const handleVerfiyCode = async (
-  data: SignupDataType,
-  createUser: CreateUserMutationFn,
+  data: OTPDataType,
+  isCorrectCode: React.MutableRefObject<boolean>,
+  verifyCode: VerifyCodeMutationFnMutationFn,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
-  gender: string | null,
-  setGenderError: React.Dispatch<React.SetStateAction<string | null>>,
-  region: string | null,
-  setRegionError: React.Dispatch<React.SetStateAction<string | null>>,
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>,
+  unregisteredUser: userType | null,
   setUnregisteredUser: React.Dispatch<React.SetStateAction<userType | null>>,
 ) => {
-  if (
-    validate_Gender_and_Region(gender, setGenderError, region, setRegionError)
-  ) {
+  if (checkCode(data.code, unregisteredUser)) {
+    isCorrectCode.current = true;
+
     checkIsOnline(navigator);
 
-    const userGrade = await get_from_localStorage(
-      LocalStorageDataKeys.userGrade,
-    );
-
     try {
-      const response = await createUser({
+      const response = await verifyCode({
         ...data,
-        phoneNumber: '+251' + data.phoneNumber,
-        region: region?.toLowerCase(),
-        gender: gender?.toUpperCase(),
-        grade: userGrade?.value,
       }).unwrap();
-
-      console.log(';;', response);
 
       setUnregisteredUser(response.user);
       setCurrentStep(prev => ++prev);
-
-      //   AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
-      //   setCurrentStep(prev => ++prev);
-      //   setUnregisteredUser(response.user);
     } catch (error) {
       console.log('pppp', error);
       if (
@@ -119,5 +148,69 @@ export const handleVerfiyCode = async (
         navigator.navigate('network-error');
       }
     }
+  } else {
+    if (isCorrectCode.current) {
+      isCorrectCode.current = false;
+    }
+  }
+};
+
+export const resendOtp = async (
+  unregisteredUser: userType | null,
+  setUnregisteredUser: React.Dispatch<React.SetStateAction<userType | null>>,
+  resendCode: ResendCodeMutationFn,
+  setOtpValues: React.Dispatch<React.SetStateAction<string[]>>,
+  setTimer: React.Dispatch<React.SetStateAction<number>>,
+  isCorrectCode: React.MutableRefObject<boolean>,
+  setISResend: React.Dispatch<React.SetStateAction<boolean>>,
+  navigator: NavigationProp<ReactNavigation.RootParamList>,
+) => {
+  try {
+    checkIsOnline(navigator);
+
+    const response = await resendCode({
+      userId: unregisteredUser?.id,
+    }).unwrap();
+
+    if (unregisteredUser) {
+      const newUser = {
+        ...unregisteredUser,
+        verificationCode: response?.user?.verificationCode.toString(),
+      };
+      setUnregisteredUser({...newUser});
+    } else {
+      setUnregisteredUser({...response.user});
+    }
+
+    setOtpValues(['', '', '', '', '']);
+    setTimer(60);
+    isCorrectCode.current = true;
+    setISResend(prev => !prev);
+
+    console.log('OTP:', response);
+  } catch (error: any) {
+    console.error('Error submitting form///:', error);
+  }
+};
+
+export const createNewPassword = async (
+  data: CreatePassworDataType,
+  createPassword: CreatePasswordMutationFn,
+  navigator: NavigationProp<ReactNavigation.RootParamList>,
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>,
+) => {
+  try {
+    checkIsOnline(navigator);
+
+    await createPassword({
+      ...data,
+    }).unwrap();
+
+    navigator.navigate('signup-success');
+    setCurrentStep(1);
+
+    AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
+  } catch (error) {
+    console.error('Error submitting form:', error);
   }
 };

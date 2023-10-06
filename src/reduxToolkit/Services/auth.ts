@@ -1,10 +1,11 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {
-  CreatePasswordataType,
+  CreatePassworDataType,
   LoginDataType,
   OTPDataType,
   ResendCodeDataType,
   SignupDataType,
+  regionItemsType,
   userType,
 } from '../../types';
 import Config from 'react-native-config';
@@ -30,15 +31,11 @@ export const api = createApi({
         };
       },
     }),
-    verifyCode: build.mutation<
-      {user: userType; accessToken: string},
-      OTPDataType
-    >({
+    verifyCode: build.mutation<{user: userType}, OTPDataType>({
       query: credentials => {
-        console.log('credentcreateials', credentials); // Add this line to log the credentials
         return {
           url: `user/verify/${credentials.userId}`,
-          method: 'POST',
+          method: 'PUT',
           body: {
             verificationCode: credentials.code,
             forForgotPassword: credentials.forgotPassword,
@@ -46,10 +43,7 @@ export const api = createApi({
         };
       },
     }),
-    resendCode: build.mutation<
-      {user: userType; accessToken: string},
-      ResendCodeDataType
-    >({
+    resendCode: build.mutation<{user: userType}, ResendCodeDataType>({
       query: credentials => {
         console.log('credentcreateials', credentials); // Add this line to log the credentials
         return {
@@ -58,25 +52,21 @@ export const api = createApi({
         };
       },
     }),
-    createPassword: build.mutation<
-      {user: userType; accessToken: string},
-      CreatePasswordataType
-    >({
+    createPassword: build.mutation<{user: userType}, CreatePassworDataType>({
       query: credentials => {
-        console.log('credentcreateials', credentials); // Add this line to log the credentials
+        console.log('credentcreateials---', credentials); // Add this line to log the credentials
         return {
           url: `user/createpassword/${credentials.userId}`,
           method: 'PUT',
           body: {
-            verificationCode: credentials.password,
-            forForgotPassword: credentials.forgotPassword,
+            password: credentials.password,
+            forForgotPassword: credentials.forForgotPassword,
           },
         };
       },
     }),
-    getRegions: build.mutation<{user: userType; accessToken: string}, {}>({
-      query: credentials => {
-        console.log('credentcreateials', credentials); // Add this line to log the credentials
+    getRegions: build.mutation<{regions: regionItemsType[]}, {}>({
+      query: () => {
         return {
           url: 'region/region',
           method: 'GET',
@@ -90,5 +80,7 @@ export const {
   useLoginMutation,
   useCreateUserMutation,
   useVerifyCodeMutation,
+  useResendCodeMutation,
   useCreatePasswordMutation,
+  useGetRegionsMutation,
 } = api;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -12,15 +12,16 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import {formStyles} from '../../Styles';
 import {useNavigation} from '@react-navigation/native';
-import Config from 'react-native-config';
-import {SignupDataType, seterProps} from '../../../../../types';
-import {handleCreateUser} from '../Logic';
-import {useCreateUserMutation} from '../../../../../reduxToolkit/Services/auth';
-
-type regionItemsType = {
-  label: string;
-  value: string;
-};
+import {
+  SignupDataType,
+  regionItemsType,
+  seterProps,
+} from '../../../../../types';
+import {fetchRegions, handleCreateUser} from '../Logic';
+import {
+  useCreateUserMutation,
+  useGetRegionsMutation,
+} from '../../../../../reduxToolkit/Services/auth';
 
 const schema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
@@ -69,7 +70,7 @@ const SignupForm: React.FC<seterProps> = ({
   const [regionsListItems, setRegionsListItems] = useState<
     regionItemsType[] | []
   >([]);
-  const [isLoadingRegions, setIsLoadingRegions] = useState(true);
+  // const [isLoadingRegions, setIsLoadingRegions] = useState(true);
 
   const [gender, setGender] = useState<string | null>(null);
   const [region, setRegion] = useState<string | null>(null);
@@ -80,65 +81,14 @@ const SignupForm: React.FC<seterProps> = ({
   const [isFocusRegion, setIsFocusRegion] = useState(false);
 
   const [createUser, {isLoading, isError, error}] = useCreateUserMutation();
-
-  const fetchRegions = useCallback(async () => {
-    try {
-      const url = `${Config.API_URL}region/region`; // Replace with your API endpoint
-      const timeoutMs = 10000; // Set your desired timeout in milliseconds (e.g., 10 seconds)
-
-      const controller = new AbortController();
-      const signal = controller.signal;
-
-      const timeout = setTimeout(() => {
-        controller.abort(); // Abort the fetch request on timeout
-      }, timeoutMs);
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        signal, // Pass the abort signal to the fetch request
-      });
-
-      clearTimeout(timeout); // Clear the timeout since the request completed
-
-      if (!response.ok) {
-        console.log('HTTP Error:', response.status, response.statusText);
-        throw new Error('HTTP Error'); // You can throw a custom error if needed
-      }
-
-      const responseData = await response.json();
-      console.log('Regions fetched successfully:', responseData);
-
-      const tempRegionsList: regionItemsType[] = [];
-
-      responseData.map((region: {region: string}) => {
-        tempRegionsList.push({
-          label: region.region.toUpperCase(),
-          value: region.region.toUpperCase(),
-        });
-      });
-
-      setRegionsListItems([...tempRegionsList]);
-      setIsLoadingRegions(false);
-    } catch (err: any) {
-      if (
-        err instanceof TypeError &&
-        (err.message === 'Network request failed' ||
-          err.message === 'AbortError')
-      ) {
-        navigator.navigate('network-error');
-        setRefetchRegions(prev => !prev);
-      }
-
-      console.log(err);
-    }
-  }, []);
+  const [
+    getRegions,
+    {isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion},
+  ] = useGetRegionsMutation();
 
   useEffect(() => {
-    fetchRegions();
-  }, [refetchRegions, fetchRegions]);
+    fetchRegions(getRegions, setRegionsListItems, navigator);
+  }, [getRegions, refetchRegions, fetchRegions, navigator]);
 
   return (
     <View style={formStyles.container}>
@@ -301,6 +251,7 @@ const SignupForm: React.FC<seterProps> = ({
       </View>
 
       {error && <Text>{error?.data?.message}</Text>}
+      {errorRegion && <Text>{errorRegion?.data?.message}</Text>}
 
       <View style={formStyles.submitBtnContainer}>
         <TouchableOpacity
