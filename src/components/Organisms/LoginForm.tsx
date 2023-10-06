@@ -14,14 +14,14 @@ import * as yup from 'yup';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-import {formStyles} from '../../../Signup/Styles';
 import {useNavigation} from '@react-navigation/native';
 
 import {useDispatch} from 'react-redux';
-import {useLoginMutation} from '../../../../../reduxToolkit/Services/auth';
-import {loginSuccess} from '../../../../../reduxToolkit/Features/auth/authSlice';
-import {handleLogin} from '../../Logic';
-import {FormData} from '../../Types';
+import {useLoginMutation} from '../../reduxToolkit/Services/auth';
+import {formStyles} from '../../screens/Auth/Signup/Styles';
+import {handleLogin} from '../../screens/Auth/Login/Logic';
+import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
+import {FormData} from '../../screens/Auth/Login/Types';
 
 const schema = yup.object().shape({
   phoneNumber: yup

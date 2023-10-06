@@ -7,7 +7,7 @@ import {
 import IconContainer from './IconContainer';
 import ShareApp from '../../../../../components/Organisms/ShareApp';
 import {useGlobalState} from '../../../../../context/auth';
-import LogoutAlertBox from '../../../../Auth/Login/components/Organisms/LogoutAlertBox';
+import LogoutAlertBox from '../../../../../components/Organisms/LogoutAlertBox';
 
 const MenuItems = () => {
   const {user} = useGlobalState();

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import {useGlobalState} from '../../../../../context/auth';
 import {useNavigation} from '@react-navigation/native';
+import {useGlobalState} from '../../context/auth';
 
 const LogoutAlertBox: React.FC<{
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;

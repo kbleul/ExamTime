@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {OPTStyles, formSubHeaderStyles} from '../../Styles';
-import {seterProps} from '../../../../../Types';
 import {StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {
   useResendCodeMutation,
   useVerifyCodeMutation,
-} from '../../../../../reduxToolkit/Services/auth';
-import {useNavigation} from '@react-navigation/native';
-import {handleVerfiyCode, resendOtp} from '../Logic';
+} from '../../reduxToolkit/Services/auth';
+import {seterProps} from '../../types';
+import {handleVerfiyCode, resendOtp} from '../../screens/Auth/Signup/Logic';
+import {OPTStyles, formSubHeaderStyles} from '../../screens/Auth/Signup/Styles';
 
 const VerificationCodeForm: React.FC<seterProps> = ({
   setCurrentStep,
@@ -67,7 +67,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
       sentOtp.current = optValue;
       handleVerfiyCode(
         {
-          userId: unregisteredUser?.id,
+          userId: unregisteredUser ? unregisteredUser?.id : '',
           code: optValue,
           forgotPassword: isReset ? true : false,
         },
@@ -165,7 +165,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
             touchSoundDisabled
             onPress={() =>
               resendOtp(
-                unregisteredUser,
+                unregisteredUser ? unregisteredUser : null,
                 setUnregisteredUser,
                 resendCode,
                 setOtpValues,

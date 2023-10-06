@@ -1,10 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import SocialOptions from '../components/Organisms/SocialOptions';
-import LoginForm from './components/Organisms/LoginForm';
-import AuthNavigatorOption from '../components/Organisms/AuthNavigatorOption';
-import LoginHeader from './components/Molecules/LoginHeader';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import LoginHeader from '../../../components/Molecules/LoginHeader';
+import LoginForm from '../../../components/Organisms/LoginForm';
+import SocialOptions from '../../../components/Organisms/SocialOptions';
+import AuthNavigatorOption from '../../../components/Organisms/AuthNavigatorOption';
 
 export default function Login() {
   const navigator = useNavigation();

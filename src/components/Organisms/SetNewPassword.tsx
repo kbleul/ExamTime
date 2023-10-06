@@ -6,14 +6,17 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {formStyles, formSubHeaderStyles} from '../../Styles';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
-import {CreatePasswordFormDataType} from '../../../../../types';
-import {createNewPassword} from '../Logic';
-import {useCreatePasswordMutation} from '../../../../../reduxToolkit/Services/auth';
+import {CreatePasswordFormDataType, userType} from '../../types';
+import {useCreatePasswordMutation} from '../../reduxToolkit/Services/auth';
+import {
+  formStyles,
+  formSubHeaderStyles,
+} from '../../screens/Auth/Signup/Styles';
+import {createNewPassword} from '../../screens/Auth/Signup/Logic';
 
 const schema = yup.object().shape({
   password: yup
@@ -104,7 +107,7 @@ const SetNewPassword: React.FC<{
           onPress={handleSubmit(data => {
             createNewPassword(
               {
-                userId: unregisteredUser.id,
+                userId: unregisteredUser ? unregisteredUser.id : '',
                 password: data.password,
                 forForgotPassword: isReset ? true : false,
               },

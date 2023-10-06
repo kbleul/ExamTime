@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import LoginHeader from '../components/Molecules/LoginHeader';
 import {useNavigation} from '@react-navigation/native';
-import ForgotPasswordForm from '../components/Organisms/ForgotPasswordForm';
-import VerificationCodeForm from '../../Signup/components/Organisms/OtpVerfication';
-import {userType} from '../../../../Types';
-import SetNewPassword from '../../Signup/components/Organisms/SetNewPassword';
+import LoginHeader from '../../../components/Molecules/LoginHeader';
+import ForgotPasswordForm from '../../../components/Organisms/ForgotPasswordForm';
+import {userType} from '../../../types';
+import VerificationCodeForm from '../../../components/Organisms/OtpVerfication';
+import SetNewPassword from '../../../components/Organisms/SetNewPassword';
 
 const ForgotPassword = () => {
   const navigator = useNavigation();
@@ -22,15 +22,15 @@ const ForgotPassword = () => {
       {stepCounter === 2 && (
         <VerificationCodeForm
           setCurrentStep={setStepCounter}
-          setUser={setUser}
-          user={user}
+          setUnregisteredUser={setUser}
+          unregisteredUser={user}
         />
       )}
 
       {stepCounter === 3 && (
         <SetNewPassword
           setCurrentStep={setStepCounter}
-          user={user}
+          unregisteredUser={user}
           isReset={true}
         />
       )}

@@ -1,16 +1,15 @@
 import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
-import {checkIsOnline} from '../../../../../utils/Functions/Helper';
 import {
-  CreatePassworDataType,
   OTPDataType,
   SignupDataType,
   regionItemsType,
   userType,
-} from '../../../../../types';
-import {get_from_localStorage} from '../../../../../utils/Functions/Get';
-import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
+} from '../../../../types';
+import {checkIsOnline} from '../../../../utils/Functions/Helper';
+import {LocalStorageDataKeys} from '../../../../utils/Data/data';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {get_from_localStorage} from '../../../../utils/Functions/Get';
 
 type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[1];
 type VerifyCodeMutationFnMutationFn = ReturnType<typeof useLoginMutation>[2];

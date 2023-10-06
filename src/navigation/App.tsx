@@ -10,14 +10,14 @@ import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
 import Login from '../screens/Auth/Login/Login';
 import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
-import SignupCompleted from '../screens/Auth/Signup/components/Organisms/SignupCompleted';
 
 import {get_from_localStorage} from '../utils/Functions/Get/index';
 import SplashScreen from '../screens/Shared/SplashScreen';
 import {LocalStorageDataKeys, trialStatus} from '../utils/Data/data';
 import {checkIsTrial} from '../screens/App/Onboarding/components/Logic';
-import ForgotPassword from '../screens/Auth/Login/Pages/ForgotPassword';
 import {StatusBar} from 'react-native';
+import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
+import SignupCompleted from '../components/Organisms/SignupCompleted';
 
 type getOnboardingReturnType = {
   status: boolean;

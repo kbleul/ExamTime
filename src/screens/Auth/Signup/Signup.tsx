@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import StepIndicator from './components/Molecules/StepIndicator';
 import {StyleSheet} from 'react-native';
-import SocialOptions from '../components/Organisms/SocialOptions';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
-import ContentDispatcher from './components/Helper/ContentDispatcher';
-import AuthNavigatorOption from '../components/Organisms/AuthNavigatorOption';
+import StepIndicator from '../../../components/Molecules/StepIndicator';
+import ContentDispatcher from './ContentDispatcher';
+import AuthNavigatorOption from '../../../components/Organisms/AuthNavigatorOption';
+import SocialOptions from '../../../components/Organisms/SocialOptions';
 
 export default function Signup() {
   const navigator = useNavigation();

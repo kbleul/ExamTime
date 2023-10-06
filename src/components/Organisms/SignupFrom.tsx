@@ -10,18 +10,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import {formStyles} from '../../Styles';
 import {useNavigation} from '@react-navigation/native';
-import {
-  SignupDataType,
-  regionItemsType,
-  seterProps,
-} from '../../../../../types';
-import {fetchRegions, handleCreateUser} from '../Logic';
+import {SignupDataType, seterProps} from '../../types';
 import {
   useCreateUserMutation,
   useGetRegionsMutation,
-} from '../../../../../reduxToolkit/Services/auth';
+} from '../../reduxToolkit/Services/auth';
+import {fetchRegions, handleCreateUser} from '../../screens/Auth/Signup/Logic';
+import {formStyles} from '../../screens/Auth/Signup/Styles';
 
 const schema = yup.object().shape({
   firstName: yup.string().required('First name is required'),

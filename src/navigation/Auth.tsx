@@ -3,8 +3,8 @@ import Login from '../screens/Auth/Signup/Signup';
 import Signup from '../screens/Auth/Login/Login';
 import {StackType} from './types';
 import NetworkError from '../screens/Shared/NetworkError';
-import SignupCompleted from '../screens/Auth/Signup/components/Organisms/SignupCompleted';
-import ForgotPassword from '../screens/Auth/Login/Pages/ForgotPassword';
+import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
+import SignupCompleted from '../components/Organisms/SignupCompleted';
 
 const AuthRoutes: React.FC<StackType> = ({Stack}) => {
   return (

@@ -2,8 +2,9 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import {formStyles} from '../../Styles';
 import {useNavigation} from '@react-navigation/native';
+import {formStyles} from '../../screens/Auth/Signup/Styles';
+
 const SignupCompleted = () => {
   const navigator = useNavigation();
 

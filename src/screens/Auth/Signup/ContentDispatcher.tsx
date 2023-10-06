@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import SignupFrom from '../Organisms/SignupFrom';
-import SetNewPassword from '../Organisms/SetNewPassword';
-import OtpVerfication from '../Organisms/OtpVerfication';
-import {userType} from '../../../../../types';
+import SetNewPassword from '../../../components/Organisms/SetNewPassword';
+import OtpVerfication from '../../../components/Organisms/OtpVerfication';
+import SignupFrom from '../../../components/Organisms/SignupFrom';
+import {userType} from '../../../types';
 
 const ContentDispatcher: React.FC<{
   currentStep: number;
