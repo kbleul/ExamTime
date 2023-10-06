@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -17,6 +18,7 @@ import {
   formSubHeaderStyles,
 } from '../../screens/Auth/Signup/Styles';
 import {createNewPassword} from '../../screens/Auth/Signup/Logic';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const schema = yup.object().shape({
   password: yup
@@ -40,6 +42,8 @@ const SetNewPassword: React.FC<{
   const navigator = useNavigation();
   const [createPassword, {isLoading, isError, error}] =
     useCreatePasswordMutation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     control,
@@ -62,11 +66,32 @@ const SetNewPassword: React.FC<{
           <Controller
             control={control}
             render={({field: {onChange}}) => (
-              <TextInput
-                style={formStyles.input}
-                onChangeText={onChange}
-                secureTextEntry
-              />
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[formStyles.input, styles.bigBox]}
+                  onChangeText={onChange}
+                  secureTextEntry={!showPassword}
+                />
+                {!showPassword ? (
+                  <TouchableOpacity
+                    style={styles.smallBox}
+                    touchSoundDisabled
+                    onPress={() => setShowPassword(true)}>
+                    <Ionicons name="eye-outline" size={28} color="#81afe6" />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.smallBox}
+                    touchSoundDisabled
+                    onPress={() => setShowPassword(false)}>
+                    <Ionicons
+                      name="eye-off-outline"
+                      size={28}
+                      color="#81afe6"
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
             )}
             name="password"
           />
@@ -82,11 +107,32 @@ const SetNewPassword: React.FC<{
           <Controller
             control={control}
             render={({field: {onChange}}) => (
-              <TextInput
-                style={formStyles.input}
-                onChangeText={onChange}
-                secureTextEntry
-              />
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[formStyles.input, styles.bigBox]}
+                  onChangeText={onChange}
+                  secureTextEntry={!showConfirmPassword}
+                />
+                {!showConfirmPassword ? (
+                  <TouchableOpacity
+                    style={styles.smallBox}
+                    touchSoundDisabled
+                    onPress={() => setShowConfirmPassword(true)}>
+                    <Ionicons name="eye-outline" size={28} color="#81afe6" />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.smallBox}
+                    touchSoundDisabled
+                    onPress={() => setShowConfirmPassword(false)}>
+                    <Ionicons
+                      name="eye-off-outline"
+                      size={28}
+                      color="#81afe6"
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
             )}
             name="confirmPassword"
           />
@@ -127,5 +173,38 @@ const SetNewPassword: React.FC<{
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderColor: '#81afe6',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingVertical: 4,
+  },
+  bigBox: {
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 18,
+    fontFamily: 'Montserrat-Regular',
+    color: '#4D4D4D',
+    paddingHorizontal: 20,
+    letterSpacing: 2,
+    borderRadius: 0,
+    borderWidth: 0,
+    borderRightWidth: 1,
+  },
+  smallBox: {
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#b3b3b3',
+  },
+});
 
 export default SetNewPassword;

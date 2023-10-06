@@ -105,8 +105,8 @@ const ViewSubjectDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
     paddingVertical: 30,
+    backgroundColor: '#F9FCFF',
   },
   prompOn: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',

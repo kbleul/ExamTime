@@ -1,18 +1,15 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import img from '../../../../../assets/Images/onboarding/3.png';
+import img from '../../../../assets/Images/onboarding/3.png';
 
 import {PagesCounterType} from './types';
-import {
-  DummyDataScience,
-  DummyDataSocial,
-} from '../../../../../utils/Data/data';
+import {DummyDataScience, DummyDataSocial} from '../../../../utils/Data/data';
 import {ScrollView} from 'react-native-gesture-handler';
-import {onboarding_save_navToHome} from '../../Logic';
-import SubjectButton from '../../../../../components/Atoms/SubjectButtonsOnboarding';
-import GradeButton from '../../../../../components/Atoms/GradeButtonOnBoarding';
-import TopIndicator from '../../../../../components/Molecules/TopIndicator';
+import {onboarding_save_navToHome} from '../Logic';
+import SubjectButton from '../../../../components/Atoms/SubjectButtonsOnboarding';
+import GradeButton from '../../../../components/Atoms/GradeButtonOnBoarding';
+import TopIndicator from '../../../../components/Molecules/TopIndicator';
 
 const Grade12Catagories = ['Natural', 'Social'];
 
@@ -136,7 +133,7 @@ const style = StyleSheet.create({
     borderRadius: 80,
     width: '60%',
     alignSelf: 'center',
-    marginTop: '5%',
+    marginTop: '3%',
   },
   buttons: {
     width: '45%',
@@ -158,7 +155,7 @@ const style = StyleSheet.create({
   },
   imgContainer: {
     width: '100%',
-    height: '36%',
+    height: '25%',
     marginTop: '5%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -168,11 +165,11 @@ const style = StyleSheet.create({
     height: '100%',
   },
   titleContainer: {
-    marginTop: '7%',
+    marginTop: '3%',
   },
   title: {
     fontFamily: 'Montserrat-Bold',
-    fontSize: 28,
+    fontSize: 26,
     color: '#858585',
     textAlign: 'left',
     paddingHorizontal: 30,
@@ -183,7 +180,7 @@ const style = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexWrap: 'wrap',
-    marginTop: '10%',
+    marginTop: '7%',
     paddingHorizontal: 20,
   },
 });

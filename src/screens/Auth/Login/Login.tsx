@@ -29,7 +29,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F9FCFF',
     paddingTop: 30,
   },
   subContainer: {

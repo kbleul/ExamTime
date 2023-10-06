@@ -66,7 +66,7 @@ const style = StyleSheet.create({
     padding: 5,
     overflow: 'hidden',
     marginHorizontal: '1%',
-    backgroundColor: '#fff',
+    backgroundColor: '#F9FCFF',
     paddingVertical: 30,
   },
   mainScrollview: {

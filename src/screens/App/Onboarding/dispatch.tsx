@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 
-import PageOne from './components/Page/PageOne';
-import PageTwo from './components/Page/PageTwo';
-import PageThree from './components/Page/PageThree';
-import {PagesCounterType} from './components/Page/types';
+import PageOne from './Page/PageOne';
+import PageTwo from './Page/PageTwo';
+import PageThree from './Page/PageThree';
+import {PagesCounterType} from './Page/types';
 
 const Dispatch: React.FC<PagesCounterType> = ({
   pageCounter,

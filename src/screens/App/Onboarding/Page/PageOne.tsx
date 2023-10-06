@@ -8,13 +8,15 @@ import {
   ScrollView,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import img from '../../../../../assets/Images/onboarding/1.png';
+import img from '../../../../assets/Images/onboarding/1.png';
 import {PagesProps} from './types';
 
 const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
   return (
     <View style={style.container}>
-      <ScrollView contentContainerStyle={style.scrollContainer}>
+      <ScrollView
+        contentContainerStyle={style.scrollContainer}
+        showsVerticalScrollIndicator={false}>
         <View style={style.imgContainer}>
           <Image source={img} style={style.img} />
         </View>
@@ -49,7 +51,7 @@ const style = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    height: '105%',
+    height: '100%',
   },
   imgContainer: {
     width: '100%',
@@ -60,10 +62,10 @@ const style = StyleSheet.create({
   },
   img: {
     width: '100%',
-    height: '90%',
+    height: '100%',
   },
   contentContainer: {
-    marginTop: '10%',
+    marginTop: '5%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -71,7 +73,7 @@ const style = StyleSheet.create({
     fontSize: 24,
     color: 'black',
     fontFamily: 'Montserrat-Bold',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   contentText: {
     fontSize: 16,
@@ -89,7 +91,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: '20%',
+    marginTop: '15%',
   },
   buttonContainer_second: {
     width: 60,

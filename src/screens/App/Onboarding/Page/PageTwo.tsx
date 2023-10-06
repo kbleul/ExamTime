@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import {PagesCounterType, PagesGradesProps} from './types';
-import img from '../../../../../assets/Images/onboarding/2.png';
-import {set_to_localStorage} from '../../../../../utils/Functions/Set';
-import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
-import GradeButton from '../../../../../components/Atoms/GradeButtonOnBoarding';
-import TopIndicator from '../../../../../components/Molecules/TopIndicator';
+import img from '../../../../assets/Images/onboarding/2.png';
+import {set_to_localStorage} from '../../../../utils/Functions/Set';
+import {LocalStorageDataKeys} from '../../../../utils/Data/data';
+import GradeButton from '../../../../components/Atoms/GradeButtonOnBoarding';
+import TopIndicator from '../../../../components/Molecules/TopIndicator';
 
 const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   pageCounter,
@@ -19,7 +19,9 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   };
   return (
     <View style={style.container}>
-      <ScrollView contentContainerStyle={style.scrollContainer}>
+      <ScrollView
+        contentContainerStyle={style.scrollContainer}
+        showsVerticalScrollIndicator={false}>
         <TopIndicator
           setPageCounter={setPageCounter}
           pageCounter={pageCounter}
@@ -58,7 +60,7 @@ const style = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    height: '105%',
+    height: '100%',
   },
   imgContainer: {
     width: '100%',

@@ -26,6 +26,7 @@ const style = StyleSheet.create({
     flex: 1,
     paddingVertical: 30,
     paddingHorizontal: 5,
+    backgroundColor: '#F9FCFF',
   },
 });
 

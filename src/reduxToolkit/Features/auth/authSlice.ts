@@ -1,5 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {userType} from '../../../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LocalStorageDataKeys} from '../../../utils/Data/data';
 interface AuthState {
   isChecked: boolean;
   user: userType | null;
@@ -28,6 +30,9 @@ const authSlice = createSlice({
       state.isChecked = false;
       state.user = null;
       state.token = null;
+
+      AsyncStorage.removeItem(LocalStorageDataKeys.userData);
+      AsyncStorage.removeItem(LocalStorageDataKeys.token);
     },
   },
 });
