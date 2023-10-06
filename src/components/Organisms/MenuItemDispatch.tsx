@@ -4,10 +4,12 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {ProfileMenuItems, ProfileMenuItemsAuth} from '../../utils/Data/data';
-import {useGlobalState} from '../../context/auth';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 const MenuItemDispatch: React.FC<{itemName: string}> = ({itemName}) => {
-  const {user} = useGlobalState();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   switch (itemName) {
     case user ? ProfileMenuItemsAuth.Profile.name : 'Profile':
       return <SimpleLineIcons name="user" size={18} color="white" />;

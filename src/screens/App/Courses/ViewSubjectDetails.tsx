@@ -9,17 +9,19 @@ import {
 } from 'react-native';
 import img from '../../../assets/Images/courses/4.png';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {useGlobalState} from '../../../context/auth';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import ProgressBar from '../../../components/Molecules/ProgressBar';
 import UnitsAccordion from '../../../components/Molecules/UnitsAccordion';
 import AuthPrompt from '../../../components/Organisms/AuthPrompt';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
 
 const Grades = ['Grade 5', 'Grade 6'];
 
 const ViewSubjectDetails = () => {
-  const {user} = useGlobalState();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const [selectedGrade, setSelectedGrade] = useState(Grades[0]);
   const [showAuthPromp, setShowAuthPromp] = useState(false);
 

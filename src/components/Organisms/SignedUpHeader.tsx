@@ -3,11 +3,12 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {HeaderStyle} from '../../styles/Theme/HeaderBox';
-import {useGlobalState} from '../../context/auth';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 const SignedUpHeader: React.FC<{type: string}> = ({type}) => {
-  const {user} = useGlobalState();
-
+  const user = useSelector((state: RootState) => state.auth.user);
+  console.log('userrrr', user);
   return (
     <View style={[HeaderStyle.container, styles.container]}>
       <View style={HeaderStyle.subContainer}>

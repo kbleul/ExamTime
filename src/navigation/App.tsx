@@ -9,7 +9,10 @@ import Login from '../screens/Auth/Login/Login';
 import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
 
-import {get_from_localStorage} from '../utils/Functions/Get/index';
+import {
+  getObject_from_localStorage,
+  get_from_localStorage,
+} from '../utils/Functions/Get/index';
 import SplashScreen from '../screens/Shared/SplashScreen';
 import {LocalStorageDataKeys, trialStatus} from '../utils/Data/data';
 import {checkIsTrial} from '../screens/App/Onboarding/Logic';
@@ -18,12 +21,15 @@ import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
 import ViewSubjectDetails from '../screens/App/Courses/ViewSubjectDetails';
 import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
+import {useDispatch} from 'react-redux';
+import {loginSuccess} from '../reduxToolkit/Features/auth/authSlice';
 
 type getOnboardingReturnType = {
   status: boolean;
   value?: any;
 };
 const AppRoutes: React.FC<StackType> = ({Stack}) => {
+  const dispatch = useDispatch();
   const [showOnboarding, setShowOnboarding] =
     useState<getOnboardingReturnType | null>(null);
 
@@ -42,6 +48,22 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
         : setIsTrialOver(false);
 
       setShowOnboarding(onBoardingValue);
+
+      const savedUser = await getObject_from_localStorage(
+        LocalStorageDataKeys.userData,
+      );
+      const savedToken = await get_from_localStorage(
+        LocalStorageDataKeys.token,
+      );
+
+      savedUser.status &&
+        savedToken.status &&
+        dispatch(
+          loginSuccess({
+            user: {...savedUser.value},
+            token: savedToken.value ? savedToken.value : '',
+          }),
+        );
     };
 
     check_onBoarding_and_trialMode();

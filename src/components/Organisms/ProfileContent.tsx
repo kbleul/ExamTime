@@ -2,19 +2,23 @@ import React from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import badgeImg from '../../assets/Images/Profile/badge1.png';
 import MenuItems from '../Molecules/MenuItems';
-import {useGlobalState} from '../../context/auth';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 const ProfileContent = () => {
-  const {user} = useGlobalState();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.nameContainer}>
-          <Text style={styles.name}>
-            {user ? `${user.firstName} ${user.lastName}` : ''}
-          </Text>
-          <Image style={styles.badge} source={badgeImg} />
-        </View>
+        {user && (
+          <View style={styles.nameContainer}>
+            <Text style={styles.name}>
+              {user ? `${user.firstName} ${user.lastName}` : ''}
+            </Text>
+            <Image style={styles.badge} source={badgeImg} />
+          </View>
+        )}
 
         <MenuItems />
       </ScrollView>

@@ -2,17 +2,19 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
-import {useGlobalState} from '../../context/auth';
+import {logoutSuccess} from '../../reduxToolkit/Features/auth/authSlice';
+import {useDispatch} from 'react-redux';
 
 const LogoutAlertBox: React.FC<{
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({setShowLogoutDialog}) => {
+  const dispatch = useDispatch();
+
   const navigator = useNavigation();
-  const {logout} = useGlobalState();
   const [removeDtata, setRemoveData] = useState(false);
 
   const handleLogout = () => {
-    logout();
+    dispatch(logoutSuccess());
     navigator.navigate('Home');
   };
   return (

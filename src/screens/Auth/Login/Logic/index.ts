@@ -4,6 +4,11 @@ import {checkIsOnline} from '../../../../utils/Functions/Helper';
 import {FormData} from '../Types';
 import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
+import {
+  setObject_to_localStorage,
+  set_to_localStorage,
+} from '../../../../utils/Functions/Set';
+import {LocalStorageDataKeys} from '../../../../utils/Data/data';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 
@@ -35,6 +40,9 @@ export const handleLogin = async (
         token: response.accessToken,
       }),
     );
+
+    setObject_to_localStorage(LocalStorageDataKeys.userData, response.user);
+    set_to_localStorage(LocalStorageDataKeys.token, response.accessToken);
 
     navigator.navigate('Home');
   } catch (error) {

@@ -2,12 +2,16 @@ import React, {useState} from 'react';
 import {ScrollView, StyleSheet, Text, TextInput} from 'react-native';
 import {View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 const ProfileEdit = () => {
-  const [name, setName] = useState('Selam Kebede');
-  const [phone, setPhone] = useState('+251987654321');
-  const [grade, setGrade] = useState('Grade 6');
-  const [city, setCity] = useState('Addis Ababa');
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const [name, setName] = useState(`${user.firstName} ${user.lastName}`);
+  const [phone, setPhone] = useState(user?.phoneNumber);
+  const [grade, setGrade] = useState(user.grade?.grade);
+  const [city, setCity] = useState(user?.region.region);
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -18,15 +22,6 @@ const ProfileEdit = () => {
         <TouchableOpacity style={styles.doneContainer}>
           <Text style={styles.doneText}>Done</Text>
         </TouchableOpacity>
-
-        {/* <View style={styles.topFormContainer}>
-          <Text style={styles.title}>My profile</Text>
-
-          <Text style={styles.inputContiner}>Selam Kebede</Text>
-          <Text style={styles.inputContiner}>+251987654321</Text>
-          <Text style={styles.inputContiner}>Grade 6</Text>
-          <Text style={styles.inputContiner}>Addis Ababa</Text>
-        </View> */}
 
         <View style={styles.topFormContainer}>
           <Text style={styles.title}>My profile</Text>
