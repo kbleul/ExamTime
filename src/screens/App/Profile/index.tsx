@@ -1,8 +1,8 @@
 import React from 'react';
 import {ImageBackground, Text} from 'react-native';
 import {StyleSheet, View} from 'react-native';
-import ProfileContent from './components/Organisms/ProfileContent';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
+import ProfileContent from '../../../components/Organisms/ProfileContent';
 
 const Index = () => {
   return (

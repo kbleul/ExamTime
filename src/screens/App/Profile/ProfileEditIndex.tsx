@@ -3,10 +3,10 @@ import ShareApp from '../../../components/Organisms/ShareApp';
 import {ImageBackground, Text} from 'react-native';
 import {StyleSheet, View} from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-import ProfileEdit from './components/Organisms/ProfileEdit';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
+import ProfileEdit from '../../../components/Organisms/ProfileEdit';
 
 const ProfileEditIndex = () => {
   const navigator = useNavigation();

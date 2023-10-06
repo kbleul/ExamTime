@@ -15,7 +15,6 @@ const GradeButton: React.FC<GradeButtonProps> = ({
   index,
   setSelected,
   onPress,
-  isActive,
 }) => {
   return (
     <TouchableOpacity

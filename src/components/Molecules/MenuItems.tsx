@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  ProfileMenuItems,
-  ProfileMenuItemsAuth,
-} from '../../../../../utils/Data/data';
 import IconContainer from './IconContainer';
-import ShareApp from '../../../../../components/Organisms/ShareApp';
-import {useGlobalState} from '../../../../../context/auth';
-import LogoutAlertBox from '../../../../../components/Organisms/LogoutAlertBox';
+import LogoutAlertBox from '../Organisms/LogoutAlertBox';
+import ShareApp from '../Organisms/ShareApp';
+import {ProfileMenuItems, ProfileMenuItemsAuth} from '../../utils/Data/data';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 const MenuItems = () => {
-  const {user} = useGlobalState();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   return (
     <View style={styles.container}>

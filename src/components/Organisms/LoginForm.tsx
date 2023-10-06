@@ -62,7 +62,6 @@ const LoginForm = () => {
   });
 
   const navigator = useNavigation();
-  // const {login} = useGlobalState();
   const [showPassword, setShowPassword] = useState(true);
 
   const dispatch = useDispatch();
@@ -146,7 +145,7 @@ const LoginForm = () => {
         </TouchableOpacity>
       </View>
 
-      {error && <Text>{error?.data?.message}</Text>}
+      {error && <Text style={formStyles.error}>{error?.data?.message}</Text>}
       <TouchableOpacity touchSoundDisabled style={styles.submitContainer}>
         {isLoading ? (
           <ActivityIndicator color={'#FFF'} />

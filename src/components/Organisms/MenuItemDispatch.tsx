@@ -3,11 +3,8 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {
-  ProfileMenuItems,
-  ProfileMenuItemsAuth,
-} from '../../../../../utils/Data/data';
-import {useGlobalState} from '../../../../../context/auth';
+import {ProfileMenuItems, ProfileMenuItemsAuth} from '../../utils/Data/data';
+import {useGlobalState} from '../../context/auth';
 
 const MenuItemDispatch: React.FC<{itemName: string}> = ({itemName}) => {
   const {user} = useGlobalState();

@@ -1,10 +1,8 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {PagesCounterType} from '../Page/types';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
-import {setObject_to_localStorage} from '../../../../../utils/Functions/Set';
-import {onboarding_save_navToHome} from '../Logic';
+import {onboarding_save_navToHome} from '../../screens/App/Onboarding/Logic';
 const TopIndicator: React.FC<PagesCounterType> = ({
   pageCounter,
   setPageCounter,

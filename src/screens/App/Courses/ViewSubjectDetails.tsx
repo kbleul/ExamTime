@@ -7,15 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import img from '../../../../../assets/Images/courses/4.png';
+import img from '../../../assets/Images/courses/4.png';
 import Octicons from 'react-native-vector-icons/Octicons';
-
-import BackWithItem from '../../../../../components/Organisms/BackWithItem';
-import MainBottomNav from '../../../../../components/Organisms/MainBottomNav';
-import ProgressBar from '../Molecules/ProgressBar';
-import UnitsAccordion from '../Molecules/UnitsAccordion';
-import AuthPrompt from '../../../../../components/Organisms/AuthPrompt';
-import {useGlobalState} from '../../../../../context/auth';
+import {useGlobalState} from '../../../context/auth';
+import BackWithItem from '../../../components/Organisms/BackWithItem';
+import ProgressBar from '../../../components/Molecules/ProgressBar';
+import UnitsAccordion from '../../../components/Molecules/UnitsAccordion';
+import AuthPrompt from '../../../components/Organisms/AuthPrompt';
+import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 
 const Grades = ['Grade 5', 'Grade 6'];
 

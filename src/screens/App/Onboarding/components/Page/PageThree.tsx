@@ -2,16 +2,17 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import img from '../../../../../assets/Images/onboarding/3.png';
-import SubjectButton from '../Atoms/SubjectButtons';
-import GradeButton from '../Atoms/GradeButton';
-import TopIndicator from '../Molecules/TopIndicator';
+
 import {PagesCounterType} from './types';
 import {
   DummyDataScience,
   DummyDataSocial,
 } from '../../../../../utils/Data/data';
 import {ScrollView} from 'react-native-gesture-handler';
-import {onboarding_save_navToHome} from '../Logic';
+import {onboarding_save_navToHome} from '../../Logic';
+import SubjectButton from '../../../../../components/Atoms/SubjectButtonsOnboarding';
+import GradeButton from '../../../../../components/Atoms/GradeButtonOnBoarding';
+import TopIndicator from '../../../../../components/Molecules/TopIndicator';
 
 const Grade12Catagories = ['Natural', 'Social'];
 

@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {View, StyleSheet} from 'react-native';
 import {CourseCatagories} from '../../../utils/Data/data';
-import Study from './components/Templates/Study';
-import Challenges from './components/Templates/Challenges';
-import HeaderSection from './components/Molecules/HeaderSection';
+import HeaderSection from '../../../components/Molecules/HeaderSection';
+import Study from '../../../components/Templates/Study';
+import Challenges from '../../../components/Templates/Challenges';
 
 const Index = () => {
   const [selectedCatagory, setSelectedCatagory] = useState(CourseCatagories[0]);

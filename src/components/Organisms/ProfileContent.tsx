@@ -1,8 +1,8 @@
 import React from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import badgeImg from '../../../../../assets/Images/Profile/badge1.png';
+import badgeImg from '../../assets/Images/Profile/badge1.png';
 import MenuItems from '../Molecules/MenuItems';
-import {useGlobalState} from '../../../../../context/auth';
+import {useGlobalState} from '../../context/auth';
 
 const ProfileContent = () => {
   const {user} = useGlobalState();

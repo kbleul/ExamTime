@@ -1,65 +1,59 @@
 import React from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-import GradeButton from './components/Atoms/GradeBtn';
 import {DummyDataScience} from '../../../utils/Data/data';
-import SubjectsBox from './components/Molecules/subjectsBox';
 import TrialHeader from '../../../components/Organisms/TrialHeader';
 import AuthPrompt from '../../../components/Organisms/AuthPrompt';
 import SignedUpHeader from '../../../components/Organisms/SignedUpHeader';
-import {useGlobalState} from '../../../context/auth';
+import SubjectsBox from '../../../components/Molecules/subjectsBox';
+import GradeButton from '../../../components/Atoms/GradeBtn';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
 
 const Index = () => {
-  const {user, isLoading} = useGlobalState();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <>
-      {isLoading && (
-        <View style={style.container}>
-          <ActivityIndicator size={30} color="black" />
-        </View>
-      )}
+      <View style={style.container}>
+        {user ? (
+          <SignedUpHeader type="Dashboard" />
+        ) : (
+          <TrialHeader type="Dashboard" />
+        )}
+        {!user && <AuthPrompt />}
 
-      {!isLoading && (
-        <View style={style.container}>
-          {user ? (
-            <SignedUpHeader type="Dashboard" />
-          ) : (
-            <TrialHeader type="Dashboard" />
-          )}
-          {!user && <AuthPrompt />}
-
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={style.gradesBtnContainer}>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={style.scrollViewContentContainer}>
-                {DummyDataScience.map((item, index) => (
-                  <GradeButton
-                    key={index + 'index'}
-                    text={item.subjName}
-                    index={index}
-                    onPress={() => {}}
-                    isActive
-                  />
-                ))}
-              </ScrollView>
-            </View>
-
-            <View style={style.subjectsBoxContainer}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={style.gradesBtnContainer}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={style.scrollViewContentContainer}>
               {DummyDataScience.map((item, index) => (
-                <SubjectsBox
-                  key={item.subjName + '--index'}
-                  name={item.subjName}
-                  index={++index}
+                <GradeButton
+                  key={index + 'index'}
+                  text={item.subjName}
+                  index={index}
+                  onPress={() => {}}
+                  isActive
                 />
               ))}
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
 
-          <MainBottomNav />
-        </View>
-      )}
+          <View style={style.subjectsBoxContainer}>
+            {DummyDataScience.map((item, index) => (
+              <SubjectsBox
+                key={item.subjName + '--index'}
+                name={item.subjName}
+                index={++index}
+              />
+            ))}
+          </View>
+        </ScrollView>
+
+        <MainBottomNav />
+      </View>
     </>
   );
 };

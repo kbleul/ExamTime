@@ -1,6 +1,5 @@
 import React from 'react';
 import {View} from 'react-native';
-import UnitSItem from './UnitsItem';
 import UnitsItem from './UnitsItem';
 import {StyleSheet} from 'react-native';
 const tempData = [
@@ -143,10 +142,7 @@ type UnitsAccordionType = {
   setShowAuthPromp: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const UnitsAccordion: React.FC<UnitsAccordionType> = ({
-  showAuthPromp,
-  setShowAuthPromp,
-}) => {
+const UnitsAccordion: React.FC<UnitsAccordionType> = ({setShowAuthPromp}) => {
   return (
     <View style={styles.container}>
       {tempData.map(item => (

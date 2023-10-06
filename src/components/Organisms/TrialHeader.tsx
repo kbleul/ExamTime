@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {get_from_localStorage} from '../../utils/Functions/Get';
 import {LocalStorageDataKeys, allowedTrialDays} from '../../utils/Data/data';
-import {calculateDateDifference} from '../../screens/App/Onboarding/components/Logic';
+import {calculateDateDifference} from '../../screens/App/Onboarding/Logic';
 import {HeaderStyle} from '../../styles/Theme/HeaderBox';
 
 const TrialHeader: React.FC<{type: string}> = ({type}) => {

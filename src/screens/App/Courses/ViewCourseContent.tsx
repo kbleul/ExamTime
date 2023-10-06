@@ -1,13 +1,13 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
 import {View} from 'react-native';
-import BackWithItem from '../../../../../components/Organisms/BackWithItem';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Text} from 'react-native';
-import MainBottomNav from '../../../../../components/Organisms/MainBottomNav';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import BackWithItem from '../../../components/Organisms/BackWithItem';
+import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 
-const ViewCourseContent = ({route}) => {
+const ViewCourseContent = ({route}: any) => {
   const {isVideo} = route.params;
   return (
     <View style={styles.container}>

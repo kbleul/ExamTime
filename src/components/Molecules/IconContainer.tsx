@@ -1,9 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MenuItemDispatch from '../Organisms/MenuItemDispatch';
-import {ProfileMenuItemsAuth} from '../../../../../utils/Data/data';
 import {useNavigation} from '@react-navigation/native';
-import {useGlobalState} from '../../../../../context/auth';
+import {ProfileMenuItemsAuth} from '../../utils/Data/data';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 const IconContainer: React.FC<{
   item: string;
@@ -11,7 +12,7 @@ const IconContainer: React.FC<{
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({item, bgColor, setShowLogoutDialog}) => {
   const navigator = useNavigation();
-  const {user} = useGlobalState();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   return (
     <TouchableOpacity

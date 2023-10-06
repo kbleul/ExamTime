@@ -18,7 +18,7 @@ const StudySubjects: React.FC<{subject: string}> = ({subject}) => {
       <View style={styles.imgContainer}>
         <ImageBackground
           style={styles.imagebg}
-          source={require('../../../../../assets/Images/courses/1.png')} // Replace with the correct path to your image
+          source={require('../../assets/Images/courses/1.png')} // Replace with the correct path to your image
         >
           <Text>{''} </Text>
         </ImageBackground>

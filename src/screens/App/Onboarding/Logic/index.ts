@@ -1,10 +1,7 @@
 import {NavigationProp} from '@react-navigation/native';
-import {set_to_localStorage} from '../../../../../utils/Functions/Set';
+import {set_to_localStorage} from '../../../../utils/Functions/Set';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  LocalStorageDataKeys,
-  trialStatus,
-} from '../../../../../utils/Data/data';
+import {LocalStorageDataKeys, trialStatus} from '../../../../utils/Data/data';
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);

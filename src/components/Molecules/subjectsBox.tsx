@@ -29,11 +29,11 @@ const SubjectsBox: React.FC<{name: string; index: number}> = ({
       onPress={() => navigator.navigate('View-Course')}>
       <ImageBackground
         style={style.imgBackground}
-        source={require('../../../../../assets/Images/courses/1.png')} // Replace with the correct path to your image
+        source={require('../../assets/Images/courses/1.png')} // Replace with the correct path to your image
       >
         <ImageBackground
           style={style.imgBackground}
-          source={require('../../../../../assets/Images/home/1.png')} // Replace with the correct path to your image
+          source={require('../../assets/Images/home/1.png')} // Replace with the correct path to your image
         >
           <View>
             <Text style={[style.name, {color: tempColors[index]}]}>{name}</Text>

@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
-import GradeButton from '../Atoms/GradeButton';
-import {PagesCounterType, PagesGradesProps, PagesProps} from './types';
+import {PagesCounterType, PagesGradesProps} from './types';
 import img from '../../../../../assets/Images/onboarding/2.png';
-import TopIndicator from '../Molecules/TopIndicator';
 import {set_to_localStorage} from '../../../../../utils/Functions/Set';
 import {LocalStorageDataKeys} from '../../../../../utils/Data/data';
+import GradeButton from '../../../../../components/Atoms/GradeButtonOnBoarding';
+import TopIndicator from '../../../../../components/Molecules/TopIndicator';
 
 const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   pageCounter,

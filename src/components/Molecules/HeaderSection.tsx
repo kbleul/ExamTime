@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import TrialHeader from '../../../../../components/Organisms/TrialHeader';
-import {CourseCatagories} from '../../../../../utils/Data/data';
-import SignedUpHeader from '../../../../../components/Organisms/SignedUpHeader';
-import {useGlobalState} from '../../../../../context/auth';
+import SignedUpHeader from '../Organisms/SignedUpHeader';
+import TrialHeader from '../Organisms/TrialHeader';
+import {CourseCatagories} from '../../utils/Data/data';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 type HeaderSectionType = {
   selectedCatagory: string;
@@ -14,7 +15,8 @@ const HeaderSection: React.FC<HeaderSectionType> = ({
   selectedCatagory,
   setSelectedCatagory,
 }) => {
-  const {user} = useGlobalState();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <>
       {user ? (

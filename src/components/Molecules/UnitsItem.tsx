@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Index from '../..';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {useNavigation} from '@react-navigation/native';
-import {useGlobalState} from '../../../../../context/auth';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 type UnitsItemProps = {
   unitData: any;
@@ -15,7 +15,7 @@ type UnitsItemProps = {
 
 const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
   const navigation = useNavigation();
-  const {user} = useGlobalState();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const [showMore, setShowMore] = useState(false);
 
@@ -55,7 +55,7 @@ const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
             <TouchableOpacity
               onPress={() => handleViewCourse(unitCourse)}
               touchSoundDisabled
-              key={unitCourse.title + 'tail' + Index}
+              key={unitCourse.title + 'tail' + index}
               style={styles.moreContainer}>
               <View style={styles.leftSection}>
                 <Text
