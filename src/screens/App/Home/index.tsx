@@ -9,6 +9,7 @@ import SubjectsBox from '../../../components/Molecules/subjectsBox';
 import GradeButton from '../../../components/Atoms/GradeBtn';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
+import HeaderCarousel from '../../../components/Organisms/HeaderCarousel';
 
 const Index = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -22,9 +23,10 @@ const Index = () => {
           <TrialHeader type="Dashboard" />
         )}
         {!user && <AuthPrompt />}
+        <HeaderCarousel />
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={style.gradesBtnContainer}>
+          {/* <View style={style.gradesBtnContainer}>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -39,7 +41,7 @@ const Index = () => {
                 />
               ))}
             </ScrollView>
-          </View>
+          </View> */}
 
           <View style={style.subjectsBoxContainer}>
             {DummyDataScience.map((item, index) => (

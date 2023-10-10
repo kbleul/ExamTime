@@ -28,7 +28,6 @@ export const fetchRegions = async (
     checkIsOnline(navigator);
 
     const response = await getRegions().unwrap();
-    console.log('get,', response);
     const tempRegionsList: regionItemsType[] = [];
 
     response.map((region: {region: string}) => {
@@ -72,14 +71,11 @@ export const handleCreateUser = async (
         grade: userGrade?.value,
       }).unwrap();
 
-      console.log(';;', response);
-
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
       setCurrentStep(prev => ++prev);
     } catch (error) {
-      console.log('pppp', error);
       if (
         error instanceof TypeError &&
         error.message === 'Network request failed'
@@ -108,9 +104,7 @@ const validate_Gender_and_Region = (
 //verify otp
 
 const checkCode = (code: string, unregisteredUser: userType | null) => {
-  console.log(code, unregisteredUser?.verificationCode);
   if (unregisteredUser?.verificationCode?.toString() === code) {
-    console.log('yesss');
     return true;
   } else {
     return false;
@@ -139,7 +133,6 @@ export const handleVerfiyCode = async (
       setUnregisteredUser(response.user);
       setCurrentStep(prev => ++prev);
     } catch (error) {
-      console.log('pppp', error);
       if (
         error instanceof TypeError &&
         error.message === 'Network request failed'
@@ -185,8 +178,6 @@ export const resendOtp = async (
     setTimer(60);
     isCorrectCode.current = true;
     setISResend(prev => !prev);
-
-    console.log('OTP:', response);
   } catch (error: any) {
     console.error('Error submitting form///:', error);
   }

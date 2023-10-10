@@ -29,7 +29,6 @@ export const checkIsTrial = async () => {
       currentDate,
     );
     status = trialStatus.started;
-    console.log('object1');
   } else {
     // Compare trial start date with current date
     const daysDifference = calculateDateDifference(trialStartDate);
@@ -37,9 +36,7 @@ export const checkIsTrial = async () => {
     if (daysDifference >= 3) {
       // Trial period has ended
       status = trialStatus.expired;
-      console.log('object3');
     } else {
-      console.log('object5');
       // Within the trial period
       status = trialStatus.trial;
     }

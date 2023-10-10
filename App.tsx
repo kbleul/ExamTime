@@ -5,7 +5,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
 import Routes from './src/navigation/Index';
-import {AuthProvider} from './src/context/auth';
 import {Provider} from 'react-redux';
 import store from './src/reduxToolkit/Store';
 
@@ -19,11 +18,9 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <GluestackUIProvider config={config.theme}>
-        <AuthProvider>
-          <Provider store={store}>
-            <Routes Stack={Stack} />
-          </Provider>
-        </AuthProvider>
+        <Provider store={store}>
+          <Routes Stack={Stack} />
+        </Provider>
       </GluestackUIProvider>
     </NavigationContainer>
   );

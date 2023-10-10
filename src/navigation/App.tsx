@@ -102,7 +102,7 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
         )}
         <Stack.Screen
           name="Home"
-          component={isTrialOver ? Signup : Home}
+          component={isTrialOver ? Home : Home}
           options={{headerShown: false}}
         />
         <Stack.Screen

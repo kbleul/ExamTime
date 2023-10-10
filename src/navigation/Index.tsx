@@ -4,11 +4,7 @@ import AppRoutes from './App';
 import StackType from './StackType';
 
 const Routes = ({Stack}: StackType) => {
-  const user = true;
-
-  return (
-    <>{user ? <AppRoutes Stack={Stack} /> : <AuthRoutes Stack={Stack} />}</>
-  );
+  return <AppRoutes Stack={Stack} />;
 };
 
 export default Routes;

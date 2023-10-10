@@ -8,7 +8,6 @@ import {RootState} from '../../reduxToolkit/Store';
 
 const SignedUpHeader: React.FC<{type: string}> = ({type}) => {
   const user = useSelector((state: RootState) => state.auth.user);
-  console.log('userrrr', user);
   return (
     <View style={[HeaderStyle.container, styles.container]}>
       <View style={HeaderStyle.subContainer}>

@@ -76,3 +76,22 @@ export const LocalStorageDataKeys = {
   trialStartDate: 'trialStartDate',
   userGrade: 'userGrade',
 };
+
+export const CarouselData_guest = [
+  {
+    id: '001',
+    image: require('../../assets/Images/onboarding/1.png'),
+  },
+  {
+    id: '002',
+    image: require('../../assets/Images/onboarding/2.png'),
+  },
+  {
+    id: '003',
+    image: require('../../assets/Images/onboarding/3.png'),
+  },
+  {
+    id: '004',
+    image: require('../../assets/Images/onboarding/2.png'),
+  },
+];

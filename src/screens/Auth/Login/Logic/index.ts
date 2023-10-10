@@ -33,7 +33,6 @@ export const handleLogin = async (
       password: data.password,
     }).unwrap();
 
-    console.log(response.accessToken);
     dispatch(
       loginSuccess({
         user: response.user,
@@ -43,10 +42,7 @@ export const handleLogin = async (
 
     setObject_to_localStorage(LocalStorageDataKeys.userData, response.user);
     set_to_localStorage(LocalStorageDataKeys.token, response.accessToken);
-
-    navigator.navigate('Home');
   } catch (error) {
-    console.log(error?.error);
     if (
       error instanceof TypeError &&
       error.message === 'Network request failed'
