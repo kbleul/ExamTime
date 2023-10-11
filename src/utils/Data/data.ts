@@ -1,3 +1,5 @@
+import {Dimensions} from 'react-native';
+
 type ProfileMenuItems = {
   [key: string]: {
     name: string;
@@ -95,3 +97,6 @@ export const CarouselData_guest = [
     image: require('../../assets/Images/onboarding/2.png'),
   },
 ];
+
+export const screenWidth = Dimensions.get('window').width;
+export const screenHeight = Dimensions.get('window').height;

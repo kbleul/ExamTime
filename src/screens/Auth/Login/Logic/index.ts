@@ -42,6 +42,8 @@ export const handleLogin = async (
 
     setObject_to_localStorage(LocalStorageDataKeys.userData, response.user);
     set_to_localStorage(LocalStorageDataKeys.token, response.accessToken);
+
+    navigator.navigate('Home');
   } catch (error) {
     if (
       error instanceof TypeError &&
