@@ -1,12 +1,9 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {DummyDataScience, screenHeight} from '../../../utils/Data/data';
 import TrialHeader from '../../../components/Organisms/TrialHeader';
-import AuthPrompt from '../../../components/Organisms/AuthPrompt';
 import SignedUpHeader from '../../../components/Organisms/SignedUpHeader';
-import SubjectsBox from '../../../components/Molecules/subjectsBox';
-import GradeButton from '../../../components/Atoms/GradeBtn';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import HeaderCarousel from '../../../components/Organisms/HeaderCarousel';
@@ -16,8 +13,10 @@ const Index = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    <View style={style.container}>
-      <ScrollView contentContainerStyle={style.ScrollView}>
+    <SafeAreaView style={style.container}>
+      <ScrollView
+        contentContainerStyle={style.ScrollView}
+        showsVerticalScrollIndicator={false}>
         {user ? (
           <SignedUpHeader type="Dashboard" />
         ) : (
@@ -29,20 +28,18 @@ const Index = () => {
         <ChosenCourses />
       </ScrollView>
       <MainBottomNav />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const style = StyleSheet.create({
   container: {
     flex: screenHeight,
-    width: '98%',
+    width: '100%',
     padding: 5,
-    marginHorizontal: '1%',
-    backgroundColor: '#F9FCFF',
-    paddingVertical: 30,
-    paddingBottom: 40,
-    borderWidth: 4,
+    backgroundColor: '#fff',
+    paddingTop: 25,
+    paddingBottom: 70,
   },
   ScrollView: {
     height: screenHeight,

@@ -4,7 +4,7 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 export const styles = StyleSheet.create({
   container: {
     width: screenWidth - 20,
-    height: screenHeight / 6,
+    height: screenHeight / 5,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -46,20 +46,20 @@ export const frameOnestyles = StyleSheet.create({
 
 export const frameTwostyles = StyleSheet.create({
   container: {
-    backgroundColor: '#1E90FF',
-    width: screenWidth - 30,
+    width: screenWidth - 23,
+    height: screenHeight / 5,
     marginLeft: 24,
     borderRadius: 10,
   },
   leftBoxContainer: {
-    width: '75%',
+    width: '70%',
     paddingHorizontal: 4,
   },
   rightBoxContainer: {
-    width: 80,
-    height: 80,
-    borderWidth: 2,
-    borderColor: '#3FA0FF',
+    width: 95,
+    height: 95,
+    borderWidth: 8,
+    borderColor: '#2a90f5',
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
@@ -67,7 +67,7 @@ export const frameTwostyles = StyleSheet.create({
   firstText: {
     fontSize: 18,
     fontFamily: 'Montserrat=Bold',
-    marginBottom: 10,
+    marginBottom: 5,
     color: 'white',
   },
   secondText: {
@@ -84,10 +84,12 @@ export const frameTwostyles = StyleSheet.create({
 
 export const frameThreestyles = StyleSheet.create({
   adsContainer: {
-    width: screenWidth - 20,
+    width: screenWidth - 23,
+    height: screenHeight / 5,
     borderRadius: 10,
     overflow: 'hidden',
-    marginHorizontal: 15,
+    marginLeft: 20,
+    marginRight: 15,
   },
   adsTile1: {
     color: 'black',
@@ -140,7 +142,7 @@ export const frameThreestyles = StyleSheet.create({
 export const frameFourstyles = StyleSheet.create({
   container: {
     width: screenWidth - 20,
-    height: screenHeight / 6,
+    height: screenHeight / 5,
     borderRadius: 10,
     overflow: 'hidden',
     position: 'relative',

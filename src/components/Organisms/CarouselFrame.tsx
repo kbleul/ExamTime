@@ -10,6 +10,8 @@ import {RootState} from '../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import profileImg from '../../assets/Images/Profile/1.png';
+import frameBlueImg from '../../assets/Images/frame_blue.png';
+
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -37,7 +39,7 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
           {index === 1 && (
             <FrameTwo
               title="Overall progress"
-              img={profileImg}
+              img={frameBlueImg}
               text="Your overall progress is composed of the subjects you have studied
               and all the exams you have taken."
               progrss="50%"
@@ -81,7 +83,7 @@ export const FrameOne: React.FC<{
           <MaterialIcons
             name="waving-hand"
             color="#B37E53"
-            size={35}
+            size={32}
             style={frameOnestyles.helloIcon}
           />
         </View>
@@ -99,7 +101,10 @@ export const FrameTwo: React.FC<{
   progrss: string;
 }> = ({title, img, text, progrss}) => {
   return (
-    <View style={[styles.container, frameTwostyles.container]}>
+    <ImageBackground
+      style={[styles.container, frameTwostyles.container]}
+      source={img} // Replace with the correct path to your image
+    >
       <View style={frameTwostyles.leftBoxContainer}>
         <View style={{}}>
           <Text style={frameTwostyles.firstText}>{title}</Text>
@@ -110,7 +115,7 @@ export const FrameTwo: React.FC<{
       <View style={frameTwostyles.rightBoxContainer}>
         <Text style={frameTwostyles.progressText}>{progrss}</Text>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 
