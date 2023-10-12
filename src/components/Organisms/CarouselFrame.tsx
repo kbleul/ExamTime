@@ -24,7 +24,6 @@ import {
 
 const CarouselFrame: React.FC<{index: number}> = ({index}) => {
   const user = useSelector((state: RootState) => state.auth.user);
-  console.log(user);
   return (
     <>
       {user && (

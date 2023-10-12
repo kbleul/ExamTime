@@ -20,6 +20,7 @@ export const handleLogin = async (
     {
       user: userType;
       token: string;
+      isSubscribed: boolean;
     },
     'auth/loginSuccess'
   >,
@@ -37,6 +38,7 @@ export const handleLogin = async (
       loginSuccess({
         user: response.user,
         token: response.accessToken,
+        isSubscribed: false,
       }),
     );
 

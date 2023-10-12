@@ -1,7 +1,13 @@
 import {NavigationProp} from '@react-navigation/native';
 import {set_to_localStorage} from '../../../../utils/Functions/Set';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LocalStorageDataKeys, trialStatus} from '../../../../utils/Data/data';
+import {
+  LocalObjectDataKeys,
+  LocalStorageDataKeys,
+  trialStatus,
+} from '../../../../utils/Data/data';
+import {get_from_localStorage} from '../../../../utils/Functions/Get';
+import Realm from 'realm';
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -52,4 +58,27 @@ export const onboarding_save_navToHome = (
   // createGustUser
 
   navigation.navigate('Home');
+};
+
+export const createRealmUserData = async (
+  realm: Realm,
+  selectedSubjects: string[] | [],
+) => {
+  const grade = await get_from_localStorage(LocalStorageDataKeys.userGrade);
+  console.log(grade.value);
+  console.log(selectedSubjects);
+
+  const currentDate = new Date().toString();
+
+  realm.write(() => {
+    realm.create(LocalObjectDataKeys.UserData, {
+      _id: new Realm.BSON.ObjectId(),
+      token: null,
+      grade: grade.value,
+      initialDate: currentDate,
+      isSubscribed: false,
+      user: null,
+      selectedSubjects: [...selectedSubjects],
+    });
+  });
 };

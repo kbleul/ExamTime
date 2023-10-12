@@ -62,6 +62,7 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
           loginSuccess({
             user: {...savedUser.value},
             token: savedToken.value ? savedToken.value : '',
+            isSubscribed: false,
           }),
         );
     };

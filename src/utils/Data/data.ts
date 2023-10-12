@@ -79,6 +79,11 @@ export const LocalStorageDataKeys = {
   userGrade: 'userGrade',
 };
 
+export const LocalObjectDataKeys = {
+  User: 'User',
+  UserData: 'UserData',
+};
+
 export const CarouselData_guest = [
   {
     id: '001',

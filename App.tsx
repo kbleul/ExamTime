@@ -7,22 +7,28 @@ import React, {useEffect} from 'react';
 import Routes from './src/navigation/Index';
 import {Provider} from 'react-redux';
 import store from './src/reduxToolkit/Store';
+import {realmConfig, User, UserData} from './src/Realm';
+import {createRealmContext, useQuery} from '@realm/react';
+import {AuthContext} from './src/Realm/model';
 
 function App(): JSX.Element {
+  const {RealmProvider} = AuthContext;
+
   useEffect(() => {
     BootSplash.hide({fade: true});
   }, []);
 
-  useEffect(() => {}, []);
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
-      <GluestackUIProvider config={config.theme}>
-        <Provider store={store}>
-          <Routes Stack={Stack} />
-        </Provider>
-      </GluestackUIProvider>
-    </NavigationContainer>
+    <RealmProvider>
+      <NavigationContainer>
+        <GluestackUIProvider config={config.theme}>
+          <Provider store={store}>
+            <Routes Stack={Stack} />
+          </Provider>
+        </GluestackUIProvider>
+      </NavigationContainer>
+    </RealmProvider>
   );
 }
 
