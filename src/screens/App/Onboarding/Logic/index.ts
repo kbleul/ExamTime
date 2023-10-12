@@ -51,18 +51,10 @@ export const checkIsTrial = async () => {
   return status;
 };
 
-export const onboarding_save_navToHome = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
-) => {
-  set_to_localStorage(LocalStorageDataKeys.onBoarding, true);
-  // createGustUser
-
-  navigation.navigate('Home');
-};
-
 export const createRealmUserData = async (
   realm: Realm,
   selectedSubjects: string[] | [],
+  navigation: NavigationProp<ReactNavigation.RootParamList>,
 ) => {
   const grade = await get_from_localStorage(LocalStorageDataKeys.userGrade);
   console.log(grade.value);
@@ -81,4 +73,6 @@ export const createRealmUserData = async (
       selectedSubjects: [...selectedSubjects],
     });
   });
+
+  navigation.navigate('Home');
 };

@@ -18,6 +18,7 @@ import {
 } from '../../reduxToolkit/Services/auth';
 import {fetchRegions, handleCreateUser} from '../../screens/Auth/Signup/Logic';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
+import Config from 'react-native-config';
 
 const schema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
@@ -83,6 +84,7 @@ const SignupForm: React.FC<seterProps> = ({
   ] = useGetRegionsMutation();
 
   useEffect(() => {
+    console.log('my url ', Config.API_URL);
     fetchRegions(getRegions, setRegionsListItems, navigator);
   }, [getRegions, refetchRegions, fetchRegions, navigator]);
 

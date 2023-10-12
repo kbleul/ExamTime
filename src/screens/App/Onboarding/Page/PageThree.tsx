@@ -6,7 +6,7 @@ import img from '../../../../assets/Images/onboarding/3.png';
 import {PagesCounterType} from './types';
 import {DummyDataScience, DummyDataSocial} from '../../../../utils/Data/data';
 import {ScrollView} from 'react-native-gesture-handler';
-import {createRealmUserData, onboarding_save_navToHome} from '../Logic';
+import {createRealmUserData} from '../Logic';
 import SubjectButton from '../../../../components/Atoms/SubjectButtonsOnboarding';
 import GradeButton from '../../../../components/Atoms/GradeButtonOnBoarding';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
@@ -117,6 +117,7 @@ const PageThree: React.FC<PageThreeProps> = ({
                 createRealmUserData(
                   realm,
                   selectedGrades ? [...selectedGrades] : [],
+                  navigation,
                 )
               }
               isActive={true}

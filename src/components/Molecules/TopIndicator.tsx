@@ -2,13 +2,15 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {onboarding_save_navToHome} from '../../screens/App/Onboarding/Logic';
+import {createRealmUserData} from '../../screens/App/Onboarding/Logic';
+import {AuthContext} from '../../Realm/model';
 const TopIndicator: React.FC<PagesCounterType> = ({
   pageCounter,
   setPageCounter,
 }) => {
   const navigation = useNavigation();
-
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
   return (
     <View style={style.container}>
       <TouchableOpacity onPress={() => setPageCounter(prev => --prev)}>
@@ -27,7 +29,8 @@ const TopIndicator: React.FC<PagesCounterType> = ({
       </View>
 
       {pageCounter === 3 ? (
-        <TouchableOpacity onPress={() => onboarding_save_navToHome(navigation)}>
+        <TouchableOpacity
+          onPress={() => createRealmUserData(realm, [], navigation)}>
           <Text style={style.text}>Skip</Text>
         </TouchableOpacity>
       ) : (
