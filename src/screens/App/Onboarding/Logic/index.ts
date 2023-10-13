@@ -57,8 +57,6 @@ export const createRealmUserData = async (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
 ) => {
   const grade = await get_from_localStorage(LocalStorageDataKeys.userGrade);
-  console.log(grade.value);
-  console.log(selectedSubjects);
 
   const currentDate = new Date().toString();
 

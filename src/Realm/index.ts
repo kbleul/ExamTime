@@ -36,7 +36,7 @@ class User extends Realm.Object {
   grade: string = '';
   gender: 'MALE' | 'FEMALE' = 'MALE';
   email: string | null = null;
-  verificationCode?: string;
+  verificationCode: string | null = null;
 
   static schema: Realm.ObjectSchema = {
     name: 'User',

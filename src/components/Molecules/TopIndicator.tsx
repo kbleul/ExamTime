@@ -4,6 +4,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createRealmUserData} from '../../screens/App/Onboarding/Logic';
 import {AuthContext} from '../../Realm/model';
+import {screenHeight} from '../../utils/Data/data';
 const TopIndicator: React.FC<PagesCounterType> = ({
   pageCounter,
   setPageCounter,
@@ -47,8 +48,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: '7%',
-    paddingVertical: 20,
-    marginTop: 10,
+    height: screenHeight * (1 / 10),
   },
   indicatorContainer: {
     flexDirection: 'row',

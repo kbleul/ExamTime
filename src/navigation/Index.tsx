@@ -7,15 +7,19 @@ import {AuthContext} from '../Realm/model';
 import {StatusBar} from 'react-native';
 import SplashScreen from '../screens/Shared/SplashScreen';
 import {checkUserStatus} from './logic';
+import {useDispatch} from 'react-redux';
 
 const Routes = ({Stack}: any) => {
   const {useQuery} = AuthContext;
   const savedUserData = useQuery(UserData);
 
+  const dispatch = useDispatch();
+
   const [isAuthRoute, setIsAuthRoute] = useState<boolean | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   useEffect(() => {
-    checkUserStatus(savedUserData, setIsAuthRoute);
+    checkUserStatus(savedUserData, setIsAuthRoute, setShowOnboarding, dispatch);
   }, []);
 
   //used as loading check
@@ -37,7 +41,7 @@ const Routes = ({Stack}: any) => {
   return isAuthRoute === true ? (
     <AuthRoutes Stack={Stack} />
   ) : (
-    <AppRoutes Stack={Stack} />
+    <AppRoutes Stack={Stack} showOnboarding={showOnboarding} />
   );
 };
 

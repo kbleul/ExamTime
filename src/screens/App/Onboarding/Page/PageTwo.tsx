@@ -1,11 +1,18 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {PagesCounterType, PagesGradesProps} from './types';
-import img from '../../../../assets/Images/onboarding/2.png';
+import img from '../../../../assets/Images/onboarding/2a.png';
 import {set_to_localStorage} from '../../../../utils/Functions/Set';
-import {LocalStorageDataKeys} from '../../../../utils/Data/data';
-import GradeButton from '../../../../components/Atoms/GradeButtonOnBoarding';
+import {LocalStorageDataKeys, screenHeight} from '../../../../utils/Data/data';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
+import OtherCoursesCard from '../../../../components/Molecules/ChosenAndOtherCourses.tsx/OtherCoursesCard';
 
 const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   pageCounter,
@@ -30,24 +37,34 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
         <View style={style.imgContainer}>
           <Image source={img} style={style.img} />
         </View>
-        <View style={style.titleContainer}>
-          <Text style={style.title}>What Grade are you in ?</Text>
-        </View>
-        <View>
-          <GradeButton
-            text="Grade 8"
-            index={2}
-            setSelected={setSelectedGrade}
-            onPress={() => saveGrade('grade_8')}
-            isActive={selectedGrade === 2}
-          />
-          <GradeButton
-            text="Grade 12"
-            index={3}
-            setSelected={setSelectedGrade}
-            onPress={() => saveGrade('grade_12_natural')}
-            isActive={selectedGrade === 3}
-          />
+
+        <View style={style.secondContainer}>
+          <View style={style.titleContainer}>
+            <Text style={style.title}>What Grade are you in ?</Text>
+          </View>
+          <View style={style.gradesContainer}>
+            <OtherCoursesCard
+              grade={12}
+              subTitle="Natural Science Student"
+              subjectsCount={12}
+              isOnboarding
+              onPress={() => saveGrade('grade_12_natural')}
+            />
+            <OtherCoursesCard
+              grade={12}
+              subTitle="Social Science Student"
+              subjectsCount={9}
+              isOnboarding
+              onPress={() => saveGrade('grade_12_socials')}
+            />
+            <OtherCoursesCard
+              grade={8}
+              subTitle="Reginal Exam Taker"
+              subjectsCount={9}
+              isOnboarding
+              onPress={() => saveGrade('grade_8')}
+            />
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -60,37 +77,40 @@ const style = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    height: '100%',
+    height: screenHeight,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   imgContainer: {
     width: '100%',
-    height: '40%',
+    height: screenHeight * (3.5 / 10),
     marginTop: '5%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   img: {
-    width: '80%',
+    width: '100%',
     height: '100%',
-    marginRight: '10%',
+  },
+  secondContainer: {
+    height: screenHeight * (4.5 / 10),
   },
   titleContainer: {
-    marginTop: '10%',
-    marginBottom: '10%',
+    marginTop: '5%',
+    marginBottom: '5%',
   },
   title: {
     fontFamily: 'Montserrat-Bold',
-    fontSize: 32,
-    color: '#858585',
-    textAlign: 'left',
-    paddingHorizontal: 50,
+    fontSize: 25,
+    color: '#2D466A',
+    textAlign: 'center',
+    paddingHorizontal: 10,
     lineHeight: 40,
   },
-  buttonsContainer: {
+  gradesContainer: {
+    width: '90%',
     flexDirection: 'row',
-    width: '100%',
-    paddingHorizontal: 10,
-    marginTop: 10,
+    flexWrap: 'wrap',
   },
 });
 

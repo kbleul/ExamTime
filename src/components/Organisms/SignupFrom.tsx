@@ -84,7 +84,6 @@ const SignupForm: React.FC<seterProps> = ({
   ] = useGetRegionsMutation();
 
   useEffect(() => {
-    console.log('my url ', Config.API_URL);
     fetchRegions(getRegions, setRegionsListItems, navigator);
   }, [getRegions, refetchRegions, fetchRegions, navigator]);
 

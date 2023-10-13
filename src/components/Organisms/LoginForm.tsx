@@ -22,6 +22,8 @@ import {formStyles} from '../../screens/Auth/Signup/Styles';
 import {handleLogin} from '../../screens/Auth/Login/Logic';
 import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import {FormData} from '../../screens/Auth/Login/Types';
+import {AuthContext} from '../../Realm/model';
+import {UserData} from '../../Realm';
 
 const schema = yup.object().shape({
   phoneNumber: yup
@@ -66,6 +68,11 @@ const LoginForm = () => {
 
   const dispatch = useDispatch();
   const [login, {isLoading, isError, error}] = useLoginMutation();
+
+  const {useRealm, useQuery, useObject} = AuthContext;
+  const realm = useRealm();
+  const savedUserData = useQuery(UserData);
+  const newUserData = useObject(UserData, savedUserData[0]?._id);
 
   return (
     <View style={styles.formContainer}>
@@ -153,7 +160,16 @@ const LoginForm = () => {
           <Text
             style={styles.submitBtnText}
             onPress={handleSubmit(data =>
-              handleLogin(data, dispatch, login, loginSuccess, navigator),
+              handleLogin(
+                data,
+                dispatch,
+                login,
+                loginSuccess,
+                navigator,
+                newUserData,
+                savedUserData,
+                realm,
+              ),
             )}>
             Login
           </Text>

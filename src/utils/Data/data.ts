@@ -10,12 +10,12 @@ type ProfileMenuItems = {
 type CourseCatagoriesType = string[];
 
 export const DummyDataScience = [
-  {subjName: 'Math'},
+  {subjName: 'Mathematics'},
   {subjName: 'English'},
   {subjName: 'Biology'},
   {subjName: 'Physics'},
+  {subjName: 'SAT'},
   {subjName: 'Chemistry'},
-  {subjName: 'Civics'},
 ];
 
 export const DummyDataSocial = [
