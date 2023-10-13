@@ -19,6 +19,7 @@ const MenuItems = () => {
             key={item + '--' + index}
             item={item}
             bgColor={ProfileMenuItemsAuth[item].color}
+            navigate={ProfileMenuItemsAuth[item].navigate}
             setShowLogoutDialog={setShowLogoutDialog}
           />
         ))}
@@ -29,6 +30,7 @@ const MenuItems = () => {
             key={item + '--' + index}
             item={item}
             bgColor={ProfileMenuItems[item].color}
+            navigate={ProfileMenuItems[item].navigate}
             setShowLogoutDialog={setShowLogoutDialog}
           />
         ))}

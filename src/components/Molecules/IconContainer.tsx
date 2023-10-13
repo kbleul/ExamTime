@@ -2,28 +2,29 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MenuItemDispatch from '../Organisms/MenuItemDispatch';
 import {useNavigation} from '@react-navigation/native';
-import {ProfileMenuItemsAuth} from '../../utils/Data/data';
+import {ProfileMenuItems, ProfileMenuItemsAuth} from '../../utils/Data/data';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 
 const IconContainer: React.FC<{
   item: string;
   bgColor: string;
+  navigate:string;
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({item, bgColor, setShowLogoutDialog}) => {
+}> = ({item, bgColor,navigate, setShowLogoutDialog}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
-
+console.log("navigate",navigate)
   return (
     <TouchableOpacity
       style={styles.buttonsContainer}
       onPress={() => {
-        item === ProfileMenuItemsAuth.Profile.name &&
-          navigator.navigate('Profile-Edit');
-
-        user &&
-          item === ProfileMenuItemsAuth.Logout.name &&
-          setShowLogoutDialog(true);
+        // item === ProfileMenuItemsAuth.Profile.name &&
+          // navigator.navigate('Profile-Edit');
+          navigator.navigate(navigate);
+        // user &&
+        //   item === ProfileMenuItemsAuth.Logout.name &&
+        //   setShowLogoutDialog(true);
       }}>
       <View style={[styles.iconContainer, {backgroundColor: bgColor}]}>
         <MenuItemDispatch itemName={item} />
