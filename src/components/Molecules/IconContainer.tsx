@@ -22,9 +22,9 @@ console.log("navigate",navigate)
         // item === ProfileMenuItemsAuth.Profile.name &&
           // navigator.navigate('Profile-Edit');
           navigator.navigate(navigate);
-        // user &&
-        //   item === ProfileMenuItemsAuth.Logout.name &&
-        //   setShowLogoutDialog(true);
+        user &&
+          item === ProfileMenuItemsAuth.Logout.name &&
+          setShowLogoutDialog(true);
       }}>
       <View style={[styles.iconContainer, {backgroundColor: bgColor}]}>
         <MenuItemDispatch itemName={item} />
