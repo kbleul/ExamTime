@@ -65,6 +65,7 @@ const LoginForm = () => {
 
   const navigator = useNavigation();
   const [showPassword, setShowPassword] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const dispatch = useDispatch();
   const [login, {isLoading, isError, error}] = useLoginMutation();
@@ -138,9 +139,23 @@ const LoginForm = () => {
       </View>
 
       <View style={styles.optionsContainer}>
-        <TouchableOpacity touchSoundDisabled style={styles.rememberMeContainer}>
-          <Feather name="square" size={18} color="#b3b3b3" />
-          <Text style={styles.remembermeText}>remember me</Text>
+        <TouchableOpacity
+          touchSoundDisabled
+          style={styles.rememberMeContainer}
+          onPress={() => setRememberMe(prev => !prev)}>
+          {rememberMe ? (
+            <Feather name="check-square" size={18} color="#000" />
+          ) : (
+            <Feather name="square" size={18} color="#b3b3b3" />
+          )}
+          <Text
+            style={
+              rememberMe
+                ? [styles.remembermeText, styles.remembermeTextBold]
+                : styles.remembermeText
+            }>
+            remember me
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -247,6 +262,9 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     fontSize: 14,
     color: '#858585',
+  },
+  remembermeTextBold: {
+    color: '#000',
   },
   forgorPasswordText: {
     fontFamily: 'Montserrat-Regular',

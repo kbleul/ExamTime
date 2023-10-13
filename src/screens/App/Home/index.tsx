@@ -10,18 +10,12 @@ import HeaderCarousel from '../../../components/Organisms/HeaderCarousel';
 import ChosenCourses from '../../../components/Molecules/ChosenAndOtherCourses.tsx';
 
 const Index = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
-
   return (
     <SafeAreaView style={style.container}>
       <ScrollView
         contentContainerStyle={style.ScrollView}
         showsVerticalScrollIndicator={false}>
-        {user ? (
-          <SignedUpHeader type="Dashboard" />
-        ) : (
-          <TrialHeader type="Dashboard" />
-        )}
+        <TrialHeader type="Dashboard" />
 
         <HeaderCarousel />
 

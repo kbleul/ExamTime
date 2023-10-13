@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import Reac from 'react';
 import {StackType} from './types';
 import Onboarding from '../screens/App/Onboarding/index';
 import Home from '../screens/App/Home/index';
@@ -35,6 +35,7 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
             options={{headerShown: false}}
           />
         )}
+
         <Stack.Screen
           name="Home"
           component={Home}

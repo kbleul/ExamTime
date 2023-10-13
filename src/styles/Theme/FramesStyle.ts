@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     paddingVertical: 10,
+    marginLeft: 3,
   },
 });
 
@@ -32,15 +33,16 @@ export const frameOnestyles = StyleSheet.create({
   },
   helloText: {
     fontSize: 30,
-    fontFamily: 'Montserrat=Bold',
+    fontFamily: 'PoppinsSemiBold',
     color: 'black',
     marginRight: 30,
   },
   subText: {
-    color: 'black',
+    color: '#C1C2C6',
     fontSize: 16,
     lineHeight: 25,
     marginTop: 10,
+    fontFamily: 'PoppinsRegular',
   },
 });
 
@@ -48,8 +50,7 @@ export const frameTwostyles = StyleSheet.create({
   container: {
     width: screenWidth - 23,
     height: screenHeight / 5,
-    marginLeft: 24,
-    borderRadius: 10,
+    marginLeft: 22,
   },
   leftBoxContainer: {
     width: '70%',
@@ -66,17 +67,17 @@ export const frameTwostyles = StyleSheet.create({
   },
   firstText: {
     fontSize: 18,
-    fontFamily: 'Montserrat=Bold',
+    fontFamily: 'PoppinsSemiBold',
     marginBottom: 5,
     color: 'white',
   },
   secondText: {
     fontSize: 14,
-    fontFamily: 'Montserrat=Regular',
+    fontFamily: 'PoppinsRegular',
     color: 'white',
   },
   progressText: {
-    fontSize: 24,
+    fontSize: 32,
     fontFamily: 'Montserrat=Bold',
     color: 'white',
   },
@@ -88,12 +89,12 @@ export const frameThreestyles = StyleSheet.create({
     height: screenHeight / 5,
     borderRadius: 10,
     overflow: 'hidden',
-    marginLeft: 20,
-    marginRight: 15,
+    marginLeft: 21,
+    marginRight: 9,
   },
   adsTile1: {
     color: 'black',
-    fontFamily: 'Montserrate-Regular',
+    fontFamily: 'PoppinsSemiBold',
     paddingHorizontal: '6%',
     marginTop: '1%',
     marginBottom: '2%',
@@ -101,7 +102,7 @@ export const frameThreestyles = StyleSheet.create({
   },
   adsTile2: {
     color: 'white',
-    fontFamily: 'Montserrate-SemiBold',
+    fontFamily: 'PoppinsRegular',
     paddingHorizontal: '6%',
     fontSize: 24,
   },
@@ -146,6 +147,7 @@ export const frameFourstyles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     position: 'relative',
+    marginRight: 7,
   },
   textContainer: {
     backgroundColor: '#f2f0eb',

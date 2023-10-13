@@ -10,6 +10,8 @@ import {RootState} from '../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import profileImg from '../../assets/Images/Profile/1.png';
+import avatarImg from '../../assets/Images/Profile/avatar.png';
+
 import frameBlueImg from '../../assets/Images/frame_blue.png';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -41,7 +43,7 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
               img={frameBlueImg}
               text="Your overall progress is composed of the subjects you have studied
               and all the exams you have taken."
-              progrss="50%"
+              progrss="0%"
             />
           )}
           {index === 2 && (
@@ -57,12 +59,32 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
 
       {!user && (
         <View>
-          {index === 0 && <FrameOne name="" img={profileImg} text="" />}
-          {index === 1 && (
-            <FrameTwo name="" img={profileImg} text="" progrss="50%" />
+          {index === 0 && (
+            <FrameOne
+              name=""
+              img={avatarImg}
+              text="Today is a good day
+to learn something new!"
+            />
           )}
-          {index === 2 && <FrameThree name="" img={profileImg} text="" />}
-          {index === 3 && <FrameFour name="" img={profileImg} text="" />}
+          {index === 1 && (
+            <FrameTwo
+              title="Overall progress"
+              img={frameBlueImg}
+              text="Your overall progress is composed of the subjects you have studied
+            and all the exams you have taken."
+              progrss="0%"
+            />
+          )}
+          {index === 2 && (
+            <FrameThree
+              title="Become a member"
+              text="Elevate learning. Join our community, expand your knowledge."
+              btnText="Login"
+              btnTextTwo="Signup"
+            />
+          )}
+          {index === 3 && <FrameFour text="How to use the app" />}
         </View>
       )}
     </>
