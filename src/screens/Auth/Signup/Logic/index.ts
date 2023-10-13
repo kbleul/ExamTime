@@ -70,7 +70,7 @@ export const handleCreateUser = async (
         gender: gender?.toUpperCase(),
         grade: userGrade?.value,
       }).unwrap();
-
+      console.log(response);
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
@@ -198,8 +198,6 @@ export const createNewPassword = async (
 
     navigator.navigate('signup-success');
     setCurrentStep(1);
-
-    AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
   } catch (error) {
     console.error('Error submitting form:', error);
   }

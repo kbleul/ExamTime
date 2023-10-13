@@ -18,11 +18,24 @@ import {
 } from '../../reduxToolkit/Services/auth';
 import {fetchRegions, handleCreateUser} from '../../screens/Auth/Signup/Logic';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
-import Config from 'react-native-config';
 
 const schema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
+  firstName: yup
+    .string()
+    .required('First name is required')
+    .matches(
+      /^[A-Za-z\s]+$/,
+      'First name should only contain letters and spaces',
+    )
+    .min(4, 'First name should be at least 4 characters long'),
+  lastName: yup
+    .string()
+    .required('Last name is required')
+    .matches(
+      /^[A-Za-z\s]+$/,
+      'Last name should only contain letters and spaces',
+    )
+    .min(4, 'Last name should be at least 4 characters long'),
   phoneNumber: yup
     .string()
     .required('Phone number is required')

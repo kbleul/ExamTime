@@ -13,7 +13,9 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 
 const TrialHeader: React.FC<{type: string}> = ({type}) => {
-  const isSubscribed = true;
+  const isSubscribed = useSelector(
+    (state: RootState) => state.auth.isSubscribed,
+  );
 
   const {useQuery} = AuthContext;
   const savedUserData = useQuery(UserData);

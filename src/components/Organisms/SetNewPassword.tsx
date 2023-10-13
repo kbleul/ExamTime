@@ -27,11 +27,13 @@ const schema = yup.object().shape({
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       'Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character',
-    ),
+    )
+    .max(31, 'Password can not be more than 32 characters long'),
   confirmPassword: yup
     .string()
     .required('Confirm password is required')
-    .oneOf([yup.ref('password')], 'Passwords must match'),
+    .oneOf([yup.ref('password')], 'Passwords must match')
+    .max(31, 'Password can not be more than 32 characters long'),
 });
 
 const SetNewPassword: React.FC<{

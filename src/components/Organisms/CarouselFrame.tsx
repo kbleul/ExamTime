@@ -51,6 +51,7 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
               title="Become a member"
               text="Elevate learning. Join our community, expand your knowledge."
               btnText="Subscribe"
+              issubscribe={true}
             />
           )}
           {index === 3 && <FrameFour text="How to use the app" />}
@@ -145,7 +146,8 @@ export const FrameThree: React.FC<{
   text: any;
   btnText: string;
   btnTextTwo?: string;
-}> = ({title, text, btnText, btnTextTwo}) => {
+  issubscribe?: boolean;
+}> = ({title, text, btnText, btnTextTwo, issubscribe}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -165,7 +167,7 @@ export const FrameThree: React.FC<{
         <TouchableOpacity
           style={frameThreestyles.adsBtns}
           touchSoundDisabled
-          onPress={() => navigator.navigate('Signup')}>
+          onPress={() => !issubscribe && navigator.navigate('Login')}>
           <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>
         </TouchableOpacity>
         {!user && (
@@ -175,7 +177,7 @@ export const FrameThree: React.FC<{
               frameThreestyles.adsBtns_secondary,
             ]}
             touchSoundDisabled
-            onPress={() => navigator.navigate('Login')}>
+            onPress={() => navigator.navigate('Signup')}>
             <Text style={frameThreestyles.adsBtnsText}>{btnTextTwo}</Text>
           </TouchableOpacity>
         )}
