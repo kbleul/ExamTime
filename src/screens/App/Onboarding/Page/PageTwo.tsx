@@ -28,6 +28,7 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
         />
 
         <View style={style.imgContainer}>
+          
           <Image source={img} style={style.img} />
         </View>
         <View style={style.titleContainer}>
