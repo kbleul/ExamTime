@@ -7,7 +7,7 @@ type ProfileMenuItems = {
   };
 };
 
-type CourseCatagoriesType = string[];
+type TopCatagoriesType = string[];
 
 export const DummyDataScience = [
   {subjName: 'Mathematics'},
@@ -27,7 +27,12 @@ export const DummyDataSocial = [
   {subjName: 'Economics'},
 ];
 
-export const CourseCatagories: CourseCatagoriesType = ['Study', 'Challenge'];
+export const CourseCatagories: TopCatagoriesType = ['Study', 'Challenge'];
+export const TestQustionsCatagories: TopCatagoriesType = [
+  'Model Questions',
+  'Previous Exams',
+  'Random',
+];
 
 export const ProfileMenuItems: ProfileMenuItems = {
   'Subscription Plan': {

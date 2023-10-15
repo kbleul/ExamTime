@@ -12,7 +12,7 @@ import img from '../../../../assets/Images/onboarding/2a.png';
 import {set_to_localStorage} from '../../../../utils/Functions/Set';
 import {LocalStorageDataKeys, screenHeight} from '../../../../utils/Data/data';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
-import OtherCoursesCard from '../../../../components/Molecules/ChosenAndOtherCourses.tsx/OtherCoursesCard';
+import OtherCoursesCard from '../../../../components/Molecules/ChosenAndOtherCourses/OtherCoursesCard';
 
 const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   pageCounter,

@@ -1,19 +1,16 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, ScrollView} from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-import {DummyDataScience, screenHeight} from '../../../utils/Data/data';
 import TrialHeader from '../../../components/Organisms/TrialHeader';
-import SignedUpHeader from '../../../components/Organisms/SignedUpHeader';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../reduxToolkit/Store';
 import HeaderCarousel from '../../../components/Organisms/HeaderCarousel';
-import ChosenCourses from '../../../components/Molecules/ChosenAndOtherCourses.tsx';
+import ChosenCourses from '../../../components/Molecules/ChosenAndOtherCourses';
+import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 
 const Index = () => {
   return (
-    <SafeAreaView style={style.container}>
+    <SafeAreaView style={IndexStyle.container}>
       <ScrollView
-        contentContainerStyle={style.ScrollView}
+        contentContainerStyle={IndexStyle.ScrollView}
         showsVerticalScrollIndicator={false}>
         <TrialHeader type="Dashboard" />
 
@@ -26,17 +23,4 @@ const Index = () => {
   );
 };
 
-const style = StyleSheet.create({
-  container: {
-    flex: screenHeight,
-    width: '100%',
-    padding: 5,
-    backgroundColor: '#fff',
-    paddingTop: 25,
-    paddingBottom: 80,
-  },
-  ScrollView: {
-    height: screenHeight,
-  },
-});
 export default Index;

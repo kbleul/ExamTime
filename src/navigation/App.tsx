@@ -1,4 +1,4 @@
-import Reac from 'react';
+import React from 'react';
 import {StackType} from './types';
 import Onboarding from '../screens/App/Onboarding/index';
 import Home from '../screens/App/Home/index';
@@ -14,6 +14,7 @@ import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
 import ViewSubjectDetails from '../screens/App/Courses/ViewSubjectDetails';
 import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
+import Practice from '../screens/App/Practice/index';
 
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
@@ -55,6 +56,11 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="View-Course-Content"
           component={ViewCourseContent}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Practice"
+          component={Practice}
           options={{headerShown: false}}
         />
         <Stack.Screen

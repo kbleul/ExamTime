@@ -8,8 +8,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 
-const coursesPages = ['Courses', 'View-Course', 'View-Course-Content'];
-const profilePages = ['Profile', 'Profile-Edit'];
 const MainBottomNav = () => {
   const navigationState = useNavigationState(state => state);
   const currentScreen = navigationState.routes[navigationState.index].name;
@@ -72,13 +70,13 @@ const MainBottomNav = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('')}
+          onPress={() => navigation.navigate('Practice')}
           style={style.buttonWrapper}>
-          {currentScreen === '' && <View style={style.dot} />}
+          {currentScreen === 'Practice' && <View style={style.dot} />}
 
           <View
             style={
-              currentScreen === ''
+              currentScreen === 'Practice'
                 ? [style.button, style.buttonSelected]
                 : style.button
             }>
@@ -86,11 +84,15 @@ const MainBottomNav = () => {
               name="newspaper-outline"
               size={24}
               color="white"
-              style={currentScreen === '' ? style.iconActive : style.icon}
+              style={
+                currentScreen === 'Practice' ? style.iconActive : style.icon
+              }
             />
             <Text
               style={
-                currentScreen === '' ? style.buttonTextActive : style.buttonText
+                currentScreen === 'Practice'
+                  ? style.buttonTextActive
+                  : style.buttonText
               }>
               Practice
             </Text>

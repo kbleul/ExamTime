@@ -6,6 +6,7 @@ export const HeaderStyle = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 8,
+    paddingVertical: 10,
   },
   containerSubscribed: {
     justifyContent: 'flex-end',
