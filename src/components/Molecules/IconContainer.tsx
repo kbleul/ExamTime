@@ -9,8 +9,9 @@ import {RootState} from '../../reduxToolkit/Store';
 const IconContainer: React.FC<{
   item: string;
   bgColor: string;
+  navigate:String;
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({item, bgColor, setShowLogoutDialog}) => {
+}> = ({item, bgColor, navigate, setShowLogoutDialog}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -18,12 +19,12 @@ const IconContainer: React.FC<{
     <TouchableOpacity
       style={styles.buttonsContainer}
       onPress={() => {
-        item === ProfileMenuItemsAuth.Profile.name &&
-          navigator.navigate('Profile-Edit');
-
-        user &&
-          item === ProfileMenuItemsAuth.Logout.name &&
-          setShowLogoutDialog(true);
+        // item === ProfileMenuItemsAuth.Profile.name &&
+          // navigator.navigate('Profile-Edit');
+          navigator.navigate(navigate);
+        // user &&
+        //   item === ProfileMenuItemsAuth.Logout.name &&
+        //   setShowLogoutDialog(true);
       }}>
       <View style={[styles.iconContainer, {backgroundColor: bgColor}]}>
         <MenuItemDispatch itemName={item} />

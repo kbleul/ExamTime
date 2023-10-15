@@ -8,10 +8,10 @@ import {RootState} from '../../reduxToolkit/Store';
 const ProfileEdit = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const [name, setName] = useState(`${user.firstName} ${user.lastName}`);
+  const [name, setName] = useState(`${user?.firstName} ${user?.lastName}`);
   const [phone, setPhone] = useState(user?.phoneNumber);
-  const [grade, setGrade] = useState(user.grade?.grade);
-  const [city, setCity] = useState(user?.region.region);
+  const [grade, setGrade] = useState(user?.grade);
+  const [city, setCity] = useState(user?.region);
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
