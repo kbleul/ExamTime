@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, StyleSheet, ImageBackground} from 'react-native';
+import {View, StyleSheet, ImageBackground} from 'react-native';
 
 const PracticeImageHeader = () => {
   return (
@@ -14,7 +14,7 @@ const PracticeImageHeader = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 5,
+    marginHorizontal: 3,
   },
   img: {
     width: '100%',

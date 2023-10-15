@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const EXamModeToogle = () => {
+const ExamModeToggle = () => {
+  const [toggle, setToggle] = useState(false);
+
   return (
     <View style={styles.constainer}>
       <Text style={styles.text}>Exam Mode</Text>
@@ -12,11 +14,20 @@ const EXamModeToogle = () => {
         </TouchableOpacity>
 
         <View style={styles.toggleIconContainer}>
-          <TouchableOpacity touchSoundDisabled style={{}}>
-            <MaterialCommunityIcons
-              style={styles.icon}
-              name="toggle-switch-off-outline"
-            />
+          <TouchableOpacity
+            touchSoundDisabled
+            onPress={() => setToggle(prev => !prev)}>
+            {toggle ? (
+              <MaterialCommunityIcons
+                style={toggle ? [styles.icon, styles.iconActive] : styles.icon}
+                name="toggle-switch-outline"
+              />
+            ) : (
+              <MaterialCommunityIcons
+                style={toggle ? [styles.icon, styles.iconActive] : styles.icon}
+                name="toggle-switch-off-outline"
+              />
+            )}
           </TouchableOpacity>
         </View>
         <TouchableOpacity touchSoundDisabled style={{}}>
@@ -56,4 +67,4 @@ export const styles = StyleSheet.create({
   },
 });
 
-export default EXamModeToogle;
+export default ExamModeToggle;

@@ -70,7 +70,6 @@ export const handleCreateUser = async (
         gender: gender?.toUpperCase(),
         grade: userGrade?.value,
       }).unwrap();
-      console.log(response);
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
