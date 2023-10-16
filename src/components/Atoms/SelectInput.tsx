@@ -1,18 +1,36 @@
 /* eslint-disable no-undef */
 import React, {useState} from 'react';
-import {View, Text, Dimensions, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-const SelctInput = () => {
+const SelctInput: React.FC<{isPrevious?: boolean; index?: boolean}> = ({
+  isPrevious,
+  index,
+}) => {
   const [showList, setSHowList] = useState(false);
   return (
-    <View style={styles.mainContainer}>
+    <View
+      style={
+        isPrevious
+          ? [styles.mainContainer, styles.mainContainerPrevious]
+          : styles.mainContainer
+      }>
       <View style={styles.container}>
-        <View style={styles.dropdown1BtnStyle}>
+        <View
+          style={
+            isPrevious
+              ? [styles.dropdown1BtnStyle, styles.dropdown1BtnStylePrevious]
+              : styles.dropdown1BtnStyle
+          }>
           <TouchableOpacity
-            style={styles.dropdown1Btn}
+            style={
+              isPrevious
+                ? [styles.dropdown1Btn, styles.dropdown1BtnPrevious]
+                : styles.dropdown1Btn
+            }
             touchSoundDisabled
             onPress={() => setSHowList(prev => !prev)}>
             <Text style={styles.dropdown1BtnTxtStyle}>All Exams</Text>
@@ -20,12 +38,28 @@ const SelctInput = () => {
           </TouchableOpacity>
         </View>
 
-        <MaterialIcons name="tune" size={28} color="#858585" />
+        {index ? (
+          <SimpleLineIcons name="calendar" size={24} color="#B5C3E5" />
+        ) : (
+          <MaterialIcons
+            name="tune"
+            size={isPrevious ? 24 : 28}
+            color="#858585"
+          />
+        )}
       </View>
 
       {showList && (
-        <View style={styles.searchResultContainer}>
-          <Text style={styles.searchResult}>MAth Exam</Text>
+        <View
+          style={
+            isPrevious
+              ? [
+                  styles.searchResultContainer,
+                  styles.searchResultContainerPrevious,
+                ]
+              : styles.searchResultContainer
+          }>
+          <Text style={styles.searchResult}>Math Exam</Text>
           <Text style={styles.searchResult}>Biology Exam</Text>
           <Text style={styles.searchResult}>SAT Exam</Text>
           <Text style={styles.searchResult}>Chemistry Exam</Text>
@@ -47,6 +81,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   dropdown1BtnStyle: {
     width: '90%',
@@ -57,6 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: 5,
   },
   dropdown1Btn: {
     flexDirection: 'row',
@@ -68,7 +104,7 @@ const styles = StyleSheet.create({
   dropdown1BtnTxtStyle: {
     color: '#858585',
     textAlign: 'left',
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Montserrat-SemiBold',
     paddingVertical: 5,
   },
@@ -89,9 +125,25 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     color: '#858585',
     textAlign: 'left',
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Montserrat-SemiBold',
     borderBottomWidth: 1,
     borderColor: '#EAEAEA',
+  },
+
+  /////////////////////////
+  mainContainerPrevious: {
+    width: '50%',
+  },
+  dropdown1BtnStylePrevious: {
+    width: '82%',
+    borderWidth: 1,
+    paddingRight: 0,
+  },
+  dropdown1BtnPrevious: {
+    width: '99%',
+  },
+  searchResultContainerPrevious: {
+    width: '100%',
   },
 });

@@ -34,8 +34,9 @@ const OtherCoursesCard: React.FC<{
 export const styles = StyleSheet.create({
   container: {
     width: screenWidth * (5 / 10),
-    height: screenHeight * (1 / 6.5),
+    height: screenHeight * (1 / 5.5),
     marginHorizontal: 5,
+    marginBottom: 10,
     padding: 15,
     borderRadius: 15,
     backgroundColor: '#F5F5F5',

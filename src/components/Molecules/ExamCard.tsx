@@ -59,9 +59,11 @@ const styles = StyleSheet.create({
     borderWidth: 8,
     borderColor: '#F9FCFF',
     borderRadius: 10,
+    minHeight: 140,
     height: screenHeight / 5.7,
-    width: '100%',
-    marginBottom: 10,
+    width: '97%',
+    alignSelf: 'center',
+    marginBottom: 5,
     flexDirection: 'row',
   },
   containerTaken: {

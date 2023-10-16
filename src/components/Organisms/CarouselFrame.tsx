@@ -124,7 +124,7 @@ export const FrameTwo: React.FC<{
 }> = ({title, img, text, progrss}) => {
   return (
     <ImageBackground
-      style={[styles.container, frameTwostyles.container]}
+      style={[frameTwostyles.container]}
       source={img} // Replace with the correct path to your image
     >
       <View style={frameTwostyles.leftBoxContainer}>

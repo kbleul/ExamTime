@@ -1,12 +1,19 @@
 import React from 'react';
 import {View, StyleSheet, ImageBackground} from 'react-native';
+import {TestQustionsCatagories} from '../../utils/Data/data';
 
-const PracticeImageHeader = () => {
+const PracticeImageHeader: React.FC<{selectedCatagory: String}> = ({
+  selectedCatagory,
+}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
         style={styles.img}
-        source={require('../../assets/Images/Practice/HeaderImg.png')} // Replace with the correct path to your image
+        source={
+          selectedCatagory === TestQustionsCatagories[0]
+            ? require('../../assets/Images/Practice/HeaderImg1.png')
+            : require('../../assets/Images/Practice/HeaderImg2.png')
+        }
       />
     </View>
   );

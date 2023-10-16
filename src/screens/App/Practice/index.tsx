@@ -14,6 +14,7 @@ import img3 from '.././../../assets/Images/home/s3.png';
 import img4 from '.././../../assets/Images/home/s4.png';
 import img5 from '.././../../assets/Images/home/s5.png';
 import SelectInput from '../../../components/Atoms/SelectInput';
+import CustomSlider from '../../../components/Molecules/CustomSlider';
 
 export type DummyType = {
   id: string;
@@ -77,9 +78,10 @@ const Practice = () => {
         selectedCatagory={selectedCatagory}
         setSelectedCatagory={setSelectedCatagory}
       />
+      <PracticeImageHeader selectedCatagory={selectedCatagory} />
+
       {selectedCatagory === TestQustionsCatagories[0] && (
         <>
-          <PracticeImageHeader />
           <SelectInput />
 
           <ScrollView
@@ -95,7 +97,24 @@ const Practice = () => {
         </>
       )}
 
-      {selectedCatagory === TestQustionsCatagories[1] && <></>}
+      {selectedCatagory === TestQustionsCatagories[1] && (
+        <>
+          <View style={styles.previousInputContainer}>
+            <SelectInput isPrevious index />
+            <SelectInput isPrevious />
+          </View>
+          <ScrollView
+            style={styles.ScrollView}
+            contentContainerStyle={styles.contentContainer}
+            showsVerticalScrollIndicator={false}>
+            <View style={{backgroundColor: 'white'}}>
+              {Dummy.map(exam => (
+                <ExamCard key={exam.id} exam={exam} />
+              ))}
+            </View>
+          </ScrollView>
+        </>
+      )}
 
       {selectedCatagory === TestQustionsCatagories[2] && <></>}
 
@@ -113,6 +132,10 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
+    paddingBottom: 80,
+  },
+  previousInputContainer: {
+    flexDirection: 'row',
   },
 });
 

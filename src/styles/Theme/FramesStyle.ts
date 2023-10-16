@@ -51,6 +51,10 @@ export const frameTwostyles = StyleSheet.create({
     width: screenWidth - 23,
     height: screenHeight / 5,
     marginLeft: 22,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    paddingVertical: 10,
   },
   leftBoxContainer: {
     width: '70%',
