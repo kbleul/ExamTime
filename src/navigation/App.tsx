@@ -15,6 +15,7 @@ import SignupCompleted from '../components/Organisms/SignupCompleted';
 import ViewSubjectDetails from '../screens/App/Courses/ViewSubjectDetails';
 import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
 import Practice from '../screens/App/Practice/index';
+import PracticeQuestion from '../screens/App/PracticeQuestion';
 
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
@@ -61,6 +62,11 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="Practice"
           component={Practice}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Exam-View"
+          component={PracticeQuestion}
           options={{headerShown: false}}
         />
         <Stack.Screen

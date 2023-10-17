@@ -5,8 +5,10 @@ import {DummyType} from '../../screens/App/Practice';
 import {screenHeight} from '../../utils/Data/data';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useNavigation} from '@react-navigation/native';
 
 const ExamCard: React.FC<{exam: DummyType}> = ({exam}) => {
+  const navigate = useNavigation();
   return (
     <View
       style={
@@ -35,6 +37,7 @@ const ExamCard: React.FC<{exam: DummyType}> = ({exam}) => {
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
+            onPress={() => navigate.navigate('Exam-View')}
             style={
               exam.isTaken ? [styles.button, styles.buttonTaken] : styles.button
             }
