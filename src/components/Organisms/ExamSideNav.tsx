@@ -10,10 +10,16 @@ import ViewQuestionHeader from '../Molecules/ViewQuestionHeader';
 import {screenHeight} from '../../utils/Data/data';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const ExamSideNav = () => {
+const ExamSideNav: React.FC<{
+  setShowSideNav: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({setShowSideNav}) => {
   return (
     <View style={styles.container}>
-      <ViewQuestionHeader title="Biology 2010 exam" isSideNav />
+      <ViewQuestionHeader
+        title="Biology 2010 exam"
+        isSideNav
+        onPress={() => setShowSideNav(false)}
+      />
 
       <ScrollView
         style={styles.scrollView}

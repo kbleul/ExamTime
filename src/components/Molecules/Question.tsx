@@ -8,31 +8,39 @@ import {
   Image,
 } from 'react-native';
 import {screenHeight} from '../../utils/Data/data';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Question = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [showParagraph, setShowParagraph] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.questionContainer}>
-        <View style={styles.counterContainer}>
-          <Text style={styles.counterTitle}>Question 3</Text>
-          <Text style={styles.counterText}>1/100</Text>
-        </View>
-        <Text style={styles.questionText}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </Text>
-      </View>
+    <>
+      {!showParagraph && (
+        <View style={styles.container}>
+          <View style={styles.questionContainer}>
+            <View style={styles.counterContainer}>
+              <Text style={styles.counterTitle}>Question 3</Text>
+              <Text style={styles.counterText}>1/100</Text>
+            </View>
+            <Text style={styles.questionText}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </Text>
+          </View>
 
-      {/* <TouchableOpacity touchSoundDisabled style={styles.readParagraphBtn}>
-        <Text style={styles.readParagraphText}>Read Paragraph</Text>
-      </TouchableOpacity> */}
+          <TouchableOpacity
+            touchSoundDisabled
+            style={styles.readParagraphBtn}
+            onPress={() => setShowParagraph(true)}>
+            <Text style={styles.readParagraphText}>Read Paragraph</Text>
+          </TouchableOpacity>
 
-      <ScrollView
-        style={styles.choiceContainer}
-        contentContainerStyle={styles.choiceContainerContent}
-        showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.questionImageContainer}>
+          <ScrollView
+            style={styles.choiceContainer}
+            contentContainerStyle={styles.choiceContainerContent}
+            showsVerticalScrollIndicator={false}>
+            {/* <View style={styles.questionImageContainer}>
           <Image
             style={styles.questionImage}
             source={require('../../assets/Images/home/s2.png')}
@@ -40,34 +48,90 @@ const Question = () => {
           />
         </View> */}
 
-        <QuestionChoice
-          choice="A"
-          selectedAnswer={selectedAnswer}
-          setSelectedAnswer={setSelectedAnswer}
-        />
-        <QuestionChoice
-          choice="B"
-          selectedAnswer={selectedAnswer}
-          setSelectedAnswer={setSelectedAnswer}
-        />
-        <QuestionChoice
-          choice="C"
-          selectedAnswer={selectedAnswer}
-          setSelectedAnswer={setSelectedAnswer}
-        />
-        <QuestionChoice
-          choice="D"
-          selectedAnswer={selectedAnswer}
-          setSelectedAnswer={setSelectedAnswer}
-        />
-      </ScrollView>
+            <QuestionChoice
+              choice="A"
+              selectedAnswer={selectedAnswer}
+              setSelectedAnswer={setSelectedAnswer}
+            />
+            <QuestionChoice
+              choice="B"
+              selectedAnswer={selectedAnswer}
+              setSelectedAnswer={setSelectedAnswer}
+            />
+            <QuestionChoice
+              choice="C"
+              selectedAnswer={selectedAnswer}
+              setSelectedAnswer={setSelectedAnswer}
+            />
+            <QuestionChoice
+              choice="D"
+              selectedAnswer={selectedAnswer}
+              setSelectedAnswer={setSelectedAnswer}
+            />
+          </ScrollView>
 
-      {selectedAnswer !== null && (
-        <TouchableOpacity style={styles.submitBtn}>
-          <Text style={styles.submitBtnText}>Next Question</Text>
-        </TouchableOpacity>
+          {selectedAnswer !== null && (
+            <TouchableOpacity style={styles.submitBtn}>
+              <Text style={styles.submitBtnText}>Next Question</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       )}
-    </View>
+
+      {showParagraph && (
+        <View style={styles.container}>
+          <View style={paragraphStyle.container}>
+            <Text style={paragraphStyle.title}>Title</Text>
+            <TouchableOpacity
+              touchSoundDisabled
+              onPress={() => setShowParagraph(false)}>
+              <AntDesign name="close" size={28} color="gray" />
+            </TouchableOpacity>
+          </View>
+          <ScrollView
+            style={[styles.choiceContainer, paragraphStyle.paragraphContainer]}
+            contentContainerStyle={styles.choiceContainerContent}
+            showsVerticalScrollIndicator={false}>
+            <Text style={paragraphStyle.paraText}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Text>
+            <Text style={paragraphStyle.paraText}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Text>
+            <Text style={paragraphStyle.paraText}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Text>
+            <Text style={paragraphStyle.paraText}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Text>
+            <Text style={paragraphStyle.paraText}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Text>
+            <Text style={paragraphStyle.paraText}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Text>
+          </ScrollView>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -110,8 +174,7 @@ const QuestionChoice: React.FC<{
             ? [questionChoiceStyles.choiceText, questionChoiceStyles.activeText]
             : questionChoiceStyles.choiceText
         }>
-        Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.Lorem ipsum dolor
-        sit amet.Lorem ipsum dolor sit amet.
+        Lorem ipsum dolor sit amet lorem.
       </Text>
     </TouchableOpacity>
   );
@@ -181,7 +244,7 @@ const styles = StyleSheet.create({
   },
   choiceContainerContent: {
     flexGrow: 1,
-    paddingBottom: 110,
+    paddingBottom: 120,
   },
   submitBtn: {
     paddingHorizontal: 15,
@@ -233,6 +296,31 @@ const questionChoiceStyles = StyleSheet.create({
   },
   activeText: {
     color: '#fff',
+  },
+});
+
+const paragraphStyle = StyleSheet.create({
+  container: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingBottom: 15,
+  },
+  paragraphContainer: {
+    paddingTop: 8,
+  },
+  title: {
+    fontSize: 18,
+    fontFamily: 'Montserrat-SemiBold',
+    color: 'black',
+  },
+  paraText: {
+    marginBottom: 10,
+    fontSize: 14,
+    fontFamily: 'Montserrat-Regular',
+    color: '#4d4d4d',
+    lineHeight: 23,
   },
 });
 
