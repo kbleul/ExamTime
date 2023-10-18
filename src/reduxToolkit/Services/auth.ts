@@ -65,6 +65,19 @@ export const api = createApi({
         };
       },
     }),
+    changeProfile: build.mutation<{ user: userType }, Partial<userType>>({
+      query: (data) => {
+        console.log("data from the redux",data.profileData)
+        return {
+          url: `user/changeprofile/`,
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          body: data.profileData,
+        };
+      },
+    }),
     getRegions: build.mutation<{regions: regionItemsType[]}, {}>({
       query: () => {
         return {
@@ -82,5 +95,6 @@ export const {
   useVerifyCodeMutation,
   useResendCodeMutation,
   useCreatePasswordMutation,
+  useChangeProfileMutation,
   useGetRegionsMutation,
 } = api;

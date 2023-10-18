@@ -1,25 +1,72 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, TextInput} from 'react-native';
-import {View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../reduxToolkit/Store';
-
-const ProfileEdit = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
-
-  const [name, setName] = useState(`${user.firstName} ${user.lastName}`);
-  const [phone, setPhone] = useState(user?.phoneNumber);
-  const [grade, setGrade] = useState(user.grade?.grade);
-  const [city, setCity] = useState(user?.region.region);
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput } from 'react-native';
+import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../reduxToolkit/Store';
+import { get_from_localStorage } from '../../utils/Functions/Get';
+import { useChangeProfileMutation } from '../../reduxToolkit/Services/auth';
+import { loginSuccess } from '../../reduxToolkit/Features/auth/authSlice';
+interface User {
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  grade?: {
+    grade: string;
+  };
+  region?: {
+    region: string;
+  };
+}
+const ProfileEdit: React.FC = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const user: User = useSelector((state: RootState) => state.auth.user);
+  const [name, setName] = useState(user.firstName ?? '');
+  const [lname, setLame] = useState(user.lastName ?? '');
+  const [phone, setPhone] = useState(user.phoneNumber ?? '');
+  const [grade, setGrade] = useState(user.grade?.grade ?? '');
+  const [city, setCity] = useState(user.region?.region ?? '');
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [updateProfile, { isLoading }] = useChangeProfileMutation(); // Use the useChangeProfileMutation hook
+
+  const handleUpdateProfile = async () => {
+    const tokenResult = await get_from_localStorage('token');
+    if (tokenResult.status && tokenResult.value) {
+      const token = tokenResult.value;
+
+      const profileData = {
+        firstName: name,
+        lastName: lname,
+        phoneNumber: phone,
+        grade: grade,
+        gender: "MALE",
+        region: city,
+      };
+
+      try {
+        const result = await updateProfile({ token, profileData });
+        dispatch(
+          loginSuccess({
+            user: result.data.user,
+            token: token,
+          }),
+        )
+        console.log("updated result", result); 
+        navigation.goBack();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <TouchableOpacity style={styles.doneContainer}>
+        <TouchableOpacity style={styles.doneContainer} onPress={handleUpdateProfile}>
           <Text style={styles.doneText}>Done</Text>
         </TouchableOpacity>
 
@@ -28,23 +75,28 @@ const ProfileEdit = () => {
 
           <TextInput
             style={styles.inputContiner}
-            onChangeText={(e: any) => setName(e?.target?.value)}
+            onChangeText={setName}
             value={name}
           />
           <TextInput
             style={styles.inputContiner}
-            onChangeText={(e: any) => setPhone(e?.target?.value)}
+            onChangeText={setLame}
+            value={lname}
+          />
+          <TextInput
+            style={styles.inputContiner}
+            onChangeText={setPhone}
             value={phone}
             autoComplete="tel"
           />
           <TextInput
             style={styles.inputContiner}
-            onChangeText={(e: any) => setGrade(e?.target?.value)}
+            onChangeText={setGrade}
             value={grade}
           />
           <TextInput
             style={styles.inputContiner}
-            onChangeText={(e: any) => setCity(e?.target?.value)}
+            onChangeText={setCity}
             value={city}
           />
         </View>
@@ -54,25 +106,26 @@ const ProfileEdit = () => {
 
           <TextInput
             style={styles.inputContiner}
-            onChangeText={(e: any) => setPassword(e?.target?.value)}
+            onChangeText={setPassword}
             value={password}
             placeholder="Current password"
           />
           <TextInput
             style={styles.inputContiner}
-            onChangeText={(e: any) => setNewPassword(e?.target?.value)}
+            onChangeText={setNewPassword}
             value={newPassword}
             placeholder="New password"
           />
           <TextInput
             style={styles.inputContiner}
-            onChangeText={(e: any) => setConfirmNewPassword(e?.target?.value)}
+            onChangeText={setConfirmNewPassword}
             value={confirmNewPassword}
             placeholder="Confirm password"
           />
 
           <TouchableOpacity
-            style={[styles.inputContiner, styles.changePassword]}>
+            style={[styles.inputContiner, styles.changePassword]}
+          >
             <Text style={styles.changePasswordText}>Change Password</Text>
           </TouchableOpacity>
         </View>

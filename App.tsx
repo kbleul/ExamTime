@@ -8,10 +8,7 @@ import Routes from './src/navigation/Index';
 import {AuthProvider} from './src/context/auth';
 import {Provider} from 'react-redux';
 import store from './src/reduxToolkit/Store';
-import { get_from_localStorage } from './src/utils/Functions/Get';
-import { LocalStorageDataKeys } from './src/utils/Data/data';
 import Config from 'react-native-config';
-
 function App(): JSX.Element {
   useEffect(() => {
     BootSplash.hide({fade: true});
@@ -19,8 +16,9 @@ function App(): JSX.Element {
 
   useEffect(() => {}, []);
   const Stack = createStackNavigator();
+ 
   console.log('my url ', Config.API_URL);
-  console.log(get_from_localStorage(LocalStorageDataKeys.userGrade))
+  console.log('config ',  Config); 
   return (
     <NavigationContainer>
       <GluestackUIProvider config={config.theme}>

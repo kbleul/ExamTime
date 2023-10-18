@@ -32,7 +32,7 @@ export const ProfileMenuItems: ProfileMenuItems = {
   'Subscription Plan': {
     name: 'Subscription Plan',
     color: '#008E97',
-    navigate: 'Profile-Edit',
+    navigate: 'SubscriptionPlan',
   },
   'About Us': {
     name: 'About Us',
