@@ -12,7 +12,7 @@ const IconContainer: React.FC<{
   navigate:String;
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({item, bgColor, navigate, setShowLogoutDialog}) => {
-  const navigator = useNavigation();
+  const navigator = useNavigation<any>();
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
