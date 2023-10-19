@@ -65,6 +65,22 @@ export const api = createApi({
         };
       },
     }),
+    changePassword: build.mutation<{user: userType}, CreatePassworDataType>({
+      query: data => {
+        console.log('credentcreateials---', data); // Add this line to log the credentials
+        return {
+          url: `user/changepassword/`,
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          body: {
+            currentPassword: data.currentPassword,
+            newPassword: data.newPassword
+          },
+        };
+      },
+    }),
     changeProfile: build.mutation<{ user: userType }, Partial<userType>>({
       query: (data) => {
         console.log("data from the redux",data.profileData)
@@ -96,5 +112,6 @@ export const {
   useResendCodeMutation,
   useCreatePasswordMutation,
   useChangeProfileMutation,
+  useChangePasswordMutation,
   useGetRegionsMutation,
 } = api;
