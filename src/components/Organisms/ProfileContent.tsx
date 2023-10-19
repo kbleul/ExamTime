@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import badgeImg from '../../assets/Images/Profile/badge1.png';
 import MenuItems from '../Molecules/MenuItems';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../reduxToolkit/Store';
-import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reduxToolkit/Store';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -21,9 +21,17 @@ const ProfileContent = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         {user && (
           <View style={styles.nameContainer}>
-            <Text style={styles.name}>
+            <View>
+              <Text style={styles.name}>
+                {user ? `${user.firstName} ${user.lastName}` : ''}
+              </Text>
+              <Text style={styles.name}>
+                {user ? `${user.firstName} ${user.lastName}` : ''}
+              </Text>
+            </View>
+            {/* <Text style={styles.name}>
               {user ? `${user.firstName} ${user.lastName}` : ''}
-            </Text>
+            </Text> */}
             <Image style={styles.badge} source={badgeImg} />
           </View>
         )}
@@ -55,21 +63,26 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: '31%',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     height: '67%',
     width: '100%',
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#F5F5F5',
     overflow: 'hidden',
+
   },
   nameContainer: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'column',
+    gap: 5,
     backgroundColor: '#fff',
     marginVertical: 30,
-    paddingVertical: 10,
+    paddingVertical: 30,
+    paddingHorizontal: 30,
+    overflow: "visible",
+    position: 'relative', // Add this line to make the container relative
   },
   name: {
     fontSize: 24,
@@ -77,9 +90,15 @@ const styles = StyleSheet.create({
     color: '#1E90FF',
   },
   badge: {
-    width: 25,
-    height: 33,
-    marginLeft: 10,
+    // backgroundColor:"red",
+    position: 'absolute', // Add this line to make the badge absolute
+    top: -40, // Adjust the value as needed to position the badge
+    right: '5%', // Adjust the value as needed to horizontally position the badge
+    // transform: [{ translateX: -12.5 }], // Adjust the value as needed to center the badge horizontally
+    width: 100,
+    height: 200,
+    objectFit: "contain"
+
   },
   adsBtnContainer: {
     flexDirection: 'row',

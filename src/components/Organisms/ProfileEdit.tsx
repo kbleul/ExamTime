@@ -13,6 +13,7 @@ import { useChangePasswordMutation, useChangeProfileMutation } from '../../redux
 import { loginSuccess } from '../../reduxToolkit/Features/auth/authSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toast from 'react-native-toast-message';
 interface User {
   firstName?: string;
@@ -156,6 +157,13 @@ const ProfileEdit: React.FC = () => {
     <>
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
+      {/* <TouchableOpacity
+            style={styles.iconContainer}
+            touchSoundDisabled
+            onPress={() => navigator.goBack()}>
+            <AntDesign name="left" style={styles.backIcon} size={24} />
+          </TouchableOpacity> */}
+
         <TouchableOpacity style={styles.doneContainer} onPress={handleUpdateProfile}>
           <Text style={styles.doneText}>Done</Text>
         </TouchableOpacity>

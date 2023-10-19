@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingBottom: 35,
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#F5F5F5',
   },
   imageBg: {
     height: '35%',
