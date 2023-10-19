@@ -13,6 +13,7 @@ import { useChangePasswordMutation, useChangeProfileMutation } from '../../redux
 import { loginSuccess } from '../../reduxToolkit/Features/auth/authSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Toast from 'react-native-toast-message';
 interface User {
   firstName?: string;
   lastName?: string;
@@ -51,6 +52,7 @@ const ProfileEdit: React.FC = () => {
     const currentIndex = gradeOptions.indexOf(grade);
     const newIndex = (currentIndex - 1 + gradeOptions.length) % gradeOptions.length;
     setGrade(gradeOptions[newIndex]);
+
   };
 
   const handleUpdateProfile = async () => {
@@ -69,15 +71,28 @@ const ProfileEdit: React.FC = () => {
 
       try {
         const result = await updateProfile({ token, profileData });
-        dispatch(
+     await dispatch(
           loginSuccess({
             user: result.data.user,
             token: token,
           }),
         )
+  
         console.log("updated result", result);
+      
+      await  Toast.show({
+          type: 'success',
+          text1: 'success',
+          text2: 'Profile updated successfuly',
+          visibilityTime:4000
+        });
         navigation.goBack();
       } catch (error) {
+        await  Toast.show({
+          type: 'error',
+          text1: 'Hello',
+          text2: 'Something wrong'
+        });
         console.error(error);
       }
     }
@@ -116,18 +131,29 @@ const ProfileEdit: React.FC = () => {
               newPassword: values.newPassword,
               token,
             });
-    
+            await  Toast.show({
+              type: 'success',
+              text1: 'success',
+              text2: 'Password updated successfuly',
+              visibilityTime:4000
+            });
             // Handle the response accordingly
             console.log('Password changed successfully', response)
             console.log('Password changed successfully');
           }
         } catch (error) {
+          await  Toast.show({
+            type: 'error',
+            text1: 'Hello',
+            text2: 'Something went wrong'
+          });
           console.error(error);
         }
 
       } 
     } 
   return (
+    <>
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={styles.doneContainer} onPress={handleUpdateProfile}>
@@ -336,36 +362,12 @@ const ProfileEdit: React.FC = () => {
             </View>
           )}
         </Formik>
-        {/* <View style={styles.topFormContainer}>
-          <Text style={styles.title}>Update password</Text>
-
-          <TextInput
-            style={styles.inputContiner}
-            onChangeText={setPassword}
-            value={password}
-            placeholder="Current password"
-          />
-          <TextInput
-            style={styles.inputContiner}
-            onChangeText={setNewPassword}
-            value={newPassword}
-            placeholder="New password"
-          />
-          <TextInput
-            style={styles.inputContiner}
-            onChangeText={setConfirmNewPassword}
-            value={confirmNewPassword}
-            placeholder="Confirm password"
-          />
-
-          <TouchableOpacity
-            style={[styles.inputContiner, styles.changePassword]}
-          >
-            <Text style={styles.changePasswordText}>Change Password</Text>
-          </TouchableOpacity>
-        </View> */}
+  
       </ScrollView>
+ 
     </View>
+    <Toast/>
+    </>
   );
 };
 
