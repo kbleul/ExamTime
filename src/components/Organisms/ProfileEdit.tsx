@@ -72,13 +72,15 @@ const ProfileEdit: React.FC = () => {
 
       try {
         const result = await updateProfile({ token, profileData });
+        if(result.data.user)
+        {
      await dispatch(
           loginSuccess({
             user: result.data.user,
             token: token,
           }),
         )
-  
+        }
         console.log("updated result", result);
       
       await  Toast.show({
@@ -469,5 +471,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#b3b3b3',
   },
+ 
 });
 export default ProfileEdit;

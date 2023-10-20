@@ -21,7 +21,7 @@ const ProfileEditIndex = () => {
         </ImageBackground>
       </View>
 
-      <ProfileEdit />
+      <ProfileEdit/>
 
       <MainBottomNav />
     </View>
