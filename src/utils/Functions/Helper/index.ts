@@ -61,6 +61,7 @@ export const removeRealmUserData = async (
       console.log('saved------', savedUserData[0]);
       realm.write(() => {
         newUser.user = null;
+        newUser.token = null;
       });
 
       console.log('-----', newUser);
