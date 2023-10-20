@@ -92,13 +92,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '80%',
+    width: '90%',
   },
   modalImageContaner: {
-    width: '50%',
-    height: 180,
+    width: '40%',
+    height: 140,
     overflow: 'hidden',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   modalImg: {
     width: '100%',

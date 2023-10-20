@@ -72,11 +72,12 @@ const MainBottomNav = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Practice')}
           style={style.buttonWrapper}>
-          {currentScreen === 'Practice' && <View style={style.dot} />}
+          {currentScreen === 'Practice' ||
+            (currentScreen === 'Exam-View' && <View style={style.dot} />)}
 
           <View
             style={
-              currentScreen === 'Practice'
+              currentScreen === 'Practice' || currentScreen === 'Exam-View'
                 ? [style.button, style.buttonSelected]
                 : style.button
             }>
@@ -85,12 +86,14 @@ const MainBottomNav = () => {
               size={24}
               color="white"
               style={
-                currentScreen === 'Practice' ? style.iconActive : style.icon
+                currentScreen === 'Practice' || currentScreen === 'Exam-View'
+                  ? style.iconActive
+                  : style.icon
               }
             />
             <Text
               style={
-                currentScreen === 'Practice'
+                currentScreen === 'Practice' || currentScreen === 'Exam-View'
                   ? style.buttonTextActive
                   : style.buttonText
               }>

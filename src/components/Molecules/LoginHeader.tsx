@@ -1,21 +1,21 @@
 import React from 'react';
 import {TouchableOpacity, View, StyleSheet} from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import {screenHeight} from '../../utils/Data/data';
 
 const LoginHeader: React.FC<{navigate: () => void}> = ({navigate}) => {
   return (
     <View style={styles.topSectionContainer}>
-      <View style={styles.topSectionSubContainer}>
-        <TouchableOpacity
-          touchSoundDisabled
-          onPress={navigate}
-          style={styles.backIconContainer}>
-          <AntDesign name="left" size={22} color="white" />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        touchSoundDisabled
+        onPress={navigate}
+        style={styles.backIconContainer}>
+        <Entypo name="chevron-left" size={30} color="#4D4D4D" />
+      </TouchableOpacity>
+
       <View style={styles.imgcontainer}>
-        <FontAwesome6 name="user-large" size={45} color="#858585" />
+        <FontAwesome6 name="user-large" size={50} color="#fff" />
       </View>
     </View>
   );
@@ -23,31 +23,24 @@ const LoginHeader: React.FC<{navigate: () => void}> = ({navigate}) => {
 
 const styles = StyleSheet.create({
   topSectionContainer: {
-    height: '20%',
+    height: (screenHeight * 1) / 5,
+    position: 'relative',
+    marginTop: 10,
   },
   backIconContainer: {
-    paddingHorizontal: 20,
-    marginTop: 25,
-  },
-  topSectionSubContainer: {
-    height: '65%',
-    minHeight: 100,
-    borderBottomRightRadius: 22,
-    borderBottomLeftRadius: 22,
-    backgroundColor: '#1E90FF',
+    position: 'absolute',
+    top: 0,
+    left: 10,
   },
   imgcontainer: {
-    position: 'absolute',
-    top: '25%',
-    borderWidth: 4,
-    borderColor: 'white',
-    backgroundColor: '#fff',
-    width: 100,
-    height: 100,
+    borderColor: 'black',
+    width: 111,
+    height: 111,
     borderRadius: 100,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#0066B2',
   },
 });
 export default LoginHeader;

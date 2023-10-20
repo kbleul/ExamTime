@@ -6,6 +6,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -56,7 +60,8 @@ const SetNewPassword: React.FC<{
   });
 
   return (
-    <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Text style={formSubHeaderStyles.heading}>Setup new Password</Text>
       <Text style={formSubHeaderStyles.subHeading}>
         must be at least 8 character!
@@ -79,7 +84,7 @@ const SetNewPassword: React.FC<{
                     style={styles.smallBox}
                     touchSoundDisabled
                     onPress={() => setShowPassword(true)}>
-                    <Ionicons name="eye-outline" size={28} color="#81afe6" />
+                    <Ionicons name="eye-outline" size={24} color="#858585" />
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
@@ -88,8 +93,8 @@ const SetNewPassword: React.FC<{
                     onPress={() => setShowPassword(false)}>
                     <Ionicons
                       name="eye-off-outline"
-                      size={28}
-                      color="#81afe6"
+                      size={24}
+                      color="#858585"
                     />
                   </TouchableOpacity>
                 )}
@@ -120,7 +125,7 @@ const SetNewPassword: React.FC<{
                     style={styles.smallBox}
                     touchSoundDisabled
                     onPress={() => setShowConfirmPassword(true)}>
-                    <Ionicons name="eye-outline" size={28} color="#81afe6" />
+                    <Ionicons name="eye-outline" size={24} color="#858585" />
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
@@ -129,8 +134,8 @@ const SetNewPassword: React.FC<{
                     onPress={() => setShowConfirmPassword(false)}>
                     <Ionicons
                       name="eye-off-outline"
-                      size={28}
-                      color="#81afe6"
+                      size={24}
+                      color="#858585"
                     />
                   </TouchableOpacity>
                 )}
@@ -172,7 +177,7 @@ const SetNewPassword: React.FC<{
           )}
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 18,
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'PoppinsRegular',
     color: '#4D4D4D',
     paddingHorizontal: 20,
     letterSpacing: 2,

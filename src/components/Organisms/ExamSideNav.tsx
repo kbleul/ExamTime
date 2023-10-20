@@ -24,7 +24,7 @@ const ExamSideNav: React.FC<{
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}>
-        {Array.from({length: 60}).map((item, index) => (
+        {Array.from({length: 20}).map((item, index) => (
           <QuestionCard key={index} index={index} />
         ))}
       </ScrollView>
@@ -94,7 +94,7 @@ const QuestionCard: React.FC<{index: number}> = ({index}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    height: screenHeight,
+    height: '100%',
     position: 'absolute',
     top: 0,
     zIndex: 10,

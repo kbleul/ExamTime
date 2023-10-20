@@ -89,7 +89,7 @@ const LoginForm = () => {
                 keyboardType="numeric"
                 style={[styles.bigBox, styles.inputPhone]}
                 onChangeText={onChange}
-                placeholder="*********"
+                placeholder="Enter Mobile Number"
                 placeholderTextColor={'#d4d4d4'}
               />
             </View>
@@ -117,14 +117,14 @@ const LoginForm = () => {
                   style={styles.smallBox}
                   touchSoundDisabled
                   onPress={() => setShowPassword(false)}>
-                  <Ionicons name="eye-outline" size={28} color="#81afe6" />
+                  <Ionicons name="eye-outline" size={24} color="#858585" />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   style={styles.smallBox}
                   touchSoundDisabled
                   onPress={() => setShowPassword(true)}>
-                  <Ionicons name="eye-off-outline" size={28} color="#81afe6" />
+                  <Ionicons name="eye-off-outline" size={24} color="#858585" />
                 </TouchableOpacity>
               )}
             </View>
@@ -137,6 +137,30 @@ const LoginForm = () => {
           <Text style={formStyles.error}>{''}</Text>
         )}
       </View>
+
+      {error && <Text style={formStyles.error}>{error?.data?.message}</Text>}
+      <TouchableOpacity touchSoundDisabled style={styles.submitContainer}>
+        {isLoading ? (
+          <ActivityIndicator color={'#FFF'} />
+        ) : (
+          <Text
+            style={styles.submitBtnText}
+            onPress={handleSubmit(data =>
+              handleLogin(
+                data,
+                dispatch,
+                login,
+                loginSuccess,
+                navigator,
+                newUserData,
+                savedUserData,
+                realm,
+              ),
+            )}>
+            Login
+          </Text>
+        )}
+      </TouchableOpacity>
 
       <View style={styles.optionsContainer}>
         <TouchableOpacity
@@ -166,66 +190,42 @@ const LoginForm = () => {
           <Text style={styles.forgorPasswordText}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
-
-      {error && <Text style={formStyles.error}>{error?.data?.message}</Text>}
-      <TouchableOpacity touchSoundDisabled style={styles.submitContainer}>
-        {isLoading ? (
-          <ActivityIndicator color={'#FFF'} />
-        ) : (
-          <Text
-            style={styles.submitBtnText}
-            onPress={handleSubmit(data =>
-              handleLogin(
-                data,
-                dispatch,
-                login,
-                loginSuccess,
-                navigator,
-                newUserData,
-                savedUserData,
-                realm,
-              ),
-            )}>
-            Login
-          </Text>
-        )}
-      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  formContainer: {
-    paddingHorizontal: 20,
-  },
+  formContainer: {},
   signinText: {
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 18,
     color: '#4D4D4D',
     marginLeft: 8,
+    marginBottom: 30,
   },
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 25,
     borderColor: '#81afe6',
     borderWidth: 1,
     borderRadius: 10,
+    height: 47,
   },
   inputContainerSecondary: {
     paddingHorizontal: 10,
+    borderWidth: 1,
   },
   smallBox: {
     width: '20%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 20,
+    fontSize: 14,
     textAlign: 'center',
-    color: '#b3b3b3',
+    color: '#000',
+    fontFamily: 'PoppinsRegular',
   },
   inputPhone: {
-    letterSpacing: 6,
     borderWidth: 0,
     borderRadius: 0,
     color: '#000',
@@ -237,9 +237,9 @@ const styles = StyleSheet.create({
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 18,
-    fontFamily: 'Montserrat-Regular',
-    color: '#4D4D4D',
+    fontSize: 14,
+    fontFamily: 'PoppinsRegular',
+    color: '#000',
     paddingHorizontal: 20,
     letterSpacing: 2,
   },
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   remembermeText: {
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'PoppinsRegular',
     marginLeft: 4,
     fontSize: 14,
     color: '#858585',
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   forgorPasswordText: {
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'PoppinsRegular',
     fontSize: 14,
     color: '#0066B2',
   },
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     width: '100%',
     borderRadius: 10,
-    marginTop: 30,
+    marginTop: 10,
     backgroundColor: '#1E90FF',
   },
   submitBtnText: {

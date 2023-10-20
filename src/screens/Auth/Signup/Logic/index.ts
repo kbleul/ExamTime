@@ -121,7 +121,7 @@ export const handleVerfiyCode = async (
 ) => {
   if (checkCode(data.code, unregisteredUser)) {
     isCorrectCode.current = true;
-
+    console.log('here');
     checkIsOnline(navigator);
 
     try {
@@ -155,6 +155,7 @@ export const resendOtp = async (
   isCorrectCode: React.MutableRefObject<boolean>,
   setISResend: React.Dispatch<React.SetStateAction<boolean>>,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
+  sentOtp: React.MutableRefObject<string>,
 ) => {
   try {
     checkIsOnline(navigator);
@@ -174,6 +175,7 @@ export const resendOtp = async (
     }
 
     setOtpValues(['', '', '', '', '']);
+    sentOtp.current = '     ';
     setTimer(60);
     isCorrectCode.current = true;
     setISResend(prev => !prev);

@@ -41,12 +41,12 @@ const Question = () => {
             contentContainerStyle={styles.choiceContainerContent}
             showsVerticalScrollIndicator={false}>
             {/* <View style={styles.questionImageContainer}>
-          <Image
-            style={styles.questionImage}
-            source={require('../../assets/Images/home/s2.png')}
-            resizeMode="cover"
-          />
-        </View> */}
+              <Image
+                style={styles.questionImage}
+                source={require('../../assets/Images/home/s2.png')}
+                resizeMode="cover"
+              />
+            </View> */}
 
             <QuestionChoice
               choice="A"

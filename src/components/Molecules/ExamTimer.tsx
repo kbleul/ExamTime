@@ -10,7 +10,11 @@ const ExamTimer = () => {
         source={require('../../assets/Images/home/s2.png')}
         resizeMode="cover"
       /> */}
-      <MaterialCommunityIcons name="timer-outline" color="#008e97" size={20} />
+      {/* <MaterialCommunityIcons name="timer-outline" color="#008e97" size={20} /> */}
+      <Image
+        source={require('../../assets/Images/gif/watch.gif')}
+        style={styles.watchImg}
+      />
 
       <Text style={styles.timeText}>49:30</Text>
     </View>
@@ -37,6 +41,10 @@ const styles = StyleSheet.create({
     color: '#008e97',
     fontFamily: 'Montserrat-SemiBold',
     marginLeft: 10,
+  },
+  watchImg: {
+    width: 32,
+    height: 32,
   },
 });
 
