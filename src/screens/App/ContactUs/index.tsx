@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text,ScrollView, TouchableOpacity} from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import ShareApp from '../../../components/Organisms/ShareApp';
@@ -48,6 +47,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingBottom: 40,
+    
   },
   topHeader: {
     flexDirection: 'row',

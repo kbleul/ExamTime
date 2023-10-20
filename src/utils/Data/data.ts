@@ -5,7 +5,13 @@ type ProfileMenuItems = {
     navigate:String
   };
 };
-
+ type FAQtype={
+  [key: string]: {
+    ques: string;
+    ans: string;
+   
+ }
+}
 type CourseCatagoriesType = string[];
 
 export const DummyDataScience = [
@@ -69,6 +75,52 @@ export const ProfileMenuItemsAuth: ProfileMenuItems = {
     navigate:'Logout'
   },
 };
+export const FAQ =  [
+     
+  {
+    id:1,
+    "ques":"How do i change my profile information",
+    "ans":" You can update your profile information by navigating to the `Profile` section in the menu. Then click on the `profile` button to make changes."
+  },
+  {
+    id:2,
+    "ques":"How do i change my profile information",
+    "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+  },
+  {    id:3,
+      "ques":"How do i change my profile information",
+      "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+    },
+    {  id:4,
+      "ques":"How do i change my profile information",
+      "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+    },
+    {  id:5,
+      "ques":"How do i change my profile information",
+      "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+    },
+    {  id:6,
+      "ques":"How do i change my profile information",
+      "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+    },
+    {  id:7,
+      "ques":"How do i change my profile information",
+      "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+    },
+    {  id:8,
+      "ques":"How do i change my profile information",
+      "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+    },
+    {  id:9,
+      "ques":"How do i change my profile information",
+      "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+    },
+    {  id:10,
+      "ques":"How do i change my profile information",
+      "ans":" You can update your profile information by navigating to the Profile section in the menu. Then click on the profile button to make changes."
+    }
+]
+
 export const allowedTrialDays = 3;
 
 export const trialStatus = {
