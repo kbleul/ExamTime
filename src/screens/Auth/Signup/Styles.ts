@@ -23,7 +23,7 @@ export const formStyles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#9CC0EC',
     paddingHorizontal: 20,
-    paddingVertical: 4,
+    paddingVertical: 6,
     fontSize: 16,
     color: '#000',
   },

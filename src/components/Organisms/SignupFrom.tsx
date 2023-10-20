@@ -229,12 +229,6 @@ const SignupForm: React.FC<seterProps> = ({
           <View style={formStyles.inputContainer}>
             <Text style={formStyles.label}>Region</Text>
 
-            {isLoadingRegions && (
-              <View style={formStyles.loadingContainer}>
-                <ActivityIndicator size={14} />
-                <Text style={formStyles.loadingText}>Loading regions ...</Text>
-              </View>
-            )}
             <Dropdown
               style={[
                 formStyles.dropdown,
@@ -260,6 +254,12 @@ const SignupForm: React.FC<seterProps> = ({
                 setIsFocusRegion(false);
               }}
             />
+            {isLoadingRegions && (
+              <View style={formStyles.loadingContainer}>
+                <ActivityIndicator size={14} />
+                <Text style={formStyles.loadingText}>Loading regions ...</Text>
+              </View>
+            )}
             {regionError && !region ? (
               <Text style={formStyles.error}>Region is required *</Text>
             ) : (
