@@ -1,6 +1,8 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NavigationProp} from '@react-navigation/native';
 import {NativeScrollEvent, NativeSyntheticEvent} from 'react-native';
+import {UserData} from '../../../Realm';
+import {LocalObjectDataKeys} from '../../Data/data';
 
 export const checkIsOnline = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
@@ -44,3 +46,26 @@ export const getItemLayout = (
   offset: screenWidth * index,
   index,
 });
+
+export const removeRealmUserData = async (
+  realm: Realm,
+  savedUserData: ResultsType<UserData>,
+) => {
+  if (savedUserData && savedUserData.length > 0) {
+    let newUser = savedUserData[0];
+
+    // const {_id, initialDate, isSubscribed, selectedSubjects, grade} =
+    //   savedUserData[0];
+
+    try {
+      console.log('saved------', savedUserData[0]);
+      realm.write(() => {
+        newUser.user = null;
+      });
+
+      console.log('-----', newUser);
+    } catch (e) {
+      console.log('err', e);
+    }
+  }
+};

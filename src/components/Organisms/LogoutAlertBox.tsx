@@ -4,17 +4,25 @@ import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {logoutSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import {useDispatch} from 'react-redux';
+import {removeRealmUserData} from '../../utils/Functions/Helper';
+import {AuthContext} from '../../Realm/model';
+import {UserData} from '../../Realm';
 
 const LogoutAlertBox: React.FC<{
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({setShowLogoutDialog}) => {
   const dispatch = useDispatch();
+  const {useQuery, useRealm} = AuthContext;
+  const realm = useRealm();
+
+  const savedUserData = useQuery(UserData);
 
   const navigator = useNavigation();
   const [removeDtata, setRemoveData] = useState(false);
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
+    removeRealmUserData(realm, savedUserData);
     navigator.navigate('Home');
   };
   return (

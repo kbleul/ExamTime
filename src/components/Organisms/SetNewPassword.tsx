@@ -78,6 +78,7 @@ const SetNewPassword: React.FC<{
                   style={[formStyles.input, styles.bigBox]}
                   onChangeText={onChange}
                   secureTextEntry={!showPassword}
+                  placeholder="**************"
                 />
                 {!showPassword ? (
                   <TouchableOpacity
@@ -119,6 +120,7 @@ const SetNewPassword: React.FC<{
                   style={[formStyles.input, styles.bigBox]}
                   onChangeText={onChange}
                   secureTextEntry={!showConfirmPassword}
+                  placeholder="**************"
                 />
                 {!showConfirmPassword ? (
                   <TouchableOpacity
@@ -195,11 +197,10 @@ const styles = StyleSheet.create({
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'PoppinsRegular',
     color: '#4D4D4D',
     paddingHorizontal: 20,
-    letterSpacing: 2,
     borderRadius: 0,
     borderWidth: 0,
     borderRightWidth: 1,

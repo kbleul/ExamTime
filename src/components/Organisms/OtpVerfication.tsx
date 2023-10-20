@@ -82,8 +82,6 @@ const VerificationCodeForm: React.FC<seterProps> = ({
     }
   };
   const handleKeyPress = (index: number, key: string) => {
-    //&& index > 0 && OtpValues[index] === ''
-
     if (key === 'Backspace') {
       if (OtpValues[index] !== '') {
         setOtpValues(prevValues => {
@@ -145,6 +143,11 @@ const VerificationCodeForm: React.FC<seterProps> = ({
             }}
             onKeyPress={({nativeEvent: {key}}) => {
               handleKeyPress(index, key);
+            }}
+            onTextInput={({nativeEvent: {text}}) => {
+              if (text.length === 1) {
+                handleKeyPress(index, text);
+              }
             }}
             value={OtpValues[index]}
           />
