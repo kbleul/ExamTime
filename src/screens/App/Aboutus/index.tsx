@@ -11,40 +11,42 @@ const Index = () => {
     const user = useSelector((state: RootState) => state.auth.user);
 
     return (
-       
+
         <View style={styles.container}>
- <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 {/* <View style={styles.innerContainer}> */}
-                    <View style={styles.backicon}>
-                        <BackWithItem type="About Us" isTrial={user ? false : true} />
-                    </View>
-                 
-                        <View style={styles.imageBg}>
-                            <Image source={require('../../../assets/Logo/logo1.png')} style={styles.img} />
-                        </View>
+                <View style={styles.backicon}>
+                    <BackWithItem type="About Us" isTrial={user ? false : true} />
+                </View>
 
-                        <View style={styles.textContainer}>
-                            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. progress</Text>
-                        </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.text}>Think Hub ET is an innovation company founded with the purpose of developing a high-quality E-learning platform for current generation. Our dynamic staff provides training, and flexible support services to the Exam taker community. We promote an atmosphere for growth in teaching and learning via creative problem solving, collaboration, and reflection in order to best assist our students, teachers, and staff.
+                    </Text>
+                </View>
+                <View style={styles.imageBg}>
+                    <Image source={require('../../../assets/Logo/ThinkHubIcon.png')} style={styles.img} />
+                </View>
 
-                        <View style={styles.share}>
-                            <ShareApp />
-                        </View>
-            
-                  
+
+
+                <View style={styles.share}>
+                    <ShareApp />
+                </View>
+
+
                 {/* </View> */}
-                </ScrollView>
+            </ScrollView>
             <MainBottomNav />
-         
+
         </View>
-      
+
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-start',
-        alignItems: 'flex-start', 
+        alignItems: 'flex-start',
         flex: 1,
         width: '100%',
         backgroundColor: '#F9FCFF',
@@ -55,19 +57,21 @@ const styles = StyleSheet.create({
 
     },
     innerContainer: {
-         flex: 1,
+        flex: 1,
     },
     text: {
         padding: 10,
-        fontSize: 13,
+        fontSize: 15,
+        textAlign:"center",
         color: '#222E50',
         fontFamily: 'Montserrat-Regular',
     },
     textContainer: {
         // height: '25%',
+        marginTop:20,
         padding: 5,
         width: '100%',
-        overflow:"hidden"
+        overflow: "hidden"
     },
     imageBg: {
         height: '25%',
@@ -89,7 +93,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
         padding: 10,
-        paddingTop:30
+        paddingTop: 30
         //  marginBottom: 199
     },
 });

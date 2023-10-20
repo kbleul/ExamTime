@@ -43,6 +43,7 @@ const ProfileEdit: React.FC = () => {
   const [updatePassword, ] = useChangePasswordMutation();
 
   const gradeOptions = ['grade_12_natural', 'grade_12_social'];
+  const rigionOptions = ['no_rigion', 'Addis Ababa'];
   const handleUpIconPress = () => {
     const currentIndex = gradeOptions.indexOf(grade);
     const newIndex = (currentIndex + 1) % gradeOptions.length;
@@ -53,6 +54,18 @@ const ProfileEdit: React.FC = () => {
     const currentIndex = gradeOptions.indexOf(grade);
     const newIndex = (currentIndex - 1 + gradeOptions.length) % gradeOptions.length;
     setGrade(gradeOptions[newIndex]);
+
+  };
+  const handleUpIconPressforRigion = () => {
+    const currentIndex = rigionOptions.indexOf(city);
+    const newIndex = (currentIndex + 1) % rigionOptions.length;
+    setCity(rigionOptions[newIndex]);
+  };
+
+  const handleDownIconPressforRigion = () => {
+    const currentIndex = rigionOptions.indexOf(city);
+    const newIndex = (currentIndex - 1 + rigionOptions.length) % rigionOptions.length;
+    setCity(rigionOptions[newIndex]);
 
   };
 
@@ -159,13 +172,6 @@ const ProfileEdit: React.FC = () => {
     <>
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-      {/* <TouchableOpacity
-            style={styles.iconContainer}
-            touchSoundDisabled
-            onPress={() => navigator.goBack()}>
-            <AntDesign name="left" style={styles.backIcon} size={24} />
-          </TouchableOpacity> */}
-
         <TouchableOpacity style={styles.doneContainer} onPress={handleUpdateProfile}>
           <Text style={styles.doneText}>Done</Text>
         </TouchableOpacity>
@@ -222,23 +228,48 @@ const ProfileEdit: React.FC = () => {
               value={grade}
               onChangeText={setGrade}
             />
-            <View style={{ flexDirection: 'columen', gap: 5 }}>
+            <View style={{ flexDirection: 'columen', gap: 1 }}>
               <TouchableOpacity onPress={handleUpIconPress}>
-                <Icon name="arrow-up" size={15} />
+                <Ionicons name="caret-up-outline" size={20} />
               </TouchableOpacity>
               <TouchableOpacity onPress={handleDownIconPress}>
-                <Icon name="arrow-down" size={15} />
+                <Ionicons name="caret-down-outline" size={20} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={{
+            flexDirection: 'row', alignItems: 'center', paddingHorizontal: 30,
+            borderWidth: 1,
+            marginVertical: 5,
+            marginHorizontal: 20,
+            borderRadius: 10,
+            borderColor: '#abcef5',
+          }}>
+            <TextInput
+              style={{
+                flex: 1,
+                fontSize: 18,
+                color: '#858585'
+              }}
+              value={city}
+              onChangeText={setCity}
+            />
+            <View style={{ flexDirection: 'columen', gap: 1 }}>
+              <TouchableOpacity onPress={handleUpIconPressforRigion}>
+                <Ionicons name="caret-up-outline" size={20} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleDownIconPressforRigion}>
+                <Ionicons name="caret-down-outline" size={20} />
               </TouchableOpacity>
             </View>
           </View>
 
 
-
-          <TextInput
+          {/* <TextInput
             style={styles.inputContiner}
             onChangeText={setCity}
             value={city}
-          />
+          /> */}
         </View>
         <Formik
           initialValues={{ password: '', newPassword: '', confirmPassword: '' }}
@@ -387,7 +418,7 @@ const styles = StyleSheet.create({
     top: '35%',
     height: '67%',
     width: '100%',
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#F5F5F5',
     overflow: 'hidden',
     paddingBottom: 25,
   },

@@ -38,9 +38,9 @@ const ProfileContent = () => {
             </Text>
             </View>
             <TouchableOpacity
-             style={styles.iconContainer}
+           
             touchSoundDisabled
-            onPress={() => navigator.goBack()}>
+            onPress={() => navigator.navigate('Profile-Edit')}>
             <MaterialIcons  name="edit" style={styles.editIcon} size={24} />
           </TouchableOpacity>
           </View>
