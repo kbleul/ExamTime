@@ -62,10 +62,8 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 
     const optValue =
       OtpValues[0] + OtpValues[1] + OtpValues[2] + OtpValues[3] + OtpValues[4];
-    console.log(optValue, sentOtp.current);
     if (!hasEmpty && optValue !== sentOtp.current) {
       sentOtp.current = optValue;
-      console.log('handle');
       handleVerfiyCode(
         {
           userId: unregisteredUser ? unregisteredUser?.id : '',

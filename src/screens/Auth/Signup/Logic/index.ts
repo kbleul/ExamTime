@@ -121,7 +121,6 @@ export const handleVerfiyCode = async (
 ) => {
   if (checkCode(data.code, unregisteredUser)) {
     isCorrectCode.current = true;
-    console.log('here');
     checkIsOnline(navigator);
 
     try {

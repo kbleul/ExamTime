@@ -58,13 +58,10 @@ export const removeRealmUserData = async (
     //   savedUserData[0];
 
     try {
-      console.log('saved------', savedUserData[0]);
       realm.write(() => {
         newUser.user = null;
         newUser.token = null;
       });
-
-      console.log('-----', newUser);
     } catch (e) {
       console.log('err', e);
     }
