@@ -26,15 +26,9 @@ const Index = () => {
                 <View style={styles.imageBg}>
                     <Image source={require('../../../assets/Logo/ThinkHubIcon.png')} style={styles.img} />
                 </View>
-
-
-
                 <View style={styles.share}>
                     <ShareApp />
                 </View>
-
-
-                {/* </View> */}
             </ScrollView>
             <MainBottomNav />
 

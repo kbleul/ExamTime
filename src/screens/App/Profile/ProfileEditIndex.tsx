@@ -17,7 +17,6 @@ const ProfileEditIndex = () => {
           style={styles.img}
           source={require('../../../assets/Images/Profile/1.png')} // Replace with the correct path to your image
         >
-        
         </ImageBackground>
       </View>
 
