@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import badgeImg from '../../assets/Images/Profile/badge1.png';
 import MenuItems from '../Molecules/MenuItems';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
+//import badgeImg from '../../assets/Images/Profile/1.png';
 
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const navigator = useNavigation();
+  const navigator = useNavigation<any>();
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -24,7 +24,7 @@ const ProfileContent = () => {
             <Text style={styles.name}>
               {user ? `${user.firstName} ${user.lastName}` : ''}
             </Text>
-            <Image style={styles.badge} source={badgeImg} />
+            {/*<Image style={styles.badge} source={badgeImg} />*/}
           </View>
         )}
 

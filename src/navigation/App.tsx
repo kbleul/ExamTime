@@ -8,6 +8,8 @@ import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
 import Login from '../screens/Auth/Login/Login';
 import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
+import ContactUs from '../screens/App/ContactUs/index'
+import FAQ from '../screens/App/FAQ/index'
 
 import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
@@ -72,6 +74,16 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="Profile"
           component={Profile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="contactUs"
+          component={ContactUs}
+          options={{headerShown: false}}
+        />
+          <Stack.Screen
+          name="FAQ"
+          component={FAQ}
           options={{headerShown: false}}
         />
         <Stack.Screen

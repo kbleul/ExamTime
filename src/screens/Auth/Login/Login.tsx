@@ -8,7 +8,7 @@ import AuthNavigatorOption from '../../../components/Organisms/AuthNavigatorOpti
 import {screenHeight} from '../../../utils/Data/data';
 
 export default function Login() {
-  const navigator = useNavigation();
+  const navigator = useNavigation<any>();
 
   return (
     <SafeAreaView style={styles.container}>

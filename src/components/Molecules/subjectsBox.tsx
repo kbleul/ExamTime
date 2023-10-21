@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 
 const tempColors = {
-  1: '#F5A52D',
-  2: '#74FF51',
-  3: '#E2725B',
+  1 : '#F5A52D',
+  2 : '#74FF51',
+  3 : '#E2725B',
   4: '#1E90FF',
   5: '#1E90FF',
   6: '#F5A52D',
@@ -21,7 +21,7 @@ const SubjectsBox: React.FC<{name: string; index: number}> = ({
   name,
   index,
 }) => {
-  const navigator = useNavigation();
+  const navigator = useNavigation<any>();
 
   return (
     <TouchableOpacity
@@ -36,7 +36,7 @@ const SubjectsBox: React.FC<{name: string; index: number}> = ({
           source={require('../../assets/Images/home/1.png')} // Replace with the correct path to your image
         >
           <View>
-            <Text style={[style.name, {color: tempColors[index]}]}>{name}</Text>
+            <Text style={[style.name, {color: tempColors[1]}]}>{name}</Text>
             <Text style={style.unit}>Unit </Text>
             <Text style={style.title}>Title</Text>
           </View>

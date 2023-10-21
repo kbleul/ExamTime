@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 const StudySubjects: React.FC<{subject: string}> = ({subject}) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <TouchableOpacity
