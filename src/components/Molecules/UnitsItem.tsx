@@ -14,7 +14,7 @@ type UnitsItemProps = {
 };
 
 const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const user = useSelector((state: RootState) => state.auth.user);
 
   const [showMore, setShowMore] = useState(false);

@@ -7,7 +7,7 @@ import SocialOptions from '../../../components/Organisms/SocialOptions';
 import AuthNavigatorOption from '../../../components/Organisms/AuthNavigatorOption';
 
 export default function Login() {
-  const navigator = useNavigation();
+  const navigator = useNavigation<any>();
 
   return (
     <SafeAreaView style={styles.container}>

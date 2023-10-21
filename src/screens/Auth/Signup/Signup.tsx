@@ -10,7 +10,7 @@ import AuthNavigatorOption from '../../../components/Organisms/AuthNavigatorOpti
 import SocialOptions from '../../../components/Organisms/SocialOptions';
 
 export default function Signup() {
-  const navigator = useNavigation();
+  const navigator = useNavigation<any>();
 
   const [currentStep, setCurrentStep] = useState(1);
 
