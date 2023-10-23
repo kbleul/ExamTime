@@ -80,7 +80,6 @@ const ForgotPasswordForm: React.FC<{
       }
 
       const responseData = await response.json();
-      console.log(responseData.user);
       setIsLoading(false);
       setSubmitError(null);
       setUser(responseData.user);

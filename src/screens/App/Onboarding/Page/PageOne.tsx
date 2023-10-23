@@ -8,8 +8,9 @@ import {
   ScrollView,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import img from '../../../../assets/Images/onboarding/1.png';
+import img from '../../../../assets/Images/onboarding/1a.png';
 import {PagesProps} from './types';
+import {screenHeight} from '../../../../utils/Data/data';
 
 const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
   return (
@@ -18,15 +19,15 @@ const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
         contentContainerStyle={style.scrollContainer}
         showsVerticalScrollIndicator={false}>
         <View style={style.imgContainer}>
-          <Image source={img} style={style.img} />
+          <Image source={img} style={style.img} resizeMode="contain" />
         </View>
 
         <View style={style.contentContainer}>
-          <Text style={style.contentTitle}>Exam Time</Text>
+          <Text style={style.contentTitle}>Study To Pass</Text>
 
           <Text style={style.contentText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Study and get the highest score in your class, the exam won't be
+            this fun,
           </Text>
         </View>
 
@@ -34,9 +35,15 @@ const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
           touchSoundDisabled
           onPress={() => setPageCounter(2)}
           style={style.buttonContainer}>
-          <View style={style.buttonContainer_second}>
-            <View style={style.buttonContainer_three}>
-              <AntDesign name="arrowright" style={style.arrowIcon} size={30} />
+          <View style={style.buttonContainer_first}>
+            <View style={style.buttonContainer_second}>
+              <View style={style.buttonContainer_three}>
+                <AntDesign
+                  name="arrowright"
+                  style={style.arrowIcon}
+                  size={30}
+                />
+              </View>
             </View>
           </View>
         </TouchableOpacity>
@@ -47,55 +54,61 @@ const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
 
 const style = StyleSheet.create({
   container: {
-    paddingTop: 30,
     flex: 1,
   },
   scrollContainer: {
-    height: '100%',
+    height: screenHeight,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   imgContainer: {
     width: '100%',
-    height: '50%',
-    marginTop: '5%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: screenHeight * (4 / 10),
+    marginTop: screenHeight * (1 / 10),
   },
   img: {
     width: '100%',
     height: '100%',
+    flex: 1,
   },
   contentContainer: {
-    marginTop: '5%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    height: screenHeight * (3 / 10),
   },
   contentTitle: {
     fontSize: 24,
-    color: 'black',
+    marginBottom: '10%',
+    color: '#2D466A',
     fontFamily: 'Montserrat-Bold',
-    marginBottom: 10,
   },
   contentText: {
     fontSize: 16,
-    color: 'black',
+    color: '#2D466A',
     lineHeight: 22,
-    paddingHorizontal: 30,
+    paddingHorizontal: 60,
     textAlign: 'center',
     fontFamily: 'Montserrat-Regular',
+    marginBottom: '10%',
   },
   buttonContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 80,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: screenHeight * (3 / 10),
+    paddingVertical: 20,
+  },
+  buttonContainer_first: {
+    width: 85,
+    height: 85,
+    borderRadius: 800,
     backgroundColor: '#F1F9FF',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: '15%',
   },
   buttonContainer_second: {
-    width: 60,
-    height: 60,
+    width: 73,
+    height: 73,
     borderRadius: 800,
     backgroundColor: '#C1E5FF',
     justifyContent: 'center',
@@ -103,8 +116,8 @@ const style = StyleSheet.create({
     alignSelf: 'center',
   },
   buttonContainer_three: {
-    width: 40,
-    height: 40,
+    width: 57,
+    height: 57,
     borderRadius: 800,
     backgroundColor: '#1E90FF',
     justifyContent: 'center',

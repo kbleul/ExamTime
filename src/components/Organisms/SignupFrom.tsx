@@ -18,10 +18,23 @@ import {
 } from '../../reduxToolkit/Services/auth';
 import {fetchRegions, handleCreateUser} from '../../screens/Auth/Signup/Logic';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
-
 const schema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
+  firstName: yup
+    .string()
+    .required('First name is required')
+    .matches(
+      /^[A-Za-z\s]+$/,
+      'First name should only contain letters and spaces',
+    )
+    .min(4, 'First name should be at least 4 characters long'),
+  lastName: yup
+    .string()
+    .required('Last name is required')
+    .matches(
+      /^[A-Za-z\s]+$/,
+      'Last name should only contain letters and spaces',
+    )
+    .min(4, 'Last name should be at least 4 characters long'),
   phoneNumber: yup
     .string()
     .required('Phone number is required')
@@ -141,7 +154,7 @@ const SignupForm: React.FC<seterProps> = ({
                 keyboardType="numeric"
                 style={[formStyles.input, formStyles.inputPhone]}
                 onChangeText={onChange}
-                placeholder="*********"
+                placeholder="Enter Mobile Number"
                 placeholderTextColor={'#d4d4d4'}
               />
             </View>
@@ -176,78 +189,92 @@ const SignupForm: React.FC<seterProps> = ({
         )}
       </View>
 
-      <View style={formStyles.inputContainer}>
-        <Text style={formStyles.label}>Gender</Text>
+      <View style={formStyles.flexedInput}>
+        <View style={formStyles.inputContainerFlexed}>
+          <Text style={formStyles.label}>Gender</Text>
 
-        <Dropdown
-          style={[formStyles.dropdown, isFocusGender && {borderColor: 'blue'}]}
-          placeholderStyle={formStyles.placeholderStyle}
-          selectedTextStyle={formStyles.selectedTextStyle}
-          inputSearchStyle={formStyles.inputSearchStyle}
-          itemTextStyle={formStyles.itemListStyle}
-          iconStyle={formStyles.iconStyle}
-          data={genderOptions}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocusGender ? 'Select gender' : '...'}
-          searchPlaceholder="Search..."
-          value={gender}
-          onFocus={() => setIsFocusGender(true)}
-          onBlur={() => setIsFocusGender(false)}
-          onChange={item => {
-            setGender(item.value);
-            setIsFocusGender(false);
-          }}
-        />
-        {genderError && !gender ? (
-          <Text style={formStyles.error}>Gender is required *</Text>
-        ) : (
-          <Text style={formStyles.error}>{''}</Text>
-        )}
-      </View>
+          <Dropdown
+            style={[
+              formStyles.dropdown,
+              isFocusGender && {borderColor: 'blue'},
+            ]}
+            placeholderStyle={formStyles.placeholderStyle}
+            selectedTextStyle={formStyles.selectedTextStyle}
+            inputSearchStyle={formStyles.inputSearchStyle}
+            itemTextStyle={formStyles.itemListStyle}
+            iconStyle={formStyles.iconStyle}
+            data={genderOptions}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocusGender ? 'Select gender' : '...'}
+            searchPlaceholder="Search..."
+            value={gender}
+            onFocus={() => setIsFocusGender(true)}
+            onBlur={() => setIsFocusGender(false)}
+            onChange={item => {
+              setGender(item.value);
+              setIsFocusGender(false);
+            }}
+          />
+          {genderError && !gender ? (
+            <Text style={formStyles.error}>Gender is required *</Text>
+          ) : (
+            <Text style={formStyles.error}>{''}</Text>
+          )}
+        </View>
 
-      <View style={formStyles.inputContainer}>
-        <Text style={formStyles.label}>Region</Text>
+        <View style={formStyles.inputContainerFlexed}>
+          <View style={formStyles.inputContainer}>
+            <Text style={formStyles.label}>Region</Text>
 
-        {isLoadingRegions && (
-          <View style={formStyles.loadingContainer}>
-            <ActivityIndicator size={14} />
-            <Text style={formStyles.loadingText}>Loading regions ...</Text>
+            <Dropdown
+              style={[
+                formStyles.dropdown,
+                isFocusRegion && {borderColor: 'blue'},
+              ]}
+              placeholderStyle={formStyles.placeholderStyle}
+              selectedTextStyle={formStyles.selectedTextStyle}
+              inputSearchStyle={formStyles.inputSearchStyle}
+              itemTextStyle={formStyles.itemListStyle}
+              iconStyle={formStyles.iconStyle}
+              data={regionsListItems}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocusRegion ? 'Select region' : '...'}
+              searchPlaceholder="Search..."
+              value={region}
+              onFocus={() => setIsFocusRegion(true)}
+              onBlur={() => setIsFocusRegion(false)}
+              onChange={item => {
+                setRegion(item.value);
+                setIsFocusRegion(false);
+              }}
+            />
+            {isLoadingRegions && (
+              <View style={formStyles.loadingContainer}>
+                <ActivityIndicator size={14} />
+                <Text style={formStyles.loadingText}>Loading regions ...</Text>
+              </View>
+            )}
+            {regionError && !region ? (
+              <Text style={formStyles.error}>Region is required *</Text>
+            ) : (
+              <Text style={formStyles.error}>{''}</Text>
+            )}
           </View>
-        )}
-        <Dropdown
-          style={[formStyles.dropdown, isFocusRegion && {borderColor: 'blue'}]}
-          placeholderStyle={formStyles.placeholderStyle}
-          selectedTextStyle={formStyles.selectedTextStyle}
-          inputSearchStyle={formStyles.inputSearchStyle}
-          itemTextStyle={formStyles.itemListStyle}
-          iconStyle={formStyles.iconStyle}
-          data={regionsListItems}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocusRegion ? 'Select region' : '...'}
-          searchPlaceholder="Search..."
-          value={region}
-          onFocus={() => setIsFocusRegion(true)}
-          onBlur={() => setIsFocusRegion(false)}
-          onChange={item => {
-            setRegion(item.value);
-            setIsFocusRegion(false);
-          }}
-        />
-        {regionError && !region ? (
-          <Text style={formStyles.error}>Region is required *</Text>
-        ) : (
-          <Text style={formStyles.error}>{''}</Text>
-        )}
-      </View>
 
-      {error && <Text>{error?.data?.message}</Text>}
-      {errorRegion && <Text>{errorRegion?.data?.message}</Text>}
+          {error && (
+            <Text style={formStyles.error}>{error?.data?.message}</Text>
+          )}
+          {errorRegion && (
+            <Text style={formStyles.error}>{errorRegion?.data?.message}</Text>
+          )}
+        </View>
+      </View>
 
       <View style={formStyles.submitBtnContainer}>
         <TouchableOpacity

@@ -4,12 +4,17 @@ import {useNavigation} from '@react-navigation/native';
 import img from '../../../../assets/Images/onboarding/3.png';
 
 import {PagesCounterType} from './types';
-import {DummyDataScience, DummyDataSocial} from '../../../../utils/Data/data';
+import {
+  DummyDataScience,
+  DummyDataSocial,
+  screenHeight,
+} from '../../../../utils/Data/data';
 import {ScrollView} from 'react-native-gesture-handler';
-import {onboarding_save_navToHome} from '../Logic';
+import {createRealmUserData} from '../Logic';
 import SubjectButton from '../../../../components/Atoms/SubjectButtonsOnboarding';
 import GradeButton from '../../../../components/Atoms/GradeButtonOnBoarding';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
+import {AuthContext} from '../../../../Realm/model';
 
 const Grade12Catagories = ['Natural', 'Social'];
 
@@ -22,6 +27,9 @@ const PageThree: React.FC<PageThreeProps> = ({
   selectedGrade,
   setPageCounter,
 }) => {
+  const {useRealm} = AuthContext;
+
+  const realm = useRealm();
   const navigation = useNavigation();
   const [selectedGrades, setSelectedGrades] = useState<string[] | undefined>(
     [],
@@ -33,59 +41,22 @@ const PageThree: React.FC<PageThreeProps> = ({
 
   return (
     <View style={style.container}>
-      <ScrollView
-        contentContainerStyle={style.scrollContainer}
-        showsHorizontalScrollIndicator>
+      <View style={style.scrollContainer}>
         <TopIndicator
           setPageCounter={setPageCounter}
           pageCounter={pageCounter}
         />
 
-        {selectedGrade === 3 && (
-          <View style={style.selectorContainer}>
-            <TouchableOpacity
-              onPress={() => setSelectedCatagory(Grade12Catagories[0])}
-              style={
-                selectedCatagory === Grade12Catagories[0]
-                  ? [style.buttons, style.activeButton]
-                  : style.buttons
-              }>
-              <Text
-                style={
-                  selectedCatagory === Grade12Catagories[0]
-                    ? style.buttonText
-                    : [style.buttonText, style.activeButtonText]
-                }>
-                {Grade12Catagories[0]}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setSelectedCatagory(Grade12Catagories[1])}
-              style={
-                selectedCatagory === Grade12Catagories[1]
-                  ? [style.buttons, style.activeButton]
-                  : style.buttons
-              }>
-              <Text
-                style={
-                  selectedCatagory === Grade12Catagories[1]
-                    ? style.buttonText
-                    : [style.buttonText, style.activeButtonText]
-                }>
-                {Grade12Catagories[1]}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        <View style={style.imgContainer}>
-          <Image source={img} style={style.img} />
-        </View>
         <View style={style.titleContainer}>
-          <Text style={style.title}>What do you want to study?</Text>
+          <Text style={style.title}>Hello.</Text>
+          <Text style={style.subtitle}>
+            Pick your favorite topics to set up your feeds
+          </Text>
         </View>
-        <View>
-          <View style={style.buttonsSubcontainer}>
+
+        <View style={style.secondBox}>
+          <View
+            style={[style.buttonsSubcontainer, style.buttonsSubcontainerTop]}>
             {selectedCatagory === Grade12Catagories[0]
               ? DummyDataScience.map((subject, index) => (
                   <SubjectButton
@@ -109,12 +80,18 @@ const PageThree: React.FC<PageThreeProps> = ({
             <GradeButton
               text="Get Started"
               index={5}
-              onPress={() => onboarding_save_navToHome(navigation)}
+              onPress={() =>
+                createRealmUserData(
+                  realm,
+                  selectedGrades ? [...selectedGrades] : [],
+                  navigation,
+                )
+              }
               isActive={true}
             />
           </View>
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -153,35 +130,42 @@ const style = StyleSheet.create({
   activeButtonText: {
     color: '#858585',
   },
-  imgContainer: {
-    width: '100%',
-    height: '25%',
-    marginTop: '5%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  img: {
-    width: '80%',
-    height: '100%',
-  },
   titleContainer: {
-    marginTop: '3%',
+    height: screenHeight * (3 / 10),
+    justifyContent: 'flex-end',
   },
   title: {
     fontFamily: 'Montserrat-Bold',
     fontSize: 26,
-    color: '#858585',
+    color: '#2D466A',
     textAlign: 'left',
     paddingHorizontal: 30,
     lineHeight: 40,
   },
+  subtitle: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 18,
+    color: '#2D466A',
+    textAlign: 'left',
+    paddingHorizontal: 30,
+    lineHeight: 40,
+  },
+  secondBox: {
+    height: screenHeight * (5 / 10),
+    justifyContent: 'space-between',
+  },
+  subjectButtonsContainer: {},
   buttonsSubcontainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexWrap: 'wrap',
     marginTop: '7%',
-    paddingHorizontal: 20,
+    width: '90%',
+    marginLeft: '5%',
+  },
+  buttonsSubcontainerTop: {
+    marginLeft: '10%',
   },
 });
 

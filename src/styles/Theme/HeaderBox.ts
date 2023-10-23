@@ -4,10 +4,18 @@ export const HeaderStyle = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    padding: 5,
+    alignItems: 'center',
+    padding: 8,
+    paddingVertical: 10,
   },
-  subContainer: {},
+  containerSubscribed: {
+    justifyContent: 'flex-end',
+  },
+  subContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
   trialText: {
     fontSize: 24,
     margin: 2,
@@ -21,9 +29,21 @@ export const HeaderStyle = StyleSheet.create({
     color: '#000',
     fontFamily: 'Montserrat-SemiBold',
   },
+  notificationBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dot: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 10,
+    height: 10,
+    borderRadius: 20,
+    backgroundColor: '#0066B2',
+  },
   leftContainer: {
-    margin: 2,
-    marginTop: 5,
+    marginHorizontal: 2,
     borderWidth: 1,
     borderColor: '#E2725B',
     paddingHorizontal: 12,

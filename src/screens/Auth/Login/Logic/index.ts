@@ -8,7 +8,11 @@ import {
   setObject_to_localStorage,
   set_to_localStorage,
 } from '../../../../utils/Functions/Set';
-import {LocalStorageDataKeys} from '../../../../utils/Data/data';
+import {
+  LocalObjectDataKeys,
+  LocalStorageDataKeys,
+} from '../../../../utils/Data/data';
+import {UserData} from '../../../../Realm';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 
@@ -20,10 +24,14 @@ export const handleLogin = async (
     {
       user: userType;
       token: string;
+      isSubscribed: boolean;
     },
     'auth/loginSuccess'
   >,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
+  newUserData: ResultsType<UserData>,
+  savedUserData: ResultsType<UserData>,
+  realm: Realm,
 ) => {
   checkIsOnline(navigator);
 
@@ -33,25 +41,76 @@ export const handleLogin = async (
       password: data.password,
     }).unwrap();
 
-    console.log(response.accessToken);
     dispatch(
       loginSuccess({
         user: response.user,
         token: response.accessToken,
+        isSubscribed: false,
       }),
     );
 
-    setObject_to_localStorage(LocalStorageDataKeys.userData, response.user);
-    set_to_localStorage(LocalStorageDataKeys.token, response.accessToken);
+    updateRealmUserData(
+      newUserData,
+      savedUserData,
+      response.user,
+      response.accessToken,
+      realm,
+    );
+
+    // setObject_to_localStorage(LocalStorageDataKeys.userData, response.user);
+    // set_to_localStorage(LocalStorageDataKeys.token, response.accessToken);
 
     navigator.navigate('Home');
   } catch (error) {
-    console.log(error?.error);
     if (
       error instanceof TypeError &&
       error.message === 'Network request failed'
     ) {
       navigator.navigate('network-error');
     }
+  }
+};
+
+const updateRealmUserData = (
+  newUserData: ResultsType<UserData>,
+  savedUserData: ResultsType<UserData>,
+  user: userType,
+  token: string,
+  realm: Realm,
+) => {
+  try {
+    if (newUserData) {
+      const {
+        id,
+        firstName,
+        lastName,
+        phoneNumber,
+        grade,
+        gender,
+        email,
+        verificationCode,
+      } = user;
+
+      let newUser;
+      realm.write(() => {
+        newUser = realm.create(LocalObjectDataKeys.User, {
+          id,
+          firstName,
+          lastName,
+          phoneNumber,
+          region: '',
+          isVerified: false,
+          isActive: true,
+          grade: grade?.grade,
+          gender,
+          email,
+          verificationCode: verificationCode ? verificationCode : null,
+        });
+        newUserData.user = newUser;
+        newUserData.token = token;
+      });
+    }
+  } catch (e) {
+    console.log('err', e);
   }
 };

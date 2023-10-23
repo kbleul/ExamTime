@@ -28,7 +28,6 @@ export const fetchRegions = async (
     checkIsOnline(navigator);
 
     const response = await getRegions().unwrap();
-    console.log('get,', response);
     const tempRegionsList: regionItemsType[] = [];
 
     response.map((region: {region: string}) => {
@@ -71,15 +70,11 @@ export const handleCreateUser = async (
         gender: gender?.toUpperCase(),
         grade: userGrade?.value,
       }).unwrap();
-
-      console.log(';;', response);
-
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
       setCurrentStep(prev => ++prev);
     } catch (error) {
-      console.log('pppp', error);
       if (
         error instanceof TypeError &&
         error.message === 'Network request failed'
@@ -108,9 +103,7 @@ const validate_Gender_and_Region = (
 //verify otp
 
 const checkCode = (code: string, unregisteredUser: userType | null) => {
-  console.log(code, unregisteredUser?.verificationCode);
   if (unregisteredUser?.verificationCode?.toString() === code) {
-    console.log('yesss');
     return true;
   } else {
     return false;
@@ -128,7 +121,6 @@ export const handleVerfiyCode = async (
 ) => {
   if (checkCode(data.code, unregisteredUser)) {
     isCorrectCode.current = true;
-
     checkIsOnline(navigator);
 
     try {
@@ -139,7 +131,6 @@ export const handleVerfiyCode = async (
       setUnregisteredUser(response.user);
       setCurrentStep(prev => ++prev);
     } catch (error) {
-      console.log('pppp', error);
       if (
         error instanceof TypeError &&
         error.message === 'Network request failed'
@@ -163,6 +154,7 @@ export const resendOtp = async (
   isCorrectCode: React.MutableRefObject<boolean>,
   setISResend: React.Dispatch<React.SetStateAction<boolean>>,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
+  sentOtp: React.MutableRefObject<string>,
 ) => {
   try {
     checkIsOnline(navigator);
@@ -182,11 +174,10 @@ export const resendOtp = async (
     }
 
     setOtpValues(['', '', '', '', '']);
+    sentOtp.current = '     ';
     setTimer(60);
     isCorrectCode.current = true;
     setISResend(prev => !prev);
-
-    console.log('OTP:', response);
   } catch (error: any) {
     console.error('Error submitting form///:', error);
   }
@@ -207,8 +198,6 @@ export const createNewPassword = async (
 
     navigator.navigate('signup-success');
     setCurrentStep(1);
-
-    AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
   } catch (error) {
     console.error('Error submitting form:', error);
   }

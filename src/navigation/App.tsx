@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StackType} from './types';
 import Onboarding from '../screens/App/Onboarding/index';
 import Home from '../screens/App/Home/index';
@@ -8,84 +8,22 @@ import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
 import Login from '../screens/Auth/Login/Login';
 import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
-import ContactUs from '../screens/App/ContactUs/index'
-import FAQ from '../screens/App/FAQ/index'
+import ContactUs from '../screens/App/ContactUs/index';
+import FAQ from '../screens/App/FAQ/index';
 
-import {
-  getObject_from_localStorage,
-  get_from_localStorage,
-} from '../utils/Functions/Get/index';
-import SplashScreen from '../screens/Shared/SplashScreen';
-import {LocalStorageDataKeys, trialStatus} from '../utils/Data/data';
-import {checkIsTrial} from '../screens/App/Onboarding/Logic';
 import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
 import ViewSubjectDetails from '../screens/App/Courses/ViewSubjectDetails';
 import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
-import {useDispatch} from 'react-redux';
-import {loginSuccess} from '../reduxToolkit/Features/auth/authSlice';
+import Practice from '../screens/App/Practice/index';
+import PracticeQuestion from '../screens/App/PracticeQuestion';
+import {ProfileMenuItemsAuth} from '../utils/Data/data';
 
-type getOnboardingReturnType = {
-  status: boolean;
-  value?: any;
-};
-const AppRoutes: React.FC<StackType> = ({Stack}) => {
-  const dispatch = useDispatch();
-  const [showOnboarding, setShowOnboarding] =
-    useState<getOnboardingReturnType | null>(null);
-
-  const [isTrialOver, setIsTrialOver] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const check_onBoarding_and_trialMode = async () => {
-      const onBoardingValue = await get_from_localStorage(
-        LocalStorageDataKeys.onBoarding,
-      );
-
-      const tempTrial = await checkIsTrial();
-
-      tempTrial === trialStatus.expired
-        ? setIsTrialOver(true)
-        : setIsTrialOver(false);
-
-      setShowOnboarding(onBoardingValue);
-
-      const savedUser = await getObject_from_localStorage(
-        LocalStorageDataKeys.userData,
-      );
-      const savedToken = await get_from_localStorage(
-        LocalStorageDataKeys.token,
-      );
-
-      savedUser.status &&
-        savedToken.status &&
-        dispatch(
-          loginSuccess({
-            user: {...savedUser.value},
-            token: savedToken.value ? savedToken.value : '',
-          }),
-        );
-    };
-
-    check_onBoarding_and_trialMode();
-  }, []);
-
-  if (showOnboarding === null) {
-    // Render a loading state or fallback UI while waiting for the checkOnBoarding value
-    return (
-      <>
-        <StatusBar
-          barStyle="light-content"
-          hidden={false}
-          backgroundColor="#0066B2"
-          translucent={true}
-        />
-        <SplashScreen />
-      </>
-    );
-  }
-
+const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
+  Stack,
+  showOnboarding,
+}) => {
   return (
     <>
       <StatusBar
@@ -95,16 +33,17 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
         translucent={true}
       />
       <Stack.Navigator>
-        {!showOnboarding.status && (
+        {showOnboarding && (
           <Stack.Screen
             name="Onboarding"
             component={Onboarding}
             options={{headerShown: false}}
           />
         )}
+
         <Stack.Screen
           name="Home"
-          component={isTrialOver ? Signup : Home}
+          component={Home}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -124,17 +63,27 @@ const AppRoutes: React.FC<StackType> = ({Stack}) => {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="Practice"
+          component={Practice}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Exam-View"
+          component={PracticeQuestion}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="Profile"
           component={Profile}
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="contactUs"
+          name={ProfileMenuItemsAuth['Contact Us'].navigate}
           component={ContactUs}
           options={{headerShown: false}}
         />
-          <Stack.Screen
-          name="FAQ"
+        <Stack.Screen
+          name={ProfileMenuItemsAuth['FAQ'].navigate}
           component={FAQ}
           options={{headerShown: false}}
         />

@@ -35,13 +35,13 @@ export default function Signup() {
           setCurrentStep={setCurrentStep}
         />
 
-        {currentStep === 1 && <SocialOptions />}
-
+        {/* {currentStep === 1 && <SocialOptions />} */}
+        {/* 
         <AuthNavigatorOption
           headingText="Already have an account?"
           buttonText="Login"
           onPress={() => navigator.navigate('Login')}
-        />
+        /> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 5,
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   headerText: {
     color: '#0066B2',

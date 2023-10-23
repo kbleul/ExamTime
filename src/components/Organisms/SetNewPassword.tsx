@@ -6,6 +6,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -25,13 +29,15 @@ const schema = yup.object().shape({
     .string()
     .required('Password is required')
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      'Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character',
-    ),
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&()#.*\[\]+<>/',~`-])[A-Za-z\d@$!%*?&()#.*\[\]+<>/',~`-]{8,}$/,
+      "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one of the following special characters: @$!%*?&()#.*[]+<>/',~`-",
+    )
+    .max(31, 'Password can not be more than 32 characters long'),
   confirmPassword: yup
     .string()
     .required('Confirm password is required')
-    .oneOf([yup.ref('password')], 'Passwords must match'),
+    .oneOf([yup.ref('password')], 'Passwords must match')
+    .max(31, 'Password can not be more than 32 characters long'),
 });
 
 const SetNewPassword: React.FC<{
@@ -54,7 +60,8 @@ const SetNewPassword: React.FC<{
   });
 
   return (
-    <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Text style={formSubHeaderStyles.heading}>Setup new Password</Text>
       <Text style={formSubHeaderStyles.subHeading}>
         must be at least 8 character!
@@ -71,13 +78,14 @@ const SetNewPassword: React.FC<{
                   style={[formStyles.input, styles.bigBox]}
                   onChangeText={onChange}
                   secureTextEntry={!showPassword}
+                  placeholder="**************"
                 />
                 {!showPassword ? (
                   <TouchableOpacity
                     style={styles.smallBox}
                     touchSoundDisabled
                     onPress={() => setShowPassword(true)}>
-                    <Ionicons name="eye-outline" size={28} color="#81afe6" />
+                    <Ionicons name="eye-outline" size={24} color="#858585" />
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
@@ -86,8 +94,8 @@ const SetNewPassword: React.FC<{
                     onPress={() => setShowPassword(false)}>
                     <Ionicons
                       name="eye-off-outline"
-                      size={28}
-                      color="#81afe6"
+                      size={24}
+                      color="#858585"
                     />
                   </TouchableOpacity>
                 )}
@@ -112,13 +120,14 @@ const SetNewPassword: React.FC<{
                   style={[formStyles.input, styles.bigBox]}
                   onChangeText={onChange}
                   secureTextEntry={!showConfirmPassword}
+                  placeholder="**************"
                 />
                 {!showConfirmPassword ? (
                   <TouchableOpacity
                     style={styles.smallBox}
                     touchSoundDisabled
                     onPress={() => setShowConfirmPassword(true)}>
-                    <Ionicons name="eye-outline" size={28} color="#81afe6" />
+                    <Ionicons name="eye-outline" size={24} color="#858585" />
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
@@ -127,8 +136,8 @@ const SetNewPassword: React.FC<{
                     onPress={() => setShowConfirmPassword(false)}>
                     <Ionicons
                       name="eye-off-outline"
-                      size={28}
-                      color="#81afe6"
+                      size={24}
+                      color="#858585"
                     />
                   </TouchableOpacity>
                 )}
@@ -170,7 +179,7 @@ const SetNewPassword: React.FC<{
           )}
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -188,11 +197,10 @@ const styles = StyleSheet.create({
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 18,
-    fontFamily: 'Montserrat-Regular',
+    fontSize: 16,
+    fontFamily: 'PoppinsRegular',
     color: '#4D4D4D',
     paddingHorizontal: 20,
-    letterSpacing: 2,
     borderRadius: 0,
     borderWidth: 0,
     borderRightWidth: 1,

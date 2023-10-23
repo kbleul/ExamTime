@@ -15,7 +15,7 @@ export type userType = {
   region: string;
   isVerified: boolean;
   isActive: boolean;
-  grade: string;
+  grade: {};
   gender: 'MALE' | 'FEMALE';
   email: string | null;
   verificationCode?: string;

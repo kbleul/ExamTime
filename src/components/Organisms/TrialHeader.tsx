@@ -1,45 +1,63 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {get_from_localStorage} from '../../utils/Functions/Get';
-import {LocalStorageDataKeys, allowedTrialDays} from '../../utils/Data/data';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import {allowedTrialDays} from '../../utils/Data/data';
 import {calculateDateDifference} from '../../screens/App/Onboarding/Logic';
 import {HeaderStyle} from '../../styles/Theme/HeaderBox';
+import {AuthContext} from '../../Realm/model';
+import {UserData} from '../../Realm';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 const TrialHeader: React.FC<{type: string}> = ({type}) => {
+  const isSubscribed = useSelector(
+    (state: RootState) => state.auth.isSubscribed,
+  );
+
+  const {useQuery} = AuthContext;
+  const savedUserData = useQuery(UserData);
+
   const [trialDayCounter, setTrialDayCounter] = useState<number | null>(null);
 
   useEffect(() => {
     const getTrialDay = async () => {
-      const trialDay = await get_from_localStorage(
-        LocalStorageDataKeys.trialStartDate,
-      );
+      const createdAt = savedUserData[0].initialDate;
 
-      if (trialDay.status && trialDay.value) {
-        console.log(trialDay);
-        const remainingDays = calculateDateDifference(trialDay?.value);
-        setTrialDayCounter(allowedTrialDays - remainingDays);
-      }
+      const remainingDays = calculateDateDifference(createdAt);
+      setTrialDayCounter(allowedTrialDays - remainingDays);
     };
 
     getTrialDay();
   }, []);
-
   return (
-    <View style={HeaderStyle.container}>
+    <View
+      style={
+        isSubscribed
+          ? [HeaderStyle.container, HeaderStyle.containerSubscribed]
+          : HeaderStyle.container
+      }>
+      {trialDayCounter !== null && !isSubscribed && (
+        <View style={HeaderStyle.leftContainer}>
+          <Text style={HeaderStyle.leftContainer_text}>
+            {trialDayCounter < 0 ? 0 : trialDayCounter} days left
+          </Text>
+          <MaterialCommunityIcons
+            name="timer-sand-complete"
+            color="#E2725B"
+            size={20}
+          />
+        </View>
+      )}
       <View style={HeaderStyle.subContainer}>
-        <Text style={HeaderStyle.trialText}>Trial Mode</Text>
-        <Text style={HeaderStyle.typeText}>{type}</Text>
-      </View>
-      <View style={HeaderStyle.leftContainer}>
-        <Text style={HeaderStyle.leftContainer_text}>
-          {trialDayCounter && trialDayCounter} days left
-        </Text>
-        <MaterialCommunityIcons
-          name="timer-sand-complete"
-          color="#E2725B"
-          size={20}
-        />
+        <TouchableOpacity
+          style={HeaderStyle.notificationBtn}
+          touchSoundDisabled>
+          <Text style={HeaderStyle.dot} />
+          <MaterialIcons name="notifications-none" size={30} color="black" />
+        </TouchableOpacity>
       </View>
     </View>
   );
