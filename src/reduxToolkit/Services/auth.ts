@@ -71,6 +71,19 @@ export const api = createApi({
         };
       },
     }),
+    deleteAccount: build.mutation<
+      {user: userType},
+      {userId: string; token: string}
+    >({
+      query: credentials => {
+        return {
+          url: `user/deleteAccount/${credentials.userId}`,
+          method: 'DELETE',
+          body: {},
+          options: {},
+        };
+      },
+    }),
   }),
 });
 
@@ -81,4 +94,5 @@ export const {
   useResendCodeMutation,
   useCreatePasswordMutation,
   useGetRegionsMutation,
+  useDeleteAccountMutation,
 } = api;

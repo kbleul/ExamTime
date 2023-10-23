@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, Text,ScrollView, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,9 +15,7 @@ import ContactUs from '../../../components/Organisms/ContactUs';
 
 const Index = () => {
   const navigator = useNavigation<any>();
-  const SendMessage = () => {
-    console.log("message sent")
-  };
+  const SendMessage = () => {};
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topHeader}>
@@ -26,9 +30,7 @@ const Index = () => {
         showsVerticalScrollIndicator={false}>
         <View style={styles.AboutusContener}>
           <ContactUs onPress={SendMessage} />
-          <View style={{marginTop: 10, width: 343}}>
-            <ShareApp />
-          </View>
+          <ShareApp />
         </View>
       </ScrollView>
 
@@ -43,11 +45,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F9FCFF',
     flex: 1,
-    paddingTop: 30,
   },
   scrollContainer: {
-    paddingBottom: 40,
-    
+    paddingBottom: 80,
   },
   topHeader: {
     flexDirection: 'row',

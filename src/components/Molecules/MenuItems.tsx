@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import IconContainer from './IconContainer';
 import LogoutAlertBox from '../Organisms/LogoutAlertBox';
 import ShareApp from '../Organisms/ShareApp';
@@ -10,7 +9,6 @@ import {RootState} from '../../reduxToolkit/Store';
 
 const MenuItems = () => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const navigator = useNavigation();
 
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   return (
@@ -21,9 +19,8 @@ const MenuItems = () => {
             key={item + '--' + index}
             item={item}
             bgColor={ProfileMenuItemsAuth[item].color}
-            navigate={ProfileMenuItems[item].navigate}
+            navigate={item}
             setShowLogoutDialog={setShowLogoutDialog}
-            
           />
         ))}
 
@@ -33,9 +30,8 @@ const MenuItems = () => {
             key={item + '--' + index}
             item={item}
             bgColor={ProfileMenuItems[item].color}
-            navigate={ProfileMenuItems[item].navigate}
+            navigate={item}
             setShowLogoutDialog={setShowLogoutDialog}
-
           />
         ))}
 

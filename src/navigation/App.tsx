@@ -8,8 +8,8 @@ import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
 import Login from '../screens/Auth/Login/Login';
 import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
-import ContactUs from '../screens/App/ContactUs/index'
-import FAQ from '../screens/App/FAQ/index'
+import ContactUs from '../screens/App/ContactUs/index';
+import FAQ from '../screens/App/FAQ/index';
 
 import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
@@ -18,6 +18,7 @@ import ViewSubjectDetails from '../screens/App/Courses/ViewSubjectDetails';
 import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
 import Practice from '../screens/App/Practice/index';
 import PracticeQuestion from '../screens/App/PracticeQuestion';
+import {ProfileMenuItemsAuth} from '../utils/Data/data';
 
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
@@ -77,12 +78,12 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="contactUs"
+          name={ProfileMenuItemsAuth['Contact Us'].navigate}
           component={ContactUs}
           options={{headerShown: false}}
         />
-          <Stack.Screen
-          name="FAQ"
+        <Stack.Screen
+          name={ProfileMenuItemsAuth['FAQ'].navigate}
           component={FAQ}
           options={{headerShown: false}}
         />

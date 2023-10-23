@@ -267,8 +267,12 @@ const SignupForm: React.FC<seterProps> = ({
             )}
           </View>
 
-          {error && <Text>{error?.data?.message}</Text>}
-          {errorRegion && <Text>{errorRegion?.data?.message}</Text>}
+          {error && (
+            <Text style={formStyles.error}>{error?.data?.message}</Text>
+          )}
+          {errorRegion && (
+            <Text style={formStyles.error}>{errorRegion?.data?.message}</Text>
+          )}
         </View>
       </View>
 

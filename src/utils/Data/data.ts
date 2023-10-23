@@ -39,17 +39,17 @@ export const ProfileMenuItems: ProfileMenuItems = {
   'Subscription Plan': {
     name: 'Subscription Plan',
     color: '#008E97',
-    navigate: 'sub',
+    navigate: 'Subscription Plan',
   },
   'About Us': {
     name: 'About Us',
     color: '#B5C3E5',
-    navigate: '',
+    navigate: 'About Us',
   },
   'Contact Us': {
     name: 'Contact Us',
     color: '#F5A52D',
-    navigate: 'contactUs',
+    navigate: 'Contact Us',
   },
   FAQ: {
     name: 'FAQ',
@@ -59,7 +59,7 @@ export const ProfileMenuItems: ProfileMenuItems = {
   'User Guide': {
     name: 'User Guide',
     color: '#74FF51',
-    navigate: 'Guide',
+    navigate: 'User Guide',
   },
 };
 

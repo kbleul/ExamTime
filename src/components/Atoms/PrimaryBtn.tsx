@@ -1,24 +1,21 @@
-import React from 'react'
+import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-
-type  PrimaryBtnProps={
-  text:String,
-  onPress?:()=>void
-}
-const PrimaryBtn:React.FC<PrimaryBtnProps>= ({text,onPress}) => {
+type PrimaryBtnProps = {
+  text: String;
+  onPress?: () => void;
+};
+const PrimaryBtn: React.FC<PrimaryBtnProps> = ({text, onPress}) => {
   return (
-    <TouchableOpacity style={styles.Sendbtn}
-    onPress={onPress}
-    >
-    <Text style={styles.sendbtnText}>{text}</Text>
-  </TouchableOpacity>
-  )
-}
+    <TouchableOpacity style={styles.Sendbtn} onPress={onPress}>
+      <Text style={styles.sendbtnText}>{text}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   Sendbtn: {
-    width: 343,
+    width: '100%',
     height: 50,
     backgroundColor: '#1E90FF',
     borderRadius: 10,
@@ -38,7 +35,6 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     color: '#FFFFFF',
   },
-})
+});
 
-
-export default PrimaryBtn
+export default PrimaryBtn;

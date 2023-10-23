@@ -7,12 +7,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {ProfileMenuItemsAuth} from '../../utils/Data/data';
 
 const MainBottomNav = () => {
   const navigationState = useNavigationState(state => state);
   const currentScreen = navigationState.routes[navigationState.index].name;
   const navigation = useNavigation();
-
   return (
     <View style={style.container}>
       <View style={style.btnsContainer}>
@@ -72,8 +72,9 @@ const MainBottomNav = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Practice')}
           style={style.buttonWrapper}>
-          {currentScreen === 'Practice' ||
-            (currentScreen === 'Exam-View' && <View style={style.dot} />)}
+          {(currentScreen === 'Practice' || currentScreen === 'Exam-View') && (
+            <View style={style.dot} />
+          )}
 
           <View
             style={
@@ -128,11 +129,15 @@ const MainBottomNav = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Profile')}
           style={style.buttonWrapper}>
-          {currentScreen === 'Profile' && <View style={style.dot} />}
+          {(currentScreen === 'Profile' ||
+            Object.keys(ProfileMenuItemsAuth).includes(currentScreen)) && (
+            <View style={style.dot} />
+          )}
 
           <View
             style={
-              currentScreen === 'Profile'
+              currentScreen === 'Profile' ||
+              Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
                 ? [style.button, style.buttonSelected]
                 : style.button
             }>
@@ -140,12 +145,16 @@ const MainBottomNav = () => {
               name="setting"
               size={24}
               style={
-                currentScreen === 'Profile' ? style.iconActive : style.icon
+                currentScreen === 'Profile' ||
+                Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
+                  ? style.iconActive
+                  : style.icon
               }
             />
             <Text
               style={
-                currentScreen === 'Profile'
+                currentScreen === 'Profile' ||
+                Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
                   ? style.buttonTextActive
                   : style.buttonText
               }>
