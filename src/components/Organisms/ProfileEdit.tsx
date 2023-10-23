@@ -13,6 +13,7 @@ import { loginSuccess } from '../../reduxToolkit/Features/auth/authSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 interface User {
+  gender: string;
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
@@ -36,8 +37,8 @@ const ProfileEdit: React.FC = () => {
   const [updateProfile, { isLoading }] = useChangeProfileMutation();
   const [updatePassword,] = useChangePasswordMutation();
 
-  const gradeOptions = ['grade_12_natural', 'grade_12_social'];
-  const rigionOptions = ['no_rigion', 'Addis Ababa'];
+  const gradeOptions = ['grade_12_natural', 'grade_8'];
+  const rigionOptions = ['no_region', 'afar'];
 
   const handleUpIconPress = () => {
     const currentIndex = gradeOptions.indexOf(grade);
@@ -74,7 +75,7 @@ const ProfileEdit: React.FC = () => {
         lastName: lname,
         phoneNumber: phone,
         grade: grade,
-        gender: "MALE",
+        gender: user.gender ?? '',
         region: city,
       };
 
@@ -96,18 +97,18 @@ const ProfileEdit: React.FC = () => {
           text2: 'Profile updated successfuly',
           visibilityTime: 4000
         });
-        navigation.goBack();
+        // navigation.goBack();
       } catch (error) {
         await Toast.show({
           type: 'error',
-          text1: 'Hello',
+          text1: 'Error!',
           text2: 'Something went wrong'
         });
         console.error(error);
       }
     }
   };
-
+//password schema
   const schema = yup.object().shape({
     password: yup
       .string()
