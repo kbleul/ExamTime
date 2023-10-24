@@ -8,6 +8,7 @@ declare module 'react-native-config' {
 }
 
 export type userType = {
+  location: any;
   id: string;
   firstName: string;
   lastName: string;

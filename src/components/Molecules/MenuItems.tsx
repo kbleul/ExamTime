@@ -19,7 +19,11 @@ const MenuItems = () => {
             key={item + '--' + index}
             item={item}
             bgColor={ProfileMenuItemsAuth[item].color}
+<<<<<<< HEAD
             navigate={item}
+=======
+            navigate={ProfileMenuItemsAuth[item].navigate}
+>>>>>>> ETID-15
             setShowLogoutDialog={setShowLogoutDialog}
           />
         ))}
@@ -30,7 +34,11 @@ const MenuItems = () => {
             key={item + '--' + index}
             item={item}
             bgColor={ProfileMenuItems[item].color}
+<<<<<<< HEAD
             navigate={item}
+=======
+            navigate={ProfileMenuItems[item].navigate}
+>>>>>>> ETID-15
             setShowLogoutDialog={setShowLogoutDialog}
           />
         ))}

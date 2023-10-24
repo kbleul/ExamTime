@@ -17,16 +17,10 @@ const ProfileEditIndex = () => {
           style={styles.img}
           source={require('../../../assets/Images/Profile/1.png')} // Replace with the correct path to your image
         >
-          <TouchableOpacity
-            style={styles.iconContainer}
-            touchSoundDisabled
-            onPress={() => navigator.goBack()}>
-            <AntDesign name="left" style={styles.backIcon} size={24} />
-          </TouchableOpacity>
         </ImageBackground>
       </View>
 
-      <ProfileEdit />
+      <ProfileEdit/>
 
       <MainBottomNav />
     </View>
@@ -40,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingBottom: 35,
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#F5F5F5',
   },
   imageBg: {
     height: '35%',
