@@ -2,7 +2,7 @@ type ProfileMenuItems = {
   [key: string]: {
     name: string;
     color: string;
-    navigate:string
+    navigate: string;
   };
 };
 
@@ -44,30 +44,30 @@ export const ProfileMenuItems: ProfileMenuItems = {
     color: '#F5A52D',
     navigate: 'Profile-Edit',
   },
-  'FAQ': {
+  FAQ: {
     name: 'FAQ',
     color: '#74FF51',
-    navigate: 'Profile-Edit',
+    navigate: 'FAQ',
   },
   'User Guide': {
     name: 'User Guide',
     color: '#74FF51',
-    navigate: 'Profile-Edit',
+    navigate: 'User Guide',
   },
 };
 
 export const ProfileMenuItemsAuth: ProfileMenuItems = {
-  'Profile': {
+  Profile: {
     name: 'Profile',
     color: '#1E90FF',
     navigate: 'Profile-Edit',
   },
-  
+
   ...ProfileMenuItems,
-  'Logout': {
+  Logout: {
     name: 'Logout',
     color: '#B5C3E5',
-    navigate: 'Profile-Edit',
+    navigate: 'Logout',
   },
 };
 export const allowedTrialDays = 3;

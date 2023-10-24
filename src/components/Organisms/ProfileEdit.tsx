@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput } from 'react-native';
-import { View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, TextInput} from 'react-native';
+import {View} from 'react-native';
 import * as yup from 'yup';
-import { Formik } from 'formik';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../reduxToolkit/Store';
-import { get_from_localStorage } from '../../utils/Functions/Get';
-import { useChangePasswordMutation, useChangeProfileMutation } from '../../reduxToolkit/Services/auth'
-import { loginSuccess } from '../../reduxToolkit/Features/auth/authSlice';
+import {Formik} from 'formik';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
+import {get_from_localStorage} from '../../utils/Functions/Get';
+import {
+  useChangePasswordMutation,
+  useChangeProfileMutation,
+} from '../../reduxToolkit/Services/auth';
+import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 interface User {
@@ -34,8 +37,8 @@ const ProfileEdit: React.FC = () => {
   const [grade, setGrade] = useState(user.grade?.grade ?? '');
   const [city, setCity] = useState(user.region?.region ?? '');
   const [showPassword, setShowPassword] = useState(true);
-  const [updateProfile, { isLoading }] = useChangeProfileMutation();
-  const [updatePassword,] = useChangePasswordMutation();
+  const [updateProfile, {isLoading}] = useChangeProfileMutation();
+  const [updatePassword] = useChangePasswordMutation();
 
   const gradeOptions = ['grade_12_natural', 'grade_8'];
   const rigionOptions = ['no_region', 'afar'];
@@ -48,9 +51,9 @@ const ProfileEdit: React.FC = () => {
 
   const handleDownIconPress = () => {
     const currentIndex = gradeOptions.indexOf(grade);
-    const newIndex = (currentIndex - 1 + gradeOptions.length) % gradeOptions.length;
+    const newIndex =
+      (currentIndex - 1 + gradeOptions.length) % gradeOptions.length;
     setGrade(gradeOptions[newIndex]);
-
   };
   const handleUpIconPressforRigion = () => {
     const currentIndex = rigionOptions.indexOf(city);
@@ -60,9 +63,9 @@ const ProfileEdit: React.FC = () => {
 
   const handleDownIconPressforRigion = () => {
     const currentIndex = rigionOptions.indexOf(city);
-    const newIndex = (currentIndex - 1 + rigionOptions.length) % rigionOptions.length;
+    const newIndex =
+      (currentIndex - 1 + rigionOptions.length) % rigionOptions.length;
     setCity(rigionOptions[newIndex]);
-
   };
 
   const handleUpdateProfile = async () => {
@@ -80,35 +83,35 @@ const ProfileEdit: React.FC = () => {
       };
 
       try {
-        const result = await updateProfile({ token, profileData });
+        const result = await updateProfile({token, profileData});
         if (result.data.user) {
           dispatch(
             loginSuccess({
               user: result.data.user,
               token: token,
             }),
-          )
+          );
         }
-        console.log("updated result", result);
+        console.log('updated result', result);
 
-       Toast.show({
+        Toast.show({
           type: 'success',
           text1: 'success',
           text2: 'Profile updated successfuly',
-          visibilityTime: 4000
+          visibilityTime: 4000,
         });
         // navigation.goBack();
       } catch (error) {
         await Toast.show({
           type: 'error',
           text1: 'Error!',
-          text2: 'Something went wrong'
+          text2: 'Something went wrong',
         });
         console.error(error);
       }
     }
   };
-//password schema
+  //password schema
   const schema = yup.object().shape({
     password: yup
       .string()
@@ -130,10 +133,8 @@ const ProfileEdit: React.FC = () => {
       .oneOf([yup.ref('newPassword')], 'Passwords must match'),
   });
 
-  const handleSubmit = async (values) => {
-
+  const handleSubmit = async values => {
     if (values.newPassword === values.confirmPassword) {
-
       try {
         const tokenResult = await get_from_localStorage('token');
         if (tokenResult.status && tokenResult.value) {
@@ -147,28 +148,29 @@ const ProfileEdit: React.FC = () => {
             type: 'success',
             text1: 'success',
             text2: 'Password updated successfuly',
-            visibilityTime: 4000
+            visibilityTime: 4000,
           });
           // Handle the response accordingly
-          console.log('Password changed successfully', response)
+          console.log('Password changed successfully', response);
           console.log('Password changed successfully');
         }
       } catch (error) {
         await Toast.show({
           type: 'error',
           text1: 'Hello',
-          text2: 'Something went wrong'
+          text2: 'Something went wrong',
         });
         console.error(error);
       }
-
     }
-  }
+  };
   return (
     <>
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TouchableOpacity style={styles.doneContainer} onPress={handleUpdateProfile}>
+          <TouchableOpacity
+            style={styles.doneContainer}
+            onPress={handleUpdateProfile}>
             <Text style={styles.doneText}>Done</Text>
           </TouchableOpacity>
 
@@ -185,14 +187,17 @@ const ProfileEdit: React.FC = () => {
               onChangeText={setLame}
               value={lname}
             />
-            <View style={{
-              flexDirection: 'row', alignItems: 'center', paddingHorizontal: 30,
-              borderWidth: 1,
-              marginVertical: 5,
-              marginHorizontal: 20,
-              borderRadius: 10,
-              borderColor: '#abcef5',
-            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingHorizontal: 30,
+                borderWidth: 1,
+                marginVertical: 5,
+                marginHorizontal: 20,
+                borderRadius: 10,
+                borderColor: '#abcef5',
+              }}>
               <Text style={styles.prefixText}>+251</Text>
               <TextInput
                 style={styles.inputContainer}
@@ -201,24 +206,27 @@ const ProfileEdit: React.FC = () => {
                 autoComplete="tel"
               />
             </View>
-            <View style={{
-              flexDirection: 'row', alignItems: 'center', paddingHorizontal: 30,
-              borderWidth: 1,
-              marginVertical: 5,
-              marginHorizontal: 20,
-              borderRadius: 10,
-              borderColor: '#abcef5',
-            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingHorizontal: 30,
+                borderWidth: 1,
+                marginVertical: 5,
+                marginHorizontal: 20,
+                borderRadius: 10,
+                borderColor: '#abcef5',
+              }}>
               <TextInput
                 style={{
                   flex: 1,
                   fontSize: 18,
-                  color: '#858585'
+                  color: '#858585',
                 }}
                 value={grade}
                 onChangeText={setGrade}
               />
-              <View style={{ flexDirection: 'columen', gap: 1 }}>
+              <View style={{flexDirection: 'columen', gap: 1}}>
                 <TouchableOpacity onPress={handleUpIconPress}>
                   <Ionicons name="caret-up-outline" size={20} />
                 </TouchableOpacity>
@@ -227,24 +235,27 @@ const ProfileEdit: React.FC = () => {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={{
-              flexDirection: 'row', alignItems: 'center', paddingHorizontal: 30,
-              borderWidth: 1,
-              marginVertical: 5,
-              marginHorizontal: 20,
-              borderRadius: 10,
-              borderColor: '#abcef5',
-            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingHorizontal: 30,
+                borderWidth: 1,
+                marginVertical: 5,
+                marginHorizontal: 20,
+                borderRadius: 10,
+                borderColor: '#abcef5',
+              }}>
               <TextInput
                 style={{
                   flex: 1,
                   fontSize: 18,
-                  color: '#858585'
+                  color: '#858585',
                 }}
                 value={city}
                 onChangeText={setCity}
               />
-              <View style={{ flexDirection: 'columen', gap: 1 }}>
+              <View style={{flexDirection: 'columen', gap: 1}}>
                 <TouchableOpacity onPress={handleUpIconPressforRigion}>
                   <Ionicons name="caret-up-outline" size={20} />
                 </TouchableOpacity>
@@ -256,22 +267,31 @@ const ProfileEdit: React.FC = () => {
           </View>
           {/* password update  */}
           <Formik
-            initialValues={{ password: '', newPassword: '', confirmPassword: '' }}
+            initialValues={{password: '', newPassword: '', confirmPassword: ''}}
             validationSchema={schema}
-            onSubmit={handleSubmit}
-          >
-            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            onSubmit={handleSubmit}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
               <View style={styles.topFormContainer}>
                 <Text style={styles.title}>Update password</Text>
 
-                <View style={{
-                  flexDirection: 'row', alignItems: 'center', paddingHorizontal: 30,
-                  borderWidth: 1,
-                  marginVertical: 5,
-                  marginHorizontal: 20,
-                  borderRadius: 10,
-                  borderColor: '#abcef5',
-                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 30,
+                    borderWidth: 1,
+                    marginVertical: 5,
+                    marginHorizontal: 20,
+                    borderRadius: 10,
+                    borderColor: '#abcef5',
+                  }}>
                   <TextInput
                     style={{
                       flex: 1,
@@ -294,7 +314,11 @@ const ProfileEdit: React.FC = () => {
                       style={styles.smallBox}
                       touchSoundDisabled
                       onPress={() => setShowPassword(true)}>
-                      <Ionicons name="eye-off-outline" size={28} color="#81afe6" />
+                      <Ionicons
+                        name="eye-off-outline"
+                        size={28}
+                        color="#81afe6"
+                      />
                     </TouchableOpacity>
                   )}
                 </View>
@@ -302,15 +326,17 @@ const ProfileEdit: React.FC = () => {
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
 
-
-                <View style={{
-                  flexDirection: 'row', alignItems: 'center', paddingHorizontal: 30,
-                  borderWidth: 1,
-                  marginVertical: 5,
-                  marginHorizontal: 20,
-                  borderRadius: 10,
-                  borderColor: '#abcef5',
-                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 30,
+                    borderWidth: 1,
+                    marginVertical: 5,
+                    marginHorizontal: 20,
+                    borderRadius: 10,
+                    borderColor: '#abcef5',
+                  }}>
                   <TextInput
                     style={{
                       flex: 1,
@@ -333,21 +359,28 @@ const ProfileEdit: React.FC = () => {
                       style={styles.smallBox}
                       touchSoundDisabled
                       onPress={() => setShowPassword(true)}>
-                      <Ionicons name="eye-off-outline" size={28} color="#81afe6" />
+                      <Ionicons
+                        name="eye-off-outline"
+                        size={28}
+                        color="#81afe6"
+                      />
                     </TouchableOpacity>
                   )}
                 </View>
                 {errors.newPassword && touched.newPassword && (
                   <Text style={styles.errorText}>{errors.newPassword}</Text>
                 )}
-                <View style={{
-                  flexDirection: 'row', alignItems: 'center', paddingHorizontal: 30,
-                  borderWidth: 1,
-                  marginVertical: 5,
-                  marginHorizontal: 20,
-                  borderRadius: 10,
-                  borderColor: '#abcef5',
-                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 30,
+                    borderWidth: 1,
+                    marginVertical: 5,
+                    marginHorizontal: 20,
+                    borderRadius: 10,
+                    borderColor: '#abcef5',
+                  }}>
                   <TextInput
                     style={{
                       flex: 1,
@@ -370,7 +403,11 @@ const ProfileEdit: React.FC = () => {
                       style={styles.smallBox}
                       touchSoundDisabled
                       onPress={() => setShowPassword(true)}>
-                      <Ionicons name="eye-off-outline" size={28} color="#81afe6" />
+                      <Ionicons
+                        name="eye-off-outline"
+                        size={28}
+                        color="#81afe6"
+                      />
                     </TouchableOpacity>
                   )}
                 </View>
@@ -380,16 +417,13 @@ const ProfileEdit: React.FC = () => {
 
                 <TouchableOpacity
                   style={[styles.inputContainer, styles.changePassword]}
-                  onPress={handleSubmit}
-                >
+                  onPress={handleSubmit}>
                   <Text style={styles.changePasswordText}>Change Password</Text>
                 </TouchableOpacity>
               </View>
             )}
           </Formik>
-
         </ScrollView>
-
       </View>
       <Toast />
     </>
@@ -460,7 +494,6 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
     flexDirection: 'row',
     alignItems: 'center',
-
   },
   prefixText: {
     marginRight: 5,
@@ -486,6 +519,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#b3b3b3',
   },
-
 });
 export default ProfileEdit;
