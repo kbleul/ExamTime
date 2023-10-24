@@ -8,11 +8,15 @@ const FaqContener = () => {
     <View>
       <Text style={styles.subHeadtext}>Find Answers to Your Questions</Text>
       <View style={styles.faqInput}>
+<<<<<<< HEAD
         <TextInput
           placeholder="write your question"
           placeholderTextColor={'d4d4d4'}
           style={styles.input}
         />
+=======
+        <TextInput placeholder="write your question" style={styles.input} />
+>>>>>>> refs/remotes/origin/dev
         <Antdesign name="search1" size={24} color="#d4d4d4" />
       </View>
 
