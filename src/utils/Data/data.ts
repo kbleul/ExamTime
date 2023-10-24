@@ -4,11 +4,7 @@ type ProfileMenuItems = {
   [key: string]: {
     name: string;
     color: string;
-<<<<<<< HEAD
     navigate: String;
-=======
-    navigate: string;
->>>>>>> ETID-15
   };
 };
 
@@ -43,29 +39,17 @@ export const ProfileMenuItems: ProfileMenuItems = {
   'Subscription Plan': {
     name: 'Subscription Plan',
     color: '#008E97',
-<<<<<<< HEAD
     navigate: 'Subscription Plan',
-=======
-    navigate: 'SubscriptionPlan',
->>>>>>> ETID-15
   },
   'About Us': {
     name: 'About Us',
     color: '#B5C3E5',
-<<<<<<< HEAD
     navigate: 'About Us',
-=======
-    navigate: 'Aboutus',
->>>>>>> ETID-15
   },
   'Contact Us': {
     name: 'Contact Us',
     color: '#F5A52D',
-<<<<<<< HEAD
     navigate: 'Contact Us',
-=======
-    navigate: 'Profile-Edit',
->>>>>>> ETID-15
   },
   FAQ: {
     name: 'FAQ',
@@ -83,11 +67,7 @@ export const ProfileMenuItemsAuth: ProfileMenuItems = {
   Profile: {
     name: 'Profile',
     color: '#1E90FF',
-<<<<<<< HEAD
     navigate: 'Profile',
-=======
-    navigate: 'Profile-Edit',
->>>>>>> ETID-15
   },
 
   ...ProfileMenuItems,

@@ -41,36 +41,7 @@ const ProfileContent = () => {
             <Text style={styles.userData}>
               {user ? `${user.firstName} ${user.lastName}` : ''}
             </Text>
-<<<<<<< HEAD
             {/*<Image style={styles.badge} source={badgeImg} />*/}
-=======
-            <Text style={styles.location}>
-              {user ? `${user.region.region}` : ''}
-            </Text>
-            </View>
-            <TouchableOpacity
-           
-            touchSoundDisabled
-            onPress={() => navigator.navigate('Profile-Edit')}>
-            <MaterialIcons  name="edit" style={styles.editIcon} size={24} />
-          </TouchableOpacity>
-          </View>
-        )}
-        {user && (
-          <View style={styles.nameContainer}>
-            <View style={styles.activityContainer}>
-              <Text style={styles.name}>
-              Activities
-              </Text>
-              <Text style={styles.activity}>
-              You are now in the position of gold to upgrade you have to spent time.
-              </Text>
-            </View>
-            {/* <Text style={styles.name}>
-              {user ? `${user.firstName} ${user.lastName}` : ''}
-            </Text> */}
-            <Image style={styles.badge} source={badgeImg} />
->>>>>>> ETID-15
           </View>
         )}
 

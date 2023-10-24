@@ -7,12 +7,8 @@ import React, {useEffect} from 'react';
 import Routes from './src/navigation/Index';
 import {Provider} from 'react-redux';
 import store from './src/reduxToolkit/Store';
-<<<<<<< HEAD
 import {AuthContext} from './src/Realm/model';
 
-=======
-import Config from 'react-native-config';
->>>>>>> ETID-15
 function App(): JSX.Element {
   const {RealmProvider} = AuthContext;
 
