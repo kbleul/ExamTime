@@ -4,7 +4,7 @@ type ProfileMenuItems = {
   [key: string]: {
     name: string;
     color: string;
-    navigate: String;
+    navigate: string;
   };
 };
 
@@ -39,12 +39,12 @@ export const ProfileMenuItems: ProfileMenuItems = {
   'Subscription Plan': {
     name: 'Subscription Plan',
     color: '#008E97',
-    navigate: 'Subscription Plan',
+    navigate: 'SubscriptionPlan',
   },
   'About Us': {
     name: 'About Us',
     color: '#B5C3E5',
-    navigate: 'About Us',
+    navigate: 'Aboutus',
   },
   'Contact Us': {
     name: 'Contact Us',
@@ -67,8 +67,9 @@ export const ProfileMenuItemsAuth: ProfileMenuItems = {
   Profile: {
     name: 'Profile',
     color: '#1E90FF',
-    navigate: 'Profile',
+    navigate: 'Profile-Edit',
   },
+
   ...ProfileMenuItems,
   Logout: {
     name: 'Logout',
