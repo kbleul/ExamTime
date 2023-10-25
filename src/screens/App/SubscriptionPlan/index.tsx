@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
-  StatusBar,
   Text,
   View,
   StyleSheet,
-  Image,
   Dimensions,
   Animated,
   Platform,
@@ -12,15 +10,12 @@ import {
   FlatList,
 } from 'react-native';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../reduxToolkit/Store';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-const { width, height } = Dimensions.get('window');
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
+const {width, height} = Dimensions.get('window');
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const SPACING = 10;
 const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.5 : width * 0.5;
-const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
-
 
 const Index: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -31,128 +26,139 @@ const Index: React.FC = () => {
       planname: 'Basic Plan',
       price: 200,
       current: true,
-      color: "#F5A52D",
+      color: '#F5A52D',
       packages: [
         {
           available: true,
-          packagesname: "Activated"
+          packagesname: 'Activated',
         },
         {
           available: true,
-          packagesname: "Full Access"
+          packagesname: 'Full Access',
         },
         {
           available: true,
-          packagesname: "3 month"
+          packagesname: '3 month',
         },
         {
           available: false,
-          packagesname: "Dimond Badge"
-        }
-      ]
+          packagesname: 'Dimond Badge',
+        },
+      ],
     },
     {
       key: '2',
       planname: 'Intermediate Plan',
       price: 200,
       current: false,
-      color: "#4F8FCB",
+      color: '#4F8FCB',
       packages: [
         {
           available: true,
-          packagesname: "Activated"
+          packagesname: 'Activated',
         },
         {
           available: true,
-          packagesname: "Full Access"
+          packagesname: 'Full Access',
         },
         {
           available: true,
-          packagesname: "3 month"
+          packagesname: '3 month',
         },
         {
           available: false,
-          packagesname: "Dimond Badge"
-        }
-      ]
+          packagesname: 'Dimond Badge',
+        },
+      ],
     },
     {
       key: '3',
       planname: 'Pro Plan',
       price: 200,
       current: false,
-      color: "#8075CB",
+      color: '#8075CB',
       packages: [
         {
           available: true,
-          packagesname: "Activated"
+          packagesname: 'Activated',
         },
         {
           available: true,
-          packagesname: "Full Access"
+          packagesname: 'Full Access',
         },
         {
           available: true,
-          packagesname: "3 month"
+          packagesname: '3 month',
         },
         {
           available: false,
-          packagesname: "Dimond Badge"
-        }
-      ]
+          packagesname: 'Dimond Badge',
+        },
+      ],
     },
   ]);
 
-
   //list of packges
-  const renderPackageItem = ({ item }) => {
-    const { available, packagesname } = item;
+  const renderPackageItem = ({item}) => {
+    const {available, packagesname} = item;
 
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
         {available ? (
-          <AntDesign name="check" size={20} color="green" style={{ marginRight: 5 }} />
+          <AntDesign
+            name="check"
+            size={20}
+            color="green"
+            style={{marginRight: 5}}
+          />
         ) : (
-          <AntDesign name="close" size={20} color="red" style={{ marginRight: 5 }} />
+          <AntDesign
+            name="close"
+            size={20}
+            color="red"
+            style={{marginRight: 5}}
+          />
         )}
-        <Text style={styles.listofPackagesText} >{packagesname}</Text>
+        <Text style={styles.listofPackagesText}>{packagesname}</Text>
       </View>
     );
   };
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
-
-const handleScroll = (event: { nativeEvent: { contentOffset: { x: any; }; }; }) => {
-  const offsetX = event.nativeEvent.contentOffset.x;
-  const newIndex = Math.floor(offsetX / ITEM_SIZE);
-  setActiveCardIndex(newIndex);
-};
-// Dots Component
-const Dots = ({ data, activeIndex }) => {
-  return (
-    <View style={styles.dotsContainer}>
-      {data.map((item: { key: React.Key | null | undefined; }, index: any) => (
-        <View
-          key={item.key}
-          style={[
-            styles.dot,
-            index === activeIndex ? styles.activeDot : styles.inactiveDot,
-          ]}
-        />
-      ))}
-    </View>
-  );
-};
+  const handleScroll = (event: {nativeEvent: {contentOffset: {x: any}}}) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const newIndex = Math.floor(offsetX / ITEM_SIZE);
+    setActiveCardIndex(newIndex);
+  };
+  // Dots Component
+  const Dots = ({data, activeIndex}) => {
+    return (
+      <View style={styles.dotsContainer}>
+        {data.map((item: {key: React.Key | null | undefined}, index: any) => (
+          <View
+            key={index + '--dot'}
+            style={[
+              styles.dot,
+              index === activeIndex ? styles.activeDot : styles.inactiveDot,
+            ]}
+          />
+        ))}
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-    
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.backicon}>
           <BackWithItem type="SubscriptionPlan" isTrial={user ? false : true} />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Upgrade to a subscription plan to access a world of benefits and take your experience to the next level.
+          <Text style={styles.text}>
+            Upgrade to a subscription plan to access a world of benefits and
+            take your experience to the next level.
           </Text>
         </View>
 
@@ -160,20 +166,20 @@ const Dots = ({ data, activeIndex }) => {
           <Animated.FlatList
             showsHorizontalScrollIndicator={false}
             data={data}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             horizontal
             bounces={false}
             decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
             renderToHardwareTextureAndroid
-            contentContainerStyle={{ alignItems: 'center' }}
+            contentContainerStyle={{alignItems: 'center'}}
             snapToInterval={ITEM_SIZE}
             snapToAlignment="start"
             onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-              { useNativeDriver: false ,listener: handleScroll}
+              [{nativeEvent: {contentOffset: {x: scrollX}}}],
+              {useNativeDriver: false, listener: handleScroll},
             )}
             scrollEventThrottle={16}
-            renderItem={({ item, index }) => {
+            renderItem={({item, index}) => {
               const inputRange = [
                 (index - 2) * ITEM_SIZE,
                 (index - 1) * ITEM_SIZE,
@@ -196,59 +202,82 @@ const Dots = ({ data, activeIndex }) => {
                 outputRange: ['0deg', '-4deg', '0deg', '4deg', '0deg'], // Rotate left and right
                 extrapolate: 'clamp',
               });
-              const zIndex = index === activeCardIndex ? 100 : 0; 
-              console.log("zindez",zIndex)// Add zIndex to bring the active card to the top
+              const zIndex = index === activeCardIndex ? 100 : 0;
+              console.log('zindez', zIndex); // Add zIndex to bring the active card to the top
               return (
-                <View style={{ width: ITEM_SIZE, height: 250, /* backgroundColor: 'blue', */ margin: 5,  }}>
+                <View
+                  style={{
+                    width: ITEM_SIZE,
+                    height: 250,
+                    /* backgroundColor: 'blue', */ margin: 5,
+                  }}>
                   <Animated.View
                     style={{
                       // position: 'absolute',
-                      height: "100%",
-                      marginHorizontal: SPACING -15,
+                      height: '100%',
+                      marginHorizontal: SPACING - 15,
                       alignItems: 'center',
-                      transform: [{ translateY }],
-                      zIndex:zIndex,
+                      transform: [{translateY}],
+                      zIndex: zIndex,
                       borderRadius: 34,
                       borderColor: item.color,
                       borderWidth: 1,
-                      justifyContent: "space-between",
-                    }}
-                  >
-
-                    <View style={[styles.topCardContainer, { backgroundColor: item.color }]}>
-                      <Text style={styles.topCardContainerText}>{item.planname}</Text>
+                      justifyContent: 'space-between',
+                    }}>
+                    <View
+                      style={[
+                        styles.topCardContainer,
+                        {backgroundColor: item.color},
+                      ]}>
+                      <Text style={styles.topCardContainerText}>
+                        {item.planname}
+                      </Text>
                       <View style={[styles.circleContainer]}>
-
-                        <View style={[styles.circle, { backgroundColor: item.color }]}>
-                          <Text style={styles.circleText}>{item.price}Birr</Text>
+                        <View
+                          style={[
+                            styles.circle,
+                            {backgroundColor: item.color},
+                          ]}>
+                          <Text style={styles.circleText}>
+                            {item.price}Birr
+                          </Text>
                         </View>
                       </View>
                     </View>
-                    <View style={{ flex: 1 }}>
+                    <View style={{flex: 1}}>
                       <View style={styles.listofPackages}>
                         <FlatList
                           data={item.packages}
                           renderItem={renderPackageItem}
-                          keyExtractor={(item) => item.key}
+                          keyExtractor={item => item.key}
                         />
                       </View>
                     </View>
-                    <View style={[styles.listofPackagesBottom, { backgroundColor: item.color }]}>
-                      <Text style={styles.listofPackagesBottomtext}>{item.current ? "Current Plan" : "Upgrade Now"}</Text>
+                    <View
+                      style={[
+                        styles.listofPackagesBottom,
+                        {backgroundColor: item.color},
+                      ]}>
+                      <Text style={styles.listofPackagesBottomtext}>
+                        {item.current ? 'Current Plan' : 'Upgrade Now'}
+                      </Text>
                     </View>
-
                   </Animated.View>
-
                 </View>
               );
             }}
           />
 
-          <Dots data={data} activeIndex={activeCardIndex} /> 
+          <Dots data={data} activeIndex={activeCardIndex} />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.textBottom}>Security and Privacy Information</Text>
-          <Text style={styles.text}>Your payments will be  encrypted and processed securely. We prioritize your privacy and handle your personal information carefully.
+          <Text style={styles.textBottom}>
+            Security and Privacy Information
+          </Text>
+          <Text style={styles.text}>
+            Your payments will be encrypted and processed securely. We
+            prioritize your privacy and handle your personal information
+            carefully.
           </Text>
         </View>
         {/* <MainBottomNav /> */}
@@ -303,7 +332,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
   },
-  HorizontalList : {
+  HorizontalList: {
     alignItems: 'center',
     height: 400,
     justifyContent: 'center',
@@ -367,13 +396,13 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'left',
   },
-  textBottom:{
+  textBottom: {
     color: '#1E90FF',
     fontFamily: 'Montserrat-Regular',
     fontSize: 15,
-    fontWeight:"bold",
+    fontWeight: 'bold',
     padding: 10,
-    textAlign: 'left'
+    textAlign: 'left',
   },
   textContainer: {
     overflow: 'hidden',

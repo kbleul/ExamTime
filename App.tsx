@@ -17,9 +17,7 @@ function App(): JSX.Element {
   }, []);
 
   const Stack = createStackNavigator();
- 
-  console.log('my url ', Config.API_URL);
-  console.log('config ',  Config); 
+
   return (
     <RealmProvider>
       <NavigationContainer>

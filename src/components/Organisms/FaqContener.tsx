@@ -8,11 +8,7 @@ const FaqContener = () => {
     <View>
       <Text style={styles.subHeadtext}>Find Answers to Your Questions</Text>
       <View style={styles.faqInput}>
-        <TextInput
-          placeholder="write your question"
-          placeholderTextColor={'d4d4d4'}
-          style={styles.input}
-        />
+        <TextInput placeholder="write your question" style={styles.input} />
         <Antdesign name="search1" size={24} color="#d4d4d4" />
       </View>
 
