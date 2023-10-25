@@ -1,9 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import {View} from 'react-native';
 import * as yup from 'yup';
 import {Formik} from 'formik';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
@@ -28,9 +33,8 @@ interface User {
   };
 }
 const ProfileEdit: React.FC = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const user: User = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.user);
   const [name, setName] = useState(user.firstName ?? '');
   const [lname, setLame] = useState(user.lastName ?? '');
   const [phone, setPhone] = useState(user.phoneNumber ?? '');
@@ -43,13 +47,11 @@ const ProfileEdit: React.FC = () => {
   const gradeOptions = ['grade_12_natural', 'grade_8'];
   const rigionOptions = ['no_region', 'afar'];
 
-  const [name, setName] = useState(`${user?.firstName} ${user?.lastName}`);
-  const [phone, setPhone] = useState(user?.phoneNumber);
-  const [grade, setGrade] = useState(user?.grade);
-  const [city, setCity] = useState(user?.region);
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const handleUpIconPress = () => {
+    const currentIndex = gradeOptions.indexOf(grade);
+    const newIndex = (currentIndex + 1) % gradeOptions.length;
+    setGrade(gradeOptions[newIndex]);
+  };
 
   const handleDownIconPress = () => {
     const currentIndex = gradeOptions.indexOf(grade);

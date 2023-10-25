@@ -22,6 +22,7 @@
     "@react-navigation/stack": "^6.3.17",
     "@realm/react": "^0.6.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "formik": "^2.4.5",
     "@types/react-native-vector-icons": "^6.4.15",
     "react": "18.2.0",
     "react-hook-form": "^7.46.2",

@@ -42,13 +42,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1,
     position: 'relative',
-<<<<<<< HEAD
     paddingBottom: 80,
-    backgroundColor: '#F9FCFF',
-=======
-    paddingBottom: 35,
     backgroundColor: '#F5F5F5',
->>>>>>> ETID-15
   },
   imageBg: {
     height: '35%',

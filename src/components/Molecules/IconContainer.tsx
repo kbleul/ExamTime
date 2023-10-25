@@ -9,27 +9,23 @@ import {RootState} from '../../reduxToolkit/Store';
 const IconContainer: React.FC<{
   item: string;
   bgColor: string;
-  navigate: String;
+  navigate: string;
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({item, bgColor, navigate, setShowLogoutDialog}) => {
-  const navigator = useNavigation<any>();
+  const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
-
-  const handlePress = () => {
-    if (user && item === ProfileMenuItemsAuth.Logout.name) {
-      setShowLogoutDialog(true);
-      return;
-    }
-
-    if (item === ProfileMenuItemsAuth.Profile.name) {
-      navigator.navigate('Profile-Edit');
-      return;
-    }
-    navigator.navigate(navigate);
-  };
-
+  console.log('navigate', navigate);
   return (
-    <TouchableOpacity style={styles.buttonsContainer} onPress={handlePress}>
+    <TouchableOpacity
+      style={styles.buttonsContainer}
+      onPress={() => {
+        // item === ProfileMenuItemsAuth.Profile.name &&
+        // navigator.navigate('Profile-Edit');
+        navigator.navigate(navigate);
+        user &&
+          item === ProfileMenuItemsAuth.Logout.name &&
+          setShowLogoutDialog(true);
+      }}>
       <View style={[styles.iconContainer, {backgroundColor: bgColor}]}>
         <MenuItemDispatch itemName={item} />
       </View>
