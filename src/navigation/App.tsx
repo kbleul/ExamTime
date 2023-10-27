@@ -21,6 +21,8 @@ import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
 import Practice from '../screens/App/Practice/index';
 import PracticeQuestion from '../screens/App/PracticeQuestion';
 import {ProfileMenuItemsAuth} from '../utils/Data/data';
+import SetNewPassword from '../components/Organisms/SetNewPassword';
+import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
 
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
@@ -45,7 +47,7 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
 
         <Stack.Screen
           name="Home"
-          component={Home}
+          component={SetNewPasswordPage}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -127,6 +129,11 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="SubscriptionPlan"
           component={SubscriptionPlan}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Password-Reset"
+          component={SetNewPasswordPage}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

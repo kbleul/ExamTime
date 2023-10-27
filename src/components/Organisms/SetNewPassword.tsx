@@ -7,8 +7,6 @@ import {
   ActivityIndicator,
   StyleSheet,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
   Platform,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';

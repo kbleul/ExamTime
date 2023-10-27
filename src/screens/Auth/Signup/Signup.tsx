@@ -6,8 +6,6 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import StepIndicator from '../../../components/Molecules/StepIndicator';
 import ContentDispatcher from './ContentDispatcher';
-import AuthNavigatorOption from '../../../components/Organisms/AuthNavigatorOption';
-import SocialOptions from '../../../components/Organisms/SocialOptions';
 
 export default function Signup() {
   const navigator = useNavigation<any>();
@@ -34,14 +32,6 @@ export default function Signup() {
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
         />
-
-        {/* {currentStep === 1 && <SocialOptions />} */}
-        {/* 
-        <AuthNavigatorOption
-          headingText="Already have an account?"
-          buttonText="Login"
-          onPress={() => navigator.navigate('Login')}
-        /> */}
       </ScrollView>
     </SafeAreaView>
   );

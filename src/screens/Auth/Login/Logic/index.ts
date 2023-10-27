@@ -55,10 +55,11 @@ export const handleLogin = async (
       realm,
     );
 
-    // setObject_to_localStorage(LocalStorageDataKeys.userData, response.user);
-    // set_to_localStorage(LocalStorageDataKeys.token, response.accessToken);
+    console.log(response);
 
-    navigator.navigate('Home');
+    response.IsDefaultPasswordChanged
+      ? navigator.navigate('Password-Reset')
+      : navigator.navigate('Password-Reset');
   } catch (error) {
     if (
       error instanceof TypeError &&
