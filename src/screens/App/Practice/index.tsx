@@ -22,7 +22,9 @@ const Practice = () => {
         style={styles.ScrollView}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
-        <View>
+        <TrialHeader type="Practice" />
+
+        <View style={styles.headerContainer}>
           <Text style={styles.headerTitle}>Study Section</Text>
           <Text style={styles.headerSubTitle}>Choose your Subject</Text>
         </View>
@@ -59,11 +61,15 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 10,
   },
+  headerContainer: {
+    paddingHorizontal: 8,
+  },
   headerTitle: {
     fontFamily: 'PoppinsSemiBold',
     fontSize: 28,
     color: '#000',
     lineHeight: 32,
+    marginTop: 10,
   },
   headerSubTitle: {
     fontFamily: 'PoppinsRegular',
