@@ -11,20 +11,31 @@ const IconContainer: React.FC<{
   bgColor: string;
   navigate: string;
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({item, bgColor, navigate, setShowLogoutDialog}) => {
+  setShowLDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({item, bgColor, navigate, setShowLogoutDialog, setShowLDeleteDialog}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const handlePress = () => {
+    if (user && item === ProfileMenuItemsAuth.Logout.name) {
+      setShowLogoutDialog(true);
+      return;
+    }
+
+    if (user && item === ProfileMenuItemsAuth['Delete Account'].name) {
+      setShowLDeleteDialog(true);
+      return;
+    }
+
+    if (item === ProfileMenuItemsAuth.Profile.name) {
+      navigator.navigate('Profile-Edit');
+      return;
+    }
+    navigator.navigate(navigate);
+  };
+
   return (
-    <TouchableOpacity
-      style={styles.buttonsContainer}
-      onPress={() => {
-        // item === ProfileMenuItemsAuth.Profile.name &&
-        // navigator.navigate('Profile-Edit');
-        navigator.navigate(navigate);
-        user &&
-          item === ProfileMenuItemsAuth.Logout.name &&
-          setShowLogoutDialog(true);
-      }}>
+    <TouchableOpacity style={styles.buttonsContainer} onPress={handlePress}>
       <View style={[styles.iconContainer, {backgroundColor: bgColor}]}>
         <MenuItemDispatch itemName={item} />
       </View>
