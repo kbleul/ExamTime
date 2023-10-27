@@ -5,36 +5,43 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  Image,
 } from 'react-native';
 import {screenHeight} from '../../utils/Data/data';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const Question = () => {
+const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showParagraph, setShowParagraph] = useState(false);
 
   return (
     <>
       {!showParagraph && (
-        <View style={styles.container}>
-          <View style={styles.questionContainer}>
+        <View
+          style={
+            showFullPage
+              ? [styles.container, styles.containerFullPage]
+              : styles.container
+          }>
+          <View
+            style={
+              showFullPage
+                ? [styles.questionContainer, styles.questionContainerFullpage]
+                : styles.questionContainer
+            }>
             <View style={styles.counterContainer}>
-              <Text style={styles.counterTitle}>Question 3</Text>
-              <Text style={styles.counterText}>1/100</Text>
+              <Text style={styles.counterTitle}>Question 3/65</Text>
+              <TouchableOpacity
+                touchSoundDisabled
+                style={styles.readParagraphBtn}
+                onPress={() => setShowParagraph(true)}>
+                <Text style={styles.readParagraphText}>Directions</Text>
+              </TouchableOpacity>
             </View>
             <Text style={styles.questionText}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </Text>
           </View>
-
-          <TouchableOpacity
-            touchSoundDisabled
-            style={styles.readParagraphBtn}
-            onPress={() => setShowParagraph(true)}>
-            <Text style={styles.readParagraphText}>Read Paragraph</Text>
-          </TouchableOpacity>
 
           <ScrollView
             style={styles.choiceContainer}
@@ -52,29 +59,27 @@ const Question = () => {
               choice="A"
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
+              showFullPage={showFullPage}
             />
             <QuestionChoice
               choice="B"
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
+              showFullPage={showFullPage}
             />
             <QuestionChoice
               choice="C"
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
+              showFullPage={showFullPage}
             />
             <QuestionChoice
               choice="D"
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
+              showFullPage={showFullPage}
             />
           </ScrollView>
-
-          {selectedAnswer !== null && (
-            <TouchableOpacity style={styles.submitBtn}>
-              <Text style={styles.submitBtnText}>Next Question</Text>
-            </TouchableOpacity>
-          )}
         </View>
       )}
 
@@ -139,7 +144,8 @@ const QuestionChoice: React.FC<{
   choice: string;
   selectedAnswer: string | null;
   setSelectedAnswer: React.Dispatch<React.SetStateAction<string | null>>;
-}> = ({choice, selectedAnswer, setSelectedAnswer}) => {
+  showFullPage: boolean;
+}> = ({choice, selectedAnswer, setSelectedAnswer, showFullPage}) => {
   const handleSelect = () => {
     selectedAnswer === choice
       ? setSelectedAnswer(null)
@@ -149,10 +155,10 @@ const QuestionChoice: React.FC<{
     <TouchableOpacity
       touchSoundDisabled
       style={
-        choice === selectedAnswer
+        showFullPage
           ? [
               questionChoiceStyles.container,
-              questionChoiceStyles.containerActive,
+              questionChoiceStyles.containerFullPage,
             ]
           : questionChoiceStyles.container
       }
@@ -162,18 +168,13 @@ const QuestionChoice: React.FC<{
           choice === selectedAnswer
             ? [
                 questionChoiceStyles.choiceLetter,
-                questionChoiceStyles.activeText,
+                questionChoiceStyles.choiceLetterSelected,
               ]
             : questionChoiceStyles.choiceLetter
         }>
         {choice}
       </Text>
-      <Text
-        style={
-          choice === selectedAnswer
-            ? [questionChoiceStyles.choiceText, questionChoiceStyles.activeText]
-            : questionChoiceStyles.choiceText
-        }>
+      <Text style={questionChoiceStyles.choiceText}>
         Lorem ipsum dolor sit amet lorem.
       </Text>
     </TouchableOpacity>
@@ -184,48 +185,59 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     paddingTop: 20,
-    paddingBottom: 40,
     flex: 1,
   },
+  containerFullPage: {
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E3E3E3',
+  },
   questionContainer: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#fff',
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E3E3E3',
+  },
+  questionContainerFullpage: {
+    borderWidth: 0,
   },
   counterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingBottom: 10,
   },
   counterTitle: {
-    fontSize: 24,
-    color: '#008e97',
-    fontFamily: 'Montserrat-SemiBold',
-  },
-  counterText: {
     fontSize: 18,
-    color: '#008e97',
-    fontFamily: 'Montserrat-SemiBold',
+    color: '#000',
+    fontFamily: 'PoppinsSemiBold',
   },
   questionText: {
-    fontSize: 18,
-    color: '#4d4d4d',
-    fontFamily: 'Montserrat-Regular',
-    lineHeight: 25,
+    fontSize: 16,
+    color: '#000',
+    fontFamily: 'PoppinsRegular',
+    lineHeight: 24,
   },
   readParagraphBtn: {
-    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 15,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#F5A52D',
   },
   readParagraphText: {
-    fontSize: 18,
-    fontFamily: 'Montserrat-SemiBold',
-    color: '#1e90ff',
-    borderBottomWidth: 1,
-    borderColor: '#1e90ff',
+    fontSize: 12,
+    fontFamily: 'PoppinsSemiBold',
+    color: '#F5A52D',
+    textAlign: 'center',
+    paddingHorizontal: 25,
+    paddingTop: 6,
+    paddingBottom: 4,
   },
   questionImageContainer: {
     width: '80%',
@@ -239,12 +251,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   choiceContainer: {
-    paddingTop: 40,
+    paddingTop: 25,
     flex: 1,
+    marginHorizontal: 3,
   },
   choiceContainerContent: {
     flexGrow: 1,
-    paddingBottom: 120,
+    // paddingBottom: 35,
   },
   submitBtn: {
     paddingHorizontal: 15,
@@ -266,36 +279,42 @@ const questionChoiceStyles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#a0c2eb',
+    borderColor: '#E3E3E3',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 10,
     paddingVertical: 10,
-    paddingRight: 2,
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
-  containerActive: {
-    borderColor: '#008E97',
-    backgroundColor: '#008E97',
+  containerFullPage: {
+    borderWidth: 0,
   },
   choiceLetter: {
-    width: '15%',
+    width: '9%',
+    marginHorizontal: '3%',
     textAlign: 'center',
-    fontSize: 24,
-    fontFamily: 'Montserrat-SemiBold',
-    color: '#008E97',
+    fontSize: 18,
+    fontFamily: 'PoppinsRegular',
+    color: '#757575',
+    borderWidth: 1,
+    borderColor: '#757575',
+    paddingTop: 3,
+  },
+  choiceLetterSelected: {
+    backgroundColor: '#1E90FF',
+    fontFamily: 'PoppinsSemiBold',
+    color: '#fff',
+    borderWidth: 0,
   },
   choiceText: {
     width: '85%',
-    fontSize: 16,
-    fontFamily: 'Montserrat-Regular',
-    color: '#4d4d4d',
+    fontSize: 14,
+    fontFamily: 'PoppinsRegular',
+    color: '#000',
     paddingHorizontal: 2,
-    lineHeight: 25,
-    paddingTop: 2,
-  },
-  activeText: {
-    color: '#fff',
+    lineHeight: 22,
   },
 });
 

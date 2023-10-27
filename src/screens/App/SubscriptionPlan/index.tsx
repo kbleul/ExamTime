@@ -204,7 +204,6 @@ const Index: React.FC = () => {
                 extrapolate: 'clamp',
               });
               const zIndex = index === activeCardIndex ? 100 : 0;
-              console.log('zindez', zIndex); // Add zIndex to bring the active card to the top
               return (
                 <View
                   style={{

@@ -16,20 +16,35 @@ const ChosenCoursesCard: React.FC<{
   bgImage: any;
 }> = ({title, lessonsCount, progress, bgImage}) => {
   return (
-    <View style={styles.container}>
+    <View
+      style={
+        progress
+          ? styles.container
+          : [styles.container, styles.containerSecondary]
+      }>
       <ImageBackground
         style={styles.imageBg}
         source={bgImage} // Replace with the correct path to your image
       >
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.lessons}>{lessonsCount} Lessons</Text>
-        <View style={styles.progressBar}>
-          <View
-            style={[styles.progressBarIndicator, {width: progress + '%'}]}
-          />
-        </View>
-
-        <Text style={styles.progressText}>{progress}% completed</Text>
+        <Text
+          style={
+            progress
+              ? styles.lessons
+              : [styles.lessons, styles.lessonsSecondary]
+          }>
+          {lessonsCount} Lessons
+        </Text>
+        {progress && (
+          <View style={styles.progressBar}>
+            <View
+              style={[styles.progressBarIndicator, {width: progress + '%'}]}
+            />
+          </View>
+        )}
+        {progress && (
+          <Text style={styles.progressText}>{progress}% completed</Text>
+        )}
       </ImageBackground>
     </View>
   );
@@ -42,6 +57,10 @@ export const styles = StyleSheet.create({
     marginHorizontal: 5,
     borderRadius: 15,
     overflow: 'hidden',
+  },
+  containerSecondary: {
+    height: screenHeight * (1 / 4),
+    width: screenWidth * (3.7 / 12),
   },
   imageBg: {
     height: '100%',
@@ -61,9 +80,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 100,
-    color: 'black',
+    color: 'white',
     fontSize: 12,
     fontFamily: 'Montserrat-SemiBold',
+  },
+  lessonsSecondary: {
+    width: '80%',
+    marginBottom: 10,
   },
   progressBar: {
     width: '100%',

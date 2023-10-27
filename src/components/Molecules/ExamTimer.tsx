@@ -5,12 +5,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const ExamTimer = () => {
   return (
     <View style={styles.container}>
-      {/* <Image
-        style={{}}
-        source={require('../../assets/Images/home/s2.png')}
-        resizeMode="cover"
-      /> */}
-      {/* <MaterialCommunityIcons name="timer-outline" color="#008e97" size={20} /> */}
       <Image
         source={require('../../assets/Images/gif/watch.gif')}
         style={styles.watchImg}
@@ -27,24 +21,23 @@ const styles = StyleSheet.create({
     borderColor: '#008e97',
     borderRadius: 10,
     paddingHorizontal: 15,
-    paddingVertical: 5,
-    position: 'absolute',
-    bottom: 80,
-    left: 15,
+    paddingVertical: 2,
     backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    alignSelf: 'center',
+    marginTop: 10,
   },
   timeText: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#008e97',
     fontFamily: 'Montserrat-SemiBold',
-    marginLeft: 10,
+    marginLeft: 5,
   },
   watchImg: {
-    width: 32,
-    height: 32,
+    width: 35,
+    height: 35,
   },
 });
 

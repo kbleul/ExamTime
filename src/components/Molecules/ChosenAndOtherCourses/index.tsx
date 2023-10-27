@@ -24,7 +24,7 @@ interface CourseItemType {
   subjectsCount: number;
 }
 
-const DummySubjects = [
+export const DummySubjects = [
   {
     id: '0011',
     title: 'SAT',
@@ -56,6 +56,13 @@ const DummySubjects = [
   {
     id: '0015',
     title: 'MAth',
+    lessonsCount: 12,
+    progress: 80,
+    bgImage: img5,
+  },
+  {
+    id: '0016',
+    title: 'Chemistry',
     lessonsCount: 12,
     progress: 80,
     bgImage: img5,
