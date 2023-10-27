@@ -67,6 +67,7 @@ export const handleLogin = async (
     ) {
       navigator.navigate('network-error');
     }
+    return false;
   }
 };
 

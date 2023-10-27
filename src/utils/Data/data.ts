@@ -58,7 +58,7 @@ export const ProfileMenuItems: ProfileMenuItems = {
   },
   'User Guide': {
     name: 'User Guide',
-    color: '#74FF51',
+    color: '#c891db',
     navigate: 'User Guide',
   },
 };
@@ -75,6 +75,11 @@ export const ProfileMenuItemsAuth: ProfileMenuItems = {
     name: 'Logout',
     color: '#B5C3E5',
     navigate: 'Logout',
+  },
+  'Delete Account': {
+    name: 'Delete Account',
+    color: 'red',
+    navigate: 'Delete Account',
   },
 };
 export const FAQ = [

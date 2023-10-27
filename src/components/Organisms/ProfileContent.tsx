@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import MenuItemsProfile from '../Molecules/MenuItemsProfile';
 import badgeImg from '../../assets/Images/Profile/badge.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MenuItems from '../Molecules/MenuItems';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
@@ -77,7 +77,7 @@ const ProfileContent = () => {
           </View>
         )}
 
-        <MenuItems />
+        <MenuItemsProfile />
       </ScrollView>
     </View>
   );

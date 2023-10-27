@@ -2,7 +2,19 @@ import NetInfo from '@react-native-community/netinfo';
 import {NavigationProp} from '@react-navigation/native';
 import {NativeScrollEvent, NativeSyntheticEvent} from 'react-native';
 import {UserData} from '../../../Realm';
-import {LocalObjectDataKeys} from '../../Data/data';
+import {Dispatch} from 'react';
+import {ActionCreatorWithPayload, AnyAction} from '@reduxjs/toolkit';
+import {
+  useDeleteAccountMutation,
+  useLoginMutation,
+} from '../../../reduxToolkit/Services/auth';
+import {FormData} from '../../../screens/Auth/Login/Types';
+import {userType} from '../../../types';
+import {logoutSuccess} from '../../../reduxToolkit/Features/auth/authSlice';
+import Toast, {ToastProps} from 'react-native-toast-message';
+
+type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
+type DeleteAccountMutationFn = ReturnType<typeof useDeleteAccountMutation>[0];
 
 export const checkIsOnline = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
@@ -65,5 +77,94 @@ export const removeRealmUserData = async (
     } catch (e) {
       console.log('err', e);
     }
+  }
+};
+
+export const verifyPassword = async (
+  data: FormData,
+  dispatch: Dispatch<AnyAction>,
+  login: LoginMutationFn,
+  loginSuccess: ActionCreatorWithPayload<
+    {
+      user: userType;
+      token: string;
+      isSubscribed: boolean;
+    },
+    'auth/loginSuccess'
+  >,
+  navigator: NavigationProp<ReactNavigation.RootParamList>,
+  setShowLastPrompt: React.Dispatch<React.SetStateAction<boolean>>,
+  setShowPasswordForm: React.Dispatch<React.SetStateAction<boolean>>,
+  setUserPassword: React.Dispatch<React.SetStateAction<string>>,
+) => {
+  checkIsOnline(navigator);
+
+  try {
+    const response = await login({
+      phoneNumber: data.phoneNumber,
+      password: data.password,
+    }).unwrap();
+    dispatch(
+      loginSuccess({
+        user: response.user,
+        token: response.accessToken,
+        isSubscribed: false,
+      }),
+    );
+
+    setShowLastPrompt(true);
+    setShowPasswordForm(false);
+    setUserPassword(data.password);
+
+    Toast.show({
+      type: 'success',
+      text1: 'success',
+      text2:
+        'Account deleted successfully. You can create a new accound using your old phone number.',
+      visibilityTime: 10000,
+    });
+  } catch (error) {
+    if (
+      error instanceof TypeError &&
+      error.message === 'Network request failed'
+    ) {
+      navigator.navigate('network-error');
+    }
+  }
+};
+
+export const DeleteUserAccount = async (
+  password: string,
+  token: string,
+  dispatch: Dispatch<AnyAction>,
+  deleteAccount: DeleteAccountMutationFn,
+  navigator: NavigationProp<ReactNavigation.RootParamList>,
+  setShowLastPrompt: React.Dispatch<React.SetStateAction<boolean>>,
+  setShowLDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>,
+  realm: Realm,
+  savedUserData: ResultsType<UserData>,
+) => {
+  console.log('here');
+  checkIsOnline(navigator);
+
+  try {
+    const response = await deleteAccount({
+      password,
+      token,
+    }).unwrap();
+    console.log(response);
+    dispatch(logoutSuccess());
+    setShowLastPrompt(false);
+    setShowLDeleteDialog(false);
+
+    removeRealmUserData(realm, savedUserData);
+  } catch (error) {
+    if (
+      error instanceof TypeError &&
+      error.message === 'Network request failed'
+    ) {
+      navigator.navigate('network-error');
+    }
+    console.log(error, token);
   }
 };

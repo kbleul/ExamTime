@@ -6,11 +6,14 @@ import ShareApp from '../Organisms/ShareApp';
 import {ProfileMenuItems, ProfileMenuItemsAuth} from '../../utils/Data/data';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
+import DeleteAccountAlertBox from '../Organisms/DeleteAccountAlertBox';
 
-const MenuItems = () => {
+const MenuItemsProfile = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const [showDeleteDialog, setShowLDeleteDialog] = useState(false);
+
   return (
     <View style={styles.container}>
       {user &&
@@ -21,6 +24,7 @@ const MenuItems = () => {
             bgColor={ProfileMenuItemsAuth[item].color}
             navigate={ProfileMenuItemsAuth[item].navigate}
             setShowLogoutDialog={setShowLogoutDialog}
+            setShowLDeleteDialog={setShowLDeleteDialog}
           />
         ))}
 
@@ -32,12 +36,18 @@ const MenuItems = () => {
             bgColor={ProfileMenuItems[item].color}
             navigate={ProfileMenuItems[item].navigate}
             setShowLogoutDialog={setShowLogoutDialog}
+            setShowLDeleteDialog={setShowLDeleteDialog}
           />
         ))}
 
       {showLogoutDialog && (
         <LogoutAlertBox setShowLogoutDialog={setShowLogoutDialog} />
       )}
+
+      {showDeleteDialog && (
+        <DeleteAccountAlertBox setShowLDeleteDialog={setShowLDeleteDialog} />
+      )}
+
       <ShareApp />
     </View>
   );
@@ -53,4 +63,4 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
 });
-export default MenuItems;
+export default MenuItemsProfile;

@@ -5,7 +5,7 @@ import {calculateDateDifference} from '../screens/App/Onboarding/Logic';
 import {AnyAction} from '@reduxjs/toolkit';
 
 export const checkUserStatus = (
-  savedUserData: UserData[],
+  savedUserData: ResultsType<UserData>,
   setIsAuthRoute: React.Dispatch<React.SetStateAction<boolean | null>>,
   setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>,
   dispatch: Dispatch<AnyAction>,

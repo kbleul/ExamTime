@@ -1,19 +1,35 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import LoginHeader from '../../../components/Molecules/LoginHeader';
 import LoginForm from '../../../components/Organisms/LoginForm';
-import SocialOptions from '../../../components/Organisms/SocialOptions';
 import AuthNavigatorOption from '../../../components/Organisms/AuthNavigatorOption';
 import {screenHeight} from '../../../utils/Data/data';
+import {calculateDateDifference} from '../../App/Onboarding/Logic';
+import {AuthContext} from '../../../Realm/model';
+import {UserData} from '../../../Realm';
 
 export default function Login() {
   const navigator = useNavigation<any>();
-
+  const {useQuery} = AuthContext;
+  const savedUserData = useQuery(UserData);
+  const dateDiff = calculateDateDifference(savedUserData[0].initialDate);
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.subContainer}>
+      <View
+        style={
+          dateDiff >= 3
+            ? [styles.subContainer, styles.subContainerSecondary]
+            : styles.subContainer
+        }>
         <LoginHeader navigate={() => navigator.goBack()} />
+
+        {dateDiff >= 0 && (
+          <Text style={styles.note}>
+            Your trial period is over. You must login or signup inorder to keep
+            using this app.
+          </Text>
+        )}
         <LoginForm />
         {/* <SocialOptions /> */}
       </View>
@@ -38,6 +54,20 @@ const styles = StyleSheet.create({
     borderColor: '#B5C3E5',
     paddingBottom: 38,
     marginHorizontal: 15,
-    marginBottom: (screenHeight * 1) / 9,
+    marginBottom: screenHeight / 9,
+  },
+  subContainerSecondary: {
+    marginBottom: 15,
+  },
+  note: {
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 15,
+    color: 'black',
+    borderWidth: 1,
+    paddingVertical: 4,
+    borderColor: '#E1E1E1',
+    borderRadius: 10,
   },
 });

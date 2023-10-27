@@ -116,10 +116,15 @@ export const api = createApi({
     >({
       query: credentials => {
         return {
-          url: `user/deleteAccount/${credentials.userId}`,
+          url: 'user/deleteaccount',
           method: 'DELETE',
-          body: {},
-          options: {},
+          body: {
+            password: credentials.password,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
         };
       },
     }),
