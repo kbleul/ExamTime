@@ -23,6 +23,7 @@ export const checkUserStatus = (
                       if > 3 then AuthRoutes
                       else AppRoutes - trial mode
     */
+
   if (savedUserData && savedUserData[0]) {
     setShowOnboarding(false);
     if (!savedUserData[0].user && !savedUserData[0].isSubscribed) {
@@ -41,7 +42,13 @@ export const checkUserStatus = (
     if (savedUserData[0].user && savedUserData[0].token) {
       dispatch(
         loginSuccess({
-          user: {...savedUserData[0].user},
+          user: {
+            ...savedUserData[0].user,
+            region: {
+              id: savedUserData[0].user?.region.id,
+              region: savedUserData[0].user?.region.region,
+            },
+          },
           token: savedUserData[0].token,
           isSubscribed: savedUserData[0].isSubscribed,
         }),

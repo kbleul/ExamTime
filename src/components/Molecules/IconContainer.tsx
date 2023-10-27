@@ -14,7 +14,6 @@ const IconContainer: React.FC<{
 }> = ({item, bgColor, navigate, setShowLogoutDialog}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
-  console.log('navigate', navigate);
   return (
     <TouchableOpacity
       style={styles.buttonsContainer}

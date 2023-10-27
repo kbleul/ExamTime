@@ -30,7 +30,6 @@ export const handleLogin = async (
   >,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   newUserData: ResultsType<UserData>,
-  savedUserData: ResultsType<UserData>,
   realm: Realm,
 ) => {
   checkIsOnline(navigator);
@@ -51,7 +50,6 @@ export const handleLogin = async (
 
     updateRealmUserData(
       newUserData,
-      savedUserData,
       response.user,
       response.accessToken,
       realm,
@@ -71,9 +69,8 @@ export const handleLogin = async (
   }
 };
 
-const updateRealmUserData = (
+export const updateRealmUserData = (
   newUserData: ResultsType<UserData>,
-  savedUserData: ResultsType<UserData>,
   user: userType,
   token: string,
   realm: Realm,
@@ -89,16 +86,18 @@ const updateRealmUserData = (
         gender,
         email,
         verificationCode,
+        region,
       } = user;
-
       let newUser;
       realm.write(() => {
+        const newRegion = realm.create(LocalObjectDataKeys.Region, {...region});
+
         newUser = realm.create(LocalObjectDataKeys.User, {
           id,
           firstName,
           lastName,
           phoneNumber,
-          region: '',
+          region: newRegion,
           isVerified: false,
           isActive: true,
           grade: grade?.grade,

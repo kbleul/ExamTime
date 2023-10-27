@@ -86,12 +86,12 @@ const ProfileContent = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: '31%',
+    top: '26%',
     justifyContent: 'center',
     alignItems: 'center',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    height: '67%',
+    height: '70%',
     width: '100%',
     backgroundColor: '#F5F5F5',
     overflow: 'hidden',

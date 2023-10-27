@@ -25,12 +25,34 @@ class UserData extends Realm.Object {
   };
 }
 
+class Region extends Realm.Object {
+  id: string = '';
+  region: string = '';
+  createdAt: string = '';
+  updatedAt: string = '';
+
+  static schema: Realm.ObjectSchema = {
+    name: 'Region',
+    properties: {
+      id: 'string',
+      region: 'string',
+      createdAt: 'string',
+      updatedAt: 'string',
+    },
+  };
+}
+
 class User extends Realm.Object {
   id: string = '';
   firstName: string = '';
   lastName: string = '';
   phoneNumber: string = '';
-  region: string = '';
+  region: {
+    id: string;
+    region: string;
+    createdAt: string;
+    updatedAt: string;
+  } | null = null;
   isVerified: boolean = false;
   isActive: boolean = false;
   grade: string = '';
@@ -45,7 +67,7 @@ class User extends Realm.Object {
       firstName: 'string',
       lastName: 'string',
       phoneNumber: 'string',
-      region: 'string',
+      region: 'Region?',
       isVerified: 'bool',
       isActive: 'bool',
       grade: 'string',
@@ -56,4 +78,4 @@ class User extends Realm.Object {
   };
 }
 
-export {UserData, User};
+export {UserData, User, Region};

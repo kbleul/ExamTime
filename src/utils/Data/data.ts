@@ -149,6 +149,7 @@ export const LocalStorageDataKeys = {
 export const LocalObjectDataKeys = {
   User: 'User',
   UserData: 'UserData',
+  Region: 'Region',
 };
 
 export const CarouselData_guest = [

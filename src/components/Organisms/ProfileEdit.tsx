@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
-  StyleSheet,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -9,7 +9,6 @@ import {
 import {View} from 'react-native';
 import * as yup from 'yup';
 import {Formik} from 'formik';
-import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {get_from_localStorage} from '../../utils/Functions/Get';
@@ -19,75 +18,72 @@ import {
 } from '../../reduxToolkit/Services/auth';
 import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toast from 'react-native-toast-message';
-interface User {
-  gender: string;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  grade?: {
-    grade: string;
-  };
-  region?: {
-    region: string;
-  };
-}
+import {ScaledSheet, ms} from 'react-native-size-matters';
+import {useGetRegionsMutation} from '../../reduxToolkit/Services/region';
+import {useGetGradeMutation} from '../../reduxToolkit/Services/grade';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {updateRealmUserData} from '../../screens/Auth/Login/Logic';
+import {AuthContext} from '../../Realm/model';
+import {UserData} from '../../Realm';
+
 const ProfileEdit: React.FC = () => {
   const dispatch = useDispatch();
+
+  const {useRealm, useQuery, useObject} = AuthContext;
+
+  const realm = useRealm();
+  const savedUserData = useQuery(UserData);
+  const newUserData = useObject(UserData, savedUserData[0]?._id);
   const user = useSelector((state: RootState) => state.auth.user);
-  const [name, setName] = useState(user.firstName ?? '');
-  const [lname, setLame] = useState(user.lastName ?? '');
-  const [phone, setPhone] = useState(user.phoneNumber ?? '');
-  const [grade, setGrade] = useState(user.grade?.grade ?? '');
-  const [city, setCity] = useState(user.region?.region ?? '');
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  const [fullName, setFullName] = useState(
+    (user?.firstName || '') + ' ' + (user?.lastName || ''),
+  );
+  const [phone, setPhone] = useState(user?.phoneNumber ?? '');
+  const [grade, setGrade] = useState(user?.grade?.grade ?? '');
+  const [city, setCity] = useState(user?.region?.region ?? '');
   const [showPassword, setShowPassword] = useState(true);
-  const [updateProfile, {isLoading}] = useChangeProfileMutation();
+  const [changeProfile, {isLoading}] = useChangeProfileMutation();
   const [updatePassword] = useChangePasswordMutation();
+  const [getRegions] = useGetRegionsMutation();
+  const [getGrade] = useGetGradeMutation();
+  const [rigionOptions, setRegionOptions] = useState([]);
 
-  const gradeOptions = ['grade_12_natural', 'grade_8'];
-  const rigionOptions = ['no_region', 'afar'];
-
-  const handleUpIconPress = () => {
-    const currentIndex = gradeOptions.indexOf(grade);
-    const newIndex = (currentIndex + 1) % gradeOptions.length;
-    setGrade(gradeOptions[newIndex]);
-  };
-
-  const handleDownIconPress = () => {
-    const currentIndex = gradeOptions.indexOf(grade);
-    const newIndex =
-      (currentIndex - 1 + gradeOptions.length) % gradeOptions.length;
-    setGrade(gradeOptions[newIndex]);
-  };
-  const handleUpIconPressforRigion = () => {
-    const currentIndex = rigionOptions.indexOf(city);
+  const handleUpIconPressforRigion = city => {
+    const currentIndex = rigionOptions.findIndex(
+      option => option.value === city,
+    );
     const newIndex = (currentIndex + 1) % rigionOptions.length;
-    setCity(rigionOptions[newIndex]);
+    setCity(rigionOptions[newIndex].value);
   };
 
   const handleDownIconPressforRigion = () => {
-    const currentIndex = rigionOptions.indexOf(city);
+    const currentIndex = rigionOptions.findIndex(
+      option => option.value === city,
+    );
     const newIndex =
       (currentIndex - 1 + rigionOptions.length) % rigionOptions.length;
-    setCity(rigionOptions[newIndex]);
+    setCity(rigionOptions[newIndex].value);
   };
 
   const handleUpdateProfile = async () => {
-    const tokenResult = await get_from_localStorage('token');
-    if (tokenResult.status && tokenResult.value) {
-      const token = tokenResult.value;
-
+    if (token) {
+      const [firstName, lastName] = fullName.split(' ');
       const profileData = {
-        firstName: name,
-        lastName: lname,
+        firstName: firstName,
+        lastName: lastName,
         phoneNumber: phone,
         grade: grade,
-        gender: user.gender ?? '',
+        gender: user?.gender ?? '',
         region: city,
       };
 
       try {
-        const result = await updateProfile({token, profileData});
+        const result = await changeProfile({token, profileData});
+
         if (result.data.user) {
           dispatch(
             loginSuccess({
@@ -96,7 +92,7 @@ const ProfileEdit: React.FC = () => {
             }),
           );
         }
-        console.log('updated result', result);
+        updateRealmUserData(newUserData, result.data.user, token, realm);
 
         Toast.show({
           type: 'success',
@@ -104,7 +100,13 @@ const ProfileEdit: React.FC = () => {
           text2: 'Profile updated successfuly',
           visibilityTime: 4000,
         });
-        // navigation.goBack();
+
+        setTimeout(() => navigation.navigate('Profile'), 1000);
+        // setName('')
+        setFullName('');
+        setPhone('');
+        setGrade('');
+        setCity('');
       } catch (error) {
         await Toast.show({
           type: 'error',
@@ -113,6 +115,7 @@ const ProfileEdit: React.FC = () => {
         });
         console.error(error);
       }
+    } else {
     }
   };
   //password schema
@@ -137,7 +140,7 @@ const ProfileEdit: React.FC = () => {
       .oneOf([yup.ref('newPassword')], 'Passwords must match'),
   });
 
-  const handleSubmit = async values => {
+  const handleSubmitPassword = async values => {
     if (values.newPassword === values.confirmPassword) {
       try {
         const tokenResult = await get_from_localStorage('token');
@@ -148,15 +151,13 @@ const ProfileEdit: React.FC = () => {
             newPassword: values.newPassword,
             token,
           });
+
           await Toast.show({
             type: 'success',
             text1: 'success',
             text2: 'Password updated successfuly',
             visibilityTime: 4000,
           });
-          // Handle the response accordingly
-          console.log('Password changed successfully', response);
-          console.log('Password changed successfully');
         }
       } catch (error) {
         await Toast.show({
@@ -168,40 +169,71 @@ const ProfileEdit: React.FC = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getRegions();
+        const tempRegionsList: {label: string; value: string}[] = [];
+        response.data.map((region: {region: string}) => {
+          tempRegionsList.push({
+            label: region.region.toUpperCase(),
+            value: region.region,
+          });
+        });
+
+        setRegionOptions([...tempRegionsList]);
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+      }
+    };
+    const fetchGradeData = async () => {
+      try {
+        const response = await getGrade();
+        // const fetchedGrade = data;
+        const tempRegionsList: {label: string}[] = [];
+        response.data.map((grade: {grade: string}) => {
+          return tempRegionsList.push(grade.grade);
+        });
+
+        if (grade) return setGrade(tempRegionsList[0]);
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+      }
+    };
+    fetchData();
+    fetchGradeData(); // Call the fetch function
+  }, []);
+
   return (
     <>
+      <StatusBar hidden={true} />
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TouchableOpacity
-            style={styles.doneContainer}
-            onPress={handleUpdateProfile}>
-            <Text style={styles.doneText}>Done</Text>
-          </TouchableOpacity>
+          {/* back Icon and DoneTExt Container */}
+          <View style={styles.backIconandDoneTExtContainer}>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              touchSoundDisabled
+              onPress={() => navigation.goBack()}>
+              <AntDesign name="left" style={styles.backIcon} size={ms(24)} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.doneContainer}
+              onPress={handleUpdateProfile}>
+              <Text style={styles.doneText}>Done</Text>
+            </TouchableOpacity>
+          </View>
 
+          {/* Profile Update Forms */}
           <View style={styles.topFormContainer}>
             <Text style={styles.title}>My profile</Text>
-
             <TextInput
               style={styles.inputContiner}
-              onChangeText={setName}
-              value={name}
+              onChangeText={setFullName}
+              value={fullName}
             />
-            <TextInput
-              style={styles.inputContiner}
-              onChangeText={setLame}
-              value={lname}
-            />
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingHorizontal: 30,
-                borderWidth: 1,
-                marginVertical: 5,
-                marginHorizontal: 20,
-                borderRadius: 10,
-                borderColor: '#abcef5',
-              }}>
+            <View style={styles.commonTextFeildStyle}>
               <Text style={styles.prefixText}>+251</Text>
               <TextInput
                 style={styles.inputContainer}
@@ -210,46 +242,8 @@ const ProfileEdit: React.FC = () => {
                 autoComplete="tel"
               />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingHorizontal: 30,
-                borderWidth: 1,
-                marginVertical: 5,
-                marginHorizontal: 20,
-                borderRadius: 10,
-                borderColor: '#abcef5',
-              }}>
-              <TextInput
-                style={{
-                  flex: 1,
-                  fontSize: 18,
-                  color: '#858585',
-                }}
-                value={grade}
-                onChangeText={setGrade}
-              />
-              <View style={{flexDirection: 'columen', gap: 1}}>
-                <TouchableOpacity onPress={handleUpIconPress}>
-                  <Ionicons name="caret-up-outline" size={20} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleDownIconPress}>
-                  <Ionicons name="caret-down-outline" size={20} />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingHorizontal: 30,
-                borderWidth: 1,
-                marginVertical: 5,
-                marginHorizontal: 20,
-                borderRadius: 10,
-                borderColor: '#abcef5',
-              }}>
+
+            <View style={styles.commonTextFeildStyle}>
               <TextInput
                 style={{
                   flex: 1,
@@ -269,11 +263,12 @@ const ProfileEdit: React.FC = () => {
               </View>
             </View>
           </View>
+
           {/* password update  */}
           <Formik
             initialValues={{password: '', newPassword: '', confirmPassword: ''}}
             validationSchema={schema}
-            onSubmit={handleSubmit}>
+            onSubmit={handleSubmitPassword}>
             {({
               handleChange,
               handleBlur,
@@ -283,19 +278,27 @@ const ProfileEdit: React.FC = () => {
               touched,
             }) => (
               <View style={styles.topFormContainer}>
-                <Text style={styles.title}>Update password</Text>
+                <View style={styles.passwordHeader}>
+                  <Text style={styles.title}>Update password</Text>
+                  <View
+                    style={{
+                      backgroundColor: '#2196F3',
+                      padding: 5,
+                      height: 25,
+                      width: 25,
+                      borderRadius: 50,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <FontAwesome5
+                      name="exclamation"
+                      size={15}
+                      style={{transform: [{rotate: '180deg'}], color: 'white'}}
+                    />
+                  </View>
+                </View>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: 30,
-                    borderWidth: 1,
-                    marginVertical: 5,
-                    marginHorizontal: 20,
-                    borderRadius: 10,
-                    borderColor: '#abcef5',
-                  }}>
+                <View style={styles.commonTextFeildStyle}>
                   <TextInput
                     style={{
                       flex: 1,
@@ -330,17 +333,7 @@ const ProfileEdit: React.FC = () => {
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: 30,
-                    borderWidth: 1,
-                    marginVertical: 5,
-                    marginHorizontal: 20,
-                    borderRadius: 10,
-                    borderColor: '#abcef5',
-                  }}>
+                <View style={styles.commonTextFeildStyle}>
                   <TextInput
                     style={{
                       flex: 1,
@@ -374,17 +367,7 @@ const ProfileEdit: React.FC = () => {
                 {errors.newPassword && touched.newPassword && (
                   <Text style={styles.errorText}>{errors.newPassword}</Text>
                 )}
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: 30,
-                    borderWidth: 1,
-                    marginVertical: 5,
-                    marginHorizontal: 20,
-                    borderRadius: 10,
-                    borderColor: '#abcef5',
-                  }}>
+                <View style={styles.commonTextFeildStyle}>
                   <TextInput
                     style={{
                       flex: 1,
@@ -420,9 +403,21 @@ const ProfileEdit: React.FC = () => {
                 )}
 
                 <TouchableOpacity
-                  style={[styles.inputContainer, styles.changePassword]}
+                  style={[
+                    styles.inputContainer,
+                    styles.changePassword,
+                    {
+                      flexDirection: 'row',
+                      marginHorizontal: 20,
+                      marginBottom: 20,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 10,
+                    },
+                  ]}
                   onPress={handleSubmit}>
                   <Text style={styles.changePasswordText}>Change Password</Text>
+                  <AntDesign name="right" style={{color: 'white'}} size={19} />
                 </TouchableOpacity>
               </View>
             )}
@@ -434,50 +429,62 @@ const ProfileEdit: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     position: 'absolute',
-    top: '35%',
-    height: '67%',
+    top: '25%',
+    height: '75%',
     width: '100%',
     backgroundColor: '#F5F5F5',
     overflow: 'hidden',
-    paddingBottom: 25,
+    paddingBottom: '25@vs', // Apply verticalScale function on 25
   },
+  commonTextFeildStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: '30@s', // Apply scale function on 30
+    borderWidth: 1,
+    marginVertical: '5@vs', // Apply verticalScale function on 5
+    marginHorizontal: '20@s', // Apply scale function on 20
+    borderRadius: 10,
+    borderColor: '#abcef5',
+    fontFamily: 'PoppinsRegular',
+    backgroundColor: 'white',
+  },
+
   doneContainer: {
     alignItems: 'flex-end',
     justifyContent: 'center',
-    width: '90%',
-    marginLeft: '5%',
-    marginTop: 10,
+    // width: '90%',
+    marginLeft: '5@s', // Apply scale function on 5
+    marginTop: '10@vs', // Apply verticalScale function on 10
   },
   doneText: {
     color: '#1E90FF',
-    fontSize: 20,
+    fontSize: '20@ms', // Apply moderateScale function with resize factor of 0.5 on 20
+    fontFamily: 'PoppinsRegular',
   },
   topFormContainer: {
-    width: '94%',
-    marginLeft: '3%',
     borderRadius: 10,
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    marginBottom: 10,
+    paddingVertical: '1@vs', // Apply verticalScale function on 10
   },
   title: {
     color: '#858585',
-    fontSize: 22,
-    paddingHorizontal: 18,
+    fontSize: '20@ms', // Apply moderateScale function with resize factor of 0.5 on 22
+    fontFamily: 'PoppinsRegular',
+    paddingHorizontal: '18@s', // Apply scale function on 18
   },
   inputContiner: {
-    paddingHorizontal: 30,
-    paddingVertical: 10,
+    paddingHorizontal: '30@s', // Apply scale function on 30
+    paddingVertical: '10@vs', // Apply verticalScale function on 10
     borderWidth: 1,
-    marginVertical: 5,
-    marginHorizontal: 20,
-    borderRadius: 10,
+    marginVertical: '5@vs', // Apply verticalScale function on 5
+    marginHorizontal: '20@s', // Apply scale function on 20
+    borderRadius: '10@s',
     borderColor: '#abcef5',
-    fontSize: 18,
+    fontSize: '18@ms', // Apply moderateScale function with resize factor of 0.5 on 18
     color: '#858585',
+    backgroundColor: 'white',
   },
   changePassword: {
     backgroundColor: '#1E90FF',
@@ -485,43 +492,64 @@ const styles = StyleSheet.create({
   changePasswordText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 18,
-    fontFamily: 'Montserrat-SemiBold',
+    fontSize: '18@ms', // Apply moderateScale function with resize factor of 0.5 on 18
+    fontFamily: 'PoppinsRegular',
+  },
+  passwordHeader: {
+    marginHorizontal: '10@s', // Apply scale function on 10
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
   prefixContainer: {
     position: 'absolute',
     top: '35%',
     height: '67%',
     width: '100%',
-    // backgroundColor: '#F9FCFF',
     overflow: 'hidden',
-    paddingBottom: 25,
+    paddingBottom: '25@vs', // Apply verticalScale function on 25
     flexDirection: 'row',
     alignItems: 'center',
   },
   prefixText: {
-    marginRight: 5,
-    fontSize: 16,
+    marginRight: '5@s', // Apply scale function on 5
+    fontSize: '16@ms', // Apply moderateScale function with resize factor of 0.5 on 16
     fontWeight: 'bold',
   },
   inputContainer: {
-    padding: 10,
-    fontSize: 18,
+    padding: '10@ms', // Apply moderateScale function with resize factor of 0.5 on 10
+    fontSize: '18@ms', // Apply moderateScale function with resize factor of 0.5 on 18
     color: '#858585',
     flex: 1,
   },
   errorText: {
-    fontSize: 15,
+    fontSize: '15@ms', // Apply moderateScale function with resize factor of 0.5 on 15
     color: 'red',
     flex: 1,
   },
   smallBox: {
-    // width: '20%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 20,
+    fontSize: '20@ms', // Apply moderateScale function with resize factor of 0.5 on 20
     textAlign: 'center',
     color: '#b3b3b3',
+  },
+  iconContainer: {
+    color: 'black',
+  },
+  backIcon: {
+    color: 'black',
+    fontSize: '28@ms', // Apply moderateScale function with resize factor of 0.5 on 28
+    fontWeight: 'bold',
+  },
+  backIconandDoneTExtContainer: {
+    padding: '10@ms', // Apply moderateScale function with resize factor of 0.5 on 10
+    marginHorizontal: '10@s', // Apply scale function on 10
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 export default ProfileEdit;

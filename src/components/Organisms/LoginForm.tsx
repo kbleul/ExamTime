@@ -154,7 +154,6 @@ const LoginForm = () => {
                 loginSuccess,
                 navigator,
                 newUserData,
-                savedUserData,
                 realm,
               ),
             )}>

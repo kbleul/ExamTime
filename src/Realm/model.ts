@@ -1,6 +1,6 @@
 import {createRealmContext} from '@realm/react';
-import {UserData, User} from './index';
+import {UserData, User, Region} from './index';
 export const AuthContext = createRealmContext({
-  schema: [UserData, User],
+  schema: [UserData, User, Region],
   deleteRealmIfMigrationNeeded: true,
 });

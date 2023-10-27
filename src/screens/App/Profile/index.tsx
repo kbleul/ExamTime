@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1,
     position: 'relative',
-    paddingBottom: 80,
+    paddingBottom: 60,
     backgroundColor: '#F5F5F5',
   },
   imageBg: {

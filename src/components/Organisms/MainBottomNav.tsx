@@ -7,7 +7,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
-import {ProfileMenuItemsAuth} from '../../utils/Data/data';
 
 const MainBottomNav = () => {
   const navigationState = useNavigationState(state => state);
@@ -130,32 +129,33 @@ const MainBottomNav = () => {
           onPress={() => navigation.navigate('Profile')}
           style={style.buttonWrapper}>
           {(currentScreen === 'Profile' ||
-            Object.keys(ProfileMenuItemsAuth).includes(currentScreen)) && (
+            currentScreen === 'Profile-Edit') && (
+            // Object.keys(ProfileMenuItemsAuth).includes(currentScreen))
             <View style={style.dot} />
           )}
 
           <View
             style={
-              currentScreen === 'Profile' ||
-              Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
-                ? [style.button, style.buttonSelected]
+              currentScreen === 'Profile' || currentScreen === 'Profile-Edit'
+                ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
+                  [style.button, style.buttonSelected]
                 : style.button
             }>
             <AntDesign
               name="setting"
               size={24}
               style={
-                currentScreen === 'Profile' ||
-                Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
-                  ? style.iconActive
+                currentScreen === 'Profile' || currentScreen === 'Profile-Edit'
+                  ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
+                    style.iconActive
                   : style.icon
               }
             />
             <Text
               style={
-                currentScreen === 'Profile' ||
-                Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
-                  ? style.buttonTextActive
+                currentScreen === 'Profile' || currentScreen === 'Profile-Edit'
+                  ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
+                    style.buttonTextActive
                   : style.buttonText
               }>
               Setting
