@@ -2,7 +2,6 @@ import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ChosenCoursesCard from '../Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 import {DummySubjects} from '../Molecules/ChosenAndOtherCourses';
-import {screenHeight} from '../../utils/Data/data';
 
 type propType = {
   id: string;
