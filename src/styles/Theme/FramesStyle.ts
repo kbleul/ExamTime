@@ -94,7 +94,7 @@ export const frameTwostyles = StyleSheet.create({
     color: 'white',
   },
   progressText: {
-    fontSize: 32,
+    fontSize: screenWidth * 0.08,
     fontFamily: 'Montserrat=Bold',
     color: 'white',
   },
