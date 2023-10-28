@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ChosenCoursesCard from '../Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 import {DummySubjects} from '../Molecules/ChosenAndOtherCourses';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 type propType = {
   id: string;
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
     width: '63%',
     alignItems: 'center',
     justifyContent: 'center',
+    maxHeight: 200,
   },
   listContaier: {
     width: '100%',
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
   subjectsButton: {
     backgroundColor: '#D9D9D9',
     borderRadius: 10,
-    marginVertical: '8.5%',
+    marginVertical: screenHeight * 0.013,
   },
   subjectsButtonActive: {
     borderWidth: 1,
@@ -113,6 +115,7 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsRegular',
     textAlign: 'center',
     paddingVertical: 8,
+    fontSize: screenWidth * 0.035,
   },
 });
 
