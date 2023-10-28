@@ -8,21 +8,23 @@ import {
 } from 'react-native';
 import {RootState} from '../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import profileImg from '../../assets/Images/Profile/1.png';
 import avatarImg from '../../assets/Images/Profile/avatar.png';
-
 import frameBlueImg from '../../assets/Images/frame_blue.png';
 
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {
   styles,
-  frameFourstyles,
   frameOnestyles,
-  frameThreestyles,
   frameTwostyles,
+  frameThreestyles,
+  frameFourstyles,
 } from '../../styles/Theme/FramesStyle';
+import {screenWidth} from '../../utils/Data/data';
 
 const CarouselFrame: React.FC<{index: number}> = ({index}) => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -105,7 +107,7 @@ export const FrameOne: React.FC<{
           <MaterialIcons
             name="waving-hand"
             color="#B37E53"
-            size={32}
+            size={screenWidth * 0.08}
             style={frameOnestyles.helloIcon}
           />
         </View>
@@ -123,21 +125,23 @@ export const FrameTwo: React.FC<{
   progrss: string;
 }> = ({title, img, text, progrss}) => {
   return (
-    <ImageBackground
-      style={[frameTwostyles.container]}
-      source={img} // Replace with the correct path to your image
-    >
-      <View style={frameTwostyles.leftBoxContainer}>
-        <View style={{}}>
-          <Text style={frameTwostyles.firstText}>{title}</Text>
-          <Text style={frameTwostyles.secondText}>{text}</Text>
+    <View style={frameTwostyles.mainContainer}>
+      <ImageBackground
+        style={frameTwostyles.container}
+        source={img} // Replace with the correct path to your image
+        resizeMode="cover">
+        <View style={frameTwostyles.leftBoxContainer}>
+          <View style={{}}>
+            <Text style={frameTwostyles.firstText}>{title}</Text>
+            <Text style={frameTwostyles.secondText}>{text}</Text>
+          </View>
         </View>
-      </View>
 
-      <View style={frameTwostyles.rightBoxContainer}>
-        <Text style={frameTwostyles.progressText}>{progrss}</Text>
-      </View>
-    </ImageBackground>
+        <View style={frameTwostyles.rightBoxContainer}>
+          <Text style={frameTwostyles.progressText}>{progrss}</Text>
+        </View>
+      </ImageBackground>
+    </View>
   );
 };
 
@@ -201,7 +205,7 @@ export const FrameFour: React.FC<{
       <TouchableOpacity
         touchSoundDisabled
         style={frameFourstyles.iconCOntainer}>
-        <AntDesign name="youtube" color="#FF3131" size={60} />
+        <AntDesign name="youtube" color="#FF3131" size={screenWidth * 0.18} />
       </TouchableOpacity>
     </ImageBackground>
   );
