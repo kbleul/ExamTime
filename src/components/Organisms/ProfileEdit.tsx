@@ -34,6 +34,14 @@ const ProfileEdit: React.FC = () => {
 
   const {useRealm, useQuery, useObject} = AuthContext;
 
+  const IsDefaultPasswordChanged = useSelector(
+    (state: RootState) => state.auth.IsDefaultPasswordChanged,
+  );
+
+  const isSubscribed = useSelector(
+    (state: RootState) => state.auth.isSubscribed,
+  );
+
   const navigation = useNavigation();
   const realm = useRealm();
   const savedUserData = useQuery(UserData);
@@ -91,6 +99,8 @@ const ProfileEdit: React.FC = () => {
             loginSuccess({
               user: result.data.user,
               token: token,
+              isSubscribed: isSubscribed,
+              IsDefaultPasswordChanged: IsDefaultPasswordChanged,
             }),
           );
         }

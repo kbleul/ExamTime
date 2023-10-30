@@ -64,6 +64,12 @@ export type CreatePasswordFormDataType = {
   confirmPassword: string;
 };
 
+export type ChangePasswordFormDataType = {
+  token: string;
+  currentPassword: string;
+  newPassword: string;
+};
+
 export type regionItemsType = {
   label: string;
   value: string;
