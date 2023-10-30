@@ -47,7 +47,7 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
 
         <Stack.Screen
           name="Home"
-          component={SetNewPasswordPage}
+          component={Home}
           options={{headerShown: false}}
         />
         <Stack.Screen
