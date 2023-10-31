@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   ScrollView,
   StatusBar,
   Text,
@@ -15,6 +16,7 @@ import { get_from_localStorage } from '../../utils/Functions/Get';
 import {
   useChangePasswordMutation,
   useChangeProfileMutation,
+  useLoginMutation,
 } from '../../reduxToolkit/Services/auth';
 import { loginSuccess } from '../../reduxToolkit/Features/auth/authSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -27,8 +29,10 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { updateRealmUserData } from '../../screens/Auth/Login/Logic';
 import { AuthContext } from '../../Realm/model';
 import { UserData } from '../../Realm';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { passwordSchema } from '../../utils/Functions/Helper/PasswordSchema';
+import { regionItemsType } from '../../types'; import { formStyles } from '../../screens/Auth/Signup/Styles';
+import { Dropdown } from 'react-native-element-dropdown';
 
 const ProfileEdit: React.FC = () => {
   const dispatch = useDispatch();
@@ -47,13 +51,26 @@ const ProfileEdit: React.FC = () => {
   );
   const [phone, setPhone] = useState(user?.phoneNumber ?? '');
   const [grade, setGrade] = useState(user?.grade?.grade ?? '');
-  const [city, setCity] = useState(user?.region?.region ?? '');
   const [showPassword, setShowPassword] = useState(true);
   const [changeProfile, { isLoading }] = useChangeProfileMutation();
   const [updatePassword] = useChangePasswordMutation();
-  const [getRegions] = useGetRegionsMutation();
+  // const [getRegions] = useGetRegionsMutation();
   const [getGrade] = useGetGradeMutation();
+  const [isFocusRegion, setIsFocusRegion] = useState(false);
+  const [region, setRegion] = useState<string | null>(null);
+  const [regionError, setRegionError] = useState<string | null>(null);
   const [rigionOptions, setRegionOptions] = useState([]);
+  const [
+    getRegions,
+    { isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion },
+  ] = useGetRegionsMutation();
+  const [regionsListItems, setRegionsListItems] = useState<
+    regionItemsType[] | []
+  >([]);
+
+  const [refetchRegions, setRefetchRegions] = useState(false);
+  type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
+
 
   const handleUpIconPressforRigion = city => {
     const currentIndex = rigionOptions.findIndex(
@@ -167,23 +184,35 @@ const ProfileEdit: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getRegions();
-        const tempRegionsList: { label: string; value: string }[] = [];
-        response.data.map((region: { region: string }) => {
-          tempRegionsList.push({
-            label: region.region.toUpperCase(),
-            value: region.region,
-          });
-        });
+  const fetchRegions = async (
+    getRegions: GetRegionsMutationFn,
+    setRegionsListItems: React.Dispatch<
+      React.SetStateAction<regionItemsType[] | []>
+    >,
+    navigator: NavigationProp<ReactNavigation.RootParamList>,
+  ) => {
+    try {
 
-        setRegionOptions([...tempRegionsList]);
-      } catch (error) {
-        console.error('Error fetching regions:', error);
-      }
-    };
+      const response = await getRegions().unwrap();
+      const tempRegionsList: regionItemsType[] = [];
+
+      response.map((region: { region: string }) => {
+        tempRegionsList.push({
+          label: region.region.toUpperCase(),
+          value: region.region.toUpperCase(),
+        });
+      });
+
+      setRegionsListItems([...tempRegionsList]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchRegions(getRegions, setRegionsListItems, navigation);
+  }, [getRegions, refetchRegions, navigation]);
+
+  useEffect(() => {
     const fetchGradeData = async () => {
       try {
         const response = await getGrade();
@@ -198,7 +227,6 @@ const ProfileEdit: React.FC = () => {
         console.error('Error fetching regions:', error);
       }
     };
-    fetchData();
     fetchGradeData(); // Call the fetch function
   }, []);
 
@@ -240,22 +268,44 @@ const ProfileEdit: React.FC = () => {
                 keyboardType="numeric"
               />
             </View>
-
-            <View style={styles.commonTextFeildStyle}>
-              <TextInput
-                style={styles.inputContainer}
-                value={city}
-                onChangeText={setCity}
-              />
-              <View>
-                <TouchableOpacity onPress={handleUpIconPressforRigion}>
-                  <Ionicons name="caret-up-outline" size={20} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleDownIconPressforRigion}>
-                  <Ionicons name="caret-down-outline" size={20} />
-                </TouchableOpacity>
+          
+              <View style={styles.commonTextFeildStyle}>
+                <Dropdown
+                  style={[
+                    styles.dropdown,
+                  ]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  itemTextStyle={styles.itemListStyle}
+                  iconStyle={styles.iconStyle}
+                  data={regionsListItems}
+                  search
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder={!isFocusRegion ? 'Select region' : '...'}
+                  searchPlaceholder="Search..."
+                  value={region}
+                  onFocus={() => setIsFocusRegion(true)}
+                  onBlur={() => setIsFocusRegion(false)}
+                  onChange={item => {
+                    setRegion(item.value);
+                    setIsFocusRegion(false);
+                  }}
+                />
+                {isLoadingRegions && (
+                  <View style={styles.loadingContainer}>
+                    <ActivityIndicator size={14} />
+                    <Text style={styles.loadingText}>Loading regions ...</Text>
+                  </View>
+                )}
+                {regionError && !region ? (
+                  <Text style={styles.error}>Region is required *</Text>
+                ) : (
+                  <Text style={styles.error}>{''}</Text>
+                )}
               </View>
-            </View>
           </View>
 
           {/* password update  */}
@@ -292,6 +342,7 @@ const ProfileEdit: React.FC = () => {
                     value={values.password}
                     placeholder="old password"
                     secureTextEntry={showPassword}
+                    placeholderTextColor={'#d4d4d4'}
                   />
                   {showPassword ? (
                     <TouchableOpacity
@@ -325,6 +376,7 @@ const ProfileEdit: React.FC = () => {
                     value={values.newPassword}
                     placeholder="New password"
                     secureTextEntry={showPassword}
+                    placeholderTextColor={'#d4d4d4'}
                   />
                   {showPassword ? (
                     <TouchableOpacity
@@ -357,6 +409,7 @@ const ProfileEdit: React.FC = () => {
                     value={values.confirmPassword}
                     placeholder="Confirm password"
                     secureTextEntry={showPassword}
+                    placeholderTextColor={'#d4d4d4'}
                   />
                   {showPassword ? (
                     <TouchableOpacity
@@ -390,7 +443,7 @@ const ProfileEdit: React.FC = () => {
                   ]}
                   onPress={handleSubmit}>
                   <Text style={styles.changePasswordText}>Change Password</Text>
-                  <AntDesign name="right" style={styles.changepasswordButtonIcon}/>
+                  <AntDesign name="right" style={styles.changepasswordButtonIcon} />
                 </TouchableOpacity>
               </View>
             )}
@@ -446,8 +499,8 @@ const styles = ScaledSheet.create({
     fontFamily: 'PoppinsRegular',
     flexDirection: 'row',
     marginHorizontal: '20@s',
-    marginVertical: '2@vs',
-    paddingHorizontal: '30@s',
+    marginVertical: '3@vs',
+    paddingHorizontal: '20@s',
   },
   container: {
     backgroundColor: '#F5F5F5',
@@ -457,6 +510,12 @@ const styles = ScaledSheet.create({
     position: 'absolute',
     top: '25%',
     width: '100%',
+  },
+  dropdown: {
+    width: "100%",
+    height: '42@vs',
+    textTransform: 'uppercase',
+    color: '#d4d4d4',
   },
   doneContainer: {
     alignItems: 'flex-end',
@@ -502,7 +561,7 @@ const styles = ScaledSheet.create({
     fontSize: '16@ms',
     marginHorizontal: '20@s',
     marginVertical: '5@vs',
-    paddingHorizontal: '30@s',
+    paddingHorizontal: '20@s',
     paddingVertical: '10@vs',
   },
   passwordHeader: {
@@ -543,6 +602,71 @@ const styles = ScaledSheet.create({
   topFormContainer: {
     borderRadius: 10,
     paddingVertical: '1@vs',
+  },
+
+//dropdown input field
+  icon: {
+    marginRight: 5,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: '#d4d4d4',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: 'black',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    color: '#d4d4d4',
+  },
+  itemListStyle: {
+    color: '#000',
+  },
+  submitBtnContainer: {
+    width: '100%',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginTop: 15,
+  },
+  submitBtn: {
+    backgroundColor: '#1E90FF',
+    borderRadius: 10,
+    width: 200,
+    paddingVertical: 11,
+  },
+  submitBtnPassword: {
+    backgroundColor: '#1E90FF',
+    borderRadius: 10,
+    width: 200,
+    paddingVertical: 11,
+    alignSelf: 'flex-end',
+  },
+  submitText: {
+    color: '#FFFFFF',
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  error: {
+    color: '#f08273',
+    paddingHorizontal: 8,
+    textAlign: 'right',
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    fontSize: 14,
+    fontFamily: 'Montserrat-Regular',
+    color: '#b3b3b3',
   },
 });
 export default ProfileEdit;
