@@ -10,16 +10,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {
-  loginSuccess,
-  logoutSuccess,
-} from '../../reduxToolkit/Features/auth/authSlice';
+import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  DeleteUserAccount,
-  removeRealmUserData,
-  verifyPassword,
-} from '../../utils/Functions/Helper';
+import {DeleteUserAccount, verifyPassword} from '../../utils/Functions/Helper';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -33,7 +26,6 @@ import {
   useLoginMutation,
 } from '../../reduxToolkit/Services/auth';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Toast from 'react-native-toast-message';
 
 export type FormDataType = {
   password: string;
@@ -43,6 +35,7 @@ const DeleteAccountAlertBox: React.FC<{
 }> = ({setShowLDeleteDialog}) => {
   const navigator = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
+
   const dispatch = useDispatch();
 
   const [deleteAccount, {isLoading, isError, error}] =
@@ -182,6 +175,10 @@ const PasswordForm = ({
   const navigator = useNavigation();
 
   const user = useSelector((state: RootState) => state.auth.user);
+  const IsDefaultPasswordChanged = useSelector(
+    (state: RootState) => state.auth.IsDefaultPasswordChanged,
+  );
+
   const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(true);
@@ -250,6 +247,7 @@ const PasswordForm = ({
               setShowLastPrompt,
               setShowPasswordForm,
               setUserPassword,
+              IsDefaultPasswordChanged,
             ),
           )}>
           {isLoading ? (

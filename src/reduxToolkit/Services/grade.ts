@@ -1,8 +1,4 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {
-  regionItemsType,
-  userType,
-} from '../../types';
 import Config from 'react-native-config';
 
 export const api = createApi({
@@ -19,6 +15,4 @@ export const api = createApi({
   }),
 });
 
-export const {
-  useGetGradeMutation,
-} = api;
+export const {useGetGradeMutation} = api;

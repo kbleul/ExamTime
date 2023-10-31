@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 5,
     borderRadius: 15,
     overflow: 'hidden',
+    maxHeight: 200,
   },
   containerSecondary: {
     height: screenHeight * (1 / 4),
@@ -70,18 +71,19 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: 16,
+    fontSize: screenWidth * 0.04,
     fontFamily: 'Montserrat-SemiBold',
-    paddingBottom: 6,
+    paddingBottom: screenHeight * 0.01,
+    paddingLeft: 5,
   },
   lessons: {
     width: '100%',
-    paddingVertical: 4,
-    paddingHorizontal: 20,
+    paddingVertical: screenHeight * 0.005,
+    paddingHorizontal: screenWidth * 0.02,
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 100,
     color: 'white',
-    fontSize: 12,
+    fontSize: screenWidth * 0.03,
     fontFamily: 'Montserrat-SemiBold',
   },
   lessonsSecondary: {
@@ -103,7 +105,7 @@ export const styles = StyleSheet.create({
   },
   progressText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: screenWidth * 0.03,
     fontFamily: 'Montserrat-Regular',
     marginBottom: 5,
     paddingLeft: 2,

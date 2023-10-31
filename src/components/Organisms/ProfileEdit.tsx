@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -7,38 +7,46 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { View } from 'react-native';
+import {View} from 'react-native';
 import * as yup from 'yup';
-import { Formik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../reduxToolkit/Store';
-import { get_from_localStorage } from '../../utils/Functions/Get';
+import {Formik} from 'formik';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
+import {get_from_localStorage} from '../../utils/Functions/Get';
 import {
   useChangePasswordMutation,
   useChangeProfileMutation,
   useLoginMutation,
 } from '../../reduxToolkit/Services/auth';
-import { loginSuccess } from '../../reduxToolkit/Features/auth/authSlice';
+import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toast from 'react-native-toast-message';
-import { ScaledSheet, ms } from 'react-native-size-matters';
-import { useGetRegionsMutation } from '../../reduxToolkit/Services/region';
-import { useGetGradeMutation } from '../../reduxToolkit/Services/grade';
+import {ScaledSheet, ms} from 'react-native-size-matters';
+import {useGetRegionsMutation} from '../../reduxToolkit/Services/region';
+import {useGetGradeMutation} from '../../reduxToolkit/Services/grade';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { updateRealmUserData } from '../../screens/Auth/Login/Logic';
-import { AuthContext } from '../../Realm/model';
-import { UserData } from '../../Realm';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { passwordSchema } from '../../utils/Functions/Helper/PasswordSchema';
-import { regionItemsType } from '../../types'; import { formStyles } from '../../screens/Auth/Signup/Styles';
-import { Dropdown } from 'react-native-element-dropdown';
+import {updateRealmUserData} from '../../screens/Auth/Login/Logic';
+import {AuthContext} from '../../Realm/model';
+import {UserData} from '../../Realm';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {passwordSchema} from '../../utils/Functions/Helper/PasswordSchema';
+import {regionItemsType} from '../../types';
+import {Dropdown} from 'react-native-element-dropdown';
 
 const ProfileEdit: React.FC = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
-  const { useRealm, useQuery, useObject } = AuthContext;
+  const {useRealm, useQuery, useObject} = AuthContext;
+
+  const IsDefaultPasswordChanged = useSelector(
+    (state: RootState) => state.auth.IsDefaultPasswordChanged,
+  );
+
+  const isSubscribed = useSelector(
+    (state: RootState) => state.auth.isSubscribed,
+  );
 
   const realm = useRealm();
   const savedUserData = useQuery(UserData);
@@ -52,7 +60,7 @@ const ProfileEdit: React.FC = () => {
   const [phone, setPhone] = useState(user?.phoneNumber ?? '');
   const [grade, setGrade] = useState(user?.grade?.grade ?? '');
   const [showPassword, setShowPassword] = useState(true);
-  const [changeProfile, { isLoading }] = useChangeProfileMutation();
+  const [changeProfile, {isLoading}] = useChangeProfileMutation();
   const [updatePassword] = useChangePasswordMutation();
   // const [getRegions] = useGetRegionsMutation();
   const [getGrade] = useGetGradeMutation();
@@ -62,7 +70,7 @@ const ProfileEdit: React.FC = () => {
   const [rigionOptions, setRegionOptions] = useState([]);
   const [
     getRegions,
-    { isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion },
+    {isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion},
   ] = useGetRegionsMutation();
   const [regionsListItems, setRegionsListItems] = useState<
     regionItemsType[] | []
@@ -70,24 +78,6 @@ const ProfileEdit: React.FC = () => {
 
   const [refetchRegions, setRefetchRegions] = useState(false);
   type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
-
-
-  const handleUpIconPressforRigion = city => {
-    const currentIndex = rigionOptions.findIndex(
-      option => option.value === city,
-    );
-    const newIndex = (currentIndex + 1) % rigionOptions.length;
-    setCity(rigionOptions[newIndex].value);
-  };
-
-  const handleDownIconPressforRigion = () => {
-    const currentIndex = rigionOptions.findIndex(
-      option => option.value === city,
-    );
-    const newIndex =
-      (currentIndex - 1 + rigionOptions.length) % rigionOptions.length;
-    setCity(rigionOptions[newIndex].value);
-  };
 
   const handleUpdateProfile = async () => {
     if (token) {
@@ -102,13 +92,15 @@ const ProfileEdit: React.FC = () => {
       };
 
       try {
-        const result = await changeProfile({ token, profileData });
-        console.log(result.error)
+        const result = await changeProfile({token, profileData});
+        console.log(result.error);
         if (result.data.user) {
           dispatch(
             loginSuccess({
               user: result.data.user,
               token: token,
+              isSubscribed: isSubscribed,
+              IsDefaultPasswordChanged: IsDefaultPasswordChanged,
             }),
           );
         }
@@ -117,9 +109,8 @@ const ProfileEdit: React.FC = () => {
             type: 'error',
             text1: 'Error!',
             text2: `${result.error}`,
-          })
-        }
-        else {
+          });
+        } else {
           Toast.show({
             type: 'error',
             text1: 'Error!',
@@ -152,7 +143,7 @@ const ProfileEdit: React.FC = () => {
     }
   };
   //password schema
-  const schema = passwordSchema
+  const schema = passwordSchema;
 
   const handleSubmitPassword = async values => {
     if (values.newPassword === values.confirmPassword) {
@@ -192,11 +183,10 @@ const ProfileEdit: React.FC = () => {
     navigator: NavigationProp<ReactNavigation.RootParamList>,
   ) => {
     try {
-
       const response = await getRegions().unwrap();
       const tempRegionsList: regionItemsType[] = [];
 
-      response.map((region: { region: string }) => {
+      response.map((region: {region: string}) => {
         tempRegionsList.push({
           label: region.region.toUpperCase(),
           value: region.region.toUpperCase(),
@@ -217,8 +207,8 @@ const ProfileEdit: React.FC = () => {
       try {
         const response = await getGrade();
         // const fetchedGrade = data;
-        const tempRegionsList: { label: string }[] = [];
-        response.data.map((grade: { grade: string }) => {
+        const tempRegionsList: {label: string}[] = [];
+        response.data.map((grade: {grade: string}) => {
           return tempRegionsList.push(grade.grade);
         });
 
@@ -268,49 +258,47 @@ const ProfileEdit: React.FC = () => {
                 keyboardType="numeric"
               />
             </View>
-          
-              <View style={styles.commonTextFeildStyle}>
-                <Dropdown
-                  style={[
-                    styles.dropdown,
-                  ]}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  itemTextStyle={styles.itemListStyle}
-                  iconStyle={styles.iconStyle}
-                  data={regionsListItems}
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder={!isFocusRegion ? 'Select region' : '...'}
-                  searchPlaceholder="Search..."
-                  value={region}
-                  onFocus={() => setIsFocusRegion(true)}
-                  onBlur={() => setIsFocusRegion(false)}
-                  onChange={item => {
-                    setRegion(item.value);
-                    setIsFocusRegion(false);
-                  }}
-                />
-                {isLoadingRegions && (
-                  <View style={styles.loadingContainer}>
-                    <ActivityIndicator size={14} />
-                    <Text style={styles.loadingText}>Loading regions ...</Text>
-                  </View>
-                )}
-                {regionError && !region ? (
-                  <Text style={styles.error}>Region is required *</Text>
-                ) : (
-                  <Text style={styles.error}>{''}</Text>
-                )}
-              </View>
+
+            <View style={styles.commonTextFeildStyle}>
+              <Dropdown
+                style={[styles.dropdown]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={styles.itemListStyle}
+                iconStyle={styles.iconStyle}
+                data={regionsListItems}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocusRegion ? 'Select region' : '...'}
+                searchPlaceholder="Search..."
+                value={region}
+                onFocus={() => setIsFocusRegion(true)}
+                onBlur={() => setIsFocusRegion(false)}
+                onChange={item => {
+                  setRegion(item.value);
+                  setIsFocusRegion(false);
+                }}
+              />
+              {isLoadingRegions && (
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size={14} />
+                  <Text style={styles.loadingText}>Loading regions ...</Text>
+                </View>
+              )}
+              {regionError && !region ? (
+                <Text style={styles.error}>Region is required *</Text>
+              ) : (
+                <Text style={styles.error}>{''}</Text>
+              )}
+            </View>
           </View>
 
           {/* password update  */}
           <Formik
-            initialValues={{ password: '', newPassword: '', confirmPassword: '' }}
+            initialValues={{password: '', newPassword: '', confirmPassword: ''}}
             validationSchema={schema}
             onSubmit={handleSubmitPassword}>
             {({
@@ -324,12 +312,11 @@ const ProfileEdit: React.FC = () => {
               <View style={styles.topFormContainer}>
                 <View style={styles.passwordHeader}>
                   <Text style={styles.title}>Update password</Text>
-                  <View
-                    style={styles.iconContainerForPasswordHeader}>
+                  <View style={styles.iconContainerForPasswordHeader}>
                     <FontAwesome5
                       name="exclamation"
                       size={15}
-                      style={{ transform: [{ rotate: '180deg' }], color: 'white' }}
+                      style={{transform: [{rotate: '180deg'}], color: 'white'}}
                     />
                   </View>
                 </View>
@@ -439,11 +426,14 @@ const ProfileEdit: React.FC = () => {
                   style={[
                     styles.inputContainer,
                     styles.changePassword,
-                    styles.changePasswordButton
+                    styles.changePasswordButton,
                   ]}
                   onPress={handleSubmit}>
                   <Text style={styles.changePasswordText}>Change Password</Text>
-                  <AntDesign name="right" style={styles.changepasswordButtonIcon} />
+                  <AntDesign
+                    name="right"
+                    style={styles.changepasswordButtonIcon}
+                  />
                 </TouchableOpacity>
               </View>
             )}
@@ -512,7 +502,7 @@ const styles = ScaledSheet.create({
     width: '100%',
   },
   dropdown: {
-    width: "100%",
+    width: '100%',
     height: '42@vs',
     textTransform: 'uppercase',
     color: '#d4d4d4',
@@ -604,7 +594,7 @@ const styles = ScaledSheet.create({
     paddingVertical: '1@vs',
   },
 
-//dropdown input field
+  //dropdown input field
   icon: {
     marginRight: 5,
   },

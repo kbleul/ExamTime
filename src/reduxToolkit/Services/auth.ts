@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {
+  ChangePasswordFormDataType,
   CreatePassworDataType,
   LoginDataType,
   OTPDataType,
@@ -13,15 +14,16 @@ import Config from 'react-native-config';
 export const api = createApi({
   baseQuery: fetchBaseQuery({baseUrl: Config.API_URL}),
   endpoints: build => ({
-    login: build.mutation<{user: userType; accessToken: string}, LoginDataType>(
-      {
-        query: credentials => ({
-          url: 'user/login',
-          method: 'POST',
-          body: credentials,
-        }),
-      },
-    ),
+    login: build.mutation<
+      {user: userType; accessToken: string; IsDefaultPasswordChanged: boolean},
+      LoginDataType
+    >({
+      query: credentials => ({
+        url: 'user/login',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
     createUser: build.mutation<{user: userType}, SignupDataType>({
       query: credentials => {
         return {
@@ -64,7 +66,10 @@ export const api = createApi({
         };
       },
     }),
-    changePassword: build.mutation<{user: userType}, CreatePassworDataType>({
+    changePassword: build.mutation<
+      {user: userType},
+      ChangePasswordFormDataType
+    >({
       query: data => {
         return {
           url: `user/changepassword/`,

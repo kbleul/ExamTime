@@ -10,7 +10,7 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import img from '../../../../assets/Images/onboarding/1a.png';
 import {PagesProps} from './types';
-import {screenHeight} from '../../../../utils/Data/data';
+import {screenHeight, screenWidth} from '../../../../utils/Data/data';
 
 const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
   return (
@@ -77,19 +77,19 @@ const style = StyleSheet.create({
     height: screenHeight * (3 / 10),
   },
   contentTitle: {
-    fontSize: 24,
-    marginBottom: '10%',
+    fontSize: screenWidth * 0.06,
+    marginBottom: screenHeight * 0.055,
     color: '#2D466A',
     fontFamily: 'Montserrat-Bold',
   },
   contentText: {
-    fontSize: 16,
+    fontSize: screenWidth * 0.04,
     color: '#2D466A',
     lineHeight: 22,
     paddingHorizontal: 60,
     textAlign: 'center',
     fontFamily: 'Montserrat-Regular',
-    marginBottom: '10%',
+    marginBottom: screenHeight * 0.055,
   },
   buttonContainer: {
     justifyContent: 'flex-start',

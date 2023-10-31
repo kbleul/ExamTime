@@ -51,6 +51,7 @@ export const checkUserStatus = (
           },
           token: savedUserData[0].token,
           isSubscribed: savedUserData[0].isSubscribed,
+          IsDefaultPasswordChanged: true,
         }),
       );
     }

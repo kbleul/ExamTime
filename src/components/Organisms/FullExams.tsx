@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 export const ExamCatagories = ['Previous Exams', 'Model'];
 const ExamsData = ['2015', '2016', '2017', '2018'];
@@ -120,6 +120,7 @@ const buttonStyles = StyleSheet.create({
     width: '100%',
     paddingVertical: 8,
     textAlign: 'center',
+    fontSize: screenWidth * 0.03,
   },
   buttonActive: {
     backgroundColor: '#1E90FF',
@@ -137,8 +138,9 @@ const examsStyle = StyleSheet.create({
   },
   imgContainer: {
     width: '18%',
-    height: 85,
+    height: screenHeight * 0.13,
     marginTop: 10,
+    maxHeight: 100,
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
@@ -147,7 +149,7 @@ const examsStyle = StyleSheet.create({
     position: 'absolute',
     bottom: -2,
     fontFamily: 'PoppinsBold',
-    fontSize: 12,
+    fontSize: screenWidth * 0.028,
     color: 'white',
   },
   imageBG: {
