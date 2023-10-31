@@ -10,6 +10,7 @@ import FullExams, {
 } from '../../../components/Organisms/FullExams';
 import TrialHeader from '../../../components/Organisms/TrialHeader';
 import RandomQuestions from '../../../components/Organisms/RandomQuestions';
+import {screenHeight, screenWidth} from '../../../utils/Data/data';
 
 const Practice = () => {
   const [selectedSubject, setSelectedSubject] = useState(DummySubjects[0]);
@@ -66,14 +67,14 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontFamily: 'PoppinsSemiBold',
-    fontSize: 28,
+    fontSize: screenWidth * 0.07, //28
     color: '#000',
     lineHeight: 32,
     marginTop: 10,
   },
   headerSubTitle: {
     fontFamily: 'PoppinsRegular',
-    fontSize: 18,
+    fontSize: screenWidth * 0.045, //17 18
     color: '#C1C2C6',
   },
 });

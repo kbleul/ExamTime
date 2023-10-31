@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 export const HeaderStyle = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 8,
+    paddingHorizontal: screenWidth * 0.01,
     paddingVertical: 10,
   },
   containerSubscribed: {
@@ -32,6 +33,7 @@ export const HeaderStyle = StyleSheet.create({
   notificationBtn: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 3,
   },
   dot: {
     position: 'absolute',
@@ -47,7 +49,7 @@ export const HeaderStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E2725B',
     paddingHorizontal: 12,
-    paddingVertical: 5,
+    paddingVertical: screenHeight * 0.005,
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -56,7 +58,7 @@ export const HeaderStyle = StyleSheet.create({
   leftContainer_text: {
     color: '#E2725B',
     marginRight: 2,
-    fontSize: 14,
+    fontSize: screenWidth * 0.03,
     fontFamily: 'Montserrat-Regular',
   },
 });
