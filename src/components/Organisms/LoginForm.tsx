@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   TextInput,
@@ -16,7 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useLoginMutation} from '../../reduxToolkit/Services/auth';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
 import {handleLogin} from '../../screens/Auth/Login/Logic';
@@ -61,17 +61,20 @@ const LoginForm = () => {
     control,
     handleSubmit,
     formState: {errors},
+    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const navigator = useNavigation();
-  const IsDefaultPasswordChanged = useSelector(
-    (state: RootState) => state.auth.IsDefaultPasswordChanged,
-  );
 
   const [showPassword, setShowPassword] = useState(true);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [changed, setChanged] = useState(false);
 
   const dispatch = useDispatch();
   const [login, {isLoading, isError, error}] = useLoginMutation();
@@ -80,6 +83,12 @@ const LoginForm = () => {
   const realm = useRealm();
   const savedUserData = useQuery(UserData);
   const newUserData = useObject(UserData, savedUserData[0]?._id);
+
+  useEffect(() => {
+    // Reset the form fields when the component mounts
+    setPhoneNumber('');
+    setPassword('');
+  }, [changed]);
 
   return (
     <View style={styles.formContainer}>
@@ -94,13 +103,18 @@ const LoginForm = () => {
               <TextInput
                 keyboardType="numeric"
                 style={[styles.bigBox, styles.inputPhone]}
-                onChangeText={onChange}
+                onChangeText={e => {
+                  onChange(e);
+                  setPhoneNumber(e);
+                }}
                 placeholder="Enter Mobile Number"
                 placeholderTextColor={'#d4d4d4'}
+                value={phoneNumber}
               />
             </View>
           )}
           name="phoneNumber"
+          defaultValue=""
         />
         {errors.phoneNumber ? (
           <Text style={formStyles.error}>{errors.phoneNumber.message} *</Text>
@@ -113,10 +127,14 @@ const LoginForm = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.bigBox}
-                onChangeText={onChange}
+                onChangeText={e => {
+                  onChange(e);
+                  setPassword(e);
+                }}
                 placeholder="*********"
                 placeholderTextColor={'#d4d4d4'}
                 secureTextEntry={showPassword}
+                value={password}
               />
               {showPassword ? (
                 <TouchableOpacity
@@ -136,6 +154,7 @@ const LoginForm = () => {
             </View>
           )}
           name="password"
+          defaultValue=""
         />
         {errors.password ? (
           <Text style={formStyles.error}>{errors.password.message} *</Text>
@@ -151,7 +170,7 @@ const LoginForm = () => {
         ) : (
           <Text
             style={styles.submitBtnText}
-            onPress={handleSubmit(data =>
+            onPress={handleSubmit((data, e) =>
               handleLogin(
                 data,
                 dispatch,
@@ -160,7 +179,7 @@ const LoginForm = () => {
                 navigator,
                 newUserData,
                 realm,
-                IsDefaultPasswordChanged,
+                setChanged,
               ),
             )}>
             Login
@@ -191,6 +210,7 @@ const LoginForm = () => {
         <TouchableOpacity
           touchSoundDisabled
           onPress={() => {
+            setChanged(prev => !prev);
             navigator.navigate('forgot-password');
           }}>
           <Text style={styles.forgorPasswordText}>Forgot password?</Text>

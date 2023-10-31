@@ -13,6 +13,7 @@ import {
   LocalStorageDataKeys,
 } from '../../../../utils/Data/data';
 import {UserData} from '../../../../Realm';
+import {UseFormReset} from 'react-hook-form';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 
@@ -32,7 +33,7 @@ export const handleLogin = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   newUserData: ResultsType<UserData>,
   realm: Realm,
-  IsDefaultPasswordChanged: boolean,
+  setChanged?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   checkIsOnline(navigator);
 
@@ -58,7 +59,8 @@ export const handleLogin = async (
       realm,
     );
 
-    console.log(response);
+    // Manually reset the controlled inputs
+    setChanged && setChanged(prev => !prev);
 
     response.IsDefaultPasswordChanged
       ? navigator.navigate('Home')
