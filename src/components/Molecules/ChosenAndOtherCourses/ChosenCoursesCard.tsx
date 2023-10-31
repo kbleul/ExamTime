@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 5,
     borderRadius: 15,
     overflow: 'hidden',
-    maxHeight: 200,
+    maxHeight: 250,
   },
   containerSecondary: {
     height: screenHeight * (1 / 4),

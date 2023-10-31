@@ -137,10 +137,11 @@ const examsStyle = StyleSheet.create({
     paddingHorizontal: '3%',
   },
   imgContainer: {
-    width: '18%',
+    width: (screenWidth * 1) / 6,
     height: screenHeight * 0.13,
+    maxHeight: 90,
+    maxWidth: 80,
     marginTop: 10,
-    maxHeight: 100,
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',

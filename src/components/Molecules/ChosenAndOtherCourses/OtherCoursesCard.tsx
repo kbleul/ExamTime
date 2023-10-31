@@ -16,7 +16,7 @@ const OtherCoursesCard: React.FC<{
   return (
     <View style={useStyle.container}>
       <Text style={useStyle.title}>Grade - {grade}</Text>
-      <Text style={useStyle.subTitle}>{subTitle}</Text>
+      <Text style={useStyle.subTitle}>{subTitle} </Text>
       <TouchableOpacity touchSoundDisabled onPress={onPress}>
         <Text
           style={
@@ -35,6 +35,7 @@ export const styles = StyleSheet.create({
   container: {
     width: screenWidth * (5 / 10),
     height: screenHeight * (1 / 5.5),
+    maxHeight: 110,
     marginHorizontal: 5,
     marginBottom: 10,
     padding: 15,
@@ -53,7 +54,7 @@ export const styles = StyleSheet.create({
     fontSize: screenWidth * 0.028,
     fontFamily: 'Montserrat-Regular',
     marginTop: 2,
-    height: 36,
+    marginBottom: 20,
   },
   courses: {
     width: '100%',
