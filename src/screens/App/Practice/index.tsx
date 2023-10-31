@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.07, //28
     color: '#000',
-    lineHeight: screenHeight * 0.045, //34
+    lineHeight: 32,
     marginTop: 10,
   },
   headerSubTitle: {
