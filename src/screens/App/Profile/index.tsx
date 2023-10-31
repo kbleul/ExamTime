@@ -6,6 +6,7 @@ import ProfileContent from '../../../components/Organisms/ProfileContent';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
+import Toast from 'react-native-toast-message';
 
 const Index = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -30,6 +31,7 @@ const Index = () => {
       </View>
 
       <ProfileContent />
+      <Toast />
 
       <MainBottomNav />
     </View>

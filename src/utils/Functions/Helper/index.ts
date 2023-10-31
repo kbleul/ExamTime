@@ -118,14 +118,6 @@ export const verifyPassword = async (
     setShowLastPrompt(true);
     setShowPasswordForm(false);
     setUserPassword(data.password);
-
-    Toast.show({
-      type: 'success',
-      text1: 'success',
-      text2:
-        'Account deleted successfully. You can create a new accound using your old phone number.',
-      visibilityTime: 10000,
-    });
   } catch (error) {
     if (
       error instanceof TypeError &&
@@ -146,18 +138,26 @@ export const DeleteUserAccount = async (
   setShowLDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>,
   realm: Realm,
   savedUserData: ResultsType<UserData>,
+  Toast: any,
 ) => {
   checkIsOnline(navigator);
 
   try {
-    const response = await deleteAccount({
+    await deleteAccount({
       password,
       token,
     }).unwrap();
-    console.log(response);
+
     dispatch(logoutSuccess());
     setShowLastPrompt(false);
     setShowLDeleteDialog(false);
+
+    await Toast.show({
+      type: 'success',
+      text1: 'success',
+      text2: 'Account deleted successfully',
+      visibilityTime: 4000,
+    });
 
     removeRealmUserData(realm, savedUserData);
   } catch (error) {

@@ -117,7 +117,7 @@ export const api = createApi({
     }),
     deleteAccount: build.mutation<
       {user: userType},
-      {userId: string; token: string}
+      {password: string; token: string}
     >({
       query: credentials => {
         return {

@@ -26,6 +26,7 @@ import {
   useLoginMutation,
 } from '../../reduxToolkit/Services/auth';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Toast from 'react-native-toast-message';
 
 export type FormDataType = {
   password: string;
@@ -122,6 +123,7 @@ const DeleteAccountAlertBox: React.FC<{
                   setShowLDeleteDialog,
                   realm,
                   savedUserData,
+                  Toast,
                 )
               }>
               {isLoading ? (

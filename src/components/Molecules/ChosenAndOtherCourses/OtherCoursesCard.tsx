@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   container: {
     width: screenWidth * (5 / 10),
     height: screenHeight * (1 / 5.5),
-    maxHeight: 110,
+    maxHeight: 120,
     marginHorizontal: 5,
     marginBottom: 10,
     padding: 15,
