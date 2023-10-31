@@ -136,7 +136,6 @@ const Index: React.FC = () => {
       <View style={styles.dotsContainer}>
         {data.map((item: {key: React.Key | null | undefined}, index: any) => (
           <View
-            key={item.key}
             key={index + '--dot'}
             style={[
               styles.dot,

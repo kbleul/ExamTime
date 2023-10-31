@@ -9,13 +9,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     paddingVertical: 10,
-    marginLeft: 3,
+    marginLeft: screenHeight * 0.004,
   },
 });
 
 export const frameOnestyles = StyleSheet.create({
   leftBoxContainer: {
     width: screenWidth * (6 / 10),
+    paddingLeft: screenWidth * 0.04,
   },
   leftSubcontainer: {
     flexDirection: 'row',
@@ -25,63 +26,75 @@ export const frameOnestyles = StyleSheet.create({
     transform: [{rotate: '-80deg'}],
   },
   rightBoxContainer: {
-    width: 100,
-    height: 100,
+    width: screenWidth * 0.28,
+    height: screenWidth * 0.28,
+    maxWidth: 120,
+    maxHeight: 120,
     borderRadius: 30,
     marginRight: 20,
     borderWidth: 2,
   },
   helloText: {
-    fontSize: 30,
+    fontSize: screenWidth * 0.07,
     fontFamily: 'PoppinsSemiBold',
     color: 'black',
-    marginRight: 30,
+    marginRight: 20,
   },
   subText: {
     color: '#C1C2C6',
-    fontSize: 16,
+    fontSize: screenWidth * 0.043,
     lineHeight: 25,
-    marginTop: 10,
+    marginTop: 8,
     fontFamily: 'PoppinsRegular',
   },
 });
 
 export const frameTwostyles = StyleSheet.create({
-  container: {
+  mainContainer: {
     width: screenWidth - 23,
     height: screenHeight / 5,
-    marginLeft: 22,
+    marginLeft: screenWidth * 0.05,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  container: {
+    width: '100%',
+    height: screenHeight / 5,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: screenHeight * 0.04,
   },
   leftBoxContainer: {
     width: '70%',
-    paddingHorizontal: 4,
+    paddingLeft: screenWidth * 0.02,
+    paddingRight: screenWidth * 0.02,
   },
   rightBoxContainer: {
-    width: 95,
-    height: 95,
+    width: screenWidth * 0.28,
+    height: screenWidth * 0.28,
+    maxWidth: 105,
+    maxHeight: 105,
     borderWidth: 8,
     borderColor: '#2a90f5',
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 2,
   },
   firstText: {
-    fontSize: 18,
+    fontSize: screenWidth * 0.05,
     fontFamily: 'PoppinsSemiBold',
     marginBottom: 5,
     color: 'white',
   },
   secondText: {
-    fontSize: 14,
+    fontSize: screenWidth * 0.035,
     fontFamily: 'PoppinsRegular',
     color: 'white',
   },
   progressText: {
-    fontSize: 32,
+    fontSize: screenWidth * 0.08,
     fontFamily: 'Montserrat=Bold',
     color: 'white',
   },
@@ -93,7 +106,7 @@ export const frameThreestyles = StyleSheet.create({
     height: screenHeight / 5,
     borderRadius: 10,
     overflow: 'hidden',
-    marginLeft: 21,
+    marginLeft: screenWidth * 0.048,
     marginRight: 9,
   },
   adsTile1: {
@@ -102,13 +115,13 @@ export const frameThreestyles = StyleSheet.create({
     paddingHorizontal: '6%',
     marginTop: '1%',
     marginBottom: '2%',
-    fontSize: 18,
+    fontSize: screenWidth * 0.048,
   },
   adsTile2: {
     color: 'white',
     fontFamily: 'PoppinsRegular',
     paddingHorizontal: '6%',
-    fontSize: 24,
+    fontSize: screenWidth * 0.06,
   },
   adsText: {
     color: '#b5b5b5',
@@ -129,7 +142,7 @@ export const frameThreestyles = StyleSheet.create({
   },
   adsBtns: {
     width: '43%',
-    paddingVertical: 10,
+    paddingVertical: 9,
     borderRadius: 10,
     backgroundColor: '#6A5ACD',
   },
@@ -138,7 +151,7 @@ export const frameThreestyles = StyleSheet.create({
   },
   adsBtnsText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: screenWidth * 0.045,
     color: '#FFFFFF',
     fontFamily: 'Montserrat-Regular',
   },
@@ -166,12 +179,12 @@ export const frameFourstyles = StyleSheet.create({
   text: {
     color: '#7fbbf5',
     fontFamily: 'Montserrat-Bold',
-    fontSize: 18,
+    fontSize: screenWidth * 0.043,
   },
   iconCOntainer: {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    paddingTop: 20,
+    paddingTop: screenHeight * 0.02,
   },
 });

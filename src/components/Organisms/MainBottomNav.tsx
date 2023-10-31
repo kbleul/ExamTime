@@ -2,16 +2,17 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 const MainBottomNav = () => {
   const navigationState = useNavigationState(state => state);
   const currentScreen = navigationState.routes[navigationState.index].name;
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
+
   return (
     <View style={style.container}>
       <View style={style.btnsContainer}>
@@ -53,7 +54,7 @@ const MainBottomNav = () => {
             }>
             <Feather
               name="book-open"
-              size={24}
+              size={screenWidth * 0.063}
               style={
                 currentScreen === 'Courses' ? style.iconActive : style.icon
               }
@@ -81,9 +82,9 @@ const MainBottomNav = () => {
                 ? [style.button, style.buttonSelected]
                 : style.button
             }>
-            <Ionicons
-              name="newspaper-outline"
-              size={24}
+            <MaterialCommunityIcons
+              name="file-document-edit-outline"
+              size={screenWidth * 0.063}
               color="white"
               style={
                 currentScreen === 'Practice' || currentScreen === 'Exam-View'
@@ -114,7 +115,7 @@ const MainBottomNav = () => {
             }>
             <MaterialCommunityIcons
               name="progress-clock"
-              size={24}
+              size={screenWidth * 0.063}
               style={currentScreen === '' ? style.iconActive : style.icon}
             />
             <Text
@@ -143,7 +144,7 @@ const MainBottomNav = () => {
             }>
             <AntDesign
               name="setting"
-              size={24}
+              size={screenWidth * 0.063}
               style={
                 currentScreen === 'Profile' || currentScreen === 'Profile-Edit'
                   ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
@@ -183,7 +184,6 @@ const style = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingVertical: 5,
   },
   buttonWrapper: {
     justifyContent: 'center',
@@ -193,9 +193,12 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
-    marginTop: 12,
-    width: 55,
-    height: 55,
+    margin: screenHeight * 0.025,
+    marginBottom: screenHeight * 0.002,
+    width: screenWidth * 0.13,
+    height: screenWidth * 0.12,
+    maxWidth: 55,
+    maxHeight: 55,
   },
   buttonSelected: {
     backgroundColor: '#0066B2',
@@ -203,20 +206,20 @@ const style = StyleSheet.create({
     marginTop: 0,
   },
   buttonTextActive: {
-    fontSize: 10,
+    fontSize: screenWidth * 0.02,
     fontFamily: 'Montserrat-Regular',
     color: 'white',
     marginTop: 2,
   },
   buttonText: {
-    fontSize: 12,
+    fontSize: screenWidth * 0.025,
     fontFamily: 'Montserrat-Regular',
     color: '#1E90FF',
     marginTop: 2,
   },
   dot: {
-    width: 9,
-    height: 9,
+    width: screenWidth * 0.02,
+    height: screenWidth * 0.02,
     borderRadius: 10,
     backgroundColor: '#0066B2',
     marginBottom: 3,

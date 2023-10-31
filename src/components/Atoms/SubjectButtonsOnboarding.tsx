@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 type SubjectButtonProps = {
   text: string;
@@ -49,7 +50,7 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
 const style = StyleSheet.create({
   buttons: {
     width: 'auto',
-    marginBottom: 30,
+    marginBottom: screenHeight * 0.045,
     backgroundColor: '#fff',
     borderWidth: 1.5,
     borderColor: '#D3D3D3',
@@ -67,7 +68,7 @@ const style = StyleSheet.create({
     textAlign: 'center',
     color: '#D3D3D3',
     fontFamily: 'Montserrat-Bold',
-    fontSize: 14,
+    fontSize: screenWidth * 0.035,
   },
   buttonTextSelected: {
     color: '#fff',

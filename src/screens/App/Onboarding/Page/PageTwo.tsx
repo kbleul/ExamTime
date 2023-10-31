@@ -10,7 +10,11 @@ import {
 import {PagesCounterType, PagesGradesProps} from './types';
 import img from '../../../../assets/Images/onboarding/2a.png';
 import {set_to_localStorage} from '../../../../utils/Functions/Set';
-import {LocalStorageDataKeys, screenHeight} from '../../../../utils/Data/data';
+import {
+  LocalStorageDataKeys,
+  screenHeight,
+  screenWidth,
+} from '../../../../utils/Data/data';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
 import OtherCoursesCard from '../../../../components/Molecules/ChosenAndOtherCourses/OtherCoursesCard';
 
@@ -35,7 +39,6 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
         />
 
         <View style={style.imgContainer}>
-          
           <Image source={img} style={style.img} />
         </View>
 
@@ -102,7 +105,7 @@ const style = StyleSheet.create({
   },
   title: {
     fontFamily: 'Montserrat-Bold',
-    fontSize: 25,
+    fontSize: screenWidth * 0.06,
     color: '#2D466A',
     textAlign: 'center',
     paddingHorizontal: 10,

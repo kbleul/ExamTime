@@ -89,6 +89,7 @@ export const verifyPassword = async (
       user: userType;
       token: string;
       isSubscribed: boolean;
+      IsDefaultPasswordChanged: boolean;
     },
     'auth/loginSuccess'
   >,
@@ -96,6 +97,7 @@ export const verifyPassword = async (
   setShowLastPrompt: React.Dispatch<React.SetStateAction<boolean>>,
   setShowPasswordForm: React.Dispatch<React.SetStateAction<boolean>>,
   setUserPassword: React.Dispatch<React.SetStateAction<string>>,
+  IsDefaultPasswordChanged: boolean,
 ) => {
   checkIsOnline(navigator);
 
@@ -109,6 +111,7 @@ export const verifyPassword = async (
         user: response.user,
         token: response.accessToken,
         isSubscribed: false,
+        IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
       }),
     );
 
@@ -144,7 +147,6 @@ export const DeleteUserAccount = async (
   realm: Realm,
   savedUserData: ResultsType<UserData>,
 ) => {
-  console.log('here');
   checkIsOnline(navigator);
 
   try {

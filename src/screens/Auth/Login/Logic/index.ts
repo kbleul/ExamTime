@@ -25,12 +25,14 @@ export const handleLogin = async (
       user: userType;
       token: string;
       isSubscribed: boolean;
+      IsDefaultPasswordChanged: boolean;
     },
     'auth/loginSuccess'
   >,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   newUserData: ResultsType<UserData>,
   realm: Realm,
+  IsDefaultPasswordChanged: boolean,
 ) => {
   checkIsOnline(navigator);
 
@@ -45,6 +47,7 @@ export const handleLogin = async (
         user: response.user,
         token: response.accessToken,
         isSubscribed: false,
+        IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
       }),
     );
 
@@ -58,7 +61,7 @@ export const handleLogin = async (
     console.log(response);
 
     response.IsDefaultPasswordChanged
-      ? navigator.navigate('Password-Reset')
+      ? navigator.navigate('Home')
       : navigator.navigate('Password-Reset');
   } catch (error) {
     if (

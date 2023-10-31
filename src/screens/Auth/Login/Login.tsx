@@ -24,7 +24,7 @@ export default function Login() {
         }>
         <LoginHeader navigate={() => navigator.goBack()} />
 
-        {dateDiff >= 0 && (
+        {dateDiff >= 3 && (
           <Text style={styles.note}>
             Your trial period is over. You must login or signup inorder to keep
             using this app.

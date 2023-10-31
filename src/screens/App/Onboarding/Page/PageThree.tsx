@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import img from '../../../../assets/Images/onboarding/3.png';
 
 import {PagesCounterType} from './types';
 import {
   DummyDataScience,
   DummyDataSocial,
   screenHeight,
+  screenWidth,
 } from '../../../../utils/Data/data';
 import {ScrollView} from 'react-native-gesture-handler';
 import {createRealmUserData} from '../Logic';
@@ -102,7 +102,7 @@ const style = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    height: '125%',
+    flex: 1,
   },
   selectorContainer: {
     flexDirection: 'row',
@@ -136,7 +136,7 @@ const style = StyleSheet.create({
   },
   title: {
     fontFamily: 'Montserrat-Bold',
-    fontSize: 26,
+    fontSize: screenWidth * 0.07,
     color: '#2D466A',
     textAlign: 'left',
     paddingHorizontal: 30,
@@ -144,7 +144,7 @@ const style = StyleSheet.create({
   },
   subtitle: {
     fontFamily: 'Montserrat-Regular',
-    fontSize: 18,
+    fontSize: screenWidth * 0.045,
     color: '#2D466A',
     textAlign: 'left',
     paddingHorizontal: 30,

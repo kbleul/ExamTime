@@ -27,12 +27,22 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {updateRealmUserData} from '../../screens/Auth/Login/Logic';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfileEdit: React.FC = () => {
   const dispatch = useDispatch();
 
   const {useRealm, useQuery, useObject} = AuthContext;
 
+  const IsDefaultPasswordChanged = useSelector(
+    (state: RootState) => state.auth.IsDefaultPasswordChanged,
+  );
+
+  const isSubscribed = useSelector(
+    (state: RootState) => state.auth.isSubscribed,
+  );
+
+  const navigation = useNavigation();
   const realm = useRealm();
   const savedUserData = useQuery(UserData);
   const newUserData = useObject(UserData, savedUserData[0]?._id);
@@ -89,6 +99,8 @@ const ProfileEdit: React.FC = () => {
             loginSuccess({
               user: result.data.user,
               token: token,
+              isSubscribed: isSubscribed,
+              IsDefaultPasswordChanged: IsDefaultPasswordChanged,
             }),
           );
         }

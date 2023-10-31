@@ -7,6 +7,7 @@ interface AuthState {
   user: userType | null;
   token: string | null;
   isSubscribed: boolean;
+  IsDefaultPasswordChanged: boolean;
 }
 
 const initialState: AuthState = {
@@ -14,6 +15,7 @@ const initialState: AuthState = {
   user: null,
   token: null,
   isSubscribed: false,
+  IsDefaultPasswordChanged: true,
 };
 
 const authSlice = createSlice({
@@ -26,18 +28,24 @@ const authSlice = createSlice({
         user: userType;
         token: string;
         isSubscribed: boolean;
+        IsDefaultPasswordChanged: boolean;
       }>,
     ) => {
+      console.log({
+        IsDefaultPasswordChanged: action.payload.IsDefaultPasswordChanged,
+      });
       state.isChecked = true;
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isSubscribed = action.payload.isSubscribed;
+      state.IsDefaultPasswordChanged = action.payload.IsDefaultPasswordChanged;
     },
     logoutSuccess: state => {
       state.isChecked = false;
       state.user = null;
       state.token = null;
       state.isSubscribed = false;
+      state.IsDefaultPasswordChanged = true;
 
       AsyncStorage.removeItem(LocalStorageDataKeys.userData);
       AsyncStorage.removeItem(LocalStorageDataKeys.token);
