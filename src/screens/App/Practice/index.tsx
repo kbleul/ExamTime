@@ -10,6 +10,7 @@ import FullExams, {
 } from '../../../components/Organisms/FullExams';
 import TrialHeader from '../../../components/Organisms/TrialHeader';
 import RandomQuestions from '../../../components/Organisms/RandomQuestions';
+import {screenHeight, screenWidth} from '../../../utils/Data/data';
 
 const Practice = () => {
   const [selectedSubject, setSelectedSubject] = useState(DummySubjects[0]);
@@ -22,7 +23,9 @@ const Practice = () => {
         style={styles.ScrollView}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
-        <View>
+        <TrialHeader type="Practice" />
+
+        <View style={styles.headerContainer}>
           <Text style={styles.headerTitle}>Study Section</Text>
           <Text style={styles.headerSubTitle}>Choose your Subject</Text>
         </View>
@@ -59,15 +62,19 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 10,
   },
+  headerContainer: {
+    paddingHorizontal: 8,
+  },
   headerTitle: {
     fontFamily: 'PoppinsSemiBold',
-    fontSize: 28,
+    fontSize: screenWidth * 0.07, //28
     color: '#000',
     lineHeight: 32,
+    marginTop: 10,
   },
   headerSubTitle: {
     fontFamily: 'PoppinsRegular',
-    fontSize: 18,
+    fontSize: screenWidth * 0.045, //17 18
     color: '#C1C2C6',
   },
 });

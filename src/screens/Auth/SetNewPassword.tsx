@@ -1,16 +1,6 @@
 import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import LoginHeader from '../../components/Molecules/LoginHeader';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import StepIndicator from '../../components/Molecules/StepIndicator';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import SetNewPassword from '../../components/Organisms/SetNewPassword';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
