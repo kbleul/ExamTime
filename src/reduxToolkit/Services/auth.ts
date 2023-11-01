@@ -55,6 +55,7 @@ export const api = createApi({
     }),
     createPassword: build.mutation<{user: userType}, CreatePassworDataType>({
       query: credentials => {
+        console.log("credentials.userId",credentials.userId)
         return {
           url: `user/createpassword/${credentials.userId}`,
           method: 'PUT',
