@@ -268,44 +268,44 @@ const ProfileEdit: React.FC = () => {
                 keyboardType="numeric"
               />
             </View>
-          
-              <View style={styles.commonTextFeildStyle}>
-                <Dropdown
-                  style={[
-                    styles.dropdown,
-                  ]}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  itemTextStyle={styles.itemListStyle}
-                  iconStyle={styles.iconStyle}
-                  data={regionsListItems}
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder={!isFocusRegion ? 'Select region' : '...'}
-                  searchPlaceholder="Search..."
-                  value={region}
-                  onFocus={() => setIsFocusRegion(true)}
-                  onBlur={() => setIsFocusRegion(false)}
-                  onChange={item => {
-                    setRegion(item.value);
-                    setIsFocusRegion(false);
-                  }}
-                />
-                {isLoadingRegions && (
-                  <View style={styles.loadingContainer}>
-                    <ActivityIndicator size={14} />
-                    <Text style={styles.loadingText}>Loading regions ...</Text>
-                  </View>
-                )}
-                {regionError && !region ? (
-                  <Text style={styles.error}>Region is required *</Text>
-                ) : (
-                  <Text style={styles.error}>{''}</Text>
-                )}
-              </View>
+
+            <View style={styles.commonTextFeildStyle}>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={styles.itemListStyle}
+                iconStyle={styles.iconStyle}
+                data={regionsListItems}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocusRegion ? 'Select region' : '...'}
+                searchPlaceholder="Search..."
+                value={region}
+                onFocus={() => setIsFocusRegion(true)}
+                onBlur={() => setIsFocusRegion(false)}
+                onChange={item => {
+                  setRegion(item.value);
+                  setIsFocusRegion(false);
+                }}
+              />
+              {isLoadingRegions && (
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size={14} />
+                  <Text style={styles.loadingText}>Loading regions ...</Text>
+                </View>
+              )}
+              {regionError && !region ? (
+                <Text style={styles.error}>Region is required *</Text>
+              ) : (
+                <Text style={styles.error}>{''}</Text>
+              )}
+            </View>
           </View>
 
           {/* password update  */}
@@ -603,8 +603,6 @@ const styles = ScaledSheet.create({
     borderRadius: 10,
     paddingVertical: '1@vs',
   },
-
-//dropdown input field
   icon: {
     marginRight: 5,
   },
@@ -642,20 +640,20 @@ const styles = ScaledSheet.create({
   },
   submitBtnPassword: {
     backgroundColor: '#1E90FF',
-    borderRadius: 10,
-    width: 200,
-    paddingVertical: 11,
+    borderRadius:  '10@ms',
+    width:  '200@vs',
+    paddingVertical:  '10@vs',
     alignSelf: 'flex-end',
   },
   submitText: {
     color: '#FFFFFF',
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 18,
+    fontFamily: 'PoppinsSemiBold',
+    fontSize:  '18@ms',
     textAlign: 'center',
   },
   error: {
     color: '#f08273',
-    paddingHorizontal: 8,
+    paddingHorizontal:  '8@ms',
     textAlign: 'right',
   },
   loadingContainer: {
@@ -664,8 +662,8 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
   },
   loadingText: {
-    fontSize: 14,
-    fontFamily: 'Montserrat-Regular',
+    fontSize: '14@ms',
+    fontFamily: 'PoppinsRegular',
     color: '#b3b3b3',
   },
 });
