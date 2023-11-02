@@ -4,16 +4,9 @@ import {checkIsOnline} from '../../../../utils/Functions/Helper';
 import {FormData} from '../Types';
 import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
-import {
-  setObject_to_localStorage,
-  set_to_localStorage,
-} from '../../../../utils/Functions/Set';
-import {
-  LocalObjectDataKeys,
-  LocalStorageDataKeys,
-} from '../../../../utils/Data/data';
+
+import {LocalObjectDataKeys} from '../../../../utils/Data/data';
 import {UserData} from '../../../../Realm';
-import {UseFormReset} from 'react-hook-form';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 
@@ -33,7 +26,7 @@ export const handleLogin = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   newUserData: ResultsType<UserData>,
   realm: Realm,
-  setChanged?: React.Dispatch<React.SetStateAction<boolean>>,
+  IsDefaultPasswordChanged: boolean,
 ) => {
   checkIsOnline(navigator);
 

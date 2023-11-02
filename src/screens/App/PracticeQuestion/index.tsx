@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import Question from '../../../components/Molecules/Question';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ExamTimer from '../../../components/Molecules/ExamTimer';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
 import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
-import {screenHeight} from '../../../utils/Data/data';
+import {examQuestionType} from '../../../types';
 
-const PracticeQuestion = () => {
+const PracticeQuestion = ({route, navigation}) => {
+  const {exam} = route.params;
+  console.log('------------------------------', exam.examQuestion.length);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
   const [showSideNav, setShowSideNav] = useState(false);
   const [showFullPage, setShowFullPage] = useState(false);
@@ -25,7 +26,7 @@ const PracticeQuestion = () => {
       {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
       <ViewQuestionHeader
-        title="Biology 2010 exam"
+        title={exam.examName}
         setShowSideNav={() => setShowSideNav(true)}
         setShowFullPage={setShowFullPage}
         showFullPage={showFullPage}
@@ -35,17 +36,16 @@ const PracticeQuestion = () => {
       <ScrollView
         contentContainerStyle={showFullPage ? styles.scrollContent : {}}
         showsVerticalScrollIndicator={showFullPage}>
-        <Question showFullPage={showFullPage} />
-        {showFullPage && (
-          <>
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-          </>
-        )}
+        {showFullPage &&
+          exam.examQuestion.map((question: examQuestionType, index: number) => (
+            <Question
+              key={question.id}
+              showFullPage={showFullPage}
+              question={question}
+              questionCounter={index + 1}
+              total={exam.examQuestion.length}
+            />
+          ))}
       </ScrollView>
       <ExamNavigateButtons
         setExitExamModalVisible={setExitExamModalVisible}

@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Image, ImageBackground, TouchableOpacity} from 'react-native';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import React from 'react';
+import {ImageBackground, TouchableOpacity} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, View} from 'react-native';
 
 const ExamLeaveModal: React.FC<{
   exitExamModalVisible: boolean;

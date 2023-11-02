@@ -74,3 +74,31 @@ export type regionItemsType = {
   label: string;
   value: string;
 };
+
+export type examQuestionType = {
+  id: string;
+  number: string;
+  questionType: string;
+  question: string;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  answer: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type examType = {
+  id: string;
+  examName: string;
+  duration: number;
+  passingScore: string;
+  noOfQuestions: number;
+  addedQuestions: number;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  examQuestion: examQuestionType;
+};

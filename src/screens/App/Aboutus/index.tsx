@@ -1,12 +1,10 @@
 import React from 'react';
 import {
-  StyleSheet,
-  SafeAreaView,
   View,
   Text,
   Image,
-  ImageBackground,
 } from 'react-native';
+import { ScaledSheet, ms } from 'react-native-size-matters';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
@@ -22,7 +20,6 @@ const Index = () => {
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.innerContainer}> */}
         <View style={styles.backicon}>
           <BackWithItem type="About Us" isTrial={user ? false : true} />
         </View>
@@ -53,7 +50,10 @@ const Index = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
+  backicon: {
+    marginTop: '25@ms',
+  },
   container: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
@@ -61,31 +61,10 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#F9FCFF',
   },
-  scrollContainer: {
-    // backgroundColor: 'red',
-    flexGrow: 1,
-  },
-  innerContainer: {
-    flex: 1,
-  },
-  text: {
-    padding: 10,
-    fontSize: 15,
-    textAlign: 'center',
-    color: '#222E50',
-    fontFamily: 'Montserrat-Regular',
-  },
-  textContainer: {
-    // height: '25%',
-    marginTop: 20,
-    padding: 5,
-    width: '100%',
-    overflow: 'hidden',
-  },
   imageBg: {
     height: '25%',
     width: '100%',
-    padding: 10,
+    padding: '10@ms',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -94,16 +73,30 @@ const styles = StyleSheet.create({
     width: '100%',
     resizeMode: 'contain',
   },
-  backicon: {
-    marginTop: 25,
+  innerContainer: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
   },
   share: {
-    //  backgroundColor:"blue",
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    padding: 10,
-    paddingTop: 30,
-    //  marginBottom: 199
+    padding: '10@ms',
+    paddingTop: '30@vs',
+  },
+  text: {
+    padding: '10@ms',
+    fontSize: '15@ms',
+    textAlign: 'center',
+    color: '#222E50',
+    fontFamily: 'Montserrat-Regular',
+  },
+  textContainer: {
+    marginTop: '20@vs',
+    padding: '5@ms',
+    width: '100%',
+    overflow: 'hidden',
   },
 });
 export default Index;

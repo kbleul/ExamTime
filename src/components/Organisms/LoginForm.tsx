@@ -16,7 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useLoginMutation} from '../../reduxToolkit/Services/auth';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
 import {handleLogin} from '../../screens/Auth/Login/Logic';
@@ -67,6 +67,9 @@ const LoginForm = () => {
   });
 
   const navigator = useNavigation();
+  const IsDefaultPasswordChanged = useSelector(
+    (state: RootState) => state.auth.IsDefaultPasswordChanged,
+  );
 
   const [showPassword, setShowPassword] = useState(true);
   const [rememberMe, setRememberMe] = useState(false);
@@ -179,7 +182,7 @@ const LoginForm = () => {
                 navigator,
                 newUserData,
                 realm,
-                setChanged,
+                IsDefaultPasswordChanged,
               ),
             )}>
             Login

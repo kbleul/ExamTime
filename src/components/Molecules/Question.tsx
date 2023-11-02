@@ -6,10 +6,17 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import {screenHeight} from '../../utils/Data/data';
+import RenderHtml from 'react-native-render-html';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {examQuestionType} from '../../types';
 
-const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
+const Question: React.FC<{
+  showFullPage: boolean;
+  question: examQuestionType;
+  questionCounter: number;
+  total: number;
+}> = ({showFullPage, question, questionCounter, total}) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showParagraph, setShowParagraph] = useState(false);
 
@@ -29,7 +36,9 @@ const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
                 : styles.questionContainer
             }>
             <View style={styles.counterContainer}>
-              <Text style={styles.counterTitle}>Question 3/65</Text>
+              <Text style={styles.counterTitle}>
+                Question {questionCounter}/{total}
+              </Text>
               <TouchableOpacity
                 touchSoundDisabled
                 style={styles.readParagraphBtn}
@@ -37,10 +46,11 @@ const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
                 <Text style={styles.readParagraphText}>Directions</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.questionText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </Text>
+
+            <RenderHtml
+              contentWidth={screenWidth}
+              source={{html: question.question}}
+            />
           </View>
 
           <ScrollView
@@ -56,25 +66,29 @@ const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
             </View> */}
 
             <QuestionChoice
-              choice="A"
+              choiceLetter="A"
+              choiceText={question.A}
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
               showFullPage={showFullPage}
             />
             <QuestionChoice
-              choice="B"
+              choiceLetter="B"
+              choiceText={question.B}
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
               showFullPage={showFullPage}
             />
             <QuestionChoice
-              choice="C"
+              choiceLetter="C"
+              choiceText={question.C}
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
               showFullPage={showFullPage}
             />
             <QuestionChoice
-              choice="D"
+              choiceLetter="D"
+              choiceText={question.D}
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
               showFullPage={showFullPage}
@@ -141,16 +155,37 @@ const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
 };
 
 const QuestionChoice: React.FC<{
-  choice: string;
+  choiceLetter: string;
+  choiceText: string;
   selectedAnswer: string | null;
   setSelectedAnswer: React.Dispatch<React.SetStateAction<string | null>>;
   showFullPage: boolean;
-}> = ({choice, selectedAnswer, setSelectedAnswer, showFullPage}) => {
+}> = ({
+  choiceLetter,
+  choiceText,
+  selectedAnswer,
+  setSelectedAnswer,
+  showFullPage,
+}) => {
   const handleSelect = () => {
-    selectedAnswer === choice
+    selectedAnswer === choiceLetter
       ? setSelectedAnswer(null)
-      : setSelectedAnswer(choice);
+      : setSelectedAnswer(choiceLetter);
   };
+
+  const tagsStyles = {
+    p: {
+      whiteSpace: 'normal',
+      color: 'red',
+      textAlign: 'left',
+      borderWidth: 2,
+      width: screenWidth,
+    },
+    a: {
+      color: 'green',
+    },
+  };
+
   return (
     <TouchableOpacity
       touchSoundDisabled
@@ -165,18 +200,20 @@ const QuestionChoice: React.FC<{
       onPress={handleSelect}>
       <Text
         style={
-          choice === selectedAnswer
+          choiceLetter === selectedAnswer
             ? [
                 questionChoiceStyles.choiceLetter,
                 questionChoiceStyles.choiceLetterSelected,
               ]
             : questionChoiceStyles.choiceLetter
         }>
-        {choice}
+        {choiceLetter}
       </Text>
-      <Text style={questionChoiceStyles.choiceText}>
-        Lorem ipsum dolor sit amet lorem.
-      </Text>
+      <RenderHtml
+        contentWidth={screenWidth}
+        source={{html: choiceText}}
+        tagsStyles={tagsStyles}
+      />
     </TouchableOpacity>
   );
 };
