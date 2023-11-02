@@ -32,11 +32,12 @@ import { UserData } from '../../Realm';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { passwordSchema } from '../../utils/Functions/Helper/PasswordSchema';
 import { regionItemsType } from '../../types';
-import { Dropdown } from 'react-native-element-dropdown';
 import TextHeading from '../Atoms/TextHeading';
 import NameInput from '../Molecules/NameInput';
 import PhoneInputWithPrefix from '../Molecules/PhoneInputWithPrefix';
 import DropdownForRegionField from '../Molecules/DropdownForRegionField';
+import BackButton from '../Atoms/BackButton';
+import DoneButton from '../Atoms/DoneButton';
 
 const ProfileEdit: React.FC = () => {
   const dispatch = useDispatch();
@@ -66,21 +67,18 @@ const ProfileEdit: React.FC = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [changeProfile, { isLoading }] = useChangeProfileMutation();
   const [updatePassword] = useChangePasswordMutation();
-  // const [getRegions] = useGetRegionsMutation();
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
   const [region, setRegion] = useState<string | null>(null);
   const [regionError, setRegionError] = useState<string | null>(null);
   const [rigionOptions, setRegionOptions] = useState([]);
+  const [regionsListItems, setRegionsListItems] = useState<regionItemsType[] | []>([]);
+  const [refetchRegions, setRefetchRegions] = useState(false);
   const [
     getRegions,
     { isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion },
   ] = useGetRegionsMutation();
-  const [regionsListItems, setRegionsListItems] = useState<
-    regionItemsType[] | []
-  >([]);
 
-  const [refetchRegions, setRefetchRegions] = useState(false);
   type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
 
   const handleUpdateProfile = async () => {
@@ -131,7 +129,6 @@ const ProfileEdit: React.FC = () => {
         });
 
         setTimeout(() => navigation.navigate('Profile'), 1000);
-        // setName('')
         setFullName('');
         setPhone('');
         setGrade('');
@@ -223,7 +220,9 @@ const ProfileEdit: React.FC = () => {
     };
     fetchGradeData(); // Call the fetch function
   }, []);
-
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
   return (
     <>
       <StatusBar hidden={true} />
@@ -231,23 +230,17 @@ const ProfileEdit: React.FC = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* back Icon and DoneTExt Container */}
           <View style={styles.backIconandDoneTExtContainer}>
-            <TouchableOpacity
-              style={styles.iconContainer}
-              touchSoundDisabled
-              onPress={() => navigation.goBack()}>
-              <AntDesign name="left" style={styles.backIcon} size={ms(24)} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.doneContainer}
-              onPress={handleUpdateProfile}>
-              <Text style={styles.doneText}>Done</Text>
-            </TouchableOpacity>
+            <BackButton onPress={handleGoBack} />
+            <DoneButton onPress={handleUpdateProfile} />
           </View>
           {/* Profile Update Forms */}
           <View style={styles.topFormContainer}>
             <TextHeading text="My profile" />
+
             <NameInput fullName={fullName} setFullName={setFullName} />
-            <PhoneInputWithPrefix prefix="+251" onChangeText={setPhone} value={phone.replace('+251', '')}/>
+
+            <PhoneInputWithPrefix prefix="+251" onChangeText={setPhone} value={phone.replace('+251', '')} />
+
             <DropdownForRegionField
               regionsListItems={regionsListItems}
               isFocusRegion={isFocusRegion}
@@ -278,7 +271,7 @@ const ProfileEdit: React.FC = () => {
                   <View style={styles.iconContainerForPasswordHeader}>
                     <FontAwesome5
                       name="exclamation"
-                      size={15}
+                      size={ms(15)}
                       style={{ transform: [{ rotate: '180deg' }], color: 'white' }}
                     />
                   </View>
