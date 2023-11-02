@@ -105,7 +105,7 @@ const styles = ScaledSheet.create({
     marginVertical: '10@vs',
     paddingVertical: '10@vs',
     paddingHorizontal: '30@s',
-    borderRadius:'5vs',
+    borderRadius:5,
     overflow: 'visible',
     position: 'relative', 
   },
