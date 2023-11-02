@@ -62,7 +62,6 @@ const ProfileEdit: React.FC = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [changeProfile, {isLoading}] = useChangeProfileMutation();
   const [updatePassword] = useChangePasswordMutation();
-  // const [getRegions] = useGetRegionsMutation();
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
   const [region, setRegion] = useState<string | null>(null);
