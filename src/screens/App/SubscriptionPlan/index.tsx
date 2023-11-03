@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../reduxToolkit/Store';
-const {width, height} = Dimensions.get('window');
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../reduxToolkit/Store';
+const { width, height } = Dimensions.get('window');
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import CustomImageCarousal from './CustomImageCarousal';
 const SPACING = 10;
 const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.5 : width * 0.5;
 
@@ -98,56 +99,17 @@ const Index: React.FC = () => {
       ],
     },
   ]);
-
-  //list of packges
-  const renderPackageItem = ({item}) => {
-    const {available, packagesname} = item;
-
-    return (
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        {available ? (
-          <AntDesign
-            name="check"
-            size={20}
-            color="green"
-            style={{marginRight: 5}}
-          />
-        ) : (
-          <AntDesign
-            name="close"
-            size={20}
-            color="red"
-            style={{marginRight: 5}}
-          />
-        )}
-        <Text style={styles.listofPackagesText}>{packagesname}</Text>
-      </View>
-    );
-  };
-  const scrollX = React.useRef(new Animated.Value(0)).current;
-
-  const handleScroll = (event: {nativeEvent: {contentOffset: {x: any}}}) => {
-    const offsetX = event.nativeEvent.contentOffset.x;
-    const newIndex = Math.floor(offsetX / ITEM_SIZE);
-    setActiveCardIndex(newIndex);
-  };
-  // Dots Component
-  const Dots = ({data, activeIndex}) => {
-    return (
-      <View style={styles.dotsContainer}>
-        {data.map((item: {key: React.Key | null | undefined}, index: any) => (
-          <View
-            key={index + '--dot'}
-            style={[
-              styles.dot,
-              index === activeIndex ? styles.activeDot : styles.inactiveDot,
-            ]}
-          />
-        ))}
-      </View>
-    );
-  };
-
+  const data1 = [
+    {
+      image: require('./frame_blue.png'),
+    },
+    {
+      image: require('./frame_blue.png'),
+    },
+    {
+      image: require('./frame_blue.png'),
+    },
+  ];
   return (
     <View style={styles.container}>
       <ScrollView
@@ -164,121 +126,10 @@ const Index: React.FC = () => {
         </View>
 
         <View style={styles.HorizontalList}>
-          <Animated.FlatList
-            showsHorizontalScrollIndicator={false}
-            data={data}
-            keyExtractor={item => item.key}
-            horizontal
-            bounces={false}
-            decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
-            renderToHardwareTextureAndroid
-            contentContainerStyle={{alignItems: 'center'}}
-            snapToInterval={ITEM_SIZE}
-            snapToAlignment="start"
-            onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {x: scrollX}}}],
-              {useNativeDriver: false, listener: handleScroll},
-            )}
-            scrollEventThrottle={16}
-            renderItem={({item, index}) => {
-              const inputRange = [
-                (index - 2) * ITEM_SIZE,
-                (index - 1) * ITEM_SIZE,
-                index * ITEM_SIZE,
-              ];
-
-              const translateY = scrollX.interpolate({
-                inputRange,
-                outputRange: [-50, 0, -50],
-                extrapolate: 'clamp',
-              });
-              const shakeValue = scrollX.interpolate({
-                inputRange: [
-                  (index - 2) * ITEM_SIZE,
-                  (index - 1) * ITEM_SIZE,
-                  index * ITEM_SIZE,
-                  (index + 1) * ITEM_SIZE,
-                  (index + 2) * ITEM_SIZE,
-                ],
-                outputRange: ['0deg', '-4deg', '0deg', '4deg', '0deg'], // Rotate left and right
-                extrapolate: 'clamp',
-              });
-              const zIndex = index === activeCardIndex ? 100 : 0;
-              return (
-                <View
-                  style={{
-                    width: ITEM_SIZE,
-                    height: 250,
-                    /* backgroundColor: 'blue', */ margin: 5,
-                  }}>
-                  <Animated.View
-                    style={{
-                      // position: 'absolute',
-                      height: '100%',
-                      marginHorizontal: SPACING - 15,
-                      alignItems: 'center',
-                      transform: [{translateY}],
-                      zIndex: zIndex,
-                      borderRadius: 34,
-                      borderColor: item.color,
-                      borderWidth: 1,
-                      justifyContent: 'space-between',
-                    }}>
-                    <View
-                      style={[
-                        styles.topCardContainer,
-                        {backgroundColor: item.color},
-                      ]}>
-                      <Text style={styles.topCardContainerText}>
-                        {item.planname}
-                      </Text>
-                      <View style={[styles.circleContainer]}>
-                        <View
-                          style={[
-                            styles.circle,
-                            {backgroundColor: item.color},
-                          ]}>
-                          <Text style={styles.circleText}>
-                            {item.price}Birr
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                    <View style={{flex: 1}}>
-                      <View style={styles.listofPackages}>
-                        <FlatList
-                          data={item.packages}
-                          renderItem={renderPackageItem}
-                          keyExtractor={item => item.key}
-                        />
-                      </View>
-                    </View>
-                    <View
-                      style={[
-                        styles.listofPackagesBottom,
-                        {backgroundColor: item.color},
-                      ]}>
-                      <Text style={styles.listofPackagesBottomtext}>
-                        {item.current ? 'Current Plan' : 'Upgrade Now'}
-                      </Text>
-                    </View>
-                  </Animated.View>
-                </View>
-              );
-            }}
-          />
-
-          <Dots data={data} activeIndex={activeCardIndex} />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.textBottom}>
-            Security and Privacy Information
-          </Text>
-          <Text style={styles.text}>
-            Your payments will be encrypted and processed securely. We
-            prioritize your privacy and handle your personal information
-            carefully.
-          </Text>
+          <View style={styles.carouselContainer}>
+            <Text style={styles.text}>Image Carousel Square</Text>
+            <CustomImageCarousal data={data} autoPlay={true} pagination={true} />
+          </View>
         </View>
         {/* <MainBottomNav /> */}
       </ScrollView>
@@ -320,6 +171,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+
+  carouselContainer: {
+    marginBottom: 20,
   },
   dot: {
     borderRadius: 5,
