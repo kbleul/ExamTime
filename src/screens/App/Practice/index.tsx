@@ -35,7 +35,13 @@ const Practice = () => {
           setSelectedSubject={setSelectedSubject}
         />
 
-        <Tips />
+        <Tips
+          title={'TIPS & TRICKS FOR PHYSICS EXAM'}
+          note="Your expected ability for this chapter is between 2.0 -- 2.4.
+          Estimated your ability using the following Estimated your ability
+          using the followin..."
+          readonly={false}
+        />
 
         <RandomQuestions />
 

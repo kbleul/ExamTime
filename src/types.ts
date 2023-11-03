@@ -100,5 +100,5 @@ export type examType = {
   isPublished: boolean;
   createdAt: string;
   updatedAt: string;
-  examQuestion: examQuestionType;
+  examQuestion: examQuestionType[];
 };

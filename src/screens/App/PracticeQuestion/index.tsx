@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import Question from '../../../components/Molecules/Question';
 import ExamTimer from '../../../components/Molecules/ExamTimer';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
@@ -7,14 +7,80 @@ import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
+import PracticeModeModal from '../../../components/Organisms/PracticeModeModal';
 import {examQuestionType} from '../../../types';
+import {useNavigation} from '@react-navigation/native';
 
-const PracticeQuestion = ({route, navigation}) => {
+export type answersType = {
+  id: string;
+  index: number;
+  userAnswer: string;
+  correctAnswer: string;
+};
+
+const filterUnanswered = (
+  examQuestions: examQuestionType[],
+  answers: answersType[] | [],
+) => {
+  const answerIdArr = answers.map(answer => answer.id);
+
+  const unansweredQuestions = examQuestions.filter(
+    question => !answerIdArr.includes(question.id),
+  );
+
+  return unansweredQuestions;
+};
+
+const PracticeQuestion = ({route}) => {
   const {exam} = route.params;
-  console.log('------------------------------', exam.examQuestion.length);
+  const navigator: any = useNavigation();
+
+  const [currentViewExam, setCurrentViewExam] = useState(exam.examQuestion);
+
+  const [practiceModeModalVisible, setPracticeModeModalVisible] =
+    useState(true);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
+
   const [showSideNav, setShowSideNav] = useState(false);
-  const [showFullPage, setShowFullPage] = useState(false);
+  const [showFullPage, setShowFullPage] = useState(true);
+
+  const [isPracticeMode, setIsPracticeMode] = useState(false);
+
+  const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
+
+  const filterUnansweredQuestions = () => {
+    const filteredQusetions = filterUnanswered(
+      exam.examQuestion,
+      userAnswers || [],
+    );
+
+    setCurrentViewExam([...filteredQusetions]);
+  };
+
+  const handleSubmitExam = () => {
+    navigator.navigate('Exam-Result', {
+      userAnswers,
+      total: exam.examQuestion.length,
+    });
+  };
+
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: examQuestionType;
+    index: number;
+  }) => (
+    <Question
+      key={item.id}
+      showFullPage={showFullPage}
+      question={item}
+      questionCounter={index + 1}
+      total={currentViewExam.length}
+      isPracticeMode={isPracticeMode}
+      setUserAnswers={setUserAnswers}
+    />
+  );
 
   return (
     <SafeAreaView
@@ -33,20 +99,30 @@ const PracticeQuestion = ({route, navigation}) => {
       />
       <ExamTimer />
 
-      <ScrollView
+      {/* <ScrollView
         contentContainerStyle={showFullPage ? styles.scrollContent : {}}
         showsVerticalScrollIndicator={showFullPage}>
         {showFullPage &&
-          exam.examQuestion.map((question: examQuestionType, index: number) => (
-            <Question
-              key={question.id}
-              showFullPage={showFullPage}
-              question={question}
-              questionCounter={index + 1}
-              total={exam.examQuestion.length}
-            />
-          ))}
-      </ScrollView>
+          exam.examQuestion
+            .slice(0, 4)
+            .map((question: examQuestionType, index: number) => (
+              <Question
+                key={question.id}
+                showFullPage={showFullPage}
+                question={question}
+                questionCounter={index + 1}
+                total={exam.examQuestion.length}
+                isPracticeMode={isPracticeMode}
+              />
+            ))}
+      </ScrollView> */}
+
+      <FlatList
+        data={currentViewExam}
+        renderItem={({item, index}) => renderItem({item, index})}
+        keyExtractor={item => item.id.toString()}
+        numColumns={1} // Set the number of columns to 2 for a 2-column layout
+      />
       <ExamNavigateButtons
         setExitExamModalVisible={setExitExamModalVisible}
         showFullPage={showFullPage}
@@ -55,6 +131,18 @@ const PracticeQuestion = ({route, navigation}) => {
       <ExamLeaveModal
         exitExamModalVisible={exitExamModalVisible}
         setExitExamModalVisible={setExitExamModalVisible}
+        examStatusData={{
+          total: exam.examQuestion.length,
+          answered: userAnswers?.length || 0,
+        }}
+        filterUnansweredQuestions={filterUnansweredQuestions}
+        handleSubmitExam={handleSubmitExam}
+      />
+
+      <PracticeModeModal
+        practiceModeModalVisible={practiceModeModalVisible}
+        setPracticeModeModalVisible={setPracticeModeModalVisible}
+        setIsPracticeMode={setIsPracticeMode}
       />
     </SafeAreaView>
   );

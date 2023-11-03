@@ -8,30 +8,32 @@ import {
   Image,
 } from 'react-native';
 
-const Tips = () => {
+const Tips: React.FC<{
+  title?: string;
+  note: string;
+  readonly: boolean;
+}> = ({title, note, readonly}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
-        {/* <ImageBackground
-          style={styles.imageBG}
-          source={require('../../assets/Images//Practice/tip.png')} // Replace with the correct path to your image
-          resizeMode="cover"
-        /> */}
         <Image
           style={styles.image}
           source={require('../../assets/Images//Practice/tip.png')}
           resizeMode="cover"
         />
       </View>
-      <TouchableOpacity touchSoundDisabled style={styles.textContainer}>
-        <Text style={styles.tipTitle}>TIPS & TRICKS FOR PHYSICS EXAM</Text>
-        <Text style={styles.tipText}>
-          Your expected ability for this chapter is between 2.0 -- 2.4.
-          Estimated your ability using the following Estimated your ability
-          using the followin{'...'}
-        </Text>
-        <Text style={[styles.readmore, styles.readmore]}>Read more</Text>
-      </TouchableOpacity>
+      {readonly ? (
+        <View style={styles.textContainer}>
+          {title && <Text style={styles.tipTitle}>{title}</Text>}
+          <Text style={styles.tipText}>{note}</Text>
+        </View>
+      ) : (
+        <TouchableOpacity touchSoundDisabled style={styles.textContainer}>
+          <Text style={styles.tipTitle}>{title}</Text>
+          <Text style={styles.tipText}>{note}</Text>
+          <Text style={[styles.readmore, styles.readmore]}>Read more</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

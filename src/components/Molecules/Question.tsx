@@ -10,13 +10,24 @@ import RenderHtml from 'react-native-render-html';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {examQuestionType} from '../../types';
+import {answersType} from '../../screens/App/PracticeQuestion';
 
+const Choice = ['A', 'B', 'C', 'D'];
 const Question: React.FC<{
   showFullPage: boolean;
   question: examQuestionType;
   questionCounter: number;
   total: number;
-}> = ({showFullPage, question, questionCounter, total}) => {
+  isPracticeMode: boolean;
+  setUserAnswers: React.Dispatch<React.SetStateAction<answersType[] | null>>;
+}> = ({
+  showFullPage,
+  question,
+  questionCounter,
+  total,
+  isPracticeMode,
+  setUserAnswers,
+}) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showParagraph, setShowParagraph] = useState(false);
 
@@ -64,35 +75,20 @@ const Question: React.FC<{
                 resizeMode="cover"
               />
             </View> */}
-
-            <QuestionChoice
-              choiceLetter="A"
-              choiceText={question.A}
-              selectedAnswer={selectedAnswer}
-              setSelectedAnswer={setSelectedAnswer}
-              showFullPage={showFullPage}
-            />
-            <QuestionChoice
-              choiceLetter="B"
-              choiceText={question.B}
-              selectedAnswer={selectedAnswer}
-              setSelectedAnswer={setSelectedAnswer}
-              showFullPage={showFullPage}
-            />
-            <QuestionChoice
-              choiceLetter="C"
-              choiceText={question.C}
-              selectedAnswer={selectedAnswer}
-              setSelectedAnswer={setSelectedAnswer}
-              showFullPage={showFullPage}
-            />
-            <QuestionChoice
-              choiceLetter="D"
-              choiceText={question.D}
-              selectedAnswer={selectedAnswer}
-              setSelectedAnswer={setSelectedAnswer}
-              showFullPage={showFullPage}
-            />
+            {Choice.map((letter: string, index: number) => (
+              <QuestionChoice
+                key={letter + 'letter' + index}
+                choiceLetter={letter}
+                choiceText={question[letter]}
+                selectedAnswer={selectedAnswer}
+                setSelectedAnswer={setSelectedAnswer}
+                showFullPage={showFullPage}
+                answer={question.answer}
+                isPracticeMode={isPracticeMode}
+                setUserAnswers={setUserAnswers}
+                questionData={{id: question.id, index: --questionCounter}}
+              />
+            ))}
           </ScrollView>
         </View>
       )}
@@ -160,17 +156,61 @@ const QuestionChoice: React.FC<{
   selectedAnswer: string | null;
   setSelectedAnswer: React.Dispatch<React.SetStateAction<string | null>>;
   showFullPage: boolean;
+  answer: string;
+  isPracticeMode: boolean;
+  setUserAnswers: React.Dispatch<React.SetStateAction<answersType[] | null>>;
+  questionData: {id: string; index: number};
 }> = ({
   choiceLetter,
   choiceText,
   selectedAnswer,
   setSelectedAnswer,
   showFullPage,
+  answer,
+  isPracticeMode,
+  setUserAnswers,
+  questionData,
 }) => {
   const handleSelect = () => {
-    selectedAnswer === choiceLetter
-      ? setSelectedAnswer(null)
-      : setSelectedAnswer(choiceLetter);
+    if (isPracticeMode && selectedAnswer) return;
+
+    if (selectedAnswer === choiceLetter) {
+      setSelectedAnswer(null);
+
+      setUserAnswers(prev => {
+        if (prev) {
+          return prev.filter(item => item.id !== questionData.id);
+        } else {
+          return null;
+        }
+      });
+
+      return;
+    }
+
+    setSelectedAnswer(choiceLetter);
+    setUserAnswers(prev => {
+      if (prev) {
+        return [
+          ...prev,
+          {
+            id: questionData.id,
+            index: questionData.index,
+            userAnswer: choiceLetter,
+            correctAnswer: answer,
+          },
+        ];
+      } else {
+        return [
+          {
+            id: questionData.id,
+            index: questionData.index,
+            userAnswer: choiceLetter,
+            correctAnswer: answer,
+          },
+        ];
+      }
+    });
   };
 
   const tagsStyles = {
@@ -200,7 +240,27 @@ const QuestionChoice: React.FC<{
       onPress={handleSelect}>
       <Text
         style={
-          choiceLetter === selectedAnswer
+          isPracticeMode
+            ? choiceLetter === selectedAnswer
+              ? selectedAnswer === answer
+                ? [
+                    questionChoiceStyles.choiceLetter,
+                    questionChoiceStyles.choiceLetterSelected,
+                    questionChoiceStyles.choiceLetterSelectedCorrect,
+                  ]
+                : [
+                    questionChoiceStyles.choiceLetter,
+                    questionChoiceStyles.choiceLetterSelected,
+                    questionChoiceStyles.choiceLetterSelectedError,
+                  ]
+              : selectedAnswer && answer === choiceLetter
+              ? [
+                  questionChoiceStyles.choiceLetter,
+                  questionChoiceStyles.choiceLetterSelected,
+                  questionChoiceStyles.choiceLetterSelectedCorrect,
+                ]
+              : questionChoiceStyles.choiceLetter
+            : choiceLetter === selectedAnswer
             ? [
                 questionChoiceStyles.choiceLetter,
                 questionChoiceStyles.choiceLetterSelected,
@@ -344,6 +404,12 @@ const questionChoiceStyles = StyleSheet.create({
     fontFamily: 'PoppinsSemiBold',
     color: '#fff',
     borderWidth: 0,
+  },
+  choiceLetterSelectedCorrect: {
+    backgroundColor: '#028A0F',
+  },
+  choiceLetterSelectedError: {
+    backgroundColor: '#D03120',
   },
   choiceText: {
     width: '85%',
