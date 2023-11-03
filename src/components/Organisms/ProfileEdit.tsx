@@ -38,6 +38,8 @@ import PhoneInputWithPrefix from '../Molecules/PhoneInputWithPrefix';
 import DropdownForRegionField from '../Molecules/DropdownForRegionField';
 import BackButton from '../Atoms/BackButton';
 import DoneButton from '../Atoms/DoneButton';
+import PasswordField from '../Molecules/PasswordField';
+import ChangePasswordButton from '../Atoms/ChangePasswordButton';
 
 const ProfileEdit: React.FC = () => {
   const dispatch = useDispatch();
@@ -70,8 +72,7 @@ const ProfileEdit: React.FC = () => {
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
   const [region, setRegion] = useState<string | null>(null);
-  const [regionError, setRegionError] = useState<string | null>(null);
-  const [rigionOptions, setRegionOptions] = useState([]);
+  const [regionError, setRegionError] = useState<string | null>(null)
   const [regionsListItems, setRegionsListItems] = useState<regionItemsType[] | []>([]);
   const [refetchRegions, setRefetchRegions] = useState(false);
   const [
@@ -146,29 +147,40 @@ const ProfileEdit: React.FC = () => {
   //password schema
   const schema = passwordSchema;
 
-  const handleSubmitPassword = async values => {
+  const handleSubmitPassword = async (values: {
+    newPassword: string;
+    confirmPassword: string;
+    password: string;
+  }) => {
+    console.log(values.newPassword, values.confirmPassword, values.password);
     if (values.newPassword === values.confirmPassword) {
       try {
-        const tokenResult = await get_from_localStorage('token');
-        if (tokenResult.status && tokenResult.value) {
-          const token = tokenResult.value;
-          const response = await updatePassword({
-            currentPassword: values.password,
-            newPassword: values.newPassword,
-            token,
-          });
-
+        const response = await updatePassword({
+          currentPassword: values.password,
+          newPassword: values.newPassword,
+          token,
+        });
+        console.log("response....................", response)
+        if (!response.error) {
           await Toast.show({
             type: 'success',
             text1: 'success',
             text2: 'Password updated successfuly',
             visibilityTime: 4000,
+          })
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Error!',
+            text2: 'Something went wrong',
           });
         }
-      } catch (error) {
-        await Toast.show({
+        ;
+      }
+      catch (error) {
+        Toast.show({
           type: 'error',
-          text1: 'Hello',
+          text1: 'Error!',
           text2: 'Something went wrong',
         });
         console.error(error);
@@ -277,120 +289,47 @@ const ProfileEdit: React.FC = () => {
                   </View>
                 </View>
 
-                <View style={styles.commonTextFeildStyle}>
-                  <TextInput
-                    style={styles.inputContainer}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    placeholder="old password"
-                    secureTextEntry={showPassword}
-                    placeholderTextColor={'#d4d4d4'}
-                  />
-                  {showPassword ? (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(false)}>
-                      <Ionicons name="eye-outline" size={28} color="#81afe6" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(true)}>
-                      <Ionicons
-                        name="eye-off-outline"
-                        size={28}
-                        color="#81afe6"
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
+
+                <PasswordField
+                  label="Old Password"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  placeholder="Old password"
+                  showPassword={showPassword}
+                  togglePassword={() => setShowPassword(!showPassword)}
+                />
                 {errors.password && touched.password && (
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
 
-                <View style={styles.commonTextFeildStyle}>
-                  <TextInput
-                    style={styles.inputContainer}
-                    onChangeText={handleChange('newPassword')}
-                    onBlur={handleBlur('newPassword')}
-                    value={values.newPassword}
-                    placeholder="New password"
-                    secureTextEntry={showPassword}
-                    placeholderTextColor={'#d4d4d4'}
-                  />
-                  {showPassword ? (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(false)}>
-                      <Ionicons name="eye-outline" size={28} color="#81afe6" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(true)}>
-                      <Ionicons
-                        name="eye-off-outline"
-                        size={28}
-                        color="#81afe6"
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
+                <PasswordField
+                  label="New Password"
+                  value={values.newPassword}
+                  onChangeText={handleChange('newPassword')}
+                  onBlur={handleBlur('newPassword')}
+                  placeholder="New password"
+                  showPassword={showPassword}
+                  togglePassword={() => setShowPassword(!showPassword)}
+                />
                 {errors.newPassword && touched.newPassword && (
                   <Text style={styles.errorText}>{errors.newPassword}</Text>
                 )}
-                <View style={styles.commonTextFeildStyle}>
-                  <TextInput
-                    style={styles.inputContainer}
-                    onChangeText={handleChange('confirmPassword')}
-                    onBlur={handleBlur('confirmPassword')}
-                    value={values.confirmPassword}
-                    placeholder="Confirm password"
-                    secureTextEntry={showPassword}
-                    placeholderTextColor={'#d4d4d4'}
-                  />
-                  {showPassword ? (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(false)}>
-                      <Ionicons name="eye-outline" size={28} color="#81afe6" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(true)}>
-                      <Ionicons
-                        name="eye-off-outline"
-                        size={28}
-                        color="#81afe6"
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
+
+                <PasswordField
+                  label="Confirm Password"
+                  value={values.confirmPassword}
+                  onChangeText={handleChange('confirmPassword')}
+                  onBlur={handleBlur('confirmPassword')}
+                  placeholder="Confirm password"
+                  showPassword={showPassword}
+                  togglePassword={() => setShowPassword(!showPassword)}
+                />
                 {errors.confirmPassword && touched.confirmPassword && (
                   <Text style={styles.errorText}>{errors.confirmPassword}</Text>
                 )}
 
-                <TouchableOpacity
-                  style={[
-                    styles.inputContainer,
-                    styles.changePassword,
-                    styles.changePasswordButton,
-                  ]}
-                  onPress={handleSubmit}>
-                  <Text style={styles.changePasswordText}>Change Password</Text>
-                  <AntDesign
-                    name="right"
-                    style={styles.changepasswordButtonIcon}
-                  />
-                </TouchableOpacity>
+                <ChangePasswordButton onPress={handleSubmit} />
               </View>
             )}
           </Formik>
