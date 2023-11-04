@@ -56,21 +56,25 @@ export const createRealmUserData = async (
   selectedSubjects: string[] | [],
   navigation: NavigationProp<ReactNavigation.RootParamList>,
 ) => {
-  const grade = await get_from_localStorage(LocalStorageDataKeys.userGrade);
+  try {
+    const grade = await get_from_localStorage(LocalStorageDataKeys.userGrade);
 
-  const currentDate = new Date().toString();
+    const currentDate = new Date().toString();
 
-  realm.write(() => {
-    realm.create(LocalObjectDataKeys.UserData, {
-      _id: new Realm.BSON.ObjectId(),
-      token: null,
-      grade: grade.value,
-      initialDate: currentDate,
-      isSubscribed: false,
-      user: null,
-      selectedSubjects: [...selectedSubjects],
+    realm.write(() => {
+      realm.create(LocalObjectDataKeys.UserData, {
+        _id: new Realm.BSON.ObjectId(),
+        token: null,
+        grade: grade.value,
+        initialDate: currentDate,
+        isSubscribed: false,
+        user: null,
+        selectedSubjects: [...selectedSubjects],
+      });
     });
-  });
+  } catch (err) {
+    console.log(err);
+  }
 
   navigation.navigate('Home');
 };

@@ -119,7 +119,7 @@ export type subjectType = {
   grade: gradeType;
   subject: {
     id: string;
-    grade: string;
+    subject: string;
     createdAt: string;
     updatedAt: string;
   };

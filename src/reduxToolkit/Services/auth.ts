@@ -6,7 +6,9 @@ import {
   OTPDataType,
   ResendCodeDataType,
   SignupDataType,
+  gradeType,
   regionItemsType,
+  subjectType,
   userType,
 } from '../../types';
 import Config from 'react-native-config';
@@ -149,6 +151,14 @@ export const api = createApi({
         };
       },
     }),
+    getSubject: build.mutation<{subjects: subjectType[]}, {grade: string}>({
+      query: credentials => {
+        return {
+          url: `subjectmanagement/user/subjects?grade=${credentials.grade}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -163,4 +173,5 @@ export const {
   useGetRegionsMutation,
   useDeleteAccountMutation,
   useGetExamsMutation,
+  useGetSubjectMutation,
 } = api;

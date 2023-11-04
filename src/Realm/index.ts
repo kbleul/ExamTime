@@ -1,10 +1,26 @@
 import Realm from 'realm';
 import {gradeType, userType} from '../types';
 
+class Grade extends Realm.Object {
+  id: string = '';
+  grade: string = '';
+  createdAt: string = '';
+  updatedAt: string = '';
+
+  static schema: Realm.ObjectSchema = {
+    name: 'Grade',
+    properties: {
+      id: 'string',
+      grade: 'string',
+      createdAt: 'string',
+      updatedAt: 'string',
+    },
+  };
+}
 class UserData extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   token: string | null = null;
-  grade: string = '';
+  grade: gradeType | null = null;
   initialDate: string = '';
   isSubscribed: boolean = false;
   user: userType | null = null; // Define the user property as a reference to the User object.
@@ -15,7 +31,7 @@ class UserData extends Realm.Object {
     properties: {
       _id: 'objectId',
       token: 'string?',
-      grade: 'string',
+      grade: 'Grade?',
       initialDate: 'string?',
       isSubscribed: 'bool',
       user: 'User?', // Link the 'user' property to the 'User' object.
@@ -36,23 +52,6 @@ class Region extends Realm.Object {
     properties: {
       id: 'string',
       region: 'string',
-      createdAt: 'string',
-      updatedAt: 'string',
-    },
-  };
-}
-
-class Grade extends Realm.Object {
-  id: string = '';
-  grade: string = '';
-  createdAt: string = '';
-  updatedAt: string = '';
-
-  static schema: Realm.ObjectSchema = {
-    name: 'Grade',
-    properties: {
-      id: 'string',
-      grade: 'string',
       createdAt: 'string',
       updatedAt: 'string',
     },

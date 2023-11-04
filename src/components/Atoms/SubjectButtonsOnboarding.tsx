@@ -4,40 +4,41 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 type SubjectButtonProps = {
   text: string;
-  selectedGrades?: string[] | undefined;
-  setSelectedGrades?: React.Dispatch<
-    React.SetStateAction<string[] | undefined>
-  >;
+  subjectId: string;
+  selectedSubjects: string[] | null;
+  setSelectedSubjects: React.Dispatch<React.SetStateAction<string[] | null>>;
 };
 
 const SubjectButton: React.FC<SubjectButtonProps> = ({
   text,
-  selectedGrades,
-  setSelectedGrades,
+  subjectId,
+  selectedSubjects,
+  setSelectedSubjects,
 }) => {
-  const onPress = (grade: string) => {
-    if (selectedGrades && setSelectedGrades) {
-      if (selectedGrades.includes(grade)) {
-        setSelectedGrades(selectedGrades.filter(item => item !== grade));
-      } else {
-        !selectedGrades.includes(grade) &&
-          setSelectedGrades(prev => {
-            return prev ? [...prev, grade] : [];
-          });
-      }
+  const onPress = () => {
+    if (selectedSubjects === null) {
+      setSelectedSubjects([subjectId]);
+      return;
+    }
+
+    if (selectedSubjects.includes(subjectId)) {
+      setSelectedSubjects(selectedSubjects.filter(item => item !== subjectId));
+    } else {
+      setSelectedSubjects(prev => prev && [...prev, subjectId]);
     }
   };
+
   return (
     <TouchableOpacity
-      onPress={() => onPress(text)}
+      onPress={onPress}
       style={
-        selectedGrades?.includes(text)
+        selectedSubjects?.includes(subjectId)
           ? [style.buttons, style.buttonSelected]
           : style.buttons
       }>
       <Text
         style={
-          selectedGrades?.includes(text)
+          selectedSubjects?.includes(subjectId)
             ? [style.buttonText, style.buttonTextSelected]
             : style.buttonText
         }>

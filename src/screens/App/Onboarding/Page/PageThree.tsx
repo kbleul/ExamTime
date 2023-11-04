@@ -3,29 +3,17 @@ import {View, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {PagesCounterType} from './types';
-import {
-  DummyDataScience,
-  DummyDataSocial,
-  LocalObjectDataKeys,
-  LocalStorageDataKeys,
-  screenHeight,
-  screenWidth,
-} from '../../../../utils/Data/data';
-import {ScrollView} from 'react-native-gesture-handler';
+import {screenHeight, screenWidth} from '../../../../utils/Data/data';
 import {createRealmUserData} from '../Logic';
 import SubjectButton from '../../../../components/Atoms/SubjectButtonsOnboarding';
 import GradeButton from '../../../../components/Atoms/GradeButtonOnBoarding';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
 import {AuthContext} from '../../../../Realm/model';
-import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
-import {useGetSubjectsMutation} from '../../../../reduxToolkit/Services/subjects';
+
 import {subjectType} from '../../../../types';
+import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from './logic';
-import {
-  useGetGradeMutation,
-  useGetSMutation,
-  useGetSubjectMutation,
-} from '../../../../reduxToolkit/Services/grade';
+import Loading from '../../../../components/Atoms/Loading';
 
 const Grade12Catagories = ['Natural', 'Social'];
 
@@ -45,13 +33,19 @@ const PageThree: React.FC<PageThreeProps> = ({
   const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
     null,
   );
-  const [selectedGrades, setSelectedGrades] = useState<string[] | undefined>(
-    [],
+  const [selectedSubjects, setSelectedSubjects] = useState<string[] | null>(
+    null,
   );
 
   const [selectedCatagory, setSelectedCatagory] = useState(
     Grade12Catagories[0],
   );
+
+  const [getSubject, {isLoading, isError, error}] = useGetSubjectMutation();
+
+  useEffect(() => {
+    getSubjectsMutation(getSubject, navigator, setSubjectsArray);
+  }, []);
 
   return (
     <View style={style.container}>
@@ -69,41 +63,42 @@ const PageThree: React.FC<PageThreeProps> = ({
         </View>
 
         <View style={style.secondBox}>
-          <View
-            style={[style.buttonsSubcontainer, style.buttonsSubcontainerTop]}>
-            {selectedCatagory === Grade12Catagories[0]
-              ? DummyDataScience.map((subject, index) => (
+          {!isLoading && !error && subjectsArray && (
+            <>
+              <View
+                style={[
+                  style.buttonsSubcontainer,
+                  style.buttonsSubcontainerTop,
+                ]}>
+                {subjectsArray.map((subject, index) => (
                   <SubjectButton
-                    key={subject.subjName + index}
-                    text={subject.subjName}
-                    selectedGrades={selectedGrades}
-                    setSelectedGrades={setSelectedGrades}
-                  />
-                ))
-              : DummyDataSocial.map((subject, index) => (
-                  <SubjectButton
-                    key={subject.subjName + index}
-                    text={subject.subjName}
-                    selectedGrades={selectedGrades}
-                    setSelectedGrades={setSelectedGrades}
+                    key={subject.id}
+                    text={subject.subject.subject}
+                    subjectId={subject.id}
+                    selectedSubjects={selectedSubjects}
+                    setSelectedSubjects={setSelectedSubjects}
                   />
                 ))}
-          </View>
+              </View>
 
-          <View style={style.buttonsSubcontainer}>
-            <GradeButton
-              text="Get Started"
-              index={5}
-              onPress={() =>
-                createRealmUserData(
-                  realm,
-                  selectedGrades ? [...selectedGrades] : [],
-                  navigator,
-                )
-              }
-              isActive={true}
-            />
-          </View>
+              <View style={style.buttonsSubcontainer}>
+                <GradeButton
+                  text="Get Started"
+                  index={5}
+                  onPress={() =>
+                    createRealmUserData(
+                      realm,
+                      selectedSubjects ? [...selectedSubjects] : [],
+                      navigator,
+                    )
+                  }
+                  isActive={true}
+                />
+              </View>
+            </>
+          )}
+
+          {isLoading && <Loading />}
         </View>
       </View>
     </View>

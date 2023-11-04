@@ -10,24 +10,6 @@ type ProfileMenuItems = {
 
 type TopCatagoriesType = string[];
 
-export const DummyDataScience = [
-  {subjName: 'Mathematics'},
-  {subjName: 'English'},
-  {subjName: 'Biology'},
-  {subjName: 'Physics'},
-  {subjName: 'SAT'},
-  {subjName: 'Chemistry'},
-];
-
-export const DummyDataSocial = [
-  {subjName: 'History'},
-  {subjName: 'English'},
-  {subjName: 'Geography'},
-  {subjName: 'Civics'},
-  {subjName: 'Math'},
-  {subjName: 'Economics'},
-];
-
 export const CourseCatagories: TopCatagoriesType = ['Study', 'Challenge'];
 export const TestQustionsCatagories: TopCatagoriesType = [
   'Model Questions',
