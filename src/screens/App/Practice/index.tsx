@@ -18,7 +18,6 @@ const Practice = () => {
 
   return (
     <SafeAreaView style={[IndexStyle.container, styles.container]}>
-      {/* <TrialHeader type="Practice" /> */}
       <ScrollView
         style={styles.ScrollView}
         contentContainerStyle={styles.contentContainer}

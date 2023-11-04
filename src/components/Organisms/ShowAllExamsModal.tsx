@@ -20,26 +20,27 @@ const ShowAllExamsModal: React.FC<{
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          {exams.map((exam, index) => (
-            <TouchableOpacity
-              key={exam.id}
-              touchSoundDisabled
-              style={examsStyle.imgContainer}
-              onPress={() => setExitExamModalVisible(false)}>
-              <ImageBackground
-                style={examsStyle.imageBG}
-                source={
-                  (index + 1) % 2 !== 0
-                    ? (index + 1) % 3 === 0
-                      ? require('../../assets/Images//Practice/exam_yellow.png')
-                      : require('../../assets/Images//Practice/exam_blue.png')
-                    : require('../../assets/Images//Practice/exam_green.png')
-                } // Replace with the correct path to your image
-                resizeMode="cover"
-              />
-              <Text style={examsStyle.buttonText}>{index + 1}</Text>
-            </TouchableOpacity>
-          ))}
+          {exams &&
+            exams.map((exam, index) => (
+              <TouchableOpacity
+                key={exam.id}
+                touchSoundDisabled
+                style={examsStyle.imgContainer}
+                onPress={() => setExitExamModalVisible(false)}>
+                <ImageBackground
+                  style={examsStyle.imageBG}
+                  source={
+                    (index + 1) % 2 !== 0
+                      ? (index + 1) % 3 === 0
+                        ? require('../../assets/Images//Practice/exam_yellow.png')
+                        : require('../../assets/Images//Practice/exam_blue.png')
+                      : require('../../assets/Images//Practice/exam_green.png')
+                  } // Replace with the correct path to your image
+                  resizeMode="cover"
+                />
+                <Text style={examsStyle.buttonText}>{index + 1}</Text>
+              </TouchableOpacity>
+            ))}
         </View>
       </View>
     </Modal>

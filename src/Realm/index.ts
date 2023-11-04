@@ -1,5 +1,5 @@
 import Realm from 'realm';
-import {userType} from '../types';
+import {gradeType, userType} from '../types';
 
 class UserData extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
@@ -42,6 +42,23 @@ class Region extends Realm.Object {
   };
 }
 
+class Grade extends Realm.Object {
+  id: string = '';
+  grade: string = '';
+  createdAt: string = '';
+  updatedAt: string = '';
+
+  static schema: Realm.ObjectSchema = {
+    name: 'Grade',
+    properties: {
+      id: 'string',
+      grade: 'string',
+      createdAt: 'string',
+      updatedAt: 'string',
+    },
+  };
+}
+
 class User extends Realm.Object {
   id: string = '';
   firstName: string = '';
@@ -55,7 +72,7 @@ class User extends Realm.Object {
   } | null = null;
   isVerified: boolean = false;
   isActive: boolean = false;
-  grade: string = '';
+  grade: gradeType | null = null;
   gender: 'MALE' | 'FEMALE' = 'MALE';
   email: string | null = null;
   verificationCode: string | null = null;
@@ -70,7 +87,7 @@ class User extends Realm.Object {
       region: 'Region?',
       isVerified: 'bool',
       isActive: 'bool',
-      grade: 'string',
+      grade: 'Grade',
       gender: 'string',
       email: 'string?',
       verificationCode: 'string?',
@@ -78,4 +95,4 @@ class User extends Realm.Object {
   };
 }
 
-export {UserData, User, Region};
+export {UserData, User, Grade, Region};

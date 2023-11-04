@@ -29,6 +29,7 @@ const FullExams: React.FC<{
   const [getExams, {isLoading, isError, error}] = useGetExamsMutation();
 
   const [exams, setExams] = useState([]);
+
   useEffect(() => {
     token && getPreviousExams(navigator, getExams, token, setExams, 'grade_8');
   }, []);

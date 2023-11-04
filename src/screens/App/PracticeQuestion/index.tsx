@@ -59,8 +59,9 @@ const PracticeQuestion = ({route}) => {
 
   const handleSubmitExam = () => {
     navigator.navigate('Exam-Result', {
-      userAnswers,
+      userAnswers: userAnswers || [],
       total: exam.examQuestion.length,
+      timeTaken: '1:20',
     });
   };
 

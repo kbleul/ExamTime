@@ -102,3 +102,25 @@ export type examType = {
   updatedAt: string;
   examQuestion: examQuestionType[];
 };
+
+export type gradeType = {
+  id: string;
+  grade: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type subjectType = {
+  id: string;
+  description: string;
+  icon: string;
+  createdAt: string;
+  updatedAt: string;
+  grade: gradeType;
+  subject: {
+    id: string;
+    grade: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+};

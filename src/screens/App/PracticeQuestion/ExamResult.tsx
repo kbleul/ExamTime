@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {answersType} from '.';
+import {screenHeight, screenWidth} from '../../../utils/Data/data';
 
 const ExamResult = ({route}) => {
-  const {userAnswers, total} = route.params;
+  const {userAnswers, total, timeTaken} = route.params;
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
   useEffect(() => {
@@ -14,16 +15,189 @@ const ExamResult = ({route}) => {
   }, []);
 
   return (
-    <View>
-      <Text>WELCOME TO EXAM RESULTS PAGE ...</Text>
-      <Text>COMMING SOOM.</Text>
+    <View style={styles.container}>
+      <View style={styles.topSection}>
+        {/* <Text style={styles.topTitleSection}>92</Text>
+        <Text style={styles.topSubtitleSection}>Pass</Text>
+        <View style={styles.topSectionHiddenSection} />
+        <View style={styles.topSectionHiddenSection} /> */}
+      </View>
 
-      <Text>Total {total}</Text>
-      <Text>Skipped {total - userAnswers.length}</Text>
-      <Text>Correct {correctAnswers}</Text>
-      <Text>Incorrect {userAnswers.length - correctAnswers}</Text>
+      <View style={styles.midSection}>
+        <View
+          style={[
+            styles.midSectionSubContainer,
+            styles.midSectionSubContainerSecondary,
+          ]}>
+          <Text style={styles.midSectionTitle}>85%</Text>
+          <Text style={styles.midSectionSubTitle}>PROBABILITY OF</Text>
+          <Text style={styles.midSectionSubTitle}>PASSING</Text>
+        </View>
+        <View style={styles.midSectionSubContainer}>
+          <Text style={styles.midSectionTitle}>25%</Text>
+          <Text style={styles.midSectionSubTitle}>PROGRESS</Text>
+          <Text style={styles.midSectionSubTitle}>COMPATISON</Text>
+        </View>
+      </View>
+
+      <View style={styles.lastSection}>
+        <View style={styles.lastSectionContainer}>
+          <View style={styles.lastSectionBox}>
+            <Text style={[styles.midSectionTitle, styles.lastSectionText]}>
+              {correctAnswers}
+            </Text>
+            <Text style={[styles.midSectionSubTitle, styles.lastSectionText]}>
+              Correct Answer
+            </Text>
+          </View>
+          <View style={styles.lastSectionBox}>
+            <Text style={[styles.midSectionTitle, styles.lastSectionText]}>
+              {userAnswers.length - correctAnswers}
+            </Text>
+            <Text style={[styles.midSectionSubTitle, styles.lastSectionText]}>
+              Incorrect Answer
+            </Text>
+          </View>
+        </View>
+        <View style={styles.lastSectionContainer}>
+          <View style={styles.lastSectionBox}>
+            <Text style={[styles.midSectionTitle, styles.lastSectionText]}>
+              {timeTaken}
+            </Text>
+            <Text style={[styles.midSectionSubTitle, styles.lastSectionText]}>
+              Time Taken
+            </Text>
+          </View>
+          <View style={styles.lastSectionBox}>
+            <Text style={[styles.midSectionTitle, styles.lastSectionText]}>
+              {total - userAnswers.length}
+            </Text>
+            <Text style={[styles.midSectionSubTitle, styles.lastSectionText]}>
+              Skipped
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity touchSoundDisabled style={styles.reviewButton}>
+          <Text style={styles.reviewButtonText}>Review</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#FBFDFF',
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingTop: screenHeight * (1 / 10),
+  },
+  topSection: {
+    borderWidth: 10,
+    width: screenWidth * (3.3 / 6),
+    height: screenWidth * (3.3 / 6),
+    borderColor: '#1DB88F',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    borderRadius: 200,
+  },
+  topSectionHiddenSection: {
+    width: '110%',
+    height: '110%',
+    backgroundColor: 'yellow',
+    position: 'absolute',
+    borderRadius: 200,
+    zIndex: 10,
+  },
+  topTitleSection: {
+    fontSize: 55,
+    fontFamily: 'PoppinsSemiBold',
+    color: '#000',
+    lineHeight: 55,
+    paddingTop: 15,
+    position: 'relative',
+  },
+  topSubtitleSection: {
+    fontSize: 20,
+    fontFamily: 'PoppinsRegular',
+    color: '#3CAB8C',
+    paddingTop: 15,
+    position: 'absolute',
+    top: 105,
+  },
+  midSection: {
+    width: '72%',
+    flexDirection: 'row',
+    marginTop: 30,
+    paddingVertical: 5,
+    borderRadius: 10,
+    borderWidth: 0.4,
+    borderColor: '#D9D9D9',
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+  },
+  midSectionSubContainer: {
+    width: '50%',
+    marginVertical: 4,
+  },
+  midSectionSubContainerSecondary: {
+    borderRightWidth: 3,
+    borderColor: '#D9D9D9',
+  },
+  midSectionTitle: {
+    textAlign: 'center',
+    color: '#000',
+    fontFamily: 'PoppinsBold',
+    fontSize: 22,
+    lineHeight: 22,
+    paddingTop: 10,
+  },
+  midSectionSubTitle: {
+    textAlign: 'center',
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: 10,
+    lineHeight: 10,
+    paddingTop: 2,
+    color: '#000',
+    elevation: 40,
+  },
+  lastSection: {
+    flexDirection: 'row',
+    width: '72%',
+    marginTop: 30,
+    borderRadius: 10,
+    backgroundColor: '#3FA0FF',
+    paddingVertical: 10,
+  },
+  lastSectionContainer: {
+    width: '50%',
+  },
+  lastSectionBox: {
+    paddingVertical: 10,
+  },
+  lastSectionText: {
+    color: 'white',
+    fontFamily: 'PoppinsRegular',
+  },
+  buttonContainer: {
+    width: '80%',
+    marginTop: 30,
+    alignItems: 'flex-end',
+  },
+  reviewButton: {
+    paddingHorizontal: 40,
+    paddingVertical: 8,
+    backgroundColor: '#3FA0FF',
+    borderRadius: 6,
+  },
+  reviewButtonText: {
+    color: 'white',
+  },
+});
 
 export default ExamResult;

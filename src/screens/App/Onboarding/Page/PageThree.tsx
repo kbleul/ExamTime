@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -6,6 +6,8 @@ import {PagesCounterType} from './types';
 import {
   DummyDataScience,
   DummyDataSocial,
+  LocalObjectDataKeys,
+  LocalStorageDataKeys,
   screenHeight,
   screenWidth,
 } from '../../../../utils/Data/data';
@@ -15,6 +17,15 @@ import SubjectButton from '../../../../components/Atoms/SubjectButtonsOnboarding
 import GradeButton from '../../../../components/Atoms/GradeButtonOnBoarding';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
 import {AuthContext} from '../../../../Realm/model';
+import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
+import {useGetSubjectsMutation} from '../../../../reduxToolkit/Services/subjects';
+import {subjectType} from '../../../../types';
+import {getSubjectsMutation} from './logic';
+import {
+  useGetGradeMutation,
+  useGetSMutation,
+  useGetSubjectMutation,
+} from '../../../../reduxToolkit/Services/grade';
 
 const Grade12Catagories = ['Natural', 'Social'];
 
@@ -30,7 +41,10 @@ const PageThree: React.FC<PageThreeProps> = ({
   const {useRealm} = AuthContext;
 
   const realm = useRealm();
-  const navigation = useNavigation();
+  const navigator = useNavigation();
+  const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
+    null,
+  );
   const [selectedGrades, setSelectedGrades] = useState<string[] | undefined>(
     [],
   );
@@ -84,7 +98,7 @@ const PageThree: React.FC<PageThreeProps> = ({
                 createRealmUserData(
                   realm,
                   selectedGrades ? [...selectedGrades] : [],
-                  navigation,
+                  navigator,
                 )
               }
               isActive={true}

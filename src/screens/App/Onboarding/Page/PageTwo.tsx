@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,14 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {PagesCounterType, PagesGradesProps} from './types';
 import img from '../../../../assets/Images/onboarding/2a.png';
-import {set_to_localStorage} from '../../../../utils/Functions/Set';
+import {
+  setObject_to_localStorage,
+  set_to_localStorage,
+} from '../../../../utils/Functions/Set';
 import {
   LocalStorageDataKeys,
   screenHeight,
@@ -17,6 +21,11 @@ import {
 } from '../../../../utils/Data/data';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
 import OtherCoursesCard from '../../../../components/Molecules/ChosenAndOtherCourses/OtherCoursesCard';
+import {useNavigation} from '@react-navigation/native';
+import {useGetGradeMutation} from '../../../../reduxToolkit/Services/grade';
+import {getGradesMutation} from './logic';
+import {gradeType} from '../../../../types';
+import Loading from '../../../../components/Atoms/Loading';
 
 const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   pageCounter,
@@ -24,8 +33,16 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   selectedGrade,
   setSelectedGrade,
 }) => {
-  const saveGrade = (grade: string) => {
-    set_to_localStorage(LocalStorageDataKeys.userGrade, grade);
+  const navigator = useNavigation();
+  const [getGrades, {isLoading, error}] = useGetGradeMutation();
+  const [gradesArray, setGradesArray] = useState<gradeType[] | null>(null);
+
+  useEffect(() => {
+    getGradesMutation(getGrades, navigator, setGradesArray);
+  }, []);
+
+  const saveGrade = (grade: gradeType) => {
+    setObject_to_localStorage(LocalStorageDataKeys.userGrade, grade);
     setPageCounter(3);
   };
   return (
@@ -46,29 +63,22 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
           <View style={style.titleContainer}>
             <Text style={style.title}>What Grade are you in ?</Text>
           </View>
-          <View style={style.gradesContainer}>
-            <OtherCoursesCard
-              grade={12}
-              subTitle="Natural Science Student"
-              subjectsCount={12}
-              isOnboarding
-              onPress={() => saveGrade('grade_12_natural')}
-            />
-            <OtherCoursesCard
-              grade={12}
-              subTitle="Social Science Student"
-              subjectsCount={9}
-              isOnboarding
-              onPress={() => saveGrade('grade_12_socials')}
-            />
-            <OtherCoursesCard
-              grade={8}
-              subTitle="Reginal Exam Taker"
-              subjectsCount={9}
-              isOnboarding
-              onPress={() => saveGrade('grade_8')}
-            />
-          </View>
+          {!isLoading && !error && gradesArray && (
+            <View style={style.gradesContainer}>
+              {gradesArray.map((grade, index) => (
+                <OtherCoursesCard
+                  key={grade.id}
+                  grade={grade.grade}
+                  subTitle="Natural Science Student"
+                  subjectsCount={6}
+                  isOnboarding
+                  onPress={() => saveGrade(grade)}
+                  index={index}
+                />
+              ))}
+            </View>
+          )}
+          {isLoading && <Loading />}
         </View>
       </ScrollView>
     </View>
