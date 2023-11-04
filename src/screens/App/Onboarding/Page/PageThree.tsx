@@ -14,16 +14,10 @@ import {subjectType} from '../../../../types';
 import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from './logic';
 import Loading from '../../../../components/Atoms/Loading';
+import Toast from 'react-native-toast-message';
 
-const Grade12Catagories = ['Natural', 'Social'];
-
-type PageThreeProps = PagesCounterType & {
-  selectedGrade: number;
-};
-
-const PageThree: React.FC<PageThreeProps> = ({
+const PageThree: React.FC<PagesCounterType> = ({
   pageCounter,
-  selectedGrade,
   setPageCounter,
 }) => {
   const {useRealm} = AuthContext;
@@ -37,15 +31,20 @@ const PageThree: React.FC<PageThreeProps> = ({
     null,
   );
 
-  const [selectedCatagory, setSelectedCatagory] = useState(
-    Grade12Catagories[0],
-  );
-
-  const [getSubject, {isLoading, isError, error}] = useGetSubjectMutation();
+  const [getSubject, {isLoading, error}] = useGetSubjectMutation();
 
   useEffect(() => {
     getSubjectsMutation(getSubject, navigator, setSubjectsArray);
   }, []);
+
+  useEffect(() => {
+    error &&
+      Toast.show({
+        type: 'error',
+        text1: 'Error!',
+        text2: `${error?.data.message}`,
+      });
+  }, [error]);
 
   return (
     <View style={style.container}>
@@ -100,6 +99,7 @@ const PageThree: React.FC<PageThreeProps> = ({
 
           {isLoading && <Loading />}
         </View>
+        <Toast />
       </View>
     </View>
   );

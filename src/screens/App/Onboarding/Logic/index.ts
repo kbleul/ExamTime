@@ -6,7 +6,10 @@ import {
   LocalStorageDataKeys,
   trialStatus,
 } from '../../../../utils/Data/data';
-import {get_from_localStorage} from '../../../../utils/Functions/Get';
+import {
+  getObject_from_localStorage,
+  get_from_localStorage,
+} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
 
 export const calculateDateDifference = (date: string) => {
@@ -57,7 +60,9 @@ export const createRealmUserData = async (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
 ) => {
   try {
-    const grade = await get_from_localStorage(LocalStorageDataKeys.userGrade);
+    const grade = await getObject_from_localStorage(
+      LocalStorageDataKeys.userGrade,
+    );
 
     const currentDate = new Date().toString();
 

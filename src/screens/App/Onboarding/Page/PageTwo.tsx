@@ -1,19 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import {PagesCounterType, PagesGradesProps} from './types';
 import img from '../../../../assets/Images/onboarding/2a.png';
-import {
-  setObject_to_localStorage,
-  set_to_localStorage,
-} from '../../../../utils/Functions/Set';
+import {setObject_to_localStorage} from '../../../../utils/Functions/Set';
 import {
   LocalStorageDataKeys,
   screenHeight,
@@ -26,13 +15,9 @@ import {useGetGradeMutation} from '../../../../reduxToolkit/Services/grade';
 import {getGradesMutation} from './logic';
 import {gradeType} from '../../../../types';
 import Loading from '../../../../components/Atoms/Loading';
+import Toast from 'react-native-toast-message';
 
-const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
-  pageCounter,
-  setPageCounter,
-  selectedGrade,
-  setSelectedGrade,
-}) => {
+const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
   const navigator = useNavigation();
   const [getGrades, {isLoading, error}] = useGetGradeMutation();
   const [gradesArray, setGradesArray] = useState<gradeType[] | null>(null);
@@ -40,6 +25,15 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
   useEffect(() => {
     getGradesMutation(getGrades, navigator, setGradesArray);
   }, []);
+
+  useEffect(() => {
+    error &&
+      Toast.show({
+        type: 'error',
+        text1: 'Error!',
+        text2: `${error?.data.message}`,
+      });
+  }, [error]);
 
   const saveGrade = (grade: gradeType) => {
     setObject_to_localStorage(LocalStorageDataKeys.userGrade, grade);
@@ -81,6 +75,7 @@ const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
           {isLoading && <Loading />}
         </View>
       </ScrollView>
+      <Toast />
     </View>
   );
 };

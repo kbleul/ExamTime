@@ -125,14 +125,17 @@ export const trialStatus = {
   trial: 'trial',
 };
 
+//for realm db
 export const LocalStorageDataKeys = {
   token: 'token',
   userData: 'userData',
   onBoarding: 'onBoarding',
   trialStartDate: 'trialStartDate',
   userGrade: 'userGrade',
+  subjects: 'subjects',
 };
 
+//for async storage
 export const LocalObjectDataKeys = {
   User: 'User',
   UserData: 'UserData',

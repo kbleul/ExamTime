@@ -123,4 +123,5 @@ export type subjectType = {
     createdAt: string;
     updatedAt: string;
   };
+  progress?: number;
 };
