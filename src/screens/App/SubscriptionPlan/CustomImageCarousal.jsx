@@ -1,4 +1,4 @@
-import {View, useWindowDimensions} from 'react-native';
+import {StyleSheet, View, useWindowDimensions} from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import Animated, {
   useSharedValue,
@@ -7,10 +7,10 @@ import Animated, {
 } from 'react-native-reanimated';
 import Pagination from './Pagination';
 import CustomImage from './CustomImage';
-const CustomImageCarousal = ({data, autoPlay, pagination}) => {
+import { screenHeight } from '../../../utils/Data/data';
+
+const CustomImageCarousal = ({data, pagination}) => {
   const scrollViewRef = useAnimatedRef(null);
-  const interval = useRef();
-  const [isAutoPlay, setIsAutoPlay] = useState(autoPlay);
   const [newData, setNewData] = useState([
     {key: 'spacer-left'},
     ...data,
@@ -18,11 +18,10 @@ const CustomImageCarousal = ({data, autoPlay, pagination}) => {
   ]);
   const {width} = useWindowDimensions();
   const SIZE = width * 0.7;
-  const SPACER = (width - SIZE) / 2;
+  const SPACER = (width - SIZE) / 3;
   const x = useSharedValue(0);
   const offSet = useSharedValue(0);
 
-  // Update newData if data change
   useEffect(() => {
     setNewData([{key: 'spacer-left'}, ...data, {key: 'spacer-right'}]);
   }, [data]);
@@ -35,37 +34,11 @@ const CustomImageCarousal = ({data, autoPlay, pagination}) => {
       offSet.value = e.contentOffset.x;
     },
   });
-
-  useEffect(() => {
-    if (isAutoPlay === true) {
-      let _offSet = offSet.value;
-      interval.current = setInterval(() => {
-        if (_offSet >= Math.floor(SIZE * (data.length - 1) - 10)) {
-          _offSet = 0;
-        } else {
-          _offSet = Math.floor(_offSet + SIZE);
-        }
-        scrollViewRef.current.scrollTo({x: _offSet, y: 0});
-      }, 2000);
-    } else {
-      clearInterval(interval.current);
-    }
-    return () => {
-      clearInterval(interval.current);
-    };
-  }, [SIZE, SPACER, isAutoPlay, data.length, offSet.value, scrollViewRef]);
-
   return (
-    <View>
+    <View style={styles.Cards}>
       <Animated.ScrollView
         ref={scrollViewRef}
         onScroll={onScroll}
-        onScrollBeginDrag={e => {
-          setIsAutoPlay(false);
-        }}
-        onMomentumScrollEnd={() => {
-          setIsAutoPlay(autoPlay);
-        }}
         scrollEventThrottle={16}
         decelerationRate="fast"
         snapToInterval={SIZE}
@@ -81,6 +54,7 @@ const CustomImageCarousal = ({data, autoPlay, pagination}) => {
               x={x}
               size={SIZE}
               spacer={SPACER}
+         
             />
           );
         })}
@@ -90,4 +64,9 @@ const CustomImageCarousal = ({data, autoPlay, pagination}) => {
   );
 };
 
+const styles = StyleSheet.create({
+  Cards: {
+    height: screenHeight*0.6,
+  },
+})
 export default CustomImageCarousal;

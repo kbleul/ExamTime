@@ -16,6 +16,7 @@ import { RootState } from '../../../reduxToolkit/Store';
 const { width, height } = Dimensions.get('window');
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomImageCarousal from './CustomImageCarousal';
+import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 const SPACING = 10;
 const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.5 : width * 0.5;
 
@@ -26,6 +27,7 @@ const Index: React.FC = () => {
     {
       key: '1',
       planname: 'Basic Plan',
+      image: require('./frame_blue.png'),
       price: 200,
       current: true,
       color: '#F5A52D',
@@ -52,6 +54,7 @@ const Index: React.FC = () => {
       key: '2',
       planname: 'Intermediate Plan',
       price: 200,
+      image: require('./frame_blue.png'),
       current: false,
       color: '#4F8FCB',
       packages: [
@@ -75,6 +78,7 @@ const Index: React.FC = () => {
     },
     {
       key: '3',
+      image: require('./frame_blue.png'),
       planname: 'Pro Plan',
       price: 200,
       current: false,
@@ -126,13 +130,14 @@ const Index: React.FC = () => {
         </View>
 
         <View style={styles.HorizontalList}>
-          <View style={styles.carouselContainer}>
+          {/* <View style={styles.carouselContainer}> */}
             <Text style={styles.text}>Image Carousel Square</Text>
-            <CustomImageCarousal data={data} autoPlay={true} pagination={true} />
-          </View>
+            <CustomImageCarousal data={data} autoPlay={false} pagination={true} />
+          {/* </View> */}
         </View>
         {/* <MainBottomNav /> */}
       </ScrollView>
+      <MainBottomNav/>
     </View>
   );
 };

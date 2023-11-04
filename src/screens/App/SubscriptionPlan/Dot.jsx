@@ -11,13 +11,13 @@ const Dot = ({x, index, size}) => {
     const widthAnimation = interpolate(
       x.value,
       [(index - 1) * size, index * size, (index + 1) * size],
-      [10, 20, 10],
+      [10, 30, 10],
       Extrapolate.CLAMP,
     );
     const opacityAnimation = interpolate(
       x.value,
       [(index - 1) * size, index * size, (index + 1) * size],
-      [0.5, 1, 0.5],
+      [0.5, 2, 0.5],
       Extrapolate.CLAMP,
     );
     return {
@@ -33,7 +33,7 @@ export default Dot;
 const styles = StyleSheet.create({
   dots: {
     height: 10,
-    backgroundColor: 'orange',
+    backgroundColor: 'blue',
     marginHorizontal: 10,
     borderRadius: 5,
   },
