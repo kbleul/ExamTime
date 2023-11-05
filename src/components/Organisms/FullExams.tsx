@@ -16,24 +16,45 @@ import {FetchBaseQueryError} from '@reduxjs/toolkit/dist/query';
 import {SerializedError} from '@reduxjs/toolkit';
 import ShowAllExamsModal from './ShowAllExamsModal';
 import {examType} from '../../types';
+import Toast from 'react-native-toast-message';
+import {Grade, Subject} from '../../Realm';
+import {AuthContext} from '../../Realm/model';
 
 export const ExamCatagories = ['Previous Exams', 'Model'];
 
 const FullExams: React.FC<{
   selectedExamType: string;
   setSelectedExamType: React.Dispatch<React.SetStateAction<string>>;
-}> = ({selectedExamType, setSelectedExamType}) => {
+  selectedSubject: Subject;
+}> = ({selectedExamType, setSelectedExamType, selectedSubject}) => {
   const navigator = useNavigation();
-  const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const {useQuery} = AuthContext;
 
+  const savedGrade = useQuery(Grade);
   const [getExams, {isLoading, isError, error}] = useGetExamsMutation();
 
   const [exams, setExams] = useState([]);
 
   useEffect(() => {
-    token && getPreviousExams(navigator, getExams, token, setExams, 'grade_8');
-  }, []);
+    console.log(user?.grade, '------------', savedGrade);
+    getPreviousExams(
+      navigator,
+      getExams,
+      setExams,
+      selectedSubject.subject?.subject || '',
+      savedGrade[0].grade,
+    );
+  }, [selectedSubject, getExams]);
 
+  useEffect(() => {
+    error &&
+      Toast.show({
+        type: 'error',
+        text1: 'Fetch exams error',
+        text2: error.data.message,
+      });
+  }, [error]);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Full Exams to practice</Text>
@@ -84,7 +105,6 @@ const Exams: React.FC<{
         ))}
 
       {isLoading && <Text>is loading ...</Text>}
-      {error && <Text>{error?.data?.message}</Text>}
 
       <ShowAllExamsModal
         exitExamModalVisible={showAllExams}

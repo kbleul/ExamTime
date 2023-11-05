@@ -8,6 +8,9 @@ import img3 from '../../../assets/Images/home/s3.png';
 import img4 from '../../../assets/Images/home/s4.png';
 import img5 from '../../../assets/Images/home/s5.png';
 import OtherCoursesCard from './OtherCoursesCard';
+import {Subject, UserData} from '../../../Realm';
+import {AuthContext} from '../../../Realm/model';
+import {subjectType} from '../../../types';
 
 interface SubjectItemType {
   id: string;
@@ -91,20 +94,22 @@ const DummyCourses = [
 ];
 
 const ChosenCourses = () => {
-  const renderItem = ({
-    item,
-    index,
-  }: {
-    item: SubjectItemType;
-    index: number;
-  }) => {
+  const {useQuery, useRealm} = AuthContext;
+
+  const savedSubjects = useQuery(Subject);
+
+  const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
       <View>
         <ChosenCoursesCard
-          title={item.title}
-          lessonsCount={item.lessonsCount}
+          title={item.subject.subject}
+          lessonsCount={12}
           progress={item.progress}
-          bgImage={item.bgImage}
+          bgImage={
+            DummySubjects[index]
+              ? DummySubjects[index].bgImage
+              : DummySubjects[DummySubjects.length - 1]
+          }
         />
       </View>
     );
@@ -134,7 +139,7 @@ const ChosenCourses = () => {
 
       <FlatList
         keyExtractor={item => item.id}
-        data={DummySubjects}
+        data={savedSubjects}
         renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator={false}

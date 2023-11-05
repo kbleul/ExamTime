@@ -183,6 +183,7 @@ const LoginForm = () => {
                 newUserData,
                 realm,
                 IsDefaultPasswordChanged,
+                setChanged,
               ),
             )}>
             Login

@@ -31,12 +31,35 @@ const filterUnanswered = (
   return unansweredQuestions;
 };
 
+function formatTime(minutes: number) {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  let timeString = '';
+
+  if (hours < 1) {
+    timeString += '00:';
+  } else if (hours < 10) {
+    timeString += '0' + hours.toString() + ':';
+  } else {
+    timeString += hours.toString() + ':';
+  }
+
+  timeString += remainingMinutes.toString().padStart(2, '0') + ':00';
+
+  return timeString;
+}
+
 const PracticeQuestion = ({route}) => {
   const {exam} = route.params;
+
   const navigator: any = useNavigation();
 
-  const [currentViewExam, setCurrentViewExam] = useState(exam.examQuestion);
+  const formatedTime = formatTime(exam.duration);
+  const [timer, setTimer] = useState(formatedTime);
+  const [startTimer, setStartTimer] = useState(false);
 
+  const [currentViewExam, setCurrentViewExam] = useState(exam.examQuestion);
   const [practiceModeModalVisible, setPracticeModeModalVisible] =
     useState(true);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
@@ -98,7 +121,12 @@ const PracticeQuestion = ({route}) => {
         setShowFullPage={setShowFullPage}
         showFullPage={showFullPage}
       />
-      <ExamTimer />
+      <ExamTimer
+        formatedTime={formatedTime}
+        timer={timer}
+        setTimer={setTimer}
+        startTimer={startTimer}
+      />
 
       {/* <ScrollView
         contentContainerStyle={showFullPage ? styles.scrollContent : {}}
@@ -138,12 +166,14 @@ const PracticeQuestion = ({route}) => {
         }}
         filterUnansweredQuestions={filterUnansweredQuestions}
         handleSubmitExam={handleSubmitExam}
+        timeLeft={timer}
       />
 
       <PracticeModeModal
         practiceModeModalVisible={practiceModeModalVisible}
         setPracticeModeModalVisible={setPracticeModeModalVisible}
         setIsPracticeMode={setIsPracticeMode}
+        setStartTimer={setStartTimer}
       />
     </SafeAreaView>
   );

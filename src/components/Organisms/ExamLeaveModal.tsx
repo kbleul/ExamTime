@@ -11,12 +11,14 @@ const ExamLeaveModal: React.FC<{
   };
   filterUnansweredQuestions: () => void;
   handleSubmitExam: () => void;
+  timeLeft: string;
 }> = ({
   exitExamModalVisible,
   setExitExamModalVisible,
   examStatusData,
   filterUnansweredQuestions,
   handleSubmitExam,
+  timeLeft,
 }) => {
   return (
     <Modal
@@ -59,7 +61,7 @@ const ExamLeaveModal: React.FC<{
               Remaining
             </Text>
             <Text style={[styles.infoText, styles.infoTextThird]}>
-              <Text style={styles.infoTextPurple}>2:20 </Text>time left
+              <Text style={styles.infoTextPurple}>{timeLeft}</Text>time left
             </Text>
           </View>
 

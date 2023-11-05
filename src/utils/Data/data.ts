@@ -132,7 +132,6 @@ export const LocalStorageDataKeys = {
   onBoarding: 'onBoarding',
   trialStartDate: 'trialStartDate',
   userGrade: 'userGrade',
-  subjects: 'subjects',
 };
 
 //for async storage
@@ -140,6 +139,8 @@ export const LocalObjectDataKeys = {
   User: 'User',
   UserData: 'UserData',
   Region: 'Region',
+  Subject: 'Subject',
+  SingleSubject: 'SingleSubject',
 };
 
 export const CarouselData_guest = [

@@ -5,6 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
+import {screenWidth} from '../../utils/Data/data';
 
 const ViewQuestionHeader: React.FC<{
   title: string;
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     width: '68%',
     color: 'black',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: 20,
+    fontSize: screenWidth * 0.04,
     textAlign: 'left',
     paddingTop: 5,
   },

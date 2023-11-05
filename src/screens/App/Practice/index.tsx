@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-import {DummySubjects} from '../../../components/Molecules/ChosenAndOtherCourses';
 import SubjectSelectViewBox from '../../../components/Organisms/SubjectSelectViewBox';
 import Tips from '../../../components/Molecules/Tips';
 import FullExams, {
@@ -11,9 +10,15 @@ import FullExams, {
 import TrialHeader from '../../../components/Organisms/TrialHeader';
 import RandomQuestions from '../../../components/Organisms/RandomQuestions';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
+import {AuthContext} from '../../../Realm/model';
+import {Subject} from '../../../Realm';
+import Toast from 'react-native-toast-message';
 
 const Practice = () => {
-  const [selectedSubject, setSelectedSubject] = useState(DummySubjects[0]);
+  const {useQuery} = AuthContext;
+  const savedSubjects = useQuery(Subject);
+
+  const [selectedSubject, setSelectedSubject] = useState(savedSubjects[0]);
   const [selectedExamType, setSelectedExamType] = useState(ExamCatagories[0]);
 
   return (
@@ -47,8 +52,10 @@ const Practice = () => {
         <FullExams
           selectedExamType={selectedExamType}
           setSelectedExamType={setSelectedExamType}
+          selectedSubject={selectedSubject}
         />
       </ScrollView>
+      <Toast />
 
       <MainBottomNav />
     </SafeAreaView>

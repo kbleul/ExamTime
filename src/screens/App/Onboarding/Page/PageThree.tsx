@@ -34,7 +34,7 @@ const PageThree: React.FC<PagesCounterType> = ({
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
 
   useEffect(() => {
-    getSubjectsMutation(getSubject, navigator, setSubjectsArray);
+    getSubjectsMutation(getSubject, navigator, setSubjectsArray, realm);
   }, []);
 
   useEffect(() => {

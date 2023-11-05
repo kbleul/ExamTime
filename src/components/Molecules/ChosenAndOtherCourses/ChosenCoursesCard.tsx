@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Dimensions,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {screenHeight, screenWidth} from '../../../utils/Data/data';
 
 const ChosenCoursesCard: React.FC<{
   title: string;
@@ -15,6 +8,7 @@ const ChosenCoursesCard: React.FC<{
   progress?: number;
   bgImage: any;
 }> = ({title, lessonsCount, progress, bgImage}) => {
+  const width = progress + '%';
   return (
     <View
       style={
@@ -22,10 +16,7 @@ const ChosenCoursesCard: React.FC<{
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
-      <ImageBackground
-        style={styles.imageBg}
-        source={bgImage} // Replace with the correct path to your image
-      >
+      <ImageBackground style={styles.imageBg} source={bgImage}>
         <Text style={styles.title}>{title}</Text>
         <Text
           style={
@@ -35,15 +26,16 @@ const ChosenCoursesCard: React.FC<{
           }>
           {lessonsCount} Lessons
         </Text>
-        {progress && (
-          <View style={styles.progressBar}>
-            <View
-              style={[styles.progressBarIndicator, {width: progress + '%'}]}
-            />
-          </View>
-        )}
-        {progress && (
-          <Text style={styles.progressText}>{progress}% completed</Text>
+
+        {progress !== undefined && (
+          <>
+            <View style={styles.progressBar}>
+              <View
+                style={[styles.progressBarIndicator, {width}]} // calculate progress dynamically
+              />
+            </View>
+            <Text style={styles.progressText}>{progress}% completed</Text>
+          </>
         )}
       </ImageBackground>
     </View>

@@ -7,21 +7,22 @@ type GetRegionsMutationFn = ReturnType<typeof useGetExamsMutation>[0];
 export const getPreviousExams = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   getExams: GetRegionsMutationFn,
-  token: string,
   setExams: React.Dispatch<React.SetStateAction<never[]>>,
-  grade: string,
+  subject: string,
+  grade: string | null,
 ) => {
   try {
     checkIsOnline(navigator);
+
     const response: any = await getExams({
-      token: token,
       params: {
-        subject: 'Biology',
+        grade: grade ? grade : undefined,
+        subject,
       },
     });
 
     setExams(response?.data?.exams);
   } catch (err) {
-    console.log(err);
+    console.log('=================================', err);
   }
 };

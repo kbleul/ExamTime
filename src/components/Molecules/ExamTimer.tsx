@@ -1,8 +1,60 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, Image, StyleSheet} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ExamTimer = () => {
+let timerInterval: any;
+const startCountTime = (
+  formattedTime: string,
+  setTimer: React.Dispatch<React.SetStateAction<string>>,
+) => {
+  const timeParts = formattedTime.split(':').map(part => parseInt(part));
+  let [hours, minutes, seconds] = timeParts;
+
+  timerInterval = setInterval(() => {
+    if (hours === 0 && minutes === 0 && seconds === 0) {
+      clearInterval(timerInterval);
+    } else {
+      if (seconds > 0) {
+        seconds--;
+      } else {
+        if (minutes > 0) {
+          minutes--;
+          seconds = 59;
+        } else {
+          hours--;
+          minutes = 59;
+          seconds = 59;
+        }
+      }
+
+      const formatted =
+        hours !== 0
+          ? `${hours}:${minutes.toString().padStart(2, '0')}:${seconds
+              .toString()
+              .padStart(2, '0')}`
+          : `${minutes.toString().padStart(2, '0')}:${seconds
+              .toString()
+              .padStart(2, '0')}`;
+
+      console.log(hours);
+      setTimer(formatted);
+    }
+  }, 1000);
+};
+
+const ExamTimer: React.FC<{
+  formatedTime: string;
+  timer: string;
+  setTimer: React.Dispatch<React.SetStateAction<string>>;
+  startTimer: string;
+}> = ({formatedTime, timer, setTimer, startTimer}) => {
+  useEffect(() => {
+    startTimer && startCountTime(formatedTime, setTimer);
+
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, [startTimer]);
+
   return (
     <View style={styles.container}>
       <Image
@@ -10,7 +62,7 @@ const ExamTimer = () => {
         style={styles.watchImg}
       />
 
-      <Text style={styles.timeText}>49:30</Text>
+      <Text style={styles.timeText}>{timer}</Text>
     </View>
   );
 };

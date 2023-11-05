@@ -94,4 +94,50 @@ class User extends Realm.Object {
   };
 }
 
-export {UserData, User, Grade, Region};
+//subject object embeded inside of the subject returned by the server/api
+class SingleSubject extends Realm.Object {
+  id: string = '';
+  subject: string = '';
+  createdAt: string = '';
+  updatedAt: string = '';
+
+  static schema: Realm.ObjectSchema = {
+    name: 'SingleSubject',
+    properties: {
+      id: 'string',
+      subject: 'string',
+      createdAt: 'string',
+      updatedAt: 'string',
+    },
+  };
+}
+class Subject extends Realm.Object {
+  id: string = '';
+  description: string = '';
+  icon: string = '';
+  createdAt: string = '';
+  updatedAt: string = '';
+  grade: gradeType | null = null;
+  subject: {
+    id: string;
+    subject: string;
+    createdAt: string;
+    updatedAt: string;
+  } | null = null;
+  progress?: number;
+
+  static schema: Realm.ObjectSchema = {
+    name: 'Subject',
+    properties: {
+      id: 'string',
+      description: 'string',
+      icon: 'string',
+      createdAt: 'string',
+      updatedAt: 'string',
+      subject: 'SingleSubject?',
+      progress: 'int',
+    },
+  };
+}
+
+export {UserData, User, Grade, Region, SingleSubject, Subject};

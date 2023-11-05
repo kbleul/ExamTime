@@ -7,10 +7,12 @@ const PracticeModeModal: React.FC<{
   practiceModeModalVisible: boolean;
   setPracticeModeModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setIsPracticeMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setStartTimer: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({
   practiceModeModalVisible,
   setPracticeModeModalVisible,
   setIsPracticeMode,
+  setStartTimer,
 }) => {
   return (
     <Modal
@@ -53,6 +55,7 @@ const PracticeModeModal: React.FC<{
                 onPress={() => {
                   setIsPracticeMode(true);
                   setPracticeModeModalVisible(false);
+                  setStartTimer(true);
                 }}>
                 Yes
               </Text>
@@ -62,6 +65,7 @@ const PracticeModeModal: React.FC<{
               onPress={() => {
                 setIsPracticeMode(false);
                 setPracticeModeModalVisible(false);
+                setStartTimer(true);
               }}>
               <Text
                 style={[

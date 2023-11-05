@@ -11,6 +11,7 @@ import {
   get_from_localStorage,
 } from '../../../../utils/Functions/Get';
 import Realm from 'realm';
+import {subjectType} from '../../../../types';
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -82,4 +83,47 @@ export const createRealmUserData = async (
   }
 
   navigation.navigate('Home');
+};
+
+export const createRealmSubjectsData = async (
+  realm: Realm,
+  subjects: subjectType[] | [],
+) => {
+  try {
+    subjects.forEach(subject => {
+      const {
+        id,
+        description,
+        icon,
+        createdAt,
+        updatedAt,
+        grade,
+        subject: SingleSubject,
+      } = subject;
+
+      realm.write(() => {
+        const subjectObject = realm.create(LocalObjectDataKeys.SingleSubject, {
+          id: SingleSubject.id,
+          subject: SingleSubject.subject,
+          createdAt: SingleSubject.createdAt,
+          updatedAt: SingleSubject.updatedAt,
+        });
+
+        realm.create(LocalObjectDataKeys.Subject, {
+          id,
+          description,
+          icon,
+          createdAt,
+          updatedAt,
+          grade,
+          subject: subjectObject,
+          progress: 0,
+        });
+
+        console.log({subjectObject});
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
