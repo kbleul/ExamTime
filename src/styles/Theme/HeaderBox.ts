@@ -7,7 +7,7 @@ export const HeaderStyle = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: screenWidth * 0.01,
-    paddingVertical: 10,
+    paddingVertical: screenHeight * 0.01,
   },
   containerSubscribed: {
     justifyContent: 'flex-end',
@@ -18,7 +18,7 @@ export const HeaderStyle = StyleSheet.create({
     position: 'relative',
   },
   trialText: {
-    fontSize: 24,
+    fontSize: screenWidth * 0.06,
     margin: 2,
     color: '#000',
     fontFamily: 'Montserrat-SemiBold',
@@ -26,7 +26,7 @@ export const HeaderStyle = StyleSheet.create({
   typeText: {
     margin: 4,
     marginBottom: 6,
-    fontSize: 18,
+    fontSize: screenWidth * 0.05,
     color: '#000',
     fontFamily: 'Montserrat-SemiBold',
   },

@@ -37,7 +37,6 @@ const FullExams: React.FC<{
   const [exams, setExams] = useState([]);
 
   useEffect(() => {
-    console.log(user?.grade, '------------', savedGrade);
     getPreviousExams(
       navigator,
       getExams,
@@ -49,6 +48,7 @@ const FullExams: React.FC<{
 
   useEffect(() => {
     error &&
+      error.message &&
       Toast.show({
         type: 'error',
         text1: 'Fetch exams error',
@@ -103,8 +103,13 @@ const Exams: React.FC<{
             <Text style={examsStyle.buttonText}>{index + 1}</Text>
           </TouchableOpacity>
         ))}
-
-      {isLoading && <Text>is loading ...</Text>}
+      {isLoading &&
+        Array.from({length: 5}).map((_, index: number) => (
+          <View
+            key={index + 'exam_loading'}
+            style={[examsStyle.imgContainer, examsStyle.imgContainerLoading]}
+          />
+        ))}
 
       <ShowAllExamsModal
         exitExamModalVisible={showAllExams}
@@ -152,7 +157,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#008E97',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: 16,
+    fontSize: screenWidth * 0.04,
   },
 });
 
@@ -163,8 +168,7 @@ const buttonStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 5,
-    padding: 4,
+    padding: screenWidth * 0.0006,
     borderRadius: 10,
   },
   button: {
@@ -192,17 +196,21 @@ const buttonStyles = StyleSheet.create({
 export const examsStyle = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     paddingHorizontal: '3%',
   },
   imgContainer: {
     width: '18%',
     height: screenHeight * 0.13,
-    marginTop: 10,
+    marginTop: screenWidth * 0.02,
     maxHeight: 100,
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
+    marginRight: '3%',
+  },
+  imgContainerLoading: {
+    backgroundColor: '#d4d4d4',
   },
   buttonText: {
     position: 'absolute',

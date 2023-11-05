@@ -72,21 +72,20 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    paddingVertical: 10,
   },
   headerContainer: {
-    paddingHorizontal: 8,
+    paddingHorizontal: screenWidth * 0.02,
   },
   headerTitle: {
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.07, //28
+    fontSize: screenWidth * 0.05, //28
     color: '#000',
-    lineHeight: screenHeight * 0.045, //34
-    marginTop: 10,
+    lineHeight: screenHeight * 0.03, //34
+    marginTop: screenWidth * 0.005,
   },
   headerSubTitle: {
     fontFamily: 'PoppinsRegular',
-    fontSize: screenWidth * 0.045, //17 18
+    fontSize: screenWidth * 0.043, //17 18
     color: '#C1C2C6',
   },
 });

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
+import {screenWidth} from '../../utils/Data/data';
 
 const Tips: React.FC<{
   title?: string;
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginHorizontal: 5,
-    marginTop: 10,
+    marginTop: 6,
     paddingVertical: 5,
     borderWidth: 1,
     borderRadius: 10,
@@ -67,15 +68,16 @@ const styles = StyleSheet.create({
   tipTitle: {
     fontFamily: 'PoppinsSemiBold',
     color: 'black',
-    fontSize: 13,
+    fontSize: screenWidth * 0.032,
   },
   tipText: {
     fontFamily: 'PoppinsRegular',
     color: 'black',
-    fontSize: 13,
+    fontSize: screenWidth * 0.028,
   },
   readmore: {
     color: '#1E90FF',
+    fontSize: screenWidth * 0.032,
   },
 });
 

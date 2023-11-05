@@ -8,17 +8,9 @@ import img3 from '../../../assets/Images/home/s3.png';
 import img4 from '../../../assets/Images/home/s4.png';
 import img5 from '../../../assets/Images/home/s5.png';
 import OtherCoursesCard from './OtherCoursesCard';
-import {Subject, UserData} from '../../../Realm';
+import {Subject} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
-
-interface SubjectItemType {
-  id: string;
-  title: string;
-  lessonsCount: number;
-  progress?: number;
-  bgImage: any;
-}
 
 interface CourseItemType {
   id: string;
@@ -94,7 +86,7 @@ const DummyCourses = [
 ];
 
 const ChosenCourses = () => {
-  const {useQuery, useRealm} = AuthContext;
+  const {useQuery} = AuthContext;
 
   const savedSubjects = useQuery(Subject);
 

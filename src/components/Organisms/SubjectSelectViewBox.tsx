@@ -46,6 +46,26 @@ const SubjectSelectViewBox: React.FC<{
           style={styles.listContaier}
           numColumns={2} // Set the number of columns to 2 for a 2-column layout
         />
+        <FlatList
+          data={savedSubjects.filter(
+            subject => subject.id !== SelectedSubject.id,
+          )}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.listContaier}
+          style={styles.listContaier}
+          numColumns={2} // Set the number of columns to 2 for a 2-column layout
+        />
+        <FlatList
+          data={savedSubjects.filter(
+            subject => subject.id !== SelectedSubject.id,
+          )}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.listContaier}
+          style={styles.listContaier}
+          numColumns={2} // Set the number of columns to 2 for a 2-column layout
+        />
       </View>
     </View>
   );
@@ -102,7 +122,6 @@ const styles = StyleSheet.create({
   subjectsButton: {
     backgroundColor: '#D9D9D9',
     borderRadius: 10,
-    marginVertical: screenHeight * 0.013,
   },
   subjectsButtonActive: {
     borderWidth: 1,
@@ -113,7 +132,7 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsRegular',
     textAlign: 'center',
     paddingVertical: 8,
-    fontSize: screenWidth * 0.035,
+    fontSize: screenWidth * 0.03,
   },
 });
 

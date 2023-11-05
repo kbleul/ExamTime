@@ -12,7 +12,7 @@ const ChosenCoursesCard: React.FC<{
   return (
     <View
       style={
-        progress
+        progress !== undefined
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
@@ -20,7 +20,7 @@ const ChosenCoursesCard: React.FC<{
         <Text style={styles.title}>{title}</Text>
         <Text
           style={
-            progress
+            progress !== undefined
               ? styles.lessons
               : [styles.lessons, styles.lessonsSecondary]
           }>
@@ -31,7 +31,7 @@ const ChosenCoursesCard: React.FC<{
           <>
             <View style={styles.progressBar}>
               <View
-                style={[styles.progressBarIndicator, {width}]} // calculate progress dynamically
+                style={[styles.progressBarIndicator, {width: '50%'}]} // calculate progress dynamically
               />
             </View>
             <Text style={styles.progressText}>{progress}% completed</Text>
@@ -44,16 +44,16 @@ const ChosenCoursesCard: React.FC<{
 
 export const styles = StyleSheet.create({
   container: {
-    height: screenHeight * (1 / 3.3),
-    width: screenWidth * (3.7 / 10),
+    height: screenHeight * (1 / 4),
+    width: screenWidth * (3 / 10),
     marginHorizontal: 5,
     borderRadius: 15,
     overflow: 'hidden',
     maxHeight: 200,
   },
   containerSecondary: {
-    height: screenHeight * (1 / 4),
-    width: screenWidth * (3.7 / 12),
+    height: screenHeight * (1 / 5),
+    width: screenWidth * (1 / 3),
   },
   imageBg: {
     height: '100%',
@@ -63,27 +63,27 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: screenWidth * 0.04,
+    fontSize: screenWidth * 0.035,
     fontFamily: 'Montserrat-SemiBold',
-    paddingBottom: screenHeight * 0.01,
-    paddingLeft: 5,
+    paddingBottom: screenHeight * 0.005,
+    paddingLeft: 1,
   },
   lessons: {
-    width: '100%',
-    paddingVertical: screenHeight * 0.005,
+    width: '80%',
+    paddingVertical: screenHeight * 0.003,
     paddingHorizontal: screenWidth * 0.02,
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 100,
     color: 'white',
-    fontSize: screenWidth * 0.03,
+    fontSize: screenWidth * 0.028,
     fontFamily: 'Montserrat-SemiBold',
   },
   lessonsSecondary: {
     width: '80%',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   progressBar: {
-    width: '100%',
+    width: '80%',
     height: 5,
     backgroundColor: '#B59F9F',
     borderRadius: 20,

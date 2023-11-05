@@ -19,10 +19,12 @@ export const getPreviousExams = async (
         grade: grade ? grade : undefined,
         subject,
       },
-    });
+    }).unwrap();
+
+    console.log(response);
 
     setExams(response?.data?.exams);
   } catch (err) {
-    console.log('=================================', err);
+    console.log('-', err);
   }
 };
