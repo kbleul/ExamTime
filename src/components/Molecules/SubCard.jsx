@@ -2,12 +2,11 @@ import { StyleSheet, Text, Image, View } from 'react-native';
 import React, { useEffect, useState, useWindowDimensions } from 'react';
 import Animated, {useAnimatedStyle, interpolate } from 'react-native-reanimated';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { screenHeight, screenWidth } from '../../../utils/Data/data';
+// import { screenHeight, screenWidth } from '../../../utils/Data/data';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import MenuItemsProfile from '../../../components/Molecules/MenuItemsProfile';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
+import { screenHeight, screenWidth } from '../../utils/Data/data';
 
-const CustomImage = ({ item, x, index, size, spacer  }) => {
+const SubCard = ({ item, x, index, size, spacer  }) => {
   const [aspectRatio, setAspectRatio] = useState(1)
   const style = useAnimatedStyle(() => {
     const currentIndex = Math.round(x.value / size);
@@ -42,28 +41,12 @@ const CustomImage = ({ item, x, index, size, spacer  }) => {
   if (!item.planname) {
     return <View style={{ width: spacer }} key={index} />;
   }
-  
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const offsetX = x.value;
-  //     const currentIndex = Math.round(offsetX / size);
-  //     setIsActive(currentIndex === index);
-  //   };
-
-  //   x.addListener(handleScroll);
-
-  //   return () => {
-  //     x.removeListener(handleScroll);
-  //   };
-  // }, [index, size, x]);
-  // const cardBorderStyle = isActive ? styles.activeCardBorder : styles.inactiveCardBorder;
-  // const isActive = Math.round(x.value / size) === index;
   return (
     <View style={{ width: size }} key={index}>
       <Animated.View style={[ styles.card,style,  ]}>
        
           <View style={styles.popularContainer}>
-            <Text style={styles.popularText}>{item.planname}</Text>
+            <Text style={styles.popularText}>Popular</Text>
           </View>
           <View style={styles.CardHeaderText}>
             <Text style={styles.cardName} >{item.planname}</Text>
@@ -140,9 +123,8 @@ const styles = StyleSheet.create({
   
     width: screenWidth*0.6,
     height: screenHeight*0.5,
-    // borderWidth: 5,
-    // borderRadius:10,
-    // borderColor: 'orange',
+     borderRadius:10,
+
   },
   PriceContainer: {
     flexDirection: "column",
@@ -194,6 +176,8 @@ const styles = StyleSheet.create({
   },
   popularContainer: {
     position: 'absolute',
+    alignItems:"center",
+    justifyContent:"center",
     top: 0,
     right: 0,
     backgroundColor: 'orange',
@@ -242,6 +226,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   }
 });
-export default CustomImage;
+export default SubCard;
 
 

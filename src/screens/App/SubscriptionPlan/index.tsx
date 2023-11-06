@@ -15,8 +15,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../reduxToolkit/Store';
 const { width, height } = Dimensions.get('window');
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import CustomImageCarousal from './CustomImageCarousal';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
+import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
 const SPACING = 10;
 const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.5 : width * 0.5;
 
@@ -130,14 +130,11 @@ const Index: React.FC = () => {
         </View>
 
         <View style={styles.HorizontalList}>
-          {/* <View style={styles.carouselContainer}> */}
-            <Text style={styles.text}>Image Carousel Square</Text>
-            <CustomImageCarousal data={data} autoPlay={false} pagination={true} />
-          {/* </View> */}
+          <SubscriptionPlanCards data={data} pagination={true} />
+          {/* <CustomImageCarousal data={data} pagination={true} /> */}
         </View>
-        {/* <MainBottomNav /> */}
       </ScrollView>
-      <MainBottomNav/>
+      <MainBottomNav />
     </View>
   );
 };
@@ -194,7 +191,7 @@ const styles = StyleSheet.create({
   },
   HorizontalList: {
     alignItems: 'center',
-    height: 400,
+    height: 500,
     justifyContent: 'center',
     margin: 5,
   },
@@ -251,14 +248,14 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#222E50',
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'PoppinsLight',
     fontSize: 15,
     padding: 10,
     textAlign: 'left',
   },
   textBottom: {
     color: '#1E90FF',
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'PoppinsLight',
     fontSize: 15,
     fontWeight: 'bold',
     padding: 10,

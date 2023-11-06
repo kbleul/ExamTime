@@ -1,12 +1,20 @@
-import {StyleSheet} from 'react-native';
 import React from 'react';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated';
+import { screenWidth, screenHeight} from '../../utils/Data/data';
 
-const Dot = ({x, index, size}) => {
+
+interface DotProps {
+  x: any;
+  index: number; 
+  size: number;
+}
+
+const Dot: React.FC<DotProps> = ({ x, index, size }) => {
   const animatedDotStyle = useAnimatedStyle(() => {
     const widthAnimation = interpolate(
       x.value,
@@ -17,14 +25,15 @@ const Dot = ({x, index, size}) => {
     const opacityAnimation = interpolate(
       x.value,
       [(index - 1) * size, index * size, (index + 1) * size],
-      [0.5, 2, 0.5],
-      Extrapolate.CLAMP,
+      [0.2, 1, 0.2],
+      Extrapolate.CLAMP
     );
     return {
       width: widthAnimation,
       opacity: opacityAnimation,
     };
   });
+
   return <Animated.View style={[styles.dots, animatedDotStyle]} />;
 };
 
@@ -32,9 +41,9 @@ export default Dot;
 
 const styles = StyleSheet.create({
   dots: {
-    height: 10,
-    backgroundColor: 'blue',
-    marginHorizontal: 10,
-    borderRadius: 5,
+    height: screenHeight * 0.013, 
+    backgroundColor: '#0066B2',
+    marginHorizontal: screenWidth * 0.03, 
+    borderRadius: screenWidth * 0.015, 
   },
 });
