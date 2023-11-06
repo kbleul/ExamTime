@@ -50,7 +50,7 @@ const RandomQuestions = () => {
         <TouchableOpacity
           touchSoundDisabled
           style={styles.startButton}
-          onPress={() => navigator.navigate('Exam-View')}>
+          onPress={() => navigator.navigate('Random-Exam')}>
           <Text style={styles.startButtonText}>Start</Text>
           <AntDesign name="right" color="white" size={screenWidth * 0.03} />
         </TouchableOpacity>

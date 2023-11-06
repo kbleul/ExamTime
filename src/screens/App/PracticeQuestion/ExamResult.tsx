@@ -99,10 +99,10 @@ const ExamResult = ({route}) => {
         <View style={styles.lastSectionContainer}>
           <View style={styles.lastSectionBox}>
             <Text style={[styles.midSectionTitle, styles.lastSectionText]}>
-              {timeTaken}
+              {timeTaken ? timeTaken : '-'}
             </Text>
             <Text style={[styles.midSectionSubTitle, styles.lastSectionText]}>
-              Time Taken
+              Time Left
             </Text>
           </View>
           <View style={styles.lastSectionBox}>

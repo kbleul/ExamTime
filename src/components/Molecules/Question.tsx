@@ -90,7 +90,16 @@ const Question: React.FC<{
             answer={question.answer}
             isPracticeMode={isPracticeMode}
             setUserAnswers={setUserAnswers ? setUserAnswers : null}
-            questionData={{id: question.id, index: --questionCounter}}
+            questionData={
+              isReview
+                ? {
+                    id: question.id,
+                    index: --questionCounter,
+                    selectedAnswer: question.selectedAnswer,
+                    correctAnswer: question.correctAnswer,
+                  }
+                : {id: question.id, index: --questionCounter}
+            }
             isReview={isReview}
           />
         ))}
@@ -110,7 +119,12 @@ const QuestionChoice: React.FC<{
   setUserAnswers: React.Dispatch<
     React.SetStateAction<answersType[] | null>
   > | null;
-  questionData: {id: string; index: number};
+  questionData: {
+    id: string;
+    index: number;
+    selectedAnswer?: string;
+    correctAnswer?: string;
+  };
   isReview?: boolean;
 }> = ({
   choiceLetter,
@@ -213,6 +227,20 @@ const QuestionChoice: React.FC<{
                   questionChoiceStyles.choiceLetter,
                   questionChoiceStyles.choiceLetterSelected,
                   questionChoiceStyles.choiceLetterSelectedCorrect,
+                ]
+              : questionChoiceStyles.choiceLetter
+            : isReview
+            ? choiceLetter === answer
+              ? [
+                  questionChoiceStyles.choiceLetter,
+                  questionChoiceStyles.choiceLetterSelected,
+                  questionChoiceStyles.choiceLetterSelectedCorrect,
+                ]
+              : choiceLetter === questionData.selectedAnswer
+              ? [
+                  questionChoiceStyles.choiceLetter,
+                  questionChoiceStyles.choiceLetterSelected,
+                  questionChoiceStyles.choiceLetterSelectedError,
                 ]
               : questionChoiceStyles.choiceLetter
             : choiceLetter === selectedAnswer

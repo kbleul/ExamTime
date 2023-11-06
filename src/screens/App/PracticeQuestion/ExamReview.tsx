@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
@@ -111,7 +112,7 @@ const ExamReview = ({route}) => {
     examQuestionType[] | newQuestionsArray[] | null
   >(null);
 
-  const [showFullPage, setShowFullPage] = useState(false);
+  const [showFullPage, setShowFullPage] = useState(true);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [direction, setDirection] = useState<string | null>(null);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
@@ -125,6 +126,25 @@ const ExamReview = ({route}) => {
     );
   }, [selectedCategory, examQuestions, userAnswers]);
 
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: examQuestionType;
+    index: number;
+  }) => (
+    <Question
+      key={item.id}
+      showFullPage={showFullPage}
+      question={item}
+      questionCounter={index + 1}
+      total={viewQuestionsArray ? viewQuestionsArray.length : 0}
+      isPracticeMode={false}
+      setDirection={setDirection}
+      isReview={true}
+    />
+  );
+
   return (
     <View style={styles.contianer}>
       <Text>{userAnswers.length}</Text>
@@ -137,6 +157,16 @@ const ExamReview = ({route}) => {
         setCurrentQuestion={setCurrentQuestion}
       />
 
+      {showFullPage && viewQuestionsArray && viewQuestionsArray.length > 0 && (
+        <FlatList
+          data={viewQuestionsArray}
+          initialNumToRender={4}
+          renderItem={({item, index}) => renderItem({item, index})}
+          keyExtractor={item => item.id.toString()}
+          numColumns={1} // Set the number of columns to 2 for a 2-column layout
+        />
+      )}
+
       {!showFullPage && viewQuestionsArray && viewQuestionsArray.length > 0 && (
         <ScrollView
           contentContainerStyle={styles.scrollContent}
@@ -147,7 +177,7 @@ const ExamReview = ({route}) => {
             question={viewQuestionsArray[currentQuestion]}
             questionCounter={currentQuestion + 1}
             total={viewQuestionsArray.length}
-            isPracticeMode={true}
+            isPracticeMode={false}
             setDirection={setDirection}
             isReview={true}
           />
@@ -161,6 +191,10 @@ const ExamReview = ({route}) => {
           setCurrentQuestion={setCurrentQuestion}
           totalQuestionsLength={viewQuestionsArray.length}
         />
+      )}
+
+      {viewQuestionsArray && viewQuestionsArray.length === 0 && (
+        <Text style={styles.emptyText}>0 {selectedCategory} Questions</Text>
       )}
     </View>
   );
@@ -209,6 +243,10 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 80,
+  },
+  emptyText: {
+    textAlign: 'center',
+    paddingTop: 50,
   },
 });
 

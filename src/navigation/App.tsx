@@ -25,6 +25,8 @@ import SetNewPassword from '../components/Organisms/SetNewPassword';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
 import ExamResult from '../screens/App/PracticeQuestion/ExamResult';
 import ExamReview from '../screens/App/PracticeQuestion/ExamReview';
+import RandomQuestions from '../components/Organisms/RandomQuestions';
+import RandomQuestionsView from '../screens/App/PracticeQuestion/RandomQuestionsView';
 
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
@@ -86,6 +88,11 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="Exam-Result"
           component={ExamResult}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Random-Exam"
+          component={RandomQuestionsView}
           options={{headerShown: false}}
         />
         <Stack.Screen

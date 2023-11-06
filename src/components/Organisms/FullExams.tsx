@@ -201,7 +201,7 @@ export const examsStyle = StyleSheet.create({
   },
   imgContainer: {
     width: '18%',
-    height: screenHeight * 0.13,
+    height: screenHeight * 0.12,
     marginTop: screenWidth * 0.02,
     maxHeight: 100,
     alignItems: 'center',
@@ -210,7 +210,7 @@ export const examsStyle = StyleSheet.create({
     marginRight: '3%',
   },
   imgContainerLoading: {
-    backgroundColor: '#d4d4d4',
+    backgroundColor: '#f5f5f5',
   },
   buttonText: {
     position: 'absolute',

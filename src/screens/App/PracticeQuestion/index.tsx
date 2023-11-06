@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FlatList, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import Question from '../../../components/Molecules/Question';
 import ExamTimer from '../../../components/Molecules/ExamTimer';
@@ -19,7 +19,7 @@ export type answersType = {
   correctAnswer: string;
 };
 
-const filterUnanswered = (
+export const filterUnanswered = (
   examQuestions: examQuestionType[],
   answers: answersType[] | [],
 ) => {

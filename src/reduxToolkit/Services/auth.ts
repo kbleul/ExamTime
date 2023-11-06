@@ -159,6 +159,33 @@ export const api = createApi({
         };
       },
     }),
+    getRandomExam: build.mutation<
+      {},
+      {
+        grade: string;
+        subject: string;
+        noOfQuestions: number;
+      }
+    >({
+      query: credentials => {
+        console.log('kkkkkkkkkkkkkkkkkkkkkk');
+        return {
+          url: 'exam/randomexam',
+          body: {
+            subject: credentials.subject,
+            grade: credentials.grade,
+            noOfQuestions: credentials.noOfQuestions,
+            unit: '',
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ODY3MWRlYS1jZmQ3LTQ2M2MtOTAzZi01YmQ4NjFkMjMwN2QiLCJpYXQiOjE2OTkyNzI4MTZ9.riBXZdA0Cny8OGybmCyG4xRJZTlVxUmS6taG0t9ADQg',
+          },
+          method: 'POST',
+        };
+      },
+    }),
   }),
 });
 
@@ -174,4 +201,5 @@ export const {
   useDeleteAccountMutation,
   useGetExamsMutation,
   useGetSubjectMutation,
+  useGetRandomExamMutation,
 } = api;
