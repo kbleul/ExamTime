@@ -34,7 +34,7 @@ const FullExams: React.FC<{
   const savedGrade = useQuery(Grade);
   const [getExams, {isLoading, isError, error}] = useGetExamsMutation();
 
-  const [exams, setExams] = useState([]);
+  const [exams, setExams] = useState<examType[] | []>([]);
 
   useEffect(() => {
     getPreviousExams(
@@ -48,11 +48,13 @@ const FullExams: React.FC<{
 
   useEffect(() => {
     error &&
-      error.message &&
       Toast.show({
         type: 'error',
         text1: 'Fetch exams error',
-        text2: error.data.message,
+        text2:
+          error?.data && error?.data?.message
+            ? error.data.message
+            : 'Unable to get exams',
       });
   }, [error]);
   return (
@@ -76,7 +78,6 @@ const Exams: React.FC<{
 }> = ({isLoading, error, exams}) => {
   const navigator = useNavigation();
   const [showAllExams, setShowAllExams] = useState(false);
-
   return (
     <View style={examsStyle.container}>
       {!isLoading &&
@@ -110,7 +111,6 @@ const Exams: React.FC<{
             style={[examsStyle.imgContainer, examsStyle.imgContainerLoading]}
           />
         ))}
-
       <ShowAllExamsModal
         exitExamModalVisible={showAllExams}
         setExitExamModalVisible={setShowAllExams}

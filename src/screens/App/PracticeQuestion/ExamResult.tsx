@@ -3,9 +3,25 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {answersType} from '.';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 
+const gradeStatus = {
+  Passed: 'Passed',
+  Failed: 'Failed',
+};
+const calculateGrade = (correctAnswers: number, total: number) => {
+  const gradePrercentage = Math.round((correctAnswers * 100) / total);
+
+  let status = gradePrercentage >= 50 ? gradeStatus.Passed : gradeStatus.Failed;
+
+  return {
+    grade: gradePrercentage,
+    status,
+  };
+};
+
 const ExamResult = ({route}) => {
   const {userAnswers, total, timeTaken} = route.params;
   const [correctAnswers, setCorrectAnswers] = useState(0);
+  const gradePrercentage = calculateGrade(correctAnswers, total);
 
   useEffect(() => {
     userAnswers.forEach((answer: answersType) => {
@@ -16,10 +32,22 @@ const ExamResult = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topSection}>
-        {/* <Text style={styles.topTitleSection}>92</Text>
-        <Text style={styles.topSubtitleSection}>Pass</Text>
-        <View style={styles.topSectionHiddenSection} />
+      <View
+        style={
+          gradePrercentage.status === gradeStatus.Passed
+            ? styles.topSection
+            : [styles.topSection, styles.topSectionFaild]
+        }>
+        <Text style={styles.topTitleSection}>{gradePrercentage.grade} %</Text>
+        <Text
+          style={
+            gradePrercentage.status === gradeStatus.Passed
+              ? styles.topSubtitleSection
+              : [styles.topSubtitleSection, styles.topSubtitleSectionFailed]
+          }>
+          {gradePrercentage.status}
+        </Text>
+        {/* <View style={styles.topSectionHiddenSection} />
         <View style={styles.topSectionHiddenSection} /> */}
       </View>
 
@@ -106,6 +134,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     borderRadius: 200,
   },
+  topSectionFaild: {
+    borderColor: 'red',
+  },
   topSectionHiddenSection: {
     width: '110%',
     height: '110%',
@@ -115,7 +146,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   topTitleSection: {
-    fontSize: 55,
+    fontSize: 53,
     fontFamily: 'PoppinsSemiBold',
     color: '#000',
     lineHeight: 55,
@@ -129,6 +160,9 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     position: 'absolute',
     top: 105,
+  },
+  topSubtitleSectionFailed: {
+    color: 'red',
   },
   midSection: {
     width: '72%',

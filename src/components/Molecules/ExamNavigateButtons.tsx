@@ -4,16 +4,32 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 const ExamNavigateButtons: React.FC<{
   setExitExamModalVisible?: (value: boolean) => void;
   showFullPage: boolean;
-}> = ({setExitExamModalVisible, showFullPage}) => {
+  setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
+}> = ({setExitExamModalVisible, showFullPage, setCurrentQuestion}) => {
   return (
     <View style={ButtonStyles.contaienr}>
-      {!showFullPage && <Buttons text="Prev." bgColor="#0081BA" />}
+      {!showFullPage && (
+        <Buttons
+          text="Prev."
+          bgColor="#0081BA"
+          setExitExamModalVisible={() => setCurrentQuestion(prev => --prev)}
+          isEndBtn={false}
+        />
+      )}
       <Buttons
         text="End"
         bgColor="#4CB050"
         setExitExamModalVisible={setExitExamModalVisible}
+        isEndBtn={true}
       />
-      {!showFullPage && <Buttons text="Next." bgColor="#0081BA" />}
+      {!showFullPage && (
+        <Buttons
+          text="Next."
+          bgColor="#0081BA"
+          setExitExamModalVisible={() => setCurrentQuestion(prev => ++prev)}
+          isEndBtn={false}
+        />
+      )}
     </View>
   );
 };
@@ -21,13 +37,16 @@ const ExamNavigateButtons: React.FC<{
 const Buttons: React.FC<{
   text: string;
   bgColor: string;
-  setExitExamModalVisible?: (value: boolean) => void;
-}> = ({text, bgColor, setExitExamModalVisible}) => {
+  setExitExamModalVisible: (value: boolean | null) => void;
+  isEndBtn: boolean;
+}> = ({text, bgColor, setExitExamModalVisible, isEndBtn}) => {
   return (
     <TouchableOpacity
       touchSoundDisabled
       style={[ButtonStyles.button, {backgroundColor: bgColor}]}
-      onPress={() => setExitExamModalVisible && setExitExamModalVisible(true)}>
+      onPress={() =>
+        isEndBtn ? setExitExamModalVisible(true) : setExitExamModalVisible(null)
+      }>
       <Text style={ButtonStyles.text}>{text}</Text>
     </TouchableOpacity>
   );

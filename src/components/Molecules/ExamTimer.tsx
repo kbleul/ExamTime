@@ -5,6 +5,8 @@ let timerInterval: any;
 const startCountTime = (
   formattedTime: string,
   setTimer: React.Dispatch<React.SetStateAction<string>>,
+  setIsTimeOver: React.Dispatch<React.SetStateAction<boolean>>,
+  setExitExamModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   const timeParts = formattedTime.split(':').map(part => parseInt(part));
   let [hours, minutes, seconds] = timeParts;
@@ -12,6 +14,8 @@ const startCountTime = (
   timerInterval = setInterval(() => {
     if (hours === 0 && minutes === 0 && seconds === 0) {
       clearInterval(timerInterval);
+      setIsTimeOver(true);
+      setExitExamModalVisible(true);
     } else {
       if (seconds > 0) {
         seconds--;
@@ -35,7 +39,6 @@ const startCountTime = (
               .toString()
               .padStart(2, '0')}`;
 
-      console.log(hours);
       setTimer(formatted);
     }
   }, 1000);
@@ -45,10 +48,25 @@ const ExamTimer: React.FC<{
   formatedTime: string;
   timer: string;
   setTimer: React.Dispatch<React.SetStateAction<string>>;
-  startTimer: string;
-}> = ({formatedTime, timer, setTimer, startTimer}) => {
+  startTimer: boolean;
+  setIsTimeOver: React.Dispatch<React.SetStateAction<boolean>>;
+  setExitExamModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({
+  formatedTime,
+  timer,
+  setTimer,
+  startTimer,
+  setIsTimeOver,
+  setExitExamModalVisible,
+}) => {
   useEffect(() => {
-    startTimer && startCountTime(formatedTime, setTimer);
+    startTimer &&
+      startCountTime(
+        formatedTime,
+        setTimer,
+        setIsTimeOver,
+        setExitExamModalVisible,
+      );
 
     return () => {
       clearInterval(timerInterval);

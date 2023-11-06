@@ -55,9 +55,10 @@ const PracticeQuestion = ({route}) => {
 
   const navigator: any = useNavigation();
 
-  const formatedTime = formatTime(exam.duration);
+  const formatedTime = formatTime(1);
   const [timer, setTimer] = useState(formatedTime);
   const [startTimer, setStartTimer] = useState(false);
+  const [isTimeOver, setIsTimeOver] = useState(false);
 
   const [currentViewExam, setCurrentViewExam] = useState(exam.examQuestion);
   const [practiceModeModalVisible, setPracticeModeModalVisible] =
@@ -68,6 +69,7 @@ const PracticeQuestion = ({route}) => {
   const [showFullPage, setShowFullPage] = useState(true);
 
   const [isPracticeMode, setIsPracticeMode] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
 
@@ -84,7 +86,7 @@ const PracticeQuestion = ({route}) => {
     navigator.navigate('Exam-Result', {
       userAnswers: userAnswers || [],
       total: exam.examQuestion.length,
-      timeTaken: '1:20',
+      timeTaken: timer,
     });
   };
 
@@ -126,35 +128,39 @@ const PracticeQuestion = ({route}) => {
         timer={timer}
         setTimer={setTimer}
         startTimer={startTimer}
+        setIsTimeOver={setIsTimeOver}
+        setExitExamModalVisible={setExitExamModalVisible}
       />
 
-      {/* <ScrollView
-        contentContainerStyle={showFullPage ? styles.scrollContent : {}}
-        showsVerticalScrollIndicator={showFullPage}>
-        {showFullPage &&
-          exam.examQuestion
-            .slice(0, 4)
-            .map((question: examQuestionType, index: number) => (
-              <Question
-                key={question.id}
-                showFullPage={showFullPage}
-                question={question}
-                questionCounter={index + 1}
-                total={exam.examQuestion.length}
-                isPracticeMode={isPracticeMode}
-              />
-            ))}
-      </ScrollView> */}
+      {!showFullPage && (
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={showFullPage}>
+          <Question
+            key={currentViewExam[currentQuestion].id}
+            showFullPage={showFullPage}
+            question={currentViewExam[currentQuestion]}
+            questionCounter={currentQuestion + 1}
+            total={exam.examQuestion.length}
+            isPracticeMode={isPracticeMode}
+            setUserAnswers={setUserAnswers}
+          />
+        </ScrollView>
+      )}
 
-      <FlatList
-        data={currentViewExam}
-        renderItem={({item, index}) => renderItem({item, index})}
-        keyExtractor={item => item.id.toString()}
-        numColumns={1} // Set the number of columns to 2 for a 2-column layout
-      />
+      {showFullPage && (
+        <FlatList
+          data={currentViewExam}
+          initialNumToRender={4}
+          renderItem={({item, index}) => renderItem({item, index})}
+          keyExtractor={item => item.id.toString()}
+          numColumns={1} // Set the number of columns to 2 for a 2-column layout
+        />
+      )}
       <ExamNavigateButtons
         setExitExamModalVisible={setExitExamModalVisible}
         showFullPage={showFullPage}
+        setCurrentQuestion={setCurrentQuestion}
       />
 
       <ExamLeaveModal
@@ -167,6 +173,7 @@ const PracticeQuestion = ({route}) => {
         filterUnansweredQuestions={filterUnansweredQuestions}
         handleSubmitExam={handleSubmitExam}
         timeLeft={timer}
+        isTimeOver={isTimeOver}
       />
 
       <PracticeModeModal

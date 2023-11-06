@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   Text,
   View,
@@ -446,4 +446,4 @@ const paragraphStyle = StyleSheet.create({
   },
 });
 
-export default Question;
+export default memo(Question);

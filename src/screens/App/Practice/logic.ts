@@ -21,9 +21,7 @@ export const getPreviousExams = async (
       },
     }).unwrap();
 
-    console.log(response);
-
-    setExams(response?.data?.exams);
+    setExams(response?.exams);
   } catch (err) {
     console.log('-', err);
   }
