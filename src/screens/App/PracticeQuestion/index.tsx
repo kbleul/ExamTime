@@ -10,6 +10,7 @@ import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButto
 import PracticeModeModal from '../../../components/Organisms/PracticeModeModal';
 import {examQuestionType} from '../../../types';
 import {useNavigation} from '@react-navigation/native';
+import DirectionModal from '../../../components/Organisms/DirectionModal';
 
 export type answersType = {
   id: string;
@@ -52,10 +53,9 @@ function formatTime(minutes: number) {
 
 const PracticeQuestion = ({route}) => {
   const {exam} = route.params;
-
   const navigator: any = useNavigation();
 
-  const formatedTime = formatTime(1);
+  const formatedTime = formatTime(exam.duration);
   const [timer, setTimer] = useState(formatedTime);
   const [startTimer, setStartTimer] = useState(false);
   const [isTimeOver, setIsTimeOver] = useState(false);
@@ -66,12 +66,14 @@ const PracticeQuestion = ({route}) => {
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
 
   const [showSideNav, setShowSideNav] = useState(false);
-  const [showFullPage, setShowFullPage] = useState(true);
+  const [showFullPage, setShowFullPage] = useState(false);
 
   const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
+
+  const [direction, setDirection] = useState<string | null>(null);
 
   const filterUnansweredQuestions = () => {
     const filteredQusetions = filterUnanswered(
@@ -87,6 +89,7 @@ const PracticeQuestion = ({route}) => {
       userAnswers: userAnswers || [],
       total: exam.examQuestion.length,
       timeTaken: timer,
+      examQuestions: exam.examQuestion,
     });
   };
 
@@ -105,6 +108,7 @@ const PracticeQuestion = ({route}) => {
       total={currentViewExam.length}
       isPracticeMode={isPracticeMode}
       setUserAnswers={setUserAnswers}
+      setDirection={setDirection}
     />
   );
 
@@ -119,7 +123,6 @@ const PracticeQuestion = ({route}) => {
 
       <ViewQuestionHeader
         title={exam.examName}
-        setShowSideNav={() => setShowSideNav(true)}
         setShowFullPage={setShowFullPage}
         showFullPage={showFullPage}
       />
@@ -144,6 +147,7 @@ const PracticeQuestion = ({route}) => {
             total={exam.examQuestion.length}
             isPracticeMode={isPracticeMode}
             setUserAnswers={setUserAnswers}
+            setDirection={setDirection}
           />
         </ScrollView>
       )}
@@ -160,7 +164,9 @@ const PracticeQuestion = ({route}) => {
       <ExamNavigateButtons
         setExitExamModalVisible={setExitExamModalVisible}
         showFullPage={showFullPage}
+        currentQuestion={currentQuestion}
         setCurrentQuestion={setCurrentQuestion}
+        totalQuestionsLength={currentViewExam.length}
       />
 
       <ExamLeaveModal
@@ -182,6 +188,8 @@ const PracticeQuestion = ({route}) => {
         setIsPracticeMode={setIsPracticeMode}
         setStartTimer={setStartTimer}
       />
+
+      <DirectionModal direction={direction} setDirection={setDirection} />
     </SafeAreaView>
   );
 };

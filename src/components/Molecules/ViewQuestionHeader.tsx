@@ -3,17 +3,17 @@ import {StyleSheet, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {screenWidth} from '../../utils/Data/data';
 
 const ViewQuestionHeader: React.FC<{
   title: string;
-  isSideNav?: boolean;
-  setShowSideNav: () => void;
-  setShowFullPage: React.Dispatch<React.SetStateAction<boolean>>;
-  showFullPage: boolean;
-}> = ({title, isSideNav, setShowSideNav, setShowFullPage, showFullPage}) => {
+  setShowFullPage?: React.Dispatch<React.SetStateAction<boolean>>;
+  showFullPage?: boolean;
+}> = ({title, setShowFullPage, showFullPage}) => {
   const navigator = useNavigation();
   //  onPress={() =>
   //             setExitExamModalVisible && setExitExamModalVisible(true)
@@ -23,37 +23,35 @@ const ViewQuestionHeader: React.FC<{
       <TouchableOpacity touchSoundDisabled onPress={() => navigator.goBack()}>
         <Ionicons name="chevron-back" color="black" size={30} />
       </TouchableOpacity>
-      <Text
-        style={
-          isSideNav
-            ? [styles.titleText, styles.titleTextSecondary]
-            : styles.titleText
-        }>
-        {title}
-      </Text>
+      <Text style={styles.titleText}>{title}</Text>
 
-      {!isSideNav && (
-        <>
-          <TouchableOpacity touchSoundDisabled>
+      {/* <TouchableOpacity touchSoundDisabled>
             <FontAwesome5
               name="undo-alt"
               size={25}
               color="#1E90FF"
               style={styles.icon}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <TouchableOpacity
-            touchSoundDisabled
-            onPress={() => setShowFullPage(prev => !prev)}>
-            <FontAwesome
-              name="file-text-o"
-              size={25}
-              color={showFullPage ? '#1E90FF' : '#d4d4d4'}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </>
+      {setShowFullPage ? (
+        <TouchableOpacity
+          touchSoundDisabled
+          onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}>
+          <FontAwesome
+            name="file-text-o"
+            size={25}
+            color={showFullPage ? '#1E90FF' : '#d4d4d4'}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          touchSoundDisabled
+          onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}
+          style={styles.lockStyle}>
+          <FontAwesome name="file-text-o" size={16} color={'#fff'} />
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
   titleText: {
-    width: '68%',
+    width: '80%',
     color: 'black',
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.04,
@@ -97,6 +95,13 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingTop: 2,
+  },
+  lockStyle: {
+    backgroundColor: '#2968F5',
+    borderRadius: 20,
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

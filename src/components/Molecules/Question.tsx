@@ -19,7 +19,9 @@ const Question: React.FC<{
   questionCounter: number;
   total: number;
   isPracticeMode: boolean;
-  setUserAnswers: React.Dispatch<React.SetStateAction<answersType[] | null>>;
+  setUserAnswers?: React.Dispatch<React.SetStateAction<answersType[] | null>>;
+  setDirection: React.Dispatch<React.SetStateAction<string | null>>;
+  isReview?: boolean;
 }> = ({
   showFullPage,
   question,
@@ -27,126 +29,73 @@ const Question: React.FC<{
   total,
   isPracticeMode,
   setUserAnswers,
+  setDirection,
+  isReview,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [showParagraph, setShowParagraph] = useState(false);
 
   return (
-    <>
-      {!showParagraph && (
-        <View
-          style={
-            showFullPage
-              ? [styles.container, styles.containerFullPage]
-              : styles.container
-          }>
-          <View
-            style={
-              showFullPage
-                ? [styles.questionContainer, styles.questionContainerFullpage]
-                : styles.questionContainer
-            }>
-            <View style={styles.counterContainer}>
-              <Text style={styles.counterTitle}>
-                Question {questionCounter}/{total}
-              </Text>
+    <View
+      style={
+        showFullPage
+          ? [styles.container, styles.containerFullPage]
+          : styles.container
+      }>
+      <View
+        style={
+          showFullPage
+            ? [styles.questionContainer, styles.questionContainerFullpage]
+            : styles.questionContainer
+        }>
+        <View style={styles.counterContainer}>
+          <Text style={styles.counterTitle}>
+            Question {questionCounter}/{total}
+          </Text>
+          {question.description &&
+            question.description !== 'no-description' && (
               <TouchableOpacity
                 touchSoundDisabled
                 style={styles.readParagraphBtn}
-                onPress={() => setShowParagraph(true)}>
+                onPress={() => setDirection(question.description)}>
                 <Text style={styles.readParagraphText}>Directions</Text>
               </TouchableOpacity>
-            </View>
+            )}
+        </View>
 
-            <RenderHtml
-              contentWidth={screenWidth}
-              source={{html: question.question}}
-            />
-          </View>
+        <RenderHtml
+          contentWidth={screenWidth}
+          source={{html: question.question}}
+        />
+      </View>
 
-          <ScrollView
-            style={styles.choiceContainer}
-            contentContainerStyle={styles.choiceContainerContent}
-            showsVerticalScrollIndicator={false}>
-            {/* <View style={styles.questionImageContainer}>
+      <ScrollView
+        style={styles.choiceContainer}
+        contentContainerStyle={styles.choiceContainerContent}
+        showsVerticalScrollIndicator={false}>
+        {/* <View style={styles.questionImageContainer}>
               <Image
                 style={styles.questionImage}
                 source={require('../../assets/Images/home/s2.png')}
                 resizeMode="cover"
               />
             </View> */}
-            {Choice.map((letter: string, index: number) => (
-              <QuestionChoice
-                key={letter + 'letter' + index}
-                choiceLetter={letter}
-                choiceText={question[letter]}
-                selectedAnswer={selectedAnswer}
-                setSelectedAnswer={setSelectedAnswer}
-                showFullPage={showFullPage}
-                answer={question.answer}
-                isPracticeMode={isPracticeMode}
-                setUserAnswers={setUserAnswers}
-                questionData={{id: question.id, index: --questionCounter}}
-              />
-            ))}
-          </ScrollView>
-        </View>
-      )}
-
-      {showParagraph && (
-        <View style={styles.container}>
-          <View style={paragraphStyle.container}>
-            <Text style={paragraphStyle.title}>Title</Text>
-            <TouchableOpacity
-              touchSoundDisabled
-              onPress={() => setShowParagraph(false)}>
-              <AntDesign name="close" size={28} color="gray" />
-            </TouchableOpacity>
-          </View>
-          <ScrollView
-            style={[styles.choiceContainer, paragraphStyle.paragraphContainer]}
-            contentContainerStyle={styles.choiceContainerContent}
-            showsVerticalScrollIndicator={false}>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-          </ScrollView>
-        </View>
-      )}
-    </>
+        {Choice.map((letter: string, index: number) => (
+          <QuestionChoice
+            key={letter + 'letter' + index}
+            choiceLetter={letter}
+            choiceText={question[letter]}
+            selectedAnswer={selectedAnswer}
+            setSelectedAnswer={setSelectedAnswer}
+            showFullPage={showFullPage}
+            answer={question.answer}
+            isPracticeMode={isPracticeMode}
+            setUserAnswers={setUserAnswers ? setUserAnswers : null}
+            questionData={{id: question.id, index: --questionCounter}}
+            isReview={isReview}
+          />
+        ))}
+      </ScrollView>
+    </View>
   );
 };
 
@@ -158,8 +107,11 @@ const QuestionChoice: React.FC<{
   showFullPage: boolean;
   answer: string;
   isPracticeMode: boolean;
-  setUserAnswers: React.Dispatch<React.SetStateAction<answersType[] | null>>;
+  setUserAnswers: React.Dispatch<
+    React.SetStateAction<answersType[] | null>
+  > | null;
   questionData: {id: string; index: number};
+  isReview?: boolean;
 }> = ({
   choiceLetter,
   choiceText,
@@ -170,47 +122,50 @@ const QuestionChoice: React.FC<{
   isPracticeMode,
   setUserAnswers,
   questionData,
+  isReview,
 }) => {
   const handleSelect = () => {
-    if (isPracticeMode && selectedAnswer) return;
+    if (!isReview && setUserAnswers) {
+      if (isPracticeMode && selectedAnswer) return;
 
-    if (selectedAnswer === choiceLetter) {
-      setSelectedAnswer(null);
+      if (selectedAnswer === choiceLetter) {
+        setSelectedAnswer(null);
 
+        setUserAnswers(prev => {
+          if (prev) {
+            return prev.filter(item => item.id !== questionData.id);
+          } else {
+            return null;
+          }
+        });
+
+        return;
+      }
+
+      setSelectedAnswer(choiceLetter);
       setUserAnswers(prev => {
         if (prev) {
-          return prev.filter(item => item.id !== questionData.id);
+          return [
+            ...prev,
+            {
+              id: questionData.id,
+              index: questionData.index,
+              userAnswer: choiceLetter,
+              correctAnswer: answer,
+            },
+          ];
         } else {
-          return null;
+          return [
+            {
+              id: questionData.id,
+              index: questionData.index,
+              userAnswer: choiceLetter,
+              correctAnswer: answer,
+            },
+          ];
         }
       });
-
-      return;
     }
-
-    setSelectedAnswer(choiceLetter);
-    setUserAnswers(prev => {
-      if (prev) {
-        return [
-          ...prev,
-          {
-            id: questionData.id,
-            index: questionData.index,
-            userAnswer: choiceLetter,
-            correctAnswer: answer,
-          },
-        ];
-      } else {
-        return [
-          {
-            id: questionData.id,
-            index: questionData.index,
-            userAnswer: choiceLetter,
-            correctAnswer: answer,
-          },
-        ];
-      }
-    });
   };
 
   const tagsStyles = {
@@ -398,6 +353,7 @@ const questionChoiceStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#757575',
     paddingTop: 3,
+    borderRadius: 3,
   },
   choiceLetterSelected: {
     backgroundColor: '#1E90FF',

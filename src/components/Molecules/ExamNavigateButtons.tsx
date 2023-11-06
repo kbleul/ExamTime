@@ -4,11 +4,19 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 const ExamNavigateButtons: React.FC<{
   setExitExamModalVisible?: (value: boolean) => void;
   showFullPage: boolean;
+  currentQuestion: number;
   setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
-}> = ({setExitExamModalVisible, showFullPage, setCurrentQuestion}) => {
+  totalQuestionsLength: number;
+}> = ({
+  setExitExamModalVisible,
+  showFullPage,
+  currentQuestion,
+  setCurrentQuestion,
+  totalQuestionsLength,
+}) => {
   return (
     <View style={ButtonStyles.contaienr}>
-      {!showFullPage && (
+      {!showFullPage && currentQuestion !== 0 && (
         <Buttons
           text="Prev."
           bgColor="#0081BA"
@@ -22,7 +30,7 @@ const ExamNavigateButtons: React.FC<{
         setExitExamModalVisible={setExitExamModalVisible}
         isEndBtn={true}
       />
-      {!showFullPage && (
+      {!showFullPage && currentQuestion !== totalQuestionsLength - 1 && (
         <Buttons
           text="Next."
           bgColor="#0081BA"

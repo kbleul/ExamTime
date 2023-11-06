@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {answersType} from '.';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
+import {useNavigation} from '@react-navigation/native';
 
 const gradeStatus = {
   Passed: 'Passed',
@@ -19,9 +20,17 @@ const calculateGrade = (correctAnswers: number, total: number) => {
 };
 
 const ExamResult = ({route}) => {
-  const {userAnswers, total, timeTaken} = route.params;
+  const navigator = useNavigation();
+  const {userAnswers, total, timeTaken, examQuestions} = route.params;
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const gradePrercentage = calculateGrade(correctAnswers, total);
+
+  const navigateToReview = () => {
+    navigator.navigate('Exam-Review', {
+      userAnswers,
+      examQuestions: examQuestions,
+    });
+  };
 
   useEffect(() => {
     userAnswers.forEach((answer: answersType) => {
@@ -108,7 +117,10 @@ const ExamResult = ({route}) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity touchSoundDisabled style={styles.reviewButton}>
+        <TouchableOpacity
+          touchSoundDisabled
+          style={styles.reviewButton}
+          onPress={navigateToReview}>
           <Text style={styles.reviewButtonText}>Review</Text>
         </TouchableOpacity>
       </View>

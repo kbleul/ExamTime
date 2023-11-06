@@ -24,6 +24,7 @@ import {ProfileMenuItemsAuth} from '../utils/Data/data';
 import SetNewPassword from '../components/Organisms/SetNewPassword';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
 import ExamResult from '../screens/App/PracticeQuestion/ExamResult';
+import ExamReview from '../screens/App/PracticeQuestion/ExamReview';
 
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
@@ -75,6 +76,11 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="Exam-View"
           component={PracticeQuestion}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Exam-Review"
+          component={ExamReview}
           options={{headerShown: false}}
         />
         <Stack.Screen
