@@ -52,9 +52,7 @@ const Buttons: React.FC<{
   isEndBtn: boolean;
   isReview?: boolean;
 }> = ({text, bgColor, setExitExamModalVisible, isEndBtn, isReview}) => {
-  console.log(isReview);
   const handleAction = () => {
-    console.log({isReview: '|||'});
     isReview ? setExitExamModalVisible(true) : setExitExamModalVisible(true);
   };
   return (

@@ -149,7 +149,11 @@ const ExamReview = ({route}) => {
     <View style={styles.contianer}>
       <Text>{userAnswers.length}</Text>
 
-      <ViewQuestionHeader title={'Answer Review'} />
+      <ViewQuestionHeader
+        title={'Answer Review'}
+        setShowFullPage={setShowFullPage}
+        showFullPage={showFullPage}
+      />
 
       <ButtonNav
         selectedCategory={selectedCategory}

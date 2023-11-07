@@ -40,7 +40,6 @@ export const handleLogin = async (
       phoneNumber: '+251' + data.phoneNumber,
       password: data.password,
     }).unwrap();
-    console.log(response);
     dispatch(
       loginSuccess({
         user: response.user,
@@ -70,7 +69,7 @@ export const handleLogin = async (
     ) {
       navigator.navigate('network-error');
     }
-    console.log('errorrrr', error);
+    console.log(error);
     return false;
   }
 };
@@ -127,8 +126,6 @@ export const updateRealmUserData = async (
         newUserData.user = newUser;
         newUserData.token = token;
         newUserData.grade = newGrade;
-
-        console.log({newUserData});
       });
     }
   } catch (e) {

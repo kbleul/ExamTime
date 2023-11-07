@@ -24,7 +24,6 @@ const createUrlWithParams = (url: string, params: ExamParamsType) => {
 
     ++loopCounter;
   });
-  console.log(newUrl);
   return newUrl;
 };
 
@@ -55,7 +54,6 @@ export const api = createApi({
       }
     >({
       query: credentials => {
-        console.log('kkkkkkkkkkkkkkkkkkkkkk');
         return {
           url: 'exam/randomexam',
           body: {

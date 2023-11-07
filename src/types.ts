@@ -101,8 +101,19 @@ export type examType = {
   createdAt: string;
   updatedAt: string;
   examQuestion: examQuestionType[];
+  grade: gradeType;
+  subject: singleSubjectType;
+  year: year;
 };
 
+export type year =
+  | {
+      id: string;
+      year: string;
+      createdAt: string;
+      updatedAt: string;
+    }
+  | string;
 export type gradeType = {
   id: string;
   grade: string;
@@ -110,6 +121,12 @@ export type gradeType = {
   updatedAt: string;
 };
 
+export type singleSubjectType = {
+  id: string;
+  subject: string;
+  createdAt: string;
+  updatedAt: string;
+};
 export type subjectType = {
   id: string;
   description: string;

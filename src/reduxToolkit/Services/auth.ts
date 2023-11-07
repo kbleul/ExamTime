@@ -168,7 +168,6 @@ export const api = createApi({
       }
     >({
       query: credentials => {
-        console.log('kkkkkkkkkkkkkkkkkkkkkk');
         return {
           url: 'exam/randomexam',
           body: {

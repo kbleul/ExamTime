@@ -92,7 +92,6 @@ const ProfileEdit: React.FC = () => {
 
       try {
         const result = await changeProfile({token, profileData});
-        console.log(result.error);
         if (result.data.user) {
           dispatch(
             loginSuccess({

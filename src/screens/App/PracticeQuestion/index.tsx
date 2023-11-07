@@ -11,6 +11,9 @@ import PracticeModeModal from '../../../components/Organisms/PracticeModeModal';
 import {examQuestionType} from '../../../types';
 import {useNavigation} from '@react-navigation/native';
 import DirectionModal from '../../../components/Organisms/DirectionModal';
+import {AuthContext} from '../../../Realm/model';
+import {Exam} from '../../../Realm';
+import {LocalObjectDataKeys} from '../../../utils/Data/data';
 
 export type answersType = {
   id: string;
@@ -53,6 +56,14 @@ function formatTime(minutes: number) {
 
 const PracticeQuestion = ({route}) => {
   const {exam} = route.params;
+
+  const {useRealm, useQuery} = AuthContext;
+  const realm = useRealm();
+  const id = exam.id;
+  const savedExam = useQuery(Exam, examItems => {
+    return examItems.filtered(`id == "${exam.id}"`);
+  });
+
   const navigator: any = useNavigation();
 
   const formatedTime = formatTime(exam.duration);
@@ -85,6 +96,31 @@ const PracticeQuestion = ({route}) => {
   };
 
   const handleSubmitExam = () => {
+    if (savedExam[0] && userAnswers) {
+      const answersArray: any[] = [];
+
+      try {
+        realm.write(() => {
+          userAnswers.forEach(answerItem => {
+            const newAnswer = realm.create(
+              LocalObjectDataKeys.UserExamAnswers,
+              {
+                ...answerItem,
+              },
+            );
+
+            answersArray.push(newAnswer);
+          });
+
+          savedExam[0].userExamAnswers = answersArray;
+          savedExam[0].isExamTaken = true;
+
+          console.log({savedExam: savedExam[0].userExamAnswers});
+        });
+      } catch (e) {
+        console.log('error', e);
+      }
+    }
     navigator.navigate('Exam-Result', {
       userAnswers: userAnswers || [],
       total: exam.examQuestion.length,
@@ -135,7 +171,7 @@ const PracticeQuestion = ({route}) => {
         setExitExamModalVisible={setExitExamModalVisible}
       />
 
-      {!showFullPage && (
+      {!showFullPage && currentViewExam.length > 0 && (
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={showFullPage}>

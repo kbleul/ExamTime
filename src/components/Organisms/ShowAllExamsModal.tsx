@@ -38,7 +38,7 @@ const ShowAllExamsModal: React.FC<{
                   } // Replace with the correct path to your image
                   resizeMode="cover"
                 />
-                <Text style={examsStyle.buttonText}>{index + 1}</Text>
+                <Text style={examsStyle.buttonText}>{exam?.year?.year}</Text>
               </TouchableOpacity>
             ))}
         </View>

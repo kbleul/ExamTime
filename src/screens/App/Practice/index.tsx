@@ -47,7 +47,7 @@ const Practice = () => {
           readonly={false}
         />
 
-        <RandomQuestions />
+        <RandomQuestions selectedSubject={selectedSubject} />
 
         <FullExams
           selectedExamType={selectedExamType}

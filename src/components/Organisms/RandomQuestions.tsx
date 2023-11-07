@@ -5,17 +5,17 @@ import Slider from '@react-native-community/slider';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {Subject} from '../../Realm';
 
 const minimumAmount = 10;
 const maximumAmount = 100;
 
-const RandomQuestions = () => {
+const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
   const navigator = useNavigation();
   const [currentAmount, setCurrentAmount] = useState(minimumAmount);
-
+  console.log('-------', selectedSubject);
   //catch on every render
   const sliderBgMinValue = `${(currentAmount / maximumAmount) * 100}%`;
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Random Questions</Text>
@@ -50,7 +50,11 @@ const RandomQuestions = () => {
         <TouchableOpacity
           touchSoundDisabled
           style={styles.startButton}
-          onPress={() => navigator.navigate('Random-Exam')}>
+          onPress={() =>
+            navigator.navigate('Random-Exam', {
+              selectedSubject: selectedSubject,
+            })
+          }>
           <Text style={styles.startButtonText}>Start</Text>
           <AntDesign name="right" color="white" size={screenWidth * 0.03} />
         </TouchableOpacity>

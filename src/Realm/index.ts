@@ -1,5 +1,11 @@
 import Realm from 'realm';
-import {gradeType, userType} from '../types';
+import {
+  examQuestionType,
+  gradeType,
+  singleSubjectType,
+  userType,
+} from '../types';
+import {answersType} from '../screens/App/PracticeQuestion';
 
 class Grade extends Realm.Object {
   id: string = '';
@@ -118,12 +124,7 @@ class Subject extends Realm.Object {
   createdAt: string = '';
   updatedAt: string = '';
   grade: gradeType | null = null;
-  subject: {
-    id: string;
-    subject: string;
-    createdAt: string;
-    updatedAt: string;
-  } | null = null;
+  subject: singleSubjectType | null = null;
   progress?: number;
 
   static schema: Realm.ObjectSchema = {
@@ -140,4 +141,103 @@ class Subject extends Realm.Object {
   };
 }
 
-export {UserData, User, Grade, Region, SingleSubject, Subject};
+class ExamQuestion extends Realm.Object {
+  id: string = '';
+  number: string = '';
+  questionType: string = '';
+  question: string = '';
+  A: string = '';
+  B: string = '';
+  C: string = '';
+  D: string = '';
+  answer: string = '';
+  description: string = '';
+  createdAt: string = '';
+  updatedAt: string = '';
+  static schema = {
+    name: 'ExamQuestion',
+    properties: {
+      id: 'string',
+      number: 'string',
+      questionType: 'string',
+      question: 'string',
+      A: 'string',
+      B: 'string',
+      C: 'string',
+      D: 'string',
+      answer: 'string',
+      description: 'string',
+      createdAt: 'string',
+      updatedAt: 'string',
+    },
+  };
+}
+
+class UserExamAnswers extends Realm.Object {
+  id: string = '';
+  index: number = 0;
+  userAnswer: string = '';
+  correctAnswer: string = '';
+  static schema = {
+    name: 'UserExamAnswers',
+    properties: {
+      id: 'string',
+      index: 'int',
+      userAnswer: 'string',
+      correctAnswer: 'string',
+    },
+  };
+}
+
+class Exam extends Realm.Object {
+  id: string = '';
+  examName: string = '';
+  duration: number = 0;
+  passingScore: string = '';
+  noOfQuestions: number = 0;
+  addedQuestions: number = 0;
+  isPublished: boolean = true;
+  createdAt: string = '';
+  updatedAt: string = '';
+  examQuestion: examQuestionType[] | null = null;
+  grade: gradeType | null = null;
+  subject: singleSubjectType | null = null;
+  year: string = '';
+  userExamAnswers: answersType[] | null = null;
+  type: 'Previous' | 'Model' = 'Previous';
+  isExamTaken: boolean = false;
+
+  static schema = {
+    name: 'Exam',
+    properties: {
+      id: 'string',
+      examName: 'string',
+      duration: 'int',
+      passingScore: 'string',
+      noOfQuestions: 'int',
+      addedQuestions: 'int',
+      isPublished: 'bool',
+      createdAt: 'string',
+      updatedAt: 'string',
+      examQuestion: 'ExamQuestion[]',
+      grade: 'Grade?',
+      subject: 'SingleSubject?',
+      year: 'string',
+      userExamAnswers: 'UserExamAnswers[]',
+      type: 'string',
+      isExamTaken: 'bool',
+    },
+  };
+}
+
+export {
+  UserData,
+  User,
+  Grade,
+  Region,
+  SingleSubject,
+  Subject,
+  ExamQuestion,
+  Exam,
+  UserExamAnswers,
+};

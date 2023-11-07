@@ -46,26 +46,6 @@ const SubjectSelectViewBox: React.FC<{
           style={styles.listContaier}
           numColumns={2} // Set the number of columns to 2 for a 2-column layout
         />
-        <FlatList
-          data={savedSubjects.filter(
-            subject => subject.id !== SelectedSubject.id,
-          )}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.listContaier}
-          style={styles.listContaier}
-          numColumns={2} // Set the number of columns to 2 for a 2-column layout
-        />
-        <FlatList
-          data={savedSubjects.filter(
-            subject => subject.id !== SelectedSubject.id,
-          )}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.listContaier}
-          style={styles.listContaier}
-          numColumns={2} // Set the number of columns to 2 for a 2-column layout
-        />
       </View>
     </View>
   );

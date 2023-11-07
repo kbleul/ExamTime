@@ -13,10 +13,13 @@ import {useNavigation} from '@react-navigation/native';
 import DirectionModal from '../../../components/Organisms/DirectionModal';
 import {useGetRandomExamMutation} from '../../../reduxToolkit/Services/auth';
 import {filterUnanswered} from './index';
-const RandomQuestionsView = () => {
+import {Subject} from '../../../Realm';
+import Toast from 'react-native-toast-message';
+import {View} from 'react-native';
+const RandomQuestionsView = ({route}) => {
   //   const {subject} = route.params;
   const navigator: any = useNavigation();
-
+  const {selectedSubject} = route.params;
   const [getRandomExam, {isLoading, error}] = useGetRandomExamMutation();
 
   const [currentViewExam, setCurrentViewExam] = useState(null);
@@ -35,17 +38,37 @@ const RandomQuestionsView = () => {
 
   useEffect(() => {
     const getExam = async () => {
-      const response = await getRandomExam({
-        grade: 'grade_8',
-        subject: 'Biology',
-        noOfQuestions: 20,
-      }).unwrap();
+      try {
+        const response = await getRandomExam({
+          grade: 'grade_8',
+          subject: selectedSubject.subject.subject,
+          noOfQuestions: 20,
+        }).unwrap();
 
-      setCurrentViewExam(response.randomQuestions);
+        setCurrentViewExam(response.randomQuestions);
+      } catch (error) {
+        console.log(error.data.message);
+      }
     };
 
     getExam();
   }, []);
+
+  useEffect(() => {
+    error &&
+      Toast.show({
+        type: 'error',
+        text1: 'Fetch random exams failed.',
+        text2:
+          error?.data && error?.data?.message
+            ? error.data.message
+            : 'Unable to get exams',
+      });
+
+    setTimeout(() => {
+      navigator.navigate('Practice');
+    }, 3000);
+  }, [error]);
 
   const filterUnansweredQuestions = () => {
     const filteredQusetions = filterUnanswered(
@@ -85,7 +108,7 @@ const RandomQuestionsView = () => {
   );
 
   return (
-    <>
+    <View style={styles.container}>
       {!isLoading && !error && currentViewExam && (
         <SafeAreaView
           style={
@@ -96,7 +119,7 @@ const RandomQuestionsView = () => {
           {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
           <ViewQuestionHeader
-            title={'Random Exam'}
+            title={`Random Questions ${selectedSubject?.subject?.subject}`}
             setShowFullPage={setShowFullPage}
             showFullPage={showFullPage}
           />
@@ -143,17 +166,19 @@ const RandomQuestionsView = () => {
         setIsPracticeMode={setIsPracticeMode}
         setStartTimer={setStartTimer}
       /> */}
-
           <DirectionModal direction={direction} setDirection={setDirection} />
         </SafeAreaView>
       )}
-    </>
+
+      <Toast />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 0,
+    flex: 1,
+    backgroundColor: '#FBFDFF',
   },
   scrollContent: {
     paddingBottom: 80,

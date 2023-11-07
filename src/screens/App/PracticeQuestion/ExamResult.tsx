@@ -31,7 +31,6 @@ const ExamResult = ({route}) => {
       examQuestions: examQuestions,
     });
   };
-
   useEffect(() => {
     userAnswers.forEach((answer: answersType) => {
       answer.userAnswer === answer.correctAnswer &&

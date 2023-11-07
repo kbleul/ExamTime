@@ -141,6 +141,10 @@ export const LocalObjectDataKeys = {
   Region: 'Region',
   Subject: 'Subject',
   SingleSubject: 'SingleSubject',
+  Grade: 'Grade',
+  ExamQuestion: 'ExamQuestion',
+  Exam: 'Exam',
+  UserExamAnswers: 'UserExamAnswers',
 };
 
 export const CarouselData_guest = [

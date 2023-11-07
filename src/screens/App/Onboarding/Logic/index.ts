@@ -119,8 +119,6 @@ export const createRealmSubjectsData = async (
           subject: subjectObject,
           progress: 0,
         });
-
-        console.log({subjectObject});
       });
     });
   } catch (err) {

@@ -21,7 +21,6 @@ export const checkIsOnline = async (
 ) => {
   try {
     const state = await NetInfo.fetch();
-    console.log(state);
     if (!state.isConnected || !state.isInternetReachable) {
       navigator.navigate('network-error');
     }
@@ -167,6 +166,6 @@ export const DeleteUserAccount = async (
     ) {
       navigator.navigate('network-error');
     }
-    console.log(error, token);
+    console.log(error);
   }
 };

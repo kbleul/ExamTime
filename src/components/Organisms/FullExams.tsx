@@ -17,7 +17,7 @@ import {SerializedError} from '@reduxjs/toolkit';
 import ShowAllExamsModal from './ShowAllExamsModal';
 import {examType} from '../../types';
 import Toast from 'react-native-toast-message';
-import {Grade, Subject} from '../../Realm';
+import {Exam, Grade, Subject} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 
 export const ExamCatagories = ['Previous Exams', 'Model'];
@@ -28,22 +28,32 @@ const FullExams: React.FC<{
   selectedSubject: Subject;
 }> = ({selectedExamType, setSelectedExamType, selectedSubject}) => {
   const navigator = useNavigation();
-  const user = useSelector((state: RootState) => state.auth.user);
-  const {useQuery} = AuthContext;
+  const {useRealm, useQuery} = AuthContext;
+  const realm = useRealm();
 
   const savedGrade = useQuery(Grade);
+  const savedExams = useQuery(Exam, savedExamItem => {
+    return savedExamItem.filtered('type == "Previous"');
+  });
+
   const [getExams, {isLoading, isError, error}] = useGetExamsMutation();
 
   const [exams, setExams] = useState<examType[] | []>([]);
 
   useEffect(() => {
-    getPreviousExams(
-      navigator,
-      getExams,
-      setExams,
-      selectedSubject.subject?.subject || '',
-      savedGrade[0].grade,
-    );
+    if (!savedExams || savedExams.length === 0) {
+      getPreviousExams(
+        navigator,
+        getExams,
+        setExams,
+        selectedSubject.subject?.subject || '',
+        savedGrade[0].grade,
+        realm,
+      );
+    } else {
+      console.log({year: savedExams[0].year});
+      setExams([...savedExams]);
+    }
   }, [selectedSubject, getExams]);
 
   useEffect(() => {
@@ -78,6 +88,7 @@ const Exams: React.FC<{
 }> = ({isLoading, error, exams}) => {
   const navigator = useNavigation();
   const [showAllExams, setShowAllExams] = useState(false);
+  console.log({examyear: exams[0]?.year});
   return (
     <View style={examsStyle.container}>
       {!isLoading &&
@@ -101,7 +112,9 @@ const Exams: React.FC<{
               } // Replace with the correct path to your image
               resizeMode="cover"
             />
-            <Text style={examsStyle.buttonText}>{index + 1}</Text>
+            <Text style={examsStyle.buttonText}>
+              {exam?.year?.year ? exam?.year?.year : exam.year}
+            </Text>
           </TouchableOpacity>
         ))}
       {isLoading &&
