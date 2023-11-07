@@ -139,108 +139,18 @@ const Index: React.FC = () => {
   );
 };
 const styles = StyleSheet.create({
-  activeDot: {
-    backgroundColor: '#0066B2',
-    height: 10,
-    width: 30,
-  },
+
   backicon: {
     marginTop: 0,
   },
-  circle: {
-    alignItems: 'center',
-    backgroundColor: '#F5A52D',
-    borderColor: 'white',
-    borderWidth: 5,
-    borderRadius: 50,
-    height: 70,
-    justifyContent: 'center',
-    width: 70,
-  },
-  circleContainer: {
-    alignItems: 'center',
-    bottom: -30,
-    justifyContent: 'center',
-    left: 0,
-    position: 'absolute',
-    right: 0,
-  },
-  circleText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
-  },
-
-  carouselContainer: {
-    marginBottom: 20,
-  },
-  dot: {
-    borderRadius: 5,
-    height: 10,
-    marginHorizontal: 5,
-    width: 10,
-  },
-  dotsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 10,
   },
   HorizontalList: {
     alignItems: 'center',
     height: 500,
     justifyContent: 'center',
     margin: 5,
-  },
-  inactiveDot: {
-    backgroundColor: 'grey',
-  },
-  listofPackages: {
-    color: '#222E50',
-    fontFamily: 'Montserrat-Regular',
-    marginTop: 20,
-    padding: 10,
-  },
-  listofPackagesBottom: {
-    alignItems: 'center',
-    backgroundColor: 'orange',
-    borderRadius: 34,
-    height: 50,
-    justifyContent: 'center',
-    padding: 10,
-    width: '100%',
-  },
-  listofPackagesBottomtext: {
-    color: 'white',
-    fontFamily: 'Montserrat-Regular',
-    fontSize: 15,
-  },
-  listofPackagesText: {
-    color: '#222E50',
-    fontFamily: 'Montserrat-Regular',
-    fontSize: 15,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  paragraph: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    margin: 24,
-    textAlign: 'center',
-  },
-  posterImage: {
-    borderRadius: 24,
-    height: ITEM_SIZE * 1.2,
-    margin: 0,
-    marginBottom: 10,
-    resizeMode: 'cover',
-    width: '100%',
   },
   scrollContainer: {
     flexGrow: 1,
@@ -253,35 +163,12 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'left',
   },
-  textBottom: {
-    color: '#1E90FF',
-    fontFamily: 'PoppinsLight',
-    fontSize: 15,
-    fontWeight: 'bold',
-    padding: 10,
-    textAlign: 'left',
-  },
   textContainer: {
     overflow: 'hidden',
     padding: 5,
     width: '100%',
   },
-  topCardContainer: {
-    alignItems: 'center',
-    backgroundColor: '#F5A52D',
-    borderTopLeftRadius: 34,
-    borderTopRightRadius: 34,
-    height: '30%',
-    justifyContent: 'center',
-    paddingBottom: 35,
-    position: 'relative',
-    width: '100%',
-  },
-  topCardContainerText: {
-    color: 'white',
-    fontFamily: 'Montserrat-Regular',
-    fontSize: 15,
-  },
+
 });
 
 export default Index;

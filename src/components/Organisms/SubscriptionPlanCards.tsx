@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -9,10 +9,12 @@ import { screenHeight } from '../../utils/Data/data';
 import SubCard from '../Molecules/SubCard';
 import Pagination from '../Atoms/Pagination';
 
-
-const SubscriptionPlanCards = ({ data, pagination }) => {
-  const scrollViewRef = useAnimatedRef(null);
-  const [newData, setNewData] = useState([
+const SubscriptionPlanCards: React.FC<{
+  data: { key: string }[];
+  pagination: boolean;
+}> = ({ data, pagination }) => {
+  const scrollViewRef = useAnimatedRef<Animated.ScrollView | null>(null);
+  const [newData, setNewData] = useState<{ key: string }[]>([
     { key: 'spacer-left' },
     ...data,
     { key: 'spacer-right' },
@@ -28,13 +30,14 @@ const SubscriptionPlanCards = ({ data, pagination }) => {
   }, [data]);
 
   const onScroll = useAnimatedScrollHandler({
-    onScroll: event => {
+    onScroll: (event) => {
       x.value = event.contentOffset.x;
     },
-    onMomentumEnd: e => {
+    onMomentumEnd: (e) => {
       offSet.value = e.contentOffset.x;
     },
   });
+
   return (
     <View style={styles.Cards}>
       <Animated.ScrollView
@@ -45,22 +48,20 @@ const SubscriptionPlanCards = ({ data, pagination }) => {
         snapToInterval={SIZE}
         horizontal
         bounces={false}
-        showsHorizontalScrollIndicator={false}>
-        {newData.map((item, index) => {
-          return (
-            <SubCard
-              key={index}
-              index={index}
-              item={item}
-              x={x}
-              size={SIZE}
-              spacer={SPACER}
-            />
-
-          );
-        })}
+        showsHorizontalScrollIndicator={false}
+      >
+        {newData.map((item, index) => (
+          <SubCard
+            key={index}
+            index={index}
+            item={item}
+            x={x}
+            size={SIZE}
+            spacer={SPACER}
+          />
+        ))}
       </Animated.ScrollView>
-  
+
       {pagination && <Pagination data={data} x={x} size={SIZE} />}
     </View>
   );
@@ -70,5 +71,6 @@ const styles = StyleSheet.create({
   Cards: {
     height: screenHeight * 0.6,
   },
-})
+});
+
 export default SubscriptionPlanCards;
