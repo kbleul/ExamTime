@@ -2,6 +2,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetExamsMutation} from '../../../reduxToolkit/Services/exams';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
+import {examType} from '../../../types';
 
 type GetRegionsMutationFn = ReturnType<typeof useGetExamsMutation>[0];
 

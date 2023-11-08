@@ -14,13 +14,19 @@ const Index = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imageBg}>
-        {user && (
+        {user?.image ? (
           <ImageBackground
             style={styles.img}
             source={require('../../../assets/Images/Profile/1.png')} // Replace with the correct path to your image
           >
             <Text>{''}</Text>
           </ImageBackground>
+        ) : (
+          <View style={styles.noiImageContainer}>
+            <Text style={styles.noiImageText}>
+              {user?.firstName?.charAt(0)}
+            </Text>
+          </View>
         )}
 
         {!user && (
@@ -55,6 +61,18 @@ const styles = StyleSheet.create({
   img: {
     height: '100%',
     width: '100%',
+  },
+  noiImageContainer: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#0066B2',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noiImageText: {
+    fontSize: 35,
+    color: 'white',
+    paddingBottom: 20,
   },
   avatarContainer: {
     justifyContent: 'center',
