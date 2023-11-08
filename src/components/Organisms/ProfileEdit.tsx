@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -7,31 +7,31 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { View } from 'react-native';
+import {View} from 'react-native';
 import * as yup from 'yup';
-import { Formik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../reduxToolkit/Store';
-import { get_from_localStorage } from '../../utils/Functions/Get';
+import {Formik} from 'formik';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
+import {get_from_localStorage} from '../../utils/Functions/Get';
 import {
   useChangePasswordMutation,
   useChangeProfileMutation,
   useLoginMutation,
 } from '../../reduxToolkit/Services/auth';
-import { loginSuccess } from '../../reduxToolkit/Features/auth/authSlice';
+import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toast from 'react-native-toast-message';
-import { ScaledSheet, ms } from 'react-native-size-matters';
-import { useGetRegionsMutation } from '../../reduxToolkit/Services/region';
-import { useGetGradeMutation } from '../../reduxToolkit/Services/grade';
+import {ScaledSheet, ms} from 'react-native-size-matters';
+import {useGetRegionsMutation} from '../../reduxToolkit/Services/region';
+import {useGetGradeMutation} from '../../reduxToolkit/Services/grade';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { updateRealmUserData } from '../../screens/Auth/Login/Logic';
-import { AuthContext } from '../../Realm/model';
-import { UserData } from '../../Realm';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { passwordSchema } from '../../utils/Functions/Helper/PasswordSchema';
-import { regionItemsType } from '../../types';
+import {updateRealmUserData} from '../../screens/Auth/Login/Logic';
+import {AuthContext} from '../../Realm/model';
+import {UserData} from '../../Realm';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {passwordSchema} from '../../utils/Functions/Helper/PasswordSchema';
+import {regionItemsType} from '../../types';
 import TextHeading from '../Atoms/TextHeading';
 import NameInput from '../Molecules/NameInput';
 import PhoneInputWithPrefix from '../Molecules/PhoneInputWithPrefix';
@@ -45,7 +45,7 @@ const ProfileEdit: React.FC = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const { useRealm, useQuery, useObject } = AuthContext;
+  const {useRealm, useQuery, useObject} = AuthContext;
 
   const IsDefaultPasswordChanged = useSelector(
     (state: RootState) => state.auth.IsDefaultPasswordChanged,
@@ -67,17 +67,19 @@ const ProfileEdit: React.FC = () => {
   const [phone, setPhone] = useState(user?.phoneNumber ?? '');
   const [grade, setGrade] = useState(user?.grade?.grade ?? '');
   const [showPassword, setShowPassword] = useState(true);
-  const [changeProfile, { isLoading }] = useChangeProfileMutation();
+  const [changeProfile, {isLoading}] = useChangeProfileMutation();
   const [updatePassword] = useChangePasswordMutation();
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
   const [region, setRegion] = useState<string | null>(null);
-  const [regionError, setRegionError] = useState<string | null>(null)
-  const [regionsListItems, setRegionsListItems] = useState<regionItemsType[] | []>([]);
+  const [regionError, setRegionError] = useState<string | null>(null);
+  const [regionsListItems, setRegionsListItems] = useState<
+    regionItemsType[] | []
+  >([]);
   const [refetchRegions, setRefetchRegions] = useState(false);
   const [
     getRegions,
-    { isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion },
+    {isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion},
   ] = useGetRegionsMutation();
 
   type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
@@ -95,8 +97,7 @@ const ProfileEdit: React.FC = () => {
       };
 
       try {
-        const result = await changeProfile({ token, profileData });
-        console.log(result.error);
+        const result = await changeProfile({token, profileData});
         if (result.data.user) {
           dispatch(
             loginSuccess({
@@ -152,7 +153,6 @@ const ProfileEdit: React.FC = () => {
     confirmPassword: string;
     password: string;
   }) => {
-    console.log(values.newPassword, values.confirmPassword, values.password);
     if (values.newPassword === values.confirmPassword) {
       try {
         const response = await updatePassword({
@@ -160,14 +160,13 @@ const ProfileEdit: React.FC = () => {
           newPassword: values.newPassword,
           token,
         });
-        console.log("response....................", response)
         if (!response.error) {
           await Toast.show({
             type: 'success',
             text1: 'success',
             text2: 'Password updated successfuly',
             visibilityTime: 4000,
-          })
+          });
         } else {
           Toast.show({
             type: 'error',
@@ -175,15 +174,12 @@ const ProfileEdit: React.FC = () => {
             text2: 'Something went wrong',
           });
         }
-        ;
-      }
-      catch (error) {
+      } catch (error) {
         Toast.show({
           type: 'error',
           text1: 'Error!',
-          text2: 'Something went wrong',
+          text2: `${error}`,
         });
-        console.error(error);
       }
     }
   };
@@ -199,7 +195,7 @@ const ProfileEdit: React.FC = () => {
       const response = await getRegions().unwrap();
       const tempRegionsList: regionItemsType[] = [];
 
-      response.map((region: { region: string }) => {
+      response.map((region: {region: string}) => {
         tempRegionsList.push({
           label: region.region.toUpperCase(),
           value: region.region.toUpperCase(),
@@ -220,8 +216,8 @@ const ProfileEdit: React.FC = () => {
       try {
         const response = await getGrade();
         // const fetchedGrade = data;
-        const tempRegionsList: { label: string }[] = [];
-        response.data.map((grade: { grade: string }) => {
+        const tempRegionsList: {label: string}[] = [];
+        response.data.map((grade: {grade: string}) => {
           return tempRegionsList.push(grade.grade);
         });
 
@@ -251,7 +247,11 @@ const ProfileEdit: React.FC = () => {
 
             <NameInput fullName={fullName} setFullName={setFullName} />
 
-            <PhoneInputWithPrefix prefix="+251" onChangeText={setPhone} value={phone.replace('+251', '')} />
+            <PhoneInputWithPrefix
+              prefix="+251"
+              onChangeText={setPhone}
+              value={phone.replace('+251', '')}
+            />
 
             <DropdownForRegionField
               regionsListItems={regionsListItems}
@@ -266,7 +266,7 @@ const ProfileEdit: React.FC = () => {
 
           {/* password update  */}
           <Formik
-            initialValues={{ password: '', newPassword: '', confirmPassword: '' }}
+            initialValues={{password: '', newPassword: '', confirmPassword: ''}}
             validationSchema={schema}
             onSubmit={handleSubmitPassword}>
             {({
@@ -284,11 +284,10 @@ const ProfileEdit: React.FC = () => {
                     <FontAwesome5
                       name="exclamation"
                       size={ms(15)}
-                      style={{ transform: [{ rotate: '180deg' }], color: 'white' }}
+                      style={{transform: [{rotate: '180deg'}], color: 'white'}}
                     />
                   </View>
                 </View>
-
 
                 <PasswordField
                   label="Old Password"
@@ -536,11 +535,6 @@ const styles = ScaledSheet.create({
     color: '#FFFFFF',
     fontFamily: 'PoppinsSemiBold',
     fontSize: '18@ms',
-    textAlign: 'center',
-  },
-  error: {
-    color: '#f08273',
-    paddingHorizontal: '8@ms',
     textAlign: 'right',
   },
   loadingContainer: {

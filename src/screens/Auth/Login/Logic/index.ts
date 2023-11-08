@@ -58,8 +58,6 @@ export const handleLogin = async (
       realm,
     );
 
-    console.log(response);
-
     response.IsDefaultPasswordChanged
       ? navigator.navigate('Home')
       : navigator.navigate('Password-Reset');

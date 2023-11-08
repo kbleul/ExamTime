@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../reduxToolkit/Store';
-const { width, height } = Dimensions.get('window');
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
+const {width, height} = Dimensions.get('window');
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
@@ -139,12 +139,12 @@ const Index: React.FC = () => {
   );
 };
 const styles = StyleSheet.create({
-
-  backicon: {
-    marginTop: 0,
-  },
   container: {
     flex: 1,
+    backgroundColor: '#F9FCFF',
+  },
+  backicon: {
+    marginTop: 0,
   },
   HorizontalList: {
     alignItems: 'center',
@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
     padding: 5,
     width: '100%',
   },
-
 });
 
 export default Index;
