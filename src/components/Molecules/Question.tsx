@@ -12,6 +12,35 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {examQuestionType} from '../../types';
 import {answersType} from '../../screens/App/PracticeQuestion';
 
+const tagsStylesQuestion = {
+  p: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.8,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+    lineHeight: 25,
+  },
+  img: {
+    width: screenWidth * 0.8,
+    marginTop: 5,
+  },
+};
+const tagsStylesChoice = {
+  p: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.65,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+  },
+  img: {
+    width: screenWidth * 0.65,
+  },
+};
+
 const Choice = ['A', 'B', 'C', 'D'];
 const Question: React.FC<{
   showFullPage: boolean;
@@ -65,6 +94,7 @@ const Question: React.FC<{
         <RenderHtml
           contentWidth={screenWidth}
           source={{html: question.question}}
+          tagsStyles={tagsStylesQuestion}
         />
       </View>
 
@@ -182,19 +212,6 @@ const QuestionChoice: React.FC<{
     }
   };
 
-  const tagsStyles = {
-    p: {
-      whiteSpace: 'normal',
-      color: 'red',
-      textAlign: 'left',
-      borderWidth: 2,
-      width: screenWidth,
-    },
-    a: {
-      color: 'green',
-    },
-  };
-
   return (
     <TouchableOpacity
       touchSoundDisabled
@@ -255,7 +272,7 @@ const QuestionChoice: React.FC<{
       <RenderHtml
         contentWidth={screenWidth}
         source={{html: choiceText}}
-        tagsStyles={tagsStyles}
+        tagsStyles={tagsStylesChoice}
       />
     </TouchableOpacity>
   );

@@ -30,8 +30,8 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
     error &&
       Toast.show({
         type: 'error',
-        text1: 'Error!',
-        text2: `${error?.data.message}`,
+        text1: 'Failed to get availble grades.',
+        text2: error?.data ? `${error?.data.message}` : 'Please try again',
       });
   }, [error]);
 

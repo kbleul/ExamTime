@@ -177,6 +177,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    height: screenHeight * 0.088,
   },
   btnsContainer: {
     flexDirection: 'row',

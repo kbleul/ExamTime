@@ -16,13 +16,14 @@ import {filterUnanswered} from './index';
 import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
 import {View} from 'react-native';
+import Loading from '../../../components/Atoms/Loading';
 const RandomQuestionsView = ({route}) => {
   //   const {subject} = route.params;
   const navigator: any = useNavigation();
   const {selectedSubject} = route.params;
   const [getRandomExam, {isLoading, error}] = useGetRandomExamMutation();
 
-  const [currentViewExam, setCurrentViewExam] = useState(null);
+  const [currentViewExam, setCurrentViewExam] = useState<any[] | null>(null);
 
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
 
@@ -45,6 +46,8 @@ const RandomQuestionsView = ({route}) => {
           noOfQuestions: 20,
         }).unwrap();
 
+        console.log({response});
+
         setCurrentViewExam(response.randomQuestions);
       } catch (error) {
         console.log(error.data.message);
@@ -55,7 +58,11 @@ const RandomQuestionsView = ({route}) => {
   }, []);
 
   useEffect(() => {
-    error &&
+    console.log(exitExamModalVisible);
+  }, []);
+
+  useEffect(() => {
+    if (error) {
       Toast.show({
         type: 'error',
         text1: 'Fetch random exams failed.',
@@ -65,9 +72,10 @@ const RandomQuestionsView = ({route}) => {
             : 'Unable to get exams',
       });
 
-    setTimeout(() => {
-      navigator.navigate('Practice');
-    }, 3000);
+      setTimeout(() => {
+        navigator.navigate('Practice');
+      }, 3000);
+    }
   }, [error]);
 
   const filterUnansweredQuestions = () => {
@@ -155,8 +163,18 @@ const RandomQuestionsView = ({route}) => {
             showFullPage={showFullPage}
             currentQuestion={currentQuestion}
             setCurrentQuestion={setCurrentQuestion}
-            totalQuestionsLength={currentViewExam.length}
-            isReview={true}
+            totalQuestionsLength={currentViewExam ? currentViewExam.length : 0}
+          />
+
+          <ExamLeaveModal
+            exitExamModalVisible={exitExamModalVisible}
+            setExitExamModalVisible={setExitExamModalVisible}
+            examStatusData={{
+              total: currentViewExam.length,
+              answered: userAnswers?.length || 0,
+            }}
+            filterUnansweredQuestions={filterUnansweredQuestions}
+            handleSubmitExam={handleSubmitExam}
           />
 
           {/*
@@ -169,6 +187,7 @@ const RandomQuestionsView = ({route}) => {
           <DirectionModal direction={direction} setDirection={setDirection} />
         </SafeAreaView>
       )}
+      {isLoading && <Loading />}
 
       <Toast />
     </View>

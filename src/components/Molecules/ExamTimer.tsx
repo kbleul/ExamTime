@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, Image, StyleSheet} from 'react-native';
+import {screenWidth} from '../../utils/Data/data';
 
 let timerInterval: any;
 const startCountTime = (
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#008e97',
     borderRadius: 10,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingVertical: 2,
     backgroundColor: 'white',
     flexDirection: 'row',
@@ -100,14 +101,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   timeText: {
-    fontSize: 16,
+    fontSize: screenWidth * 0.04,
     color: '#008e97',
     fontFamily: 'Montserrat-SemiBold',
     marginLeft: 5,
   },
   watchImg: {
-    width: 35,
-    height: 35,
+    width: 32,
+    height: 32,
   },
 });
 

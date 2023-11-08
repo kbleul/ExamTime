@@ -176,7 +176,11 @@ const PracticeQuestion = ({route}) => {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={showFullPage}>
           <Question
-            key={currentViewExam[currentQuestion].id}
+            key={
+              currentViewExam[currentQuestion]
+                ? currentViewExam[currentQuestion].id
+                : '---'
+            }
             showFullPage={showFullPage}
             question={currentViewExam[currentQuestion]}
             questionCounter={currentQuestion + 1}

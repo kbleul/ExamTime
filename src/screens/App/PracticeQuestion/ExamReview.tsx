@@ -66,11 +66,6 @@ const filterQuestions = (
 
       let tempArr: newQuestionsArray[] = [];
 
-      console.log(
-        '-------------------------------------------------------__',
-        newQuestionsArray.length,
-        answerObjArr.length,
-      );
       newQuestionsArray.forEach(question => {
         tempArr.push({
           ...question,
@@ -194,6 +189,7 @@ const ExamReview = ({route}) => {
           currentQuestion={currentQuestion}
           setCurrentQuestion={setCurrentQuestion}
           totalQuestionsLength={viewQuestionsArray.length}
+          isReview={true}
         />
       )}
 

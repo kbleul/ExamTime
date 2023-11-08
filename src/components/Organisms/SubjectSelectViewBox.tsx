@@ -12,7 +12,6 @@ const SubjectSelectViewBox: React.FC<{
 }> = ({SelectedSubject, setSelectedSubject}) => {
   const {useQuery} = AuthContext;
   const savedSubjects = useQuery(Subject);
-
   const renderItem = ({item}: {item: any}) => (
     <View style={styles.renderStyle}>
       <SubjectsButton

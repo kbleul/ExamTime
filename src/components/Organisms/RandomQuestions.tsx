@@ -13,7 +13,6 @@ const maximumAmount = 100;
 const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
   const navigator = useNavigation();
   const [currentAmount, setCurrentAmount] = useState(minimumAmount);
-  console.log('-------', selectedSubject);
   //catch on every render
   const sliderBgMinValue = `${(currentAmount / maximumAmount) * 100}%`;
   return (

@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
@@ -52,8 +53,10 @@ const Buttons: React.FC<{
   isEndBtn: boolean;
   isReview?: boolean;
 }> = ({text, bgColor, setExitExamModalVisible, isEndBtn, isReview}) => {
+  const navigator = useNavigation();
   const handleAction = () => {
-    isReview ? setExitExamModalVisible(true) : setExitExamModalVisible(true);
+    console.log({isReview});
+    isReview ? navigator.navigate('Practice') : setExitExamModalVisible(true);
   };
   return (
     <TouchableOpacity

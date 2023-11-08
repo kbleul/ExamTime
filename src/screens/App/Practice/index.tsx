@@ -14,6 +14,8 @@ import {AuthContext} from '../../../Realm/model';
 import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
 
+export let availableHeight = screenHeight - screenHeight * 0.088;
+
 const Practice = () => {
   const {useQuery} = AuthContext;
   const savedSubjects = useQuery(Subject);
@@ -55,6 +57,7 @@ const Practice = () => {
           selectedSubject={selectedSubject}
         />
       </ScrollView>
+
       <Toast />
 
       <MainBottomNav />
@@ -87,6 +90,10 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsRegular',
     fontSize: screenWidth * 0.043, //17 18
     color: '#C1C2C6',
+  },
+  BOX1: {
+    height: availableHeight - 20,
+    borderWidth: 1,
   },
 });
 

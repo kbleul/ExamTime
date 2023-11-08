@@ -8,7 +8,6 @@ const ChosenCoursesCard: React.FC<{
   progress?: number;
   bgImage: any;
 }> = ({title, lessonsCount, progress, bgImage}) => {
-  const width = progress + '%';
   return (
     <View
       style={
@@ -44,20 +43,20 @@ const ChosenCoursesCard: React.FC<{
 
 export const styles = StyleSheet.create({
   container: {
-    height: screenHeight * (1 / 4),
-    width: screenWidth * (3 / 10),
+    height: screenHeight * (1 / 3.8),
+    width: screenWidth * (1 / 2.6),
     marginHorizontal: 5,
     borderRadius: 15,
     overflow: 'hidden',
-    maxHeight: 200,
+    maxHeight: 220,
   },
   containerSecondary: {
-    height: screenHeight * (1 / 5),
+    height: screenHeight * (1 / 4.5),
     width: screenWidth * (1 / 3),
   },
   imageBg: {
     height: '100%',
-    width: screenWidth * (3.7 / 10),
+    width: screenWidth * (1 / 2.6),
     paddingHorizontal: 10,
     justifyContent: 'flex-end',
   },

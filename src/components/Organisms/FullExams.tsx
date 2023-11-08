@@ -51,8 +51,19 @@ const FullExams: React.FC<{
         realm,
       );
     } else {
-      console.log({year: savedExams[0].year});
-      setExams([...savedExams]);
+      const filteredEXams: any[] = savedExams.filter(
+        examItem =>
+          !examItem.isExamTaken &&
+          examItem.subject?.id === selectedSubject.subject?.id,
+      );
+      setExams([...filteredEXams]);
+
+      filteredEXams.length === 0 &&
+        Toast.show({
+          type: 'error',
+          text1: 'No exams found that match your grade and subject',
+          text2: 'Try a different subject',
+        });
     }
   }, [selectedSubject, getExams]);
 
@@ -93,6 +104,7 @@ const Exams: React.FC<{
     <View style={examsStyle.container}>
       {!isLoading &&
         !error &&
+        exams.length > 0 &&
         exams.map((exam, index) => (
           <TouchableOpacity
             key={exam.id}
@@ -124,6 +136,10 @@ const Exams: React.FC<{
             style={[examsStyle.imgContainer, examsStyle.imgContainerLoading]}
           />
         ))}
+
+      {exams.length === 0 && (
+        <Text style={examsStyle.noExam}>No exams available</Text>
+      )}
       <ShowAllExamsModal
         exitExamModalVisible={showAllExams}
         setExitExamModalVisible={setShowAllExams}
@@ -181,7 +197,7 @@ const buttonStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: screenWidth * 0.0006,
+    padding: screenWidth * 0.008,
     borderRadius: 10,
   },
   button: {
@@ -194,7 +210,7 @@ const buttonStyles = StyleSheet.create({
     color: '#000',
     fontFamily: 'PoppinsMedium',
     width: '100%',
-    paddingVertical: 8,
+    paddingVertical: screenHeight * 0.01,
     textAlign: 'center',
     fontSize: screenWidth * 0.03,
   },
@@ -214,7 +230,7 @@ export const examsStyle = StyleSheet.create({
   },
   imgContainer: {
     width: '18%',
-    height: screenHeight * 0.12,
+    height: screenHeight * 0.1,
     marginTop: screenWidth * 0.02,
     maxHeight: 100,
     alignItems: 'center',

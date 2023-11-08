@@ -11,6 +11,7 @@ import OtherCoursesCard from './OtherCoursesCard';
 import {Subject} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
+import {screenHeight} from '../../../utils/Data/data';
 
 interface CourseItemType {
   id: string;

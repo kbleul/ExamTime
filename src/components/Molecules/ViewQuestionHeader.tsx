@@ -15,14 +15,12 @@ const ViewQuestionHeader: React.FC<{
   showFullPage?: boolean;
 }> = ({title, setShowFullPage, showFullPage}) => {
   const navigator = useNavigation();
-  //  onPress={() =>
-  //             setExitExamModalVisible && setExitExamModalVisible(true)
-  //           }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity touchSoundDisabled onPress={() => navigator.goBack()}>
+      {/* <TouchableOpacity touchSoundDisabled onPress={() => navigator.goBack()}>
         <Ionicons name="chevron-back" color="black" size={30} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Text style={styles.titleText}>{title}</Text>
 
       {/* <TouchableOpacity touchSoundDisabled>
@@ -37,11 +35,16 @@ const ViewQuestionHeader: React.FC<{
       {setShowFullPage ? (
         <TouchableOpacity
           touchSoundDisabled
-          onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}>
+          onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}
+          style={
+            showFullPage
+              ? [styles.pageToggle, styles.pageToggleActive]
+              : styles.pageToggle
+          }>
           <FontAwesome
             name="file-text-o"
-            size={25}
-            color={showFullPage ? '#1E90FF' : '#d4d4d4'}
+            size={showFullPage ? 20 : 18}
+            color={showFullPage ? '#1E90FF' : '#fff'}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -65,14 +68,16 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 5,
     paddingRight: 15,
+    marginBottom: 5,
   },
   titleText: {
-    width: '80%',
+    width: '90%',
     color: 'black',
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.04,
     textAlign: 'left',
     paddingTop: 5,
+    paddingLeft: 10,
   },
   titleTextSecondary: {
     width: '90%',
@@ -95,6 +100,21 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingTop: 2,
+  },
+  pageToggle: {
+    width: 35,
+    height: 35,
+    backgroundColor: '#2968F5',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 2,
+    borderColor: '#1E90FF',
+  },
+  pageToggleActive: {
+    borderRadius: 80,
+    backgroundColor: '#fff',
+    borderWidth: 2,
   },
   lockStyle: {
     backgroundColor: '#2968F5',

@@ -46,7 +46,9 @@ const ExamResult = ({route}) => {
             ? styles.topSection
             : [styles.topSection, styles.topSectionFaild]
         }>
-        <Text style={styles.topTitleSection}>{gradePrercentage.grade} %</Text>
+        <Text style={styles.topTitleSection}>
+          {correctAnswers}/ {total}
+        </Text>
         <Text
           style={
             gradePrercentage.status === gradeStatus.Passed
@@ -157,10 +159,10 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   topTitleSection: {
-    fontSize: 53,
+    fontSize: 43,
     fontFamily: 'PoppinsSemiBold',
     color: '#000',
-    lineHeight: 55,
+    lineHeight: 90,
     paddingTop: 15,
     position: 'relative',
   },
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'PoppinsRegular',
     color: '#3CAB8C',
-    paddingTop: 15,
+    paddingTop: 25,
     position: 'absolute',
     top: 105,
   },
