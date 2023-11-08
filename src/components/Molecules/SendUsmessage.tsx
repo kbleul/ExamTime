@@ -12,7 +12,7 @@ const SendUsmessage:React.FC<{onPress:()=>void}> = ({onPress}) => {
       numberOfLines={4}
       style={styles.messageInput}
     />
-  <PrimaryBtn text="send" onPress={onPress} />
+  <PrimaryBtn text="send" onPress={onPress} width={'auto'} />
   </View>
   )
 }

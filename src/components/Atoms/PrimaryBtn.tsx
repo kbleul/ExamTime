@@ -4,11 +4,12 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
 type  PrimaryBtnProps={
   text:String,
+  width:any
   onPress?:()=>void
 }
-const PrimaryBtn:React.FC<PrimaryBtnProps>= ({text,onPress}) => {
+const PrimaryBtn:React.FC<PrimaryBtnProps>= ({text,width,onPress}) => {
   return (
-    <TouchableOpacity style={styles.Sendbtn}
+    <TouchableOpacity style={[styles.Sendbtn,{width:width}]}
     onPress={onPress}
     >
     <Text style={styles.sendbtnText}>{text}</Text>
@@ -16,7 +17,7 @@ const PrimaryBtn:React.FC<PrimaryBtnProps>= ({text,onPress}) => {
   )
 }
 
-const styles = StyleSheet.create({
+const styles  = StyleSheet.create({
   Sendbtn: {
     width: 343,
     height: 50,
