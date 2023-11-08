@@ -15,14 +15,16 @@ import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from './logic';
 import Loading from '../../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
+import {Subject} from '../../../../Realm';
 
 const PageThree: React.FC<PagesCounterType> = ({
   pageCounter,
   setPageCounter,
 }) => {
-  const {useRealm} = AuthContext;
+  const {useRealm, useQuery} = AuthContext;
 
   const realm = useRealm();
+  const savedSubjects = useQuery(Subject);
   const navigator = useNavigation();
   const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
     null,
@@ -34,7 +36,9 @@ const PageThree: React.FC<PagesCounterType> = ({
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
 
   useEffect(() => {
-    getSubjectsMutation(getSubject, navigator, setSubjectsArray, realm);
+    savedSubjects && savedSubjects.length > 0
+      ? setSubjectsArray([...savedSubjects])
+      : getSubjectsMutation(getSubject, navigator, setSubjectsArray, realm);
   }, []);
 
   useEffect(() => {

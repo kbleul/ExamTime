@@ -8,7 +8,7 @@ import img3 from '../../../assets/Images/home/s3.png';
 import img4 from '../../../assets/Images/home/s4.png';
 import img5 from '../../../assets/Images/home/s5.png';
 import OtherCoursesCard from './OtherCoursesCard';
-import {Subject} from '../../../Realm';
+import {Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {screenHeight} from '../../../utils/Data/data';
@@ -90,6 +90,7 @@ const ChosenCourses = () => {
   const {useQuery} = AuthContext;
 
   const savedSubjects = useQuery(Subject);
+  const savedUserData = useQuery(UserData);
 
   const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
@@ -106,6 +107,19 @@ const ChosenCourses = () => {
         />
       </View>
     );
+  };
+
+  const PushFavorateToFront = (favoritesArray: string[]) => {
+    const favorites = savedSubjects.filter(item =>
+      favoritesArray.includes(item.id),
+    );
+    const notFavorites = savedSubjects.filter(
+      item => !favoritesArray.includes(item.id),
+    );
+    console.log({favorites, notFavorites});
+    const favoritesFirstArray = [...favorites, ...notFavorites];
+
+    return favoritesFirstArray;
   };
 
   const renderItemCourse = ({
@@ -132,7 +146,7 @@ const ChosenCourses = () => {
 
       <FlatList
         keyExtractor={item => item.id}
-        data={savedSubjects}
+        data={PushFavorateToFront(savedUserData[0].selectedSubjects || [])}
         renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator={false}

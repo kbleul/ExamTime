@@ -1,9 +1,7 @@
 import {NavigationProp} from '@react-navigation/native';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetExamsMutation} from '../../../reduxToolkit/Services/exams';
-import {examQuestionType, examType} from '../../../types';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
-import {ExamQuestion} from '../../../Realm';
 
 type GetRegionsMutationFn = ReturnType<typeof useGetExamsMutation>[0];
 
@@ -25,7 +23,11 @@ export const getPreviousExams = async (
       },
     }).unwrap();
 
-    setExams(response?.exams);
+    setExams([
+      ...response?.exams.filter(
+        (exam: examType) => exam.subject.subject === subject,
+      ),
+    ]);
 
     saveExamsToRealmDB(response.exams, realm);
   } catch (err) {
@@ -118,8 +120,6 @@ const saveExamsToRealmDB = (exams: examType[], realm: Realm) => {
           type: 'Previous',
           isExamTaken: false,
         });
-
-        console.log({newExam});
       });
     } catch (err) {
       console.log(err);

@@ -32,7 +32,7 @@ export const getSubjectsMutation = async (
   realm: Realm,
 ) => {
   checkIsOnline(navigator);
-
+  console.log('kkkkk');
   try {
     const getSavedGrade = await getObject_from_localStorage(
       LocalStorageDataKeys.userGrade,

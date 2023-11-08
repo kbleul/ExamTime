@@ -8,8 +8,7 @@ import {
 } from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {useGetExamsMutation} from '../../reduxToolkit/Services/exams';
-import {RootState} from '../../reduxToolkit/Store';
-import {useSelector} from 'react-redux';
+
 import {useNavigation} from '@react-navigation/native';
 import {getPreviousExams} from '../../screens/App/Practice/logic';
 import {FetchBaseQueryError} from '@reduxjs/toolkit/dist/query';
@@ -36,7 +35,7 @@ const FullExams: React.FC<{
     return savedExamItem.filtered('type == "Previous"');
   });
 
-  const [getExams, {isLoading, isError, error}] = useGetExamsMutation();
+  const [getExams, {isLoading, error}] = useGetExamsMutation();
 
   const [exams, setExams] = useState<examType[] | []>([]);
 
@@ -52,9 +51,7 @@ const FullExams: React.FC<{
       );
     } else {
       const filteredEXams: any[] = savedExams.filter(
-        examItem =>
-          !examItem.isExamTaken &&
-          examItem.subject?.id === selectedSubject.subject?.id,
+        examItem => examItem.subject?.id === selectedSubject.subject?.id,
       );
       setExams([...filteredEXams]);
 
@@ -87,7 +84,12 @@ const FullExams: React.FC<{
         setSelectedExamType={setSelectedExamType}
       />
 
-      <Exams isLoading={isLoading} error={error} exams={exams} />
+      <Exams
+        isLoading={isLoading}
+        error={error}
+        exams={exams}
+        subject={selectedSubject.subject?.subject || ''}
+      />
     </View>
   );
 };
@@ -96,10 +98,10 @@ const Exams: React.FC<{
   isLoading: boolean;
   error: FetchBaseQueryError | SerializedError | undefined;
   exams: examType[];
-}> = ({isLoading, error, exams}) => {
+  subject: string;
+}> = ({isLoading, error, exams, subject}) => {
   const navigator = useNavigation();
   const [showAllExams, setShowAllExams] = useState(false);
-  console.log({examyear: exams[0]?.year});
   return (
     <View style={examsStyle.container}>
       {!isLoading &&
@@ -138,7 +140,9 @@ const Exams: React.FC<{
         ))}
 
       {exams.length === 0 && (
-        <Text style={examsStyle.noExam}>No exams available</Text>
+        <Text style={examsStyle.noExam}>
+          No exams available {subject !== '' && `for ${subject}`}
+        </Text>
       )}
       <ShowAllExamsModal
         exitExamModalVisible={showAllExams}
@@ -251,6 +255,11 @@ export const examsStyle = StyleSheet.create({
   imageBG: {
     width: '100%',
     height: '100%',
+  },
+  noExam: {
+    paddingVertical: 10,
+    textAlign: 'center',
+    width: '100%',
   },
 });
 
