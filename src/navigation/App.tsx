@@ -6,6 +6,7 @@ import Courses from '../screens/App/Courses/index';
 import Profile from '../screens/App/Profile/index';
 import Aboutus from '../screens/App/Aboutus/index';
 import SubscriptionPlan from '../screens/App/SubscriptionPlan/index';
+import StudySection from '../screens/App/Study/index';
 import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
 import Login from '../screens/Auth/Login/Login';
 import Signup from '../screens/Auth/Signup/Signup';
@@ -23,7 +24,6 @@ import PracticeQuestion from '../screens/App/PracticeQuestion';
 import {ProfileMenuItemsAuth} from '../utils/Data/data';
 import SetNewPassword from '../components/Organisms/SetNewPassword';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
-
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
   showOnboarding,
@@ -134,6 +134,11 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="Password-Reset"
           component={SetNewPasswordPage}
+          options={{headerShown: false}}
+        />
+          <Stack.Screen
+          name="StudySection"
+          component={StudySection}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

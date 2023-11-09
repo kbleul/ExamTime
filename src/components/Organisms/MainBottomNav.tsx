@@ -42,13 +42,13 @@ const MainBottomNav = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Courses')}
+          onPress={() => navigation.navigate('StudySection')}
           style={style.buttonWrapper}>
-          {currentScreen === 'Courses' && <View style={style.dot} />}
+          {currentScreen === 'StudySection' && <View style={style.dot} />}
 
           <View
             style={
-              currentScreen === 'Courses'
+              currentScreen === 'StudySection'
                 ? [style.button, style.buttonSelected]
                 : style.button
             }>
@@ -56,12 +56,12 @@ const MainBottomNav = () => {
               name="book-open"
               size={screenWidth * 0.063}
               style={
-                currentScreen === 'Courses' ? style.iconActive : style.icon
+                currentScreen === 'StudySection' ? style.iconActive : style.icon
               }
             />
             <Text
               style={
-                currentScreen === 'Courses'
+                currentScreen === 'StudySection'
                   ? style.buttonTextActive
                   : style.buttonText
               }>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,13 @@ import {
   ImageBackground,
 } from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {useGetExamsMutation} from '../../reduxToolkit/Services/exams';
+import {RootState} from '../../reduxToolkit/Store';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {getPreviousExams} from '../../screens/App/Practice/logic';
+import {FetchBaseQueryError} from '@reduxjs/toolkit/dist/query';
+import {SerializedError} from '@reduxjs/toolkit';
 
 export const ExamCatagories = ['Previous Exams', 'Model'];
 const ExamsData = ['2015', '2016', '2017', '2018'];
@@ -15,6 +22,16 @@ const FullExams: React.FC<{
   selectedExamType: string;
   setSelectedExamType: React.Dispatch<React.SetStateAction<string>>;
 }> = ({selectedExamType, setSelectedExamType}) => {
+  const navigator = useNavigation();
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  const [getExams, {isLoading, isError, error}] = useGetExamsMutation();
+
+  const [exams, setExams] = useState([]);
+  useEffect(() => {
+    token && getPreviousExams(navigator, getExams, token, setExams, 'grade_8');
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Full Exams to practice</Text>
@@ -24,34 +41,42 @@ const FullExams: React.FC<{
         setSelectedExamType={setSelectedExamType}
       />
 
-      <Exams />
+      <Exams isLoading={isLoading} error={error} />
     </View>
   );
 };
 
-const Exams = () => {
+const Exams: React.FC<{
+  isLoading: boolean;
+  error: FetchBaseQueryError | SerializedError | undefined;
+}> = ({isLoading, error}) => {
   return (
     <View style={examsStyle.container}>
-      {ExamsData.map((exam, index) => (
-        <TouchableOpacity
-          key={exam}
-          touchSoundDisabled
-          style={examsStyle.imgContainer}
-          onPress={() => {}}>
-          <ImageBackground
-            style={examsStyle.imageBG}
-            source={
-              index % 2 === 0
-                ? index === 2
-                  ? require('../../assets/Images//Practice/exam_yellow.png')
-                  : require('../../assets/Images//Practice/exam_green.png')
-                : require('../../assets/Images//Practice/exam_blue.png')
-            } // Replace with the correct path to your image
-            resizeMode="cover"
-          />
-          <Text style={examsStyle.buttonText}>{exam}</Text>
-        </TouchableOpacity>
-      ))}
+      {!isLoading &&
+        !error &&
+        ExamsData.map((exam, index) => (
+          <TouchableOpacity
+            key={exam}
+            touchSoundDisabled
+            style={examsStyle.imgContainer}
+            onPress={() => {}}>
+            <ImageBackground
+              style={examsStyle.imageBG}
+              source={
+                index % 2 === 0
+                  ? index === 2
+                    ? require('../../assets/Images//Practice/exam_yellow.png')
+                    : require('../../assets/Images//Practice/exam_green.png')
+                  : require('../../assets/Images//Practice/exam_blue.png')
+              } // Replace with the correct path to your image
+              resizeMode="cover"
+            />
+            <Text style={examsStyle.buttonText}>{exam}</Text>
+          </TouchableOpacity>
+        ))}
+
+      {isLoading && <Text>is loading ...</Text>}
+      {error && <Text>{error?.data?.message}</Text>}
     </View>
   );
 };

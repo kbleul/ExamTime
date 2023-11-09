@@ -31,9 +31,6 @@ const authSlice = createSlice({
         IsDefaultPasswordChanged: boolean;
       }>,
     ) => {
-      console.log({
-        IsDefaultPasswordChanged: action.payload.IsDefaultPasswordChanged,
-      });
       state.isChecked = true;
       state.user = action.payload.user;
       state.token = action.payload.token;
