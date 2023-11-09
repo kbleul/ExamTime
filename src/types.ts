@@ -93,6 +93,7 @@ export type examQuestionType = {
 export type examType = {
   id: string;
   examName: string;
+  examType: string;
   duration: number;
   passingScore: string;
   noOfQuestions: number;

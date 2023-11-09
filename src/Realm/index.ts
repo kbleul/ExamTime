@@ -192,6 +192,7 @@ class UserExamAnswers extends Realm.Object {
 class Exam extends Realm.Object {
   id: string = '';
   examName: string = '';
+  examType: 'EXAM' | 'CUSTOM' = 'EXAM';
   duration: number = 0;
   passingScore: string = '';
   noOfQuestions: number = 0;
@@ -204,7 +205,6 @@ class Exam extends Realm.Object {
   subject: singleSubjectType | null = null;
   year: string = '';
   userExamAnswers: answersType[] | null = null;
-  type: 'Previous' | 'Model' = 'Previous';
   isExamTaken: boolean = false;
 
   static schema = {
@@ -212,6 +212,7 @@ class Exam extends Realm.Object {
     properties: {
       id: 'string',
       examName: 'string',
+      examType: 'string',
       duration: 'int',
       passingScore: 'string',
       noOfQuestions: 'int',
@@ -224,7 +225,6 @@ class Exam extends Realm.Object {
       subject: 'SingleSubject?',
       year: 'string',
       userExamAnswers: 'UserExamAnswers[]',
-      type: 'string',
       isExamTaken: 'bool',
     },
   };

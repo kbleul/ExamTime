@@ -19,7 +19,16 @@ import Toast from 'react-native-toast-message';
 import {Exam, Grade, Subject} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 
-export const ExamCatagories = ['Previous Exams', 'Model'];
+export const ExamCatagories = [
+  {
+    name: 'National Exams',
+    type: 'EXAM',
+  },
+  {
+    name: 'Model Exams',
+    type: 'CUSTOM',
+  },
+];
 
 const FullExams: React.FC<{
   selectedExamType: string;
@@ -32,7 +41,11 @@ const FullExams: React.FC<{
 
   const savedGrade = useQuery(Grade);
   const savedExams = useQuery(Exam, savedExamItem => {
-    return savedExamItem.filtered('type == "Previous"');
+    return savedExamItem.filtered(
+      `examType == "${
+        ExamCatagories.find(item => item.name === selectedExamType)?.type
+      }"`,
+    );
   });
 
   const [getExams, {isLoading, error}] = useGetExamsMutation();
@@ -48,13 +61,16 @@ const FullExams: React.FC<{
         selectedSubject.subject?.subject || '',
         savedGrade[0].grade,
         realm,
+        ExamCatagories.find(item => item.name === selectedExamType)?.type || '',
       );
     } else {
       const filteredEXams: any[] = savedExams.filter(
-        examItem => examItem.subject?.id === selectedSubject.subject?.id,
+        examItem =>
+          examItem.examType ===
+            ExamCatagories.find(item => item.name === selectedExamType)?.type &&
+          examItem.subject?.id === selectedSubject.subject?.id,
       );
       setExams([...filteredEXams]);
-
       filteredEXams.length === 0 &&
         Toast.show({
           type: 'error',
@@ -62,7 +78,7 @@ const FullExams: React.FC<{
           text2: 'Try a different subject',
         });
     }
-  }, [selectedSubject, getExams]);
+  }, [selectedSubject, getExams, selectedExamType]);
 
   useEffect(() => {
     error &&
@@ -89,6 +105,7 @@ const FullExams: React.FC<{
         error={error}
         exams={exams}
         subject={selectedSubject.subject?.subject || ''}
+        selectedExamType={selectedExamType}
       />
     </View>
   );
@@ -99,7 +116,8 @@ const Exams: React.FC<{
   error: FetchBaseQueryError | SerializedError | undefined;
   exams: examType[];
   subject: string;
-}> = ({isLoading, error, exams, subject}) => {
+  selectedExamType: string;
+}> = ({isLoading, error, exams, subject, selectedExamType}) => {
   const navigator = useNavigation();
   const [showAllExams, setShowAllExams] = useState(false);
   return (
@@ -141,7 +159,8 @@ const Exams: React.FC<{
 
       {exams.length === 0 && (
         <Text style={examsStyle.noExam}>
-          No exams available {subject !== '' && `for ${subject}`}
+          No {selectedExamType} exams available{' '}
+          {subject !== '' && `for ${subject}`}
         </Text>
       )}
       <ShowAllExamsModal
@@ -161,21 +180,21 @@ const Buttons: React.FC<{
     <View style={buttonStyles.container}>
       {ExamCatagories.map(exam => (
         <TouchableOpacity
-          key={exam}
+          key={exam.name + exam.type}
           touchSoundDisabled
           style={
-            selectedExamType === exam
+            selectedExamType === exam.name
               ? [buttonStyles.button, buttonStyles.buttonActive]
               : buttonStyles.button
           }
-          onPress={() => setSelectedExamType(exam)}>
+          onPress={() => setSelectedExamType(exam.name)}>
           <Text
             style={
-              selectedExamType === exam
+              selectedExamType === exam.name
                 ? [buttonStyles.buttonText, buttonStyles.buttonTextActive]
                 : buttonStyles.buttonText
             }>
-            {exam}
+            {exam.name}
           </Text>
         </TouchableOpacity>
       ))}

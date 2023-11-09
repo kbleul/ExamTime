@@ -21,7 +21,9 @@ const Practice = () => {
   const savedSubjects = useQuery(Subject);
 
   const [selectedSubject, setSelectedSubject] = useState(savedSubjects[0]);
-  const [selectedExamType, setSelectedExamType] = useState(ExamCatagories[0]);
+  const [selectedExamType, setSelectedExamType] = useState(
+    ExamCatagories[0].name,
+  );
 
   return (
     <SafeAreaView style={[IndexStyle.container, styles.container]}>

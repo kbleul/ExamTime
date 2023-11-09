@@ -2,17 +2,18 @@ import {NavigationProp} from '@react-navigation/native';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetExamsMutation} from '../../../reduxToolkit/Services/exams';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
-import {examType} from '../../../types';
+import {examType as examTsType} from '../../../types';
 
 type GetRegionsMutationFn = ReturnType<typeof useGetExamsMutation>[0];
 
 export const getPreviousExams = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   getExams: GetRegionsMutationFn,
-  setExams: React.Dispatch<React.SetStateAction<[] | examType[]>>,
+  setExams: React.Dispatch<React.SetStateAction<[] | examTsType[]>>,
   subject: string,
   grade: string | null,
   realm: Realm,
+  selectedExamType: string,
 ) => {
   try {
     checkIsOnline(navigator);
@@ -24,9 +25,19 @@ export const getPreviousExams = async (
       },
     }).unwrap();
 
+    response.exams.forEach((item: examTsType) => {
+      console.log(
+        {name: item.examName, type: item.examType},
+        '--------',
+        selectedExamType,
+      );
+    });
+
     setExams([
       ...response?.exams.filter(
-        (exam: examType) => exam.subject.subject === subject,
+        (exam: examTsType) =>
+          exam.subject.subject === subject &&
+          exam.examType === selectedExamType,
       ),
     ]);
 
@@ -36,12 +47,13 @@ export const getPreviousExams = async (
   }
 };
 
-const saveExamsToRealmDB = (exams: examType[], realm: Realm) => {
+const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
   exams.forEach(exam => {
     try {
       let {
         id,
         examName,
+        examType,
         duration,
         passingScore,
         noOfQuestions,
@@ -103,9 +115,10 @@ const saveExamsToRealmDB = (exams: examType[], realm: Realm) => {
           questionsArray.push(questiontObject);
         });
 
-        const newExam = realm.create(LocalObjectDataKeys.Exam, {
+        realm.create(LocalObjectDataKeys.Exam, {
           id,
           examName,
+          examType,
           duration,
           passingScore,
           noOfQuestions,
@@ -118,7 +131,6 @@ const saveExamsToRealmDB = (exams: examType[], realm: Realm) => {
           subject: subjectObject,
           year: year,
           userExamAnswers: [],
-          type: 'Previous',
           isExamTaken: false,
         });
       });
