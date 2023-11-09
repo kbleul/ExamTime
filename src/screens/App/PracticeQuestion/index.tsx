@@ -114,8 +114,6 @@ const PracticeQuestion = ({route}) => {
 
           savedExam[0].userExamAnswers = answersArray;
           savedExam[0].isExamTaken = true;
-
-          console.log({savedExam: savedExam[0].userExamAnswers});
         });
       } catch (e) {
         console.log('error', e);

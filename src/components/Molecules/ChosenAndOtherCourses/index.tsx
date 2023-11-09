@@ -116,7 +116,6 @@ const ChosenCourses = () => {
     const notFavorites = savedSubjects.filter(
       item => !favoritesArray.includes(item.id),
     );
-    console.log({favorites, notFavorites});
     const favoritesFirstArray = [...favorites, ...notFavorites];
 
     return favoritesFirstArray;

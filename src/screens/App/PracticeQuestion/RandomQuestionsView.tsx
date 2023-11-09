@@ -30,7 +30,6 @@ const RandomQuestionsView = ({route}) => {
   const [showSideNav, setShowSideNav] = useState(false);
   const [showFullPage, setShowFullPage] = useState(false);
 
-  const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
@@ -40,25 +39,19 @@ const RandomQuestionsView = ({route}) => {
   useEffect(() => {
     const getExam = async () => {
       try {
-        const response = await getRandomExam({
+        const response: any = await getRandomExam({
           grade: 'grade_8',
           subject: selectedSubject.subject.subject,
           noOfQuestions: 20,
         }).unwrap();
 
-        console.log({response});
-
-        setCurrentViewExam(response.randomQuestions);
-      } catch (error) {
-        console.log(error.data.message);
+        setCurrentViewExam(response?.randomQuestions);
+      } catch (err: any) {
+        console.log(err?.data?.message);
       }
     };
 
     getExam();
-  }, []);
-
-  useEffect(() => {
-    console.log(exitExamModalVisible);
   }, []);
 
   useEffect(() => {
@@ -109,7 +102,7 @@ const RandomQuestionsView = ({route}) => {
       question={item}
       questionCounter={index + 1}
       total={currentViewExam.length}
-      isPracticeMode={isPracticeMode}
+      isPracticeMode={false}
       setUserAnswers={setUserAnswers}
       setDirection={setDirection}
     />
@@ -142,7 +135,7 @@ const RandomQuestionsView = ({route}) => {
                 question={currentViewExam[currentQuestion]}
                 questionCounter={currentQuestion + 1}
                 total={currentViewExam.length}
-                isPracticeMode={isPracticeMode}
+                isPracticeMode={false}
                 setUserAnswers={setUserAnswers}
                 setDirection={setDirection}
               />

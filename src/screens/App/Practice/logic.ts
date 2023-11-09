@@ -25,14 +25,6 @@ export const getPreviousExams = async (
       },
     }).unwrap();
 
-    response.exams.forEach((item: examTsType) => {
-      console.log(
-        {name: item.examName, type: item.examType},
-        '--------',
-        selectedExamType,
-      );
-    });
-
     setExams([
       ...response?.exams.filter(
         (exam: examTsType) =>

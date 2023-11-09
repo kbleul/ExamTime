@@ -55,7 +55,6 @@ const Buttons: React.FC<{
 }> = ({text, bgColor, setExitExamModalVisible, isEndBtn, isReview}) => {
   const navigator = useNavigation();
   const handleAction = () => {
-    console.log({isReview});
     isReview ? navigator.navigate('Practice') : setExitExamModalVisible(true);
   };
   return (
