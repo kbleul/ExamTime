@@ -56,6 +56,12 @@
 		<string>Montserrat-Bold.ttf</string>
 		<string>Montserrat-Regular.ttf</string>
 		<string>Montserrat-SemiBold.ttf</string>
+		<string>PoppinsBold.ttf</string>
+		<string>PoppinsExtraBold.ttf</string>
+		<string>PoppinsLight.ttf</string>
+		<string>PoppinsMedium.ttf</string>
+		<string>PoppinsRegular.ttf</string>
+		<string>PoppinsSemiBold.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -48,6 +48,7 @@ const style = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     fontFamily: 'Montserrat-SemiBold',
+    fontSize: 16,
   },
 });
 

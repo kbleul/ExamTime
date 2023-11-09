@@ -2,13 +2,14 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MenuItemDispatch from '../Organisms/MenuItemDispatch';
 import {useNavigation} from '@react-navigation/native';
-import {ProfileMenuItemsAuth} from '../../utils/Data/data';
+import {ProfileMenuItems, ProfileMenuItemsAuth} from '../../utils/Data/data';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 
 const IconContainer: React.FC<{
   item: string;
   bgColor: string;
+<<<<<<< HEAD
   navigate:String;
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({item, bgColor, navigate, setShowLogoutDialog}) => {
@@ -26,6 +27,35 @@ const IconContainer: React.FC<{
         //   item === ProfileMenuItemsAuth.Logout.name &&
         //   setShowLogoutDialog(true);
       }}>
+=======
+  navigate: string;
+  setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowLDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({item, bgColor, navigate, setShowLogoutDialog, setShowLDeleteDialog}) => {
+  const navigator = useNavigation();
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const handlePress = () => {
+    if (user && item === ProfileMenuItemsAuth.Logout.name) {
+      setShowLogoutDialog(true);
+      return;
+    }
+
+    if (user && item === ProfileMenuItemsAuth['Delete Account'].name) {
+      setShowLDeleteDialog(true);
+      return;
+    }
+
+    if (item === ProfileMenuItemsAuth.Profile.name) {
+      navigator.navigate('Profile-Edit');
+      return;
+    }
+    navigator.navigate(navigate);
+  };
+
+  return (
+    <TouchableOpacity style={styles.buttonsContainer} onPress={handlePress}>
+>>>>>>> dev
       <View style={[styles.iconContainer, {backgroundColor: bgColor}]}>
         <MenuItemDispatch itemName={item} />
       </View>

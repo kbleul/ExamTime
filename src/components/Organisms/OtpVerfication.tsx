@@ -62,7 +62,6 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 
     const optValue =
       OtpValues[0] + OtpValues[1] + OtpValues[2] + OtpValues[3] + OtpValues[4];
-
     if (!hasEmpty && optValue !== sentOtp.current) {
       sentOtp.current = optValue;
       handleVerfiyCode(
@@ -81,8 +80,6 @@ const VerificationCodeForm: React.FC<seterProps> = ({
     }
   };
   const handleKeyPress = (index: number, key: string) => {
-    //&& index > 0 && OtpValues[index] === ''
-
     if (key === 'Backspace') {
       if (OtpValues[index] !== '') {
         setOtpValues(prevValues => {
@@ -116,10 +113,9 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 
     return () => clearInterval(interval);
   }, [isResend]);
-
   return (
     <View>
-      <Text style={[formSubHeaderStyles.heading, styles.header]}>
+      <Text style={[formSubHeaderStyles.heading, styles.headerMain]}>
         OTP Verification
       </Text>
       <Text style={[formSubHeaderStyles.subHeading, styles.header]}>
@@ -146,14 +142,23 @@ const VerificationCodeForm: React.FC<seterProps> = ({
             onKeyPress={({nativeEvent: {key}}) => {
               handleKeyPress(index, key);
             }}
+            onTextInput={({nativeEvent: {text}}) => {
+              if (text.length === 1) {
+                handleKeyPress(index, text);
+              }
+            }}
             value={OtpValues[index]}
           />
         ))}
       </View>
 
       {(isLoading || isLoadingResend) && <ActivityIndicator />}
-      {error && <Text>{error?.data?.message}</Text>}
-      {errorResend && <Text>{errorResend?.data?.message}</Text>}
+      {error && (
+        <Text style={OPTStyles.erroerText}>{error?.data?.message}</Text>
+      )}
+      {errorResend && (
+        <Text style={OPTStyles.erroerText}>{errorResend?.data?.message}</Text>
+      )}
 
       {!isCorrectCode.current && (
         <Text style={OPTStyles.erroerText}>Incorred code</Text>
@@ -173,6 +178,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
                 isCorrectCode,
                 setISResend,
                 navigator,
+                sentOtp,
               )
             }>
             <Text style={styles.resendText}>Resend code</Text>
@@ -186,13 +192,20 @@ const VerificationCodeForm: React.FC<seterProps> = ({
 };
 
 const styles = StyleSheet.create({
+  headerMain: {
+    color: '#4d4d4d',
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: 24,
+  },
   header: {
-    marginHorizontal: 6,
-    color: 'black',
+    marginHorizontal: 4,
+    color: '#4d4d4d',
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
   },
   phone: {
     color: '#008E97',
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'PoppinsRegular',
     fontSize: 18,
   },
   timerContainer: {

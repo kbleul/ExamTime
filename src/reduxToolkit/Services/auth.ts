@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {
+  ChangePasswordFormDataType,
   CreatePassworDataType,
   LoginDataType,
   OTPDataType,
@@ -13,15 +14,16 @@ import Config from 'react-native-config';
 export const api = createApi({
   baseQuery: fetchBaseQuery({baseUrl: Config.API_URL}),
   endpoints: build => ({
-    login: build.mutation<{user: userType; accessToken: string}, LoginDataType>(
-      {
-        query: credentials => ({
-          url: 'user/login',
-          method: 'POST',
-          body: credentials,
-        }),
-      },
-    ),
+    login: build.mutation<
+      {user: userType; accessToken: string; IsDefaultPasswordChanged: boolean},
+      LoginDataType
+    >({
+      query: credentials => ({
+        url: 'user/login',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
     createUser: build.mutation<{user: userType}, SignupDataType>({
       query: credentials => {
         return {
@@ -45,7 +47,6 @@ export const api = createApi({
     }),
     resendCode: build.mutation<{user: userType}, ResendCodeDataType>({
       query: credentials => {
-        console.log('credentcreateials', credentials); // Add this line to log the credentials
         return {
           url: `user/resend/${credentials.userId}`,
           method: 'POST',
@@ -54,7 +55,7 @@ export const api = createApi({
     }),
     createPassword: build.mutation<{user: userType}, CreatePassworDataType>({
       query: credentials => {
-        console.log('credentcreateials---', credentials); // Add this line to log the credentials
+        console.log("credentials.userId",credentials.userId)
         return {
           url: `user/createpassword/${credentials.userId}`,
           method: 'PUT',
@@ -65,11 +66,71 @@ export const api = createApi({
         };
       },
     }),
+    changePassword: build.mutation<
+      {user: userType},
+      ChangePasswordFormDataType
+    >({
+      query: data => {
+        return {
+          url: `user/changepassword/`,
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          body: {
+            currentPassword: data.currentPassword,
+            newPassword: data.newPassword,
+          },
+        };
+      },
+    }),
+    changeProfile: build.mutation<
+      {},
+      {token: String; profileData: Partial<userType>}
+    >({
+      query: data => {
+        return {
+          url: `user/changeprofile/`,
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          body: data.profileData,
+        };
+      },
+    }),
     getRegions: build.mutation<{regions: regionItemsType[]}, {}>({
       query: () => {
         return {
           url: 'region/region',
           method: 'GET',
+        };
+      },
+    }),
+
+    getGrade: build.mutation({
+      query: () => {
+        return {
+          url: 'grade/grade',
+          method: 'GET',
+        };
+      },
+    }),
+    deleteAccount: build.mutation<
+      {user: userType},
+      {userId: string; token: string}
+    >({
+      query: credentials => {
+        return {
+          url: 'user/deleteaccount',
+          method: 'DELETE',
+          body: {
+            password: credentials.password,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
         };
       },
     }),
@@ -82,5 +143,8 @@ export const {
   useVerifyCodeMutation,
   useResendCodeMutation,
   useCreatePasswordMutation,
+  useChangeProfileMutation,
+  useChangePasswordMutation,
   useGetRegionsMutation,
+  useDeleteAccountMutation,
 } = api;

@@ -1,6 +1,8 @@
 import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
 import {
+  ChangePasswordFormDataType,
+  CreatePassworDataType,
   OTPDataType,
   SignupDataType,
   regionItemsType,
@@ -8,14 +10,14 @@ import {
 } from '../../../../types';
 import {checkIsOnline} from '../../../../utils/Functions/Helper';
 import {LocalStorageDataKeys} from '../../../../utils/Data/data';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {get_from_localStorage} from '../../../../utils/Functions/Get';
 
 type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[1];
 type VerifyCodeMutationFnMutationFn = ReturnType<typeof useLoginMutation>[2];
 type ResendCodeMutationFn = ReturnType<typeof useLoginMutation>[3];
 type CreatePasswordMutationFn = ReturnType<typeof useLoginMutation>[4];
-type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
+type ChangePasswordMutationFn = ReturnType<typeof useLoginMutation>[6];
+type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[7];
 
 export const fetchRegions = async (
   getRegions: GetRegionsMutationFn,
@@ -28,7 +30,6 @@ export const fetchRegions = async (
     checkIsOnline(navigator);
 
     const response = await getRegions().unwrap();
-    console.log('get,', response);
     const tempRegionsList: regionItemsType[] = [];
 
     response.map((region: {region: string}) => {
@@ -71,15 +72,11 @@ export const handleCreateUser = async (
         gender: gender?.toUpperCase(),
         grade: userGrade?.value,
       }).unwrap();
-
-      console.log(';;', response);
-
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
       setCurrentStep(prev => ++prev);
     } catch (error) {
-      console.log('pppp', error);
       if (
         error instanceof TypeError &&
         error.message === 'Network request failed'
@@ -108,9 +105,7 @@ const validate_Gender_and_Region = (
 //verify otp
 
 const checkCode = (code: string, unregisteredUser: userType | null) => {
-  console.log(code, unregisteredUser?.verificationCode);
   if (unregisteredUser?.verificationCode?.toString() === code) {
-    console.log('yesss');
     return true;
   } else {
     return false;
@@ -128,7 +123,6 @@ export const handleVerfiyCode = async (
 ) => {
   if (checkCode(data.code, unregisteredUser)) {
     isCorrectCode.current = true;
-
     checkIsOnline(navigator);
 
     try {
@@ -139,7 +133,6 @@ export const handleVerfiyCode = async (
       setUnregisteredUser(response.user);
       setCurrentStep(prev => ++prev);
     } catch (error) {
-      console.log('pppp', error);
       if (
         error instanceof TypeError &&
         error.message === 'Network request failed'
@@ -163,6 +156,7 @@ export const resendOtp = async (
   isCorrectCode: React.MutableRefObject<boolean>,
   setISResend: React.Dispatch<React.SetStateAction<boolean>>,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
+  sentOtp: React.MutableRefObject<string>,
 ) => {
   try {
     checkIsOnline(navigator);
@@ -182,11 +176,10 @@ export const resendOtp = async (
     }
 
     setOtpValues(['', '', '', '', '']);
+    sentOtp.current = '     ';
     setTimer(60);
     isCorrectCode.current = true;
     setISResend(prev => !prev);
-
-    console.log('OTP:', response);
   } catch (error: any) {
     console.error('Error submitting form///:', error);
   }
@@ -207,8 +200,26 @@ export const createNewPassword = async (
 
     navigator.navigate('signup-success');
     setCurrentStep(1);
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+};
 
-    AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
+export const changeUserPassword = async (
+  data: ChangePasswordFormDataType,
+  changePassword: ChangePasswordMutationFn,
+  navigator: NavigationProp<ReactNavigation.RootParamList>,
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>,
+) => {
+  try {
+    checkIsOnline(navigator);
+
+    await changePassword({
+      ...data,
+    }).unwrap();
+
+    navigator.navigate('signup-success');
+    setCurrentStep(1);
   } catch (error) {
     console.error('Error submitting form:', error);
   }

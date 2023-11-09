@@ -7,7 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+<<<<<<< HEAD
 import MenuItems from '../Molecules/MenuItems';
+=======
+import MenuItemsProfile from '../Molecules/MenuItemsProfile';
+import badgeImg from '../../assets/Images/Profile/badge.png';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+>>>>>>> dev
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
@@ -20,11 +27,46 @@ const ProfileContent = () => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {user && (
+          <View style={styles.profileHeaderContainer}>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              touchSoundDisabled
+              onPress={() => navigator.goBack()}>
+              <AntDesign name="left" style={styles.backIcon} size={24} />
+            </TouchableOpacity>
+            <View>
+              <Text style={styles.userData}>
+                {user ? `${user.firstName} ${user.lastName}` : ''}
+              </Text>
+              <Text style={styles.location}>
+                {user ? `${user.region.region}` : ''}
+              </Text>
+            </View>
+            <TouchableOpacity
+              touchSoundDisabled
+              onPress={() => navigator.navigate('Profile-Edit')}>
+              <MaterialIcons name="edit" style={styles.editIcon} size={24} />
+            </TouchableOpacity>
+          </View>
+        )}
+        {user && (
           <View style={styles.nameContainer}>
-            <Text style={styles.name}>
+            <View style={styles.activityContainer}>
+              <Text style={styles.name}>Activities</Text>
+              <Text style={styles.activity}>
+                You are now in the position of gold to upgrade you have to spent
+                time.
+              </Text>
+            </View>
+            {/* <Text style={styles.name}>
               {user ? `${user.firstName} ${user.lastName}` : ''}
+<<<<<<< HEAD
             </Text>
             {/*<Image style={styles.badge} source={badgeImg} />*/}
+=======
+            </Text> */}
+            <Image style={styles.badge} source={badgeImg} />
+>>>>>>> dev
           </View>
         )}
 
@@ -45,7 +87,7 @@ const ProfileContent = () => {
           </View>
         )}
 
-        <MenuItems />
+        <MenuItemsProfile />
       </ScrollView>
     </View>
   );
@@ -54,32 +96,52 @@ const ProfileContent = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: '31%',
+    top: '26%',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    height: '67%',
+    height: '70%',
     width: '100%',
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#F5F5F5',
     overflow: 'hidden',
   },
   nameContainer: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    gap: 5,
     backgroundColor: '#fff',
     marginVertical: 30,
     paddingVertical: 10,
+    paddingHorizontal: 30,
+    overflow: 'visible',
+    position: 'relative', // Add this line to make the container relative
+  },
+  activityContainer: {
+    width: '70%',
+    flexDirection: 'column',
+    gap: 3,
   },
   name: {
     fontSize: 24,
     fontFamily: 'Montserrat-SemiBold',
-    color: '#1E90FF',
+    color: 'black',
+  },
+  activity: {
+    fontFamily: 'Montserrat-SemiBold',
+    //  width:"20%"
   },
   badge: {
-    width: 25,
-    height: 33,
-    marginLeft: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //  backgroundColor:"red",
+    position: 'absolute', // Add this line to make the badge absolute
+    top: -50, // Adjust the value as needed to position the badge
+    right: '1%', // Adjust the value as needed to horizontally position the badge
+    transform: [{translateX: 12.5}], // Adjust the value as needed to center the badge horizontally
+    width: 140,
+    height: 200,
+    objectFit: 'contain',
   },
   adsBtnContainer: {
     flexDirection: 'row',
@@ -104,6 +166,44 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
     fontFamily: 'Montserrat-Regular',
+  },
+  profileHeaderContainer: {
+    // width: '100%',
+    // backgroundColor:"red",
+    flexDirection: 'row',
+    gap: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  iconContainer: {
+    color: 'black',
+  },
+  backIcon: {
+    color: 'black',
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
+  userData: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'Montserrat-SemiBold',
+    color: 'black',
+  },
+  location: {
+    textAlign: 'center',
+    fontSize: 15,
+    fontFamily: 'Montserrat-SemiBold',
+  },
+  editIcon: {
+    backgroundColor: 'white',
+    padding: 5,
+    borderRadius: 50,
+    color: 'black',
+    fontSize: 28,
+    fontWeight: 'bold',
   },
 });
 export default ProfileContent;

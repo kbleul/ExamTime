@@ -32,15 +32,15 @@ const styles = StyleSheet.create({
   },
   registerPromptText: {
     color: '#4F4F4F',
-    fontFamily: 'Montserrat-Regular',
-    fontSize: 16,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 15,
     textTransform: 'none',
   },
   registerPromptBtnText: {
     color: '#1E90FF',
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: 'Montserrat-Bold',
     marginLeft: 4,
-    fontSize: 16,
+    fontSize: 15,
     textTransform: 'none',
   },
 });

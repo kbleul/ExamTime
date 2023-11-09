@@ -8,6 +8,7 @@ declare module 'react-native-config' {
 }
 
 export type userType = {
+  location: any;
   id: string;
   firstName: string;
   lastName: string;
@@ -15,7 +16,7 @@ export type userType = {
   region: string;
   isVerified: boolean;
   isActive: boolean;
-  grade: string;
+  grade: {};
   gender: 'MALE' | 'FEMALE';
   email: string | null;
   verificationCode?: string;
@@ -61,6 +62,12 @@ export type ResendCodeDataType = {
 export type CreatePasswordFormDataType = {
   password: string;
   confirmPassword: string;
+};
+
+export type ChangePasswordFormDataType = {
+  token: string;
+  currentPassword: string;
+  newPassword: string;
 };
 
 export type regionItemsType = {

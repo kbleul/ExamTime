@@ -1,19 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
   Text,
   ScrollView,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import {FAQ} from '../../../utils/Data/data';
 import ShareApp from '../../../components/Organisms/ShareApp';
-import Accordion from '../../../components/Molecules/Accordion';
 import FaqContener from '../../../components/Organisms/FaqContener';
 const Index = () => {
   const navigator = useNavigation<any>();
@@ -28,18 +25,12 @@ const Index = () => {
         <Text style={styles.headerText}>FAQ</Text>
       </View>
       <View style={styles.faqContaner}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          nestedScrollEnabled={true}>
-          <FaqContener />
-          <View style={{margin:8}}>
-            <ShareApp />
-          </View>
-        </ScrollView>
+        <FaqContener />
+        <View style={{margin: 8}}>
+          <ShareApp />
+        </View>
       </View>
-      <View>
-        <MainBottomNav />
-      </View>
+      <MainBottomNav />
     </SafeAreaView>
   );
 };
@@ -47,7 +38,6 @@ const Index = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F9FCFF',
-    paddingTop: 30,
     flex: 1,
   },
   topHeader: {
@@ -65,7 +55,7 @@ const styles = StyleSheet.create({
   },
   faqContaner: {
     marginVertical: 14,
-    marginHorizontal:8,
+    marginHorizontal: 8,
     flex: 1,
   },
 });

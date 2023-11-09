@@ -42,6 +42,9 @@ const MenuItemDispatch: React.FC<{itemName: string}> = ({itemName}) => {
     case user ? ProfileMenuItemsAuth.Logout.name : 'Login':
       return <MaterialIcons name="logout" size={18} color="white" />;
 
+    case user ? ProfileMenuItemsAuth['Delete Account'].name : 'Delete Account':
+      return <AntDesign name="deleteuser" size={18} color="white" />;
+
     default:
       return <></>;
   }

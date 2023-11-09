@@ -4,24 +4,26 @@ export const formStyles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     marginTop: 5,
+    color: '#F9FCFF',
   },
   inputContainer: {
-    marginBottom: 10,
+    marginBottom: 0,
   },
   inputContainerHidden: {
     display: 'none',
   },
   label: {
-    fontFamily: 'Montserrat-SemiBold',
-    color: '#4D4D4D',
-    fontSize: 18,
+    fontFamily: 'PoppinsSemiBold',
+    color: '#1E90FF',
+    fontSize: 15,
+    marginBottom: 6,
   },
   input: {
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#8dbaf0',
-    height: 42,
+    borderColor: '#9CC0EC',
     paddingHorizontal: 20,
+    paddingVertical: 6,
     fontSize: 16,
     color: '#000',
   },
@@ -42,12 +44,18 @@ export const formStyles = StyleSheet.create({
     color: '#000',
   },
   inputPhone: {
-    letterSpacing: 6,
     borderWidth: 0,
     borderLeftWidth: 1,
     borderRadius: 0,
     width: '100%',
     color: '#000',
+  },
+  flexedInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  inputContainerFlexed: {
+    width: '48%',
   },
   dropdown: {
     height: 42,
@@ -125,15 +133,14 @@ export const formStyles = StyleSheet.create({
 
 export const formSubHeaderStyles = StyleSheet.create({
   heading: {
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: 'PoppinsSemiBold',
     fontSize: 24,
-    color: 'black',
+    color: '#4d4d4d',
     paddingHorizontal: 20,
     marginTop: 30,
-    marginBottom: 8,
   },
   subHeading: {
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'PoppinsRegular',
     fontSize: 16,
     marginBottom: 20,
     paddingHorizontal: 20,

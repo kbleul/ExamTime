@@ -7,6 +7,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
+import {userType} from '../../types';
 
 type UnitsItemProps = {
   unitData: any;
@@ -14,13 +15,20 @@ type UnitsItemProps = {
 };
 
 const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
+<<<<<<< HEAD
   const navigation = useNavigation<any>();
   const user = useSelector((state: RootState) => state.auth.user);
+=======
+  const navigation = useNavigation();
+  const isSubscribed = useSelector(
+    (state: RootState) => state.auth.isSubscribed,
+  );
+>>>>>>> dev
 
   const [showMore, setShowMore] = useState(false);
 
   const handleViewCourse = (unit: any) => {
-    if (user) {
+    if (isSubscribed) {
       navigation.navigate('View-Course-Content', {
         isVideo: unit.isVideo,
       });
@@ -62,7 +70,7 @@ const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                   style={
-                    user || unitData.unit === 'Unit 1'
+                    isSubscribed || unitData.unit === 'Unit 1'
                       ? styles.moreTitle
                       : [styles.moreTitle, styles.moreTitleLocked]
                   }>
@@ -73,7 +81,7 @@ const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
                 </Text>
               </View>
 
-              {user || unitData.unit === 'Unit 1' ? (
+              {isSubscribed || unitData.unit === 'Unit 1' ? (
                 <>
                   {++index === 1 ? (
                     <Feather name="check-square" size={22} color="#1E90FF" />

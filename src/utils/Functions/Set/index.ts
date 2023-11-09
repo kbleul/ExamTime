@@ -6,7 +6,6 @@ export const set_to_localStorage = async (
 ) => {
   try {
     await AsyncStorage.setItem(key, value.toString());
-    console.log('setted');
     return true;
   } catch (e) {
     // saving error

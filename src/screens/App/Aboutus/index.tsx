@@ -4,7 +4,7 @@ import {
   Text,
   Image,
 } from 'react-native';
-import { ScaledSheet } from 'react-native-size-matters';
+import { ScaledSheet, ms } from 'react-native-size-matters';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';

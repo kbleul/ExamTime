@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 type SubjectButtonProps = {
   text: string;
@@ -34,28 +35,43 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
           ? [style.buttons, style.buttonSelected]
           : style.buttons
       }>
-      <Text style={style.buttonText}>{text}</Text>
+      <Text
+        style={
+          selectedGrades?.includes(text)
+            ? [style.buttonText, style.buttonTextSelected]
+            : style.buttonText
+        }>
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 const style = StyleSheet.create({
   buttons: {
-    width: '30%',
-    marginBottom: 10,
-    backgroundColor: '#008E97',
-    paddingVertical: 13,
+    width: 'auto',
+    marginBottom: screenHeight * 0.045,
+    backgroundColor: '#fff',
+    borderWidth: 1.5,
+    borderColor: '#D3D3D3',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    marginRight: 10,
     borderRadius: 30,
   },
 
   buttonSelected: {
-    backgroundColor: '#6A5ACD',
+    backgroundColor: '#1E90FF',
+    borderColor: '#1E90FF',
   },
   buttonText: {
     textAlign: 'center',
-    color: 'white',
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 12,
+    color: '#D3D3D3',
+    fontFamily: 'Montserrat-Bold',
+    fontSize: screenWidth * 0.035,
+  },
+  buttonTextSelected: {
+    color: '#fff',
   },
 });
 

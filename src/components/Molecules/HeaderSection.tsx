@@ -97,41 +97,6 @@ const style = StyleSheet.create({
   activeButtonText: {
     color: '#858585',
   },
-  imgContainer: {
-    width: '100%',
-    height: '37%',
-    marginTop: '5%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  img: {
-    width: '80%',
-    height: '100%',
-  },
-  titleContainer: {
-    marginTop: '8%',
-    marginBottom: '5%',
-  },
-  title: {
-    fontFamily: 'Montserrat-Bold',
-    fontSize: 32,
-    color: '#858585',
-    textAlign: 'left',
-    paddingHorizontal: 30,
-    lineHeight: 40,
-  },
-  buttonsSubcontainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    marginBottom: 10,
-    paddingHorizontal: 20,
-  },
-  mainCOntainer: {
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
 });
 
 export default HeaderSection;
