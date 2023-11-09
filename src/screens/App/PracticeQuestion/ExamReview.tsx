@@ -137,6 +137,7 @@ const ExamReview = ({route}) => {
       isPracticeMode={false}
       setDirection={setDirection}
       isReview={true}
+      userAnswers={userAnswers}
     />
   );
 
@@ -179,6 +180,7 @@ const ExamReview = ({route}) => {
             isPracticeMode={false}
             setDirection={setDirection}
             isReview={true}
+            userAnswers={userAnswers}
           />
         </ScrollView>
       )}

@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -51,6 +51,7 @@ const Question: React.FC<{
   setUserAnswers?: React.Dispatch<React.SetStateAction<answersType[] | null>>;
   setDirection: React.Dispatch<React.SetStateAction<string | null>>;
   isReview?: boolean;
+  userAnswers: answersType[] | null;
 }> = ({
   showFullPage,
   question,
@@ -60,81 +61,87 @@ const Question: React.FC<{
   setUserAnswers,
   setDirection,
   isReview,
+  userAnswers,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
   return (
-    <View
-      style={
-        showFullPage
-          ? [styles.container, styles.containerFullPage]
-          : styles.container
-      }>
-      <View
-        style={
-          showFullPage
-            ? [styles.questionContainer, styles.questionContainerFullpage]
-            : styles.questionContainer
-        }>
-        <View style={styles.counterContainer}>
-          <Text style={styles.counterTitle}>
-            Question {questionCounter}/{total}
-          </Text>
-          {question.description &&
-            question.description !== 'no-description' && (
-              <TouchableOpacity
-                touchSoundDisabled
-                style={styles.readParagraphBtn}
-                onPress={() => setDirection(question.description)}>
-                <Text style={styles.readParagraphText}>Directions</Text>
-              </TouchableOpacity>
-            )}
-        </View>
+    <>
+      {question && (
+        <View
+          style={
+            showFullPage
+              ? [styles.container, styles.containerFullPage]
+              : styles.container
+          }>
+          <View
+            style={
+              showFullPage
+                ? [styles.questionContainer, styles.questionContainerFullpage]
+                : styles.questionContainer
+            }>
+            <View style={styles.counterContainer}>
+              <Text style={styles.counterTitle}>
+                Question {questionCounter}/{total}
+              </Text>
+              {question.description &&
+                question.description !== 'no-description' && (
+                  <TouchableOpacity
+                    touchSoundDisabled
+                    style={styles.readParagraphBtn}
+                    onPress={() => setDirection(question.description)}>
+                    <Text style={styles.readParagraphText}>Directions</Text>
+                  </TouchableOpacity>
+                )}
+            </View>
 
-        <RenderHtml
-          contentWidth={screenWidth}
-          source={{html: question.question}}
-          tagsStyles={tagsStylesQuestion}
-        />
-      </View>
+            <RenderHtml
+              contentWidth={screenWidth}
+              source={{html: question.question}}
+              tagsStyles={tagsStylesQuestion}
+            />
+          </View>
 
-      <ScrollView
-        style={styles.choiceContainer}
-        contentContainerStyle={styles.choiceContainerContent}
-        showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.questionImageContainer}>
+          <ScrollView
+            style={styles.choiceContainer}
+            contentContainerStyle={styles.choiceContainerContent}
+            showsVerticalScrollIndicator={false}>
+            {/* <View style={styles.questionImageContainer}>
               <Image
                 style={styles.questionImage}
                 source={require('../../assets/Images/home/s2.png')}
                 resizeMode="cover"
               />
             </View> */}
-        {Choice.map((letter: string, index: number) => (
-          <QuestionChoice
-            key={letter + 'letter' + index}
-            choiceLetter={letter}
-            choiceText={question[letter]}
-            selectedAnswer={selectedAnswer}
-            setSelectedAnswer={setSelectedAnswer}
-            showFullPage={showFullPage}
-            answer={question.answer}
-            isPracticeMode={isPracticeMode}
-            setUserAnswers={setUserAnswers ? setUserAnswers : null}
-            questionData={
-              isReview
-                ? {
-                    id: question.id,
-                    index: --questionCounter,
-                    selectedAnswer: question.selectedAnswer,
-                    correctAnswer: question.correctAnswer,
-                  }
-                : {id: question.id, index: --questionCounter}
-            }
-            isReview={isReview}
-          />
-        ))}
-      </ScrollView>
-    </View>
+            {Choice.map((letter: string, index: number) => (
+              <QuestionChoice
+                key={letter + 'letter' + index}
+                choiceLetter={letter}
+                choiceText={question[letter]}
+                selectedAnswer={selectedAnswer}
+                setSelectedAnswer={setSelectedAnswer}
+                showFullPage={showFullPage}
+                answer={question.answer}
+                isPracticeMode={isPracticeMode}
+                setUserAnswers={setUserAnswers ? setUserAnswers : null}
+                questionData={
+                  isReview
+                    ? {
+                        id: question.id,
+                        index: --questionCounter,
+                        selectedAnswer: question.selectedAnswer,
+                        correctAnswer: question.correctAnswer,
+                      }
+                    : {id: question.id, index: --questionCounter}
+                }
+                isReview={isReview}
+                userAnswers={userAnswers}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -156,6 +163,7 @@ const QuestionChoice: React.FC<{
     correctAnswer?: string;
   };
   isReview?: boolean;
+  userAnswers: answersType[] | null;
 }> = ({
   choiceLetter,
   choiceText,
@@ -167,7 +175,21 @@ const QuestionChoice: React.FC<{
   setUserAnswers,
   questionData,
   isReview,
+  userAnswers,
 }) => {
+  const checkIsAnswer = () => {
+    if (userAnswers && userAnswers.length > 0) {
+      const answer = userAnswers.find(
+        answerItem => answerItem.id === questionData.id,
+      );
+      answer && setSelectedAnswer(answer.userAnswer);
+    }
+  };
+
+  useEffect(() => {
+    checkIsAnswer();
+  }, []);
+
   const handleSelect = () => {
     if (!isReview && setUserAnswers) {
       if (isPracticeMode && selectedAnswer) return;

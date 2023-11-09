@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+} from 'react-native';
 import Question from '../../../components/Molecules/Question';
 import ExamTimer from '../../../components/Molecules/ExamTimer';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
@@ -12,7 +18,7 @@ import {examQuestionType} from '../../../types';
 import {useNavigation} from '@react-navigation/native';
 import DirectionModal from '../../../components/Organisms/DirectionModal';
 import {useGetRandomExamMutation} from '../../../reduxToolkit/Services/auth';
-import {filterUnanswered} from './index';
+import {answersType, filterUnanswered} from './index';
 import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
 import {View} from 'react-native';
@@ -105,6 +111,7 @@ const RandomQuestionsView = ({route}) => {
       isPracticeMode={false}
       setUserAnswers={setUserAnswers}
       setDirection={setDirection}
+      userAnswers={userAnswers}
     />
   );
 
@@ -125,7 +132,11 @@ const RandomQuestionsView = ({route}) => {
             showFullPage={showFullPage}
           />
 
-          {!showFullPage && (
+          {currentViewExam.length === 0 && (
+            <Text style={styles.emptyText}>No more questions left !</Text>
+          )}
+
+          {!showFullPage && currentViewExam?.length > 0 && (
             <ScrollView
               contentContainerStyle={styles.scrollContent}
               showsVerticalScrollIndicator={showFullPage}>
@@ -138,11 +149,12 @@ const RandomQuestionsView = ({route}) => {
                 isPracticeMode={false}
                 setUserAnswers={setUserAnswers}
                 setDirection={setDirection}
+                userAnswers={userAnswers}
               />
             </ScrollView>
           )}
 
-          {showFullPage && (
+          {showFullPage && currentViewExam?.length > 0 && (
             <FlatList
               data={currentViewExam}
               initialNumToRender={4}
@@ -194,6 +206,12 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 80,
+  },
+  emptyText: {
+    color: 'black',
+    paddingTop: 50,
+    fontFamily: 'PoppinsRegular',
+    textAlign: 'center',
   },
 });
 

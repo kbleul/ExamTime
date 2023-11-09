@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 const ExamNavigateButtons: React.FC<{
@@ -33,6 +33,7 @@ const ExamNavigateButtons: React.FC<{
         setExitExamModalVisible={setExitExamModalVisible}
         isEndBtn={true}
         isReview={isReview}
+        setCurrentQuestion={setCurrentQuestion}
       />
       {!showFullPage && currentQuestion !== totalQuestionsLength - 1 && (
         <Buttons
@@ -52,10 +53,22 @@ const Buttons: React.FC<{
   setExitExamModalVisible: (value: boolean | null) => void;
   isEndBtn: boolean;
   isReview?: boolean;
-}> = ({text, bgColor, setExitExamModalVisible, isEndBtn, isReview}) => {
+  setCurrentQuestion?: React.Dispatch<React.SetStateAction<number>>;
+}> = ({
+  text,
+  bgColor,
+  setExitExamModalVisible,
+  isEndBtn,
+  isReview,
+  setCurrentQuestion,
+}) => {
   const navigator = useNavigation();
   const handleAction = () => {
-    isReview ? navigator.navigate('Practice') : setExitExamModalVisible(true);
+    if (isReview) navigator.navigate('Practice');
+    else {
+    }
+    setExitExamModalVisible(true);
+    setCurrentQuestion && setCurrentQuestion(0);
   };
   return (
     <TouchableOpacity
