@@ -11,7 +11,6 @@ import {
 import {FormData} from '../../../screens/Auth/Login/Types';
 import {userType} from '../../../types';
 import {logoutSuccess} from '../../../reduxToolkit/Features/auth/authSlice';
-import Toast, {ToastProps} from 'react-native-toast-message';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type DeleteAccountMutationFn = ReturnType<typeof useDeleteAccountMutation>[0];

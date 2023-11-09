@@ -104,6 +104,7 @@ export type examType = {
   grade: gradeType;
   subject: singleSubjectType;
   year: year;
+  isExamTaken: boolean;
 };
 
 export type year =
