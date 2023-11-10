@@ -11,13 +11,9 @@ import {UserData} from '../../../Realm';
 
 export default function Login() {
   const navigator = useNavigation<any>();
-<<<<<<< HEAD
-
-=======
   const {useQuery} = AuthContext;
   const savedUserData = useQuery(UserData);
   const dateDiff = calculateDateDifference(savedUserData[0].initialDate);
->>>>>>> dev
   return (
     <SafeAreaView style={styles.container}>
       <View

@@ -12,11 +12,6 @@ import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
 import ContactUs from '../screens/App/ContactUs/index';
 import FAQ from '../screens/App/FAQ/index';
-<<<<<<< HEAD
-import UserGuide from '../screens/App/UserGuide/index'
-=======
-
->>>>>>> dev
 import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
@@ -25,8 +20,8 @@ import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
 import Practice from '../screens/App/Practice/index';
 import PracticeQuestion from '../screens/App/PracticeQuestion';
 import {ProfileMenuItemsAuth} from '../utils/Data/data';
-import SetNewPassword from '../components/Organisms/SetNewPassword';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
+import UserGuide from '../screens/App/UserGuide/index';
 
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
@@ -95,14 +90,12 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
           component={FAQ}
           options={{headerShown: false}}
         />
-<<<<<<< HEAD
-            <Stack.Screen
+        <Stack.Screen
           name={ProfileMenuItemsAuth['User Guide'].navigate}
           component={UserGuide}
           options={{headerShown: false}}
         />
-=======
->>>>>>> dev
+
         <Stack.Screen
           name="Profile-Edit"
           component={ProfileEditIndex}

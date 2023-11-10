@@ -54,15 +54,6 @@ const ProfileEdit: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
 
-<<<<<<< HEAD
-  const [name, setName] = useState(`${user?.firstName} ${user?.lastName}`);
-  const [phone, setPhone] = useState(user?.phoneNumber);
-  const [grade, setGrade] = useState(user?.grade);
-  const [city, setCity] = useState(user?.region);
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
-=======
   const [fullName, setFullName] = useState(
     (user?.firstName || '') + ' ' + (user?.lastName || ''),
   );
@@ -228,7 +219,6 @@ const ProfileEdit: React.FC = () => {
     };
     fetchGradeData(); // Call the fetch function
   }, []);
->>>>>>> dev
 
   return (
     <>

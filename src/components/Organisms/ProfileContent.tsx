@@ -7,14 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-<<<<<<< HEAD
-import MenuItems from '../Molecules/MenuItems';
-=======
 import MenuItemsProfile from '../Molecules/MenuItemsProfile';
 import badgeImg from '../../assets/Images/Profile/badge.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
->>>>>>> dev
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
@@ -60,13 +56,8 @@ const ProfileContent = () => {
             </View>
             {/* <Text style={styles.name}>
               {user ? `${user.firstName} ${user.lastName}` : ''}
-<<<<<<< HEAD
-            </Text>
-            {/*<Image style={styles.badge} source={badgeImg} />*/}
-=======
             </Text> */}
             <Image style={styles.badge} source={badgeImg} />
->>>>>>> dev
           </View>
         )}
 

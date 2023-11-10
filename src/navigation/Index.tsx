@@ -2,9 +2,6 @@ import React, {useEffect, useState} from 'react';
 
 import AuthRoutes from './Auth';
 import AppRoutes from './App';
-<<<<<<< HEAD
-import {StackType} from './types';
-=======
 import {UserData} from '../Realm';
 import {AuthContext} from '../Realm/model';
 import {StatusBar} from 'react-native';
@@ -12,7 +9,6 @@ import SplashScreen from '../screens/Shared/SplashScreen';
 import {checkUserStatus} from './logic';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../reduxToolkit/Store';
->>>>>>> dev
 
 const Routes = ({Stack}: any) => {
   const {useQuery} = AuthContext;
