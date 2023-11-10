@@ -13,6 +13,7 @@ import BackWithItem from '../../../components/Organisms/BackWithItem';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import { ScaledSheet } from 'react-native-size-matters';
 import { screenHeight, screenWidth } from '../../../utils/Data/data';
+import { useNavigation } from '@react-navigation/native';
 
 const courses = [
     { subject: 'Subject 1', units: 8, progress: 0 },
@@ -47,6 +48,7 @@ const CourseItem = ({ item }) => (
     </TouchableOpacity>
 );
 const Index = () => {
+    const navigation = useNavigation<any>();
     return (
         <View style={styles.container}>
             {/* <ScrollView
@@ -59,7 +61,7 @@ const Index = () => {
                         <Text style={styles.text}>
                             Find your path to success through new knowledge
                         </Text>
-                        <TouchableWithoutFeedback onPress={() => console.log('Button pressed')}>
+                        <TouchableWithoutFeedback onPress={() => navigation.navigate('ChallengeScreen')}>
                             <View style={styles.button}>
                                 <Text style={styles.buttonText}>Start Challenge</Text>
                             </View>
