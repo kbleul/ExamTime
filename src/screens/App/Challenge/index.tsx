@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
   },
-});
+}); 
 
 export default Index;
