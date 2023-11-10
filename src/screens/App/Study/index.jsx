@@ -48,7 +48,7 @@ const CourseItem = ({ item }) => (
     </TouchableOpacity>
 );
 const Index = () => {
-    const navigation = useNavigation<any>();
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             {/* <ScrollView

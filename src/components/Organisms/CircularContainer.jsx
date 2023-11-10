@@ -8,8 +8,8 @@ const CircleProgressBar = ({ percentage }) => {
   useEffect(() => {
     Animated.timing(animatedValue, {
       toValue: percentage,
-      duration: 1000, // Animation duration in milliseconds
-      useNativeDriver: false, // Set to true if possible for better performance
+      duration: 2000, // Animation duration in milliseconds
+      useNativeDriver: true, // Set to true if possible for better performance
     }).start();
 
     currentPercentage.current = percentage;
