@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { screenWidth, screenHeight } from '../../../utils/Data/data';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
     fontSize: screenHeight * 0.02,
 
   },
-
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
@@ -94,17 +93,6 @@ const styles = StyleSheet.create({
     height: 100,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  centerTextContainer: {
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: 25,
-    left: 25,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'white',
   },
   centerText: {
     fontSize: 14,
