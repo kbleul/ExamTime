@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
   titleText: {
     width: '75%',
     color: 'black',
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.04,
+    fontFamily: 'PoppinsBold',
+    fontSize: screenWidth * 0.045,
     textAlign: 'left',
     paddingTop: 5,
     paddingLeft: 10,

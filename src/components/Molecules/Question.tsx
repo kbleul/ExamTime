@@ -212,7 +212,7 @@ const QuestionChoice: React.FC<{
       setUserAnswers(prev => {
         if (prev) {
           return [
-            ...prev,
+            ...prev.filter(item => item.id !== questionData.id),
             {
               id: questionData.id,
               index: questionData.index,

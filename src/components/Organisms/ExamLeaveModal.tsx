@@ -11,8 +11,9 @@ const ExamLeaveModal: React.FC<{
   };
   resetViewQuesstions: () => void;
   handleSubmitExam: () => void;
-  timeLeft?: string;
+  timeLeft?: string | boolean;
   isTimeOver?: boolean;
+  showViewReviewBtn?: boolean;
 }> = ({
   exitExamModalVisible,
   setExitExamModalVisible,
@@ -21,6 +22,7 @@ const ExamLeaveModal: React.FC<{
   handleSubmitExam,
   timeLeft,
   isTimeOver,
+  showViewReviewBtn,
 }) => {
   return (
     <Modal
@@ -28,8 +30,7 @@ const ExamLeaveModal: React.FC<{
       transparent={true}
       visible={exitExamModalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-        setExitExamModalVisible(false);
+        setExitExamModalVisible(prev => !prev);
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
@@ -69,20 +70,22 @@ const ExamLeaveModal: React.FC<{
             )}
           </View>
 
-          <TouchableOpacity
-            style={[styles.optionButton, styles.optionButtonAll]}>
-            <Text
-              style={[
-                styles.optionButtonText,
-                styles.optionButtonTextSecondary,
-              ]}
-              onPress={() => {
-                resetViewQuesstions();
-                setExitExamModalVisible(false);
-              }}>
-              View / Review All Questions
-            </Text>
-          </TouchableOpacity>
+          {showViewReviewBtn && showViewReviewBtn === true && (
+            <TouchableOpacity
+              style={[styles.optionButton, styles.optionButtonAll]}>
+              <Text
+                style={[
+                  styles.optionButtonText,
+                  styles.optionButtonTextSecondary,
+                ]}
+                onPress={() => {
+                  resetViewQuesstions();
+                  setExitExamModalVisible(false);
+                }}>
+                View / Review All Questions
+              </Text>
+            </TouchableOpacity>
+          )}
 
           <View style={styles.optionsContainer}>
             {!isTimeOver && (

@@ -1,8 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  BackHandler,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {answersType} from '.';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 
 const gradeStatus = {
   Passed: 'Passed',
@@ -19,9 +25,12 @@ const calculateGrade = (correctAnswers: number, total: number) => {
   };
 };
 
-const ExamResult = ({route}) => {
-  const navigator = useNavigation();
-  const {userAnswers, total, timeTaken, examQuestions} = route.params;
+const ExamResult = ({route}: {route: any}) => {
+  const navigationState = useNavigationState(state => state);
+  const currentScreen = navigationState.routes[navigationState.index].name;
+  const navigator: any = useNavigation();
+  const {userAnswers, total, timeTaken, examQuestions, isPracticeMode} =
+    route.params;
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const gradePrercentage = calculateGrade(correctAnswers, total);
 
@@ -31,11 +40,37 @@ const ExamResult = ({route}) => {
       examQuestions: examQuestions,
     });
   };
+
   useEffect(() => {
     userAnswers.forEach((answer: answersType) => {
       answer.userAnswer === answer.correctAnswer &&
         setCorrectAnswers(prev => ++prev);
     });
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      navigator.navigate('Practice');
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'Exam-Result') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
   }, []);
 
   return (
@@ -100,7 +135,7 @@ const ExamResult = ({route}) => {
         <View style={styles.lastSectionContainer}>
           <View style={styles.lastSectionBox}>
             <Text style={[styles.midSectionTitle, styles.lastSectionText]}>
-              {timeTaken ? timeTaken : '-'}
+              {!isPracticeMode && timeTaken ? timeTaken : '-'}
             </Text>
             <Text style={[styles.midSectionSubTitle, styles.lastSectionText]}>
               Time Left

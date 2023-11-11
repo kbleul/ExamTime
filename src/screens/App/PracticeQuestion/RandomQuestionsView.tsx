@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
+  BackHandler,
   FlatList,
   SafeAreaView,
   ScrollView,
@@ -23,11 +24,15 @@ import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
 import {View} from 'react-native';
 import Loading from '../../../components/Atoms/Loading';
-const RandomQuestionsView = ({route}) => {
+const RandomQuestionsView = ({route}: {route: any}) => {
   //   const {subject} = route.params;
   const navigator: any = useNavigation();
+  const flatListRef = useRef<FlatList<any> | null>(null);
+
   const {selectedSubject} = route.params;
   const [getRandomExam, {isLoading, error}] = useGetRandomExamMutation();
+
+  const [exam, setExam] = useState<any[] | null>(null);
 
   const [currentViewExam, setCurrentViewExam] = useState<any[] | null>(null);
 
@@ -52,6 +57,7 @@ const RandomQuestionsView = ({route}) => {
         }).unwrap();
 
         setCurrentViewExam(response?.randomQuestions);
+        setExam(response?.randomQuestions);
       } catch (err: any) {
         console.log(err?.data?.message);
       }
@@ -78,22 +84,53 @@ const RandomQuestionsView = ({route}) => {
   }, [error]);
 
   const filterUnansweredQuestions = () => {
-    const filteredQusetions = filterUnanswered(
-      currentViewExam,
-      userAnswers || [],
-    );
+    if (exam) {
+      const filteredQusetions = filterUnanswered(exam, userAnswers || []);
 
-    setCurrentViewExam([...filteredQusetions]);
+      setCurrentViewExam([...filteredQusetions]);
+      setCurrentQuestion(0);
+      if (flatListRef.current) {
+        flatListRef.current.scrollToOffset({offset: 0, animated: true});
+      }
+    }
+  };
+
+  const resetViewQuesstions = () => {
+    if (exam) {
+      setCurrentViewExam([...exam]);
+      setCurrentQuestion(0);
+      if (flatListRef.current) {
+        flatListRef.current.scrollToOffset({offset: 0, animated: true});
+      }
+    }
   };
 
   const handleSubmitExam = () => {
-    navigator.navigate('Exam-Result', {
-      userAnswers: userAnswers || [],
-      total: currentViewExam.length,
-      timeTaken: null,
-      examQuestions: currentViewExam,
-    });
+    if (exam) {
+      navigator.navigate('Exam-Result', {
+        userAnswers: userAnswers || [],
+        total: exam.length,
+        timeTaken: null,
+        examQuestions: exam,
+        isPracticeMode: false,
+      });
+    }
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      setExitExamModalVisible(prev => !prev);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    // Clean up the event listener when the component is unmounted
+    return () => backHandler.remove();
+  }, []);
 
   const renderItem = ({
     item,
@@ -107,7 +144,7 @@ const RandomQuestionsView = ({route}) => {
       showFullPage={showFullPage}
       question={item}
       questionCounter={index + 1}
-      total={currentViewExam.length}
+      total={currentViewExam ? currentViewExam.length : 0}
       isPracticeMode={false}
       setUserAnswers={setUserAnswers}
       setDirection={setDirection}
@@ -130,6 +167,10 @@ const RandomQuestionsView = ({route}) => {
             title={`Random Questions ${selectedSubject?.subject?.subject}`}
             setShowFullPage={setShowFullPage}
             showFullPage={showFullPage}
+            unansweredQuestionsLength={
+              exam ? (userAnswers ? exam.length - userAnswers.length : 0) : 0
+            }
+            filterUnansweredQuestions={filterUnansweredQuestions}
           />
 
           {currentViewExam.length === 0 && (
@@ -155,13 +196,16 @@ const RandomQuestionsView = ({route}) => {
           )}
 
           {showFullPage && currentViewExam?.length > 0 && (
-            <FlatList
-              data={currentViewExam}
-              initialNumToRender={4}
-              renderItem={({item, index}) => renderItem({item, index})}
-              keyExtractor={item => item.id.toString()}
-              numColumns={1} // Set the number of columns to 2 for a 2-column layout
-            />
+            <View style={styles.scrollContentFullPage}>
+              <FlatList
+                ref={flatListRef}
+                data={currentViewExam}
+                initialNumToRender={4}
+                renderItem={({item, index}) => renderItem({item, index})}
+                keyExtractor={item => item.id.toString()}
+                numColumns={1} // Set the number of columns to 2 for a 2-column layout
+              />
+            </View>
           )}
           <ExamNavigateButtons
             setExitExamModalVisible={setExitExamModalVisible}
@@ -175,20 +219,21 @@ const RandomQuestionsView = ({route}) => {
             exitExamModalVisible={exitExamModalVisible}
             setExitExamModalVisible={setExitExamModalVisible}
             examStatusData={{
-              total: currentViewExam.length,
+              total: exam ? exam.length : 0,
               answered: userAnswers?.length || 0,
             }}
-            filterUnansweredQuestions={filterUnansweredQuestions}
+            resetViewQuesstions={resetViewQuesstions}
             handleSubmitExam={handleSubmitExam}
+            timeLeft={false}
+            showViewReviewBtn={
+              currentViewExam
+                ? exam && exam.length === currentViewExam.length
+                  ? false
+                  : true
+                : false
+            }
           />
 
-          {/*
-      <PracticeModeModal
-        practiceModeModalVisible={practiceModeModalVisible}
-        setPracticeModeModalVisible={setPracticeModeModalVisible}
-        setIsPracticeMode={setIsPracticeMode}
-        setStartTimer={setStartTimer}
-      /> */}
           <DirectionModal direction={direction} setDirection={setDirection} />
         </SafeAreaView>
       )}
@@ -206,6 +251,9 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 80,
+  },
+  scrollContentFullPage: {
+    paddingBottom: 140,
   },
   emptyText: {
     color: 'black',

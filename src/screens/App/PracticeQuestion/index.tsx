@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
+  BackHandler,
   FlatList,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  View,
 } from 'react-native';
 import Question from '../../../components/Molecules/Question';
 import ExamTimer from '../../../components/Molecules/ExamTimer';
@@ -15,11 +17,11 @@ import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
 import PracticeModeModal from '../../../components/Organisms/PracticeModeModal';
 import {examQuestionType} from '../../../types';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 import DirectionModal from '../../../components/Organisms/DirectionModal';
 import {AuthContext} from '../../../Realm/model';
 import {Exam} from '../../../Realm';
-import {LocalObjectDataKeys, screenHeight} from '../../../utils/Data/data';
+import {LocalObjectDataKeys} from '../../../utils/Data/data';
 
 export type answersType = {
   id: string;
@@ -60,7 +62,10 @@ function formatTime(minutes: number) {
   return timeString;
 }
 
-const PracticeQuestion = ({route}) => {
+const PracticeQuestion = ({route}: {route: any}) => {
+  const navigationState = useNavigationState(state => state);
+  const currentScreen = navigationState.routes[navigationState.index].name;
+
   const {exam} = route.params;
 
   const {useRealm, useQuery} = AuthContext;
@@ -70,7 +75,7 @@ const PracticeQuestion = ({route}) => {
   });
 
   const navigator: any = useNavigation();
-
+  const flatListRef = useRef<FlatList<any> | null>(null);
   const formatedTime = formatTime(exam.duration);
   const [timer, setTimer] = useState(formatedTime);
   const [startTimer, setStartTimer] = useState(false);
@@ -99,11 +104,21 @@ const PracticeQuestion = ({route}) => {
 
     setCurrentViewExam([...filteredQusetions]);
     setCurrentQuestion(0);
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({offset: 0, animated: true});
+    }
   };
+
+  useEffect(() => {
+    console.log({userAnswers: userAnswers ? userAnswers.length : 0});
+  }, [userAnswers]);
 
   const resetViewQuesstions = () => {
     setCurrentViewExam(exam.examQuestion);
     setCurrentQuestion(0);
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({offset: 0, animated: true});
+    }
   };
 
   const handleSubmitExam = () => {
@@ -130,13 +145,40 @@ const PracticeQuestion = ({route}) => {
         console.log('error', e);
       }
     }
+
     navigator.navigate('Exam-Result', {
       userAnswers: userAnswers || [],
       total: exam.examQuestion.length,
       timeTaken: timer,
       examQuestions: exam.examQuestion,
+      isPracticeMode,
     });
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      setExitExamModalVisible(prev => !prev);
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'Exam-View') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
+  }, [currentScreen]);
 
   const renderItem = ({
     item,
@@ -216,13 +258,16 @@ const PracticeQuestion = ({route}) => {
           )}
 
           {showFullPage && currentViewExam?.length > 0 && (
-            <FlatList
-              data={currentViewExam}
-              initialNumToRender={4}
-              renderItem={({item, index}) => renderItem({item, index})}
-              keyExtractor={item => item.id.toString()}
-              numColumns={1} // Set the number of columns to 2 for a 2-column layout
-            />
+            <View style={styles.scrollContentFullPage}>
+              <FlatList
+                ref={flatListRef}
+                data={currentViewExam}
+                initialNumToRender={4}
+                renderItem={({item, index}) => renderItem({item, index})}
+                keyExtractor={item => item.id.toString()}
+                numColumns={1} // Set the number of columns to 2 for a 2-column layout
+              />
+            </View>
           )}
           <ExamNavigateButtons
             setExitExamModalVisible={setExitExamModalVisible}
@@ -241,8 +286,17 @@ const PracticeQuestion = ({route}) => {
             }}
             resetViewQuesstions={resetViewQuesstions}
             handleSubmitExam={handleSubmitExam}
-            timeLeft={timer}
+            timeLeft={isPracticeMode ? false : timer}
             isTimeOver={isTimeOver}
+            showViewReviewBtn={
+              currentViewExam
+                ? exam.examQuestion.length === currentViewExam.length
+                  ? exam.examQuestion.length === userAnswers?.length
+                    ? true
+                    : false
+                  : true
+                : false
+            }
           />
 
           <DirectionModal direction={direction} setDirection={setDirection} />
@@ -264,7 +318,10 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   scrollContent: {
-    paddingBottom: 80,
+    paddingBottom: 65,
+  },
+  scrollContentFullPage: {
+    paddingBottom: 140,
   },
   emptyText: {
     color: 'black',

@@ -53,15 +53,7 @@ const Buttons: React.FC<{
   setExitExamModalVisible: (value: boolean | null) => void;
   isEndBtn: boolean;
   isReview?: boolean;
-  setCurrentQuestion?: React.Dispatch<React.SetStateAction<number>>;
-}> = ({
-  text,
-  bgColor,
-  setExitExamModalVisible,
-  isEndBtn,
-  isReview,
-  setCurrentQuestion,
-}) => {
+}> = ({text, bgColor, setExitExamModalVisible, isEndBtn, isReview}) => {
   const navigator = useNavigation();
   const handleAction = () => {
     if (isReview) navigator.navigate('Practice');

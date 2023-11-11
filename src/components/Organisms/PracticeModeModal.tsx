@@ -20,7 +20,6 @@ const PracticeModeModal: React.FC<{
       transparent={true}
       visible={practiceModeModalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
         setPracticeModeModalVisible(false);
       }}>
       <View style={styles.centeredView}>
@@ -46,21 +45,6 @@ const PracticeModeModal: React.FC<{
 
           <View style={styles.optionsContainer}>
             <TouchableOpacity
-              style={[styles.optionButton, styles.optionButtonSecondary]}>
-              <Text
-                style={[
-                  styles.optionButtonText,
-                  styles.optionButtonTextSecondary,
-                ]}
-                onPress={() => {
-                  setIsPracticeMode(true);
-                  setPracticeModeModalVisible(false);
-                  setStartTimer(true);
-                }}>
-                Yes
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
               style={[styles.optionButton, styles.optionButtonSecondary]}
               onPress={() => {
                 setIsPracticeMode(false);
@@ -73,6 +57,21 @@ const PracticeModeModal: React.FC<{
                   styles.optionButtonTextSecondary,
                 ]}>
                 No
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.optionButton, styles.optionButtonSecondary]}>
+              <Text
+                style={[
+                  styles.optionButtonText,
+                  styles.optionButtonTextSecondary,
+                ]}
+                onPress={() => {
+                  setIsPracticeMode(true);
+                  setPracticeModeModalVisible(false);
+                  setStartTimer(true);
+                }}>
+                Yes
               </Text>
             </TouchableOpacity>
           </View>

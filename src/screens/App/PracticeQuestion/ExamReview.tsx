@@ -19,6 +19,7 @@ type newQuestionsArray = examQuestionType & {
   selectedAnswer?: string;
   correctAnswer?: string;
 };
+
 const filterQuestions = (
   userAnswers: answersType[] | [],
   examQuestions: examQuestionType[] | newQuestionsArray[],
@@ -51,10 +52,6 @@ const filterQuestions = (
 
     case CATAGORIES[1]:
       const answerIds: string[] = [];
-      let answerObjArr: {
-        selectedAnswer: string;
-        correctAnswer: string;
-      }[] = [];
 
       userAnswers.forEach(answer => {
         answerIds.push(answer.id);
