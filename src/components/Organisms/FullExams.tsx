@@ -53,30 +53,33 @@ const FullExams: React.FC<{
   const [exams, setExams] = useState<examType[] | []>([]);
 
   useEffect(() => {
-    if (!savedExams || savedExams.length === 0) {
-      getPreviousExams(
-        navigator,
-        getExams,
-        setExams,
-        selectedSubject.subject?.subject || '',
-        savedGrade[0].grade,
-        realm,
-        ExamCatagories.find(item => item.name === selectedExamType)?.type || '',
-      );
-    } else {
-      const filteredEXams: any[] = savedExams.filter(
-        examItem =>
-          examItem.examType ===
-            ExamCatagories.find(item => item.name === selectedExamType)?.type &&
-          examItem.subject?.id === selectedSubject.subject?.id,
-      );
-      setExams([...filteredEXams]);
-      filteredEXams.length === 0 &&
-        Toast.show({
-          type: 'error',
-          text1: 'No exams found that match your grade and subject',
-          text2: 'Try a different subject',
-        });
+    if (selectedSubject) {
+      if (!savedExams || savedExams.length === 0) {
+        getPreviousExams(
+          navigator,
+          getExams,
+          setExams,
+          selectedSubject.subject?.subject || '',
+          savedGrade[0].grade,
+          realm,
+          ExamCatagories.find(item => item.name === selectedExamType)?.type ||
+            '',
+        );
+      } else {
+        const filteredEXams: any[] = savedExams.filter(
+          examItem =>
+            examItem.examType ===
+              ExamCatagories.find(item => item.name === selectedExamType)
+                ?.type && examItem.subject?.id === selectedSubject.subject?.id,
+        );
+        setExams([...filteredEXams]);
+        filteredEXams.length === 0 &&
+          Toast.show({
+            type: 'error',
+            text1: 'No exams found that match your grade and subject',
+            text2: 'Try a different subject',
+          });
+      }
     }
   }, [selectedSubject, getExams, selectedExamType]);
 
@@ -104,7 +107,7 @@ const FullExams: React.FC<{
         isLoading={isLoading}
         error={error}
         exams={exams}
-        subject={selectedSubject.subject?.subject || ''}
+        subject={(selectedSubject && selectedSubject.subject?.subject) || ''}
         selectedExamType={selectedExamType}
       />
     </View>

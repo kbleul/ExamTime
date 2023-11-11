@@ -11,7 +11,6 @@ import OtherCoursesCard from './OtherCoursesCard';
 import {Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
-import {screenHeight} from '../../../utils/Data/data';
 
 interface CourseItemType {
   id: string;
@@ -116,7 +115,7 @@ const ChosenCourses = () => {
     const notFavorites = savedSubjects.filter(
       item => !favoritesArray.includes(item.id),
     );
-    const favoritesFirstArray = [...favorites, ...notFavorites];
+    const favoritesFirstArray = [...favorites.reverse(), ...notFavorites];
 
     return favoritesFirstArray;
   };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -98,6 +98,12 @@ const PracticeQuestion = ({route}) => {
     );
 
     setCurrentViewExam([...filteredQusetions]);
+    setCurrentQuestion(0);
+  };
+
+  const resetViewQuesstions = () => {
+    setCurrentViewExam(exam.examQuestion);
+    setCurrentQuestion(0);
   };
 
   const handleSubmitExam = () => {
@@ -159,79 +165,89 @@ const PracticeQuestion = ({route}) => {
           ? [IndexStyle.container, styles.container]
           : IndexStyle.container
       }>
-      {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
+      {!practiceModeModalVisible && (
+        <>
+          {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
-      <ViewQuestionHeader
-        title={exam.examName}
-        setShowFullPage={setShowFullPage}
-        showFullPage={showFullPage}
-      />
-      {!isPracticeMode && (
-        <ExamTimer
-          formatedTime={formatedTime}
-          timer={timer}
-          setTimer={setTimer}
-          startTimer={startTimer}
-          setIsTimeOver={setIsTimeOver}
-          setExitExamModalVisible={setExitExamModalVisible}
-        />
-      )}
-
-      {currentViewExam.length === 0 && (
-        <Text style={styles.emptyText}>No more questions left !</Text>
-      )}
-
-      {!showFullPage && currentViewExam?.length > 0 && (
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={showFullPage}>
-          <Question
-            key={
-              currentViewExam[currentQuestion]
-                ? currentViewExam[currentQuestion].id
-                : '---'
-            }
+          <ViewQuestionHeader
+            title={exam.examName}
+            setShowFullPage={setShowFullPage}
             showFullPage={showFullPage}
-            question={currentViewExam[currentQuestion]}
-            questionCounter={currentQuestion + 1}
-            total={currentViewExam.length}
-            isPracticeMode={isPracticeMode}
-            setUserAnswers={setUserAnswers}
-            setDirection={setDirection}
-            userAnswers={userAnswers}
+            unansweredQuestionsLength={
+              userAnswers ? exam.examQuestion.length - userAnswers.length : 0
+            }
+            filterUnansweredQuestions={filterUnansweredQuestions}
           />
-        </ScrollView>
-      )}
+          {!isPracticeMode && (
+            <ExamTimer
+              formatedTime={formatedTime}
+              timer={timer}
+              setTimer={setTimer}
+              startTimer={startTimer}
+              setIsTimeOver={setIsTimeOver}
+              setExitExamModalVisible={setExitExamModalVisible}
+            />
+          )}
 
-      {showFullPage && currentViewExam?.length > 0 && (
-        <FlatList
-          data={currentViewExam}
-          initialNumToRender={4}
-          renderItem={({item, index}) => renderItem({item, index})}
-          keyExtractor={item => item.id.toString()}
-          numColumns={1} // Set the number of columns to 2 for a 2-column layout
-        />
-      )}
-      <ExamNavigateButtons
-        setExitExamModalVisible={setExitExamModalVisible}
-        showFullPage={showFullPage}
-        currentQuestion={currentQuestion}
-        setCurrentQuestion={setCurrentQuestion}
-        totalQuestionsLength={currentViewExam.length}
-      />
+          {currentViewExam.length === 0 && (
+            <Text style={styles.emptyText}>No more questions left !</Text>
+          )}
 
-      <ExamLeaveModal
-        exitExamModalVisible={exitExamModalVisible}
-        setExitExamModalVisible={setExitExamModalVisible}
-        examStatusData={{
-          total: exam.examQuestion.length,
-          answered: userAnswers?.length || 0,
-        }}
-        filterUnansweredQuestions={filterUnansweredQuestions}
-        handleSubmitExam={handleSubmitExam}
-        timeLeft={timer}
-        isTimeOver={isTimeOver}
-      />
+          {!showFullPage && currentViewExam?.length > 0 && (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={showFullPage}>
+              <Question
+                key={
+                  currentViewExam[currentQuestion]
+                    ? currentViewExam[currentQuestion].id
+                    : '---'
+                }
+                showFullPage={showFullPage}
+                question={currentViewExam[currentQuestion]}
+                questionCounter={currentQuestion + 1}
+                total={currentViewExam.length}
+                isPracticeMode={isPracticeMode}
+                setUserAnswers={setUserAnswers}
+                setDirection={setDirection}
+                userAnswers={userAnswers}
+              />
+            </ScrollView>
+          )}
+
+          {showFullPage && currentViewExam?.length > 0 && (
+            <FlatList
+              data={currentViewExam}
+              initialNumToRender={4}
+              renderItem={({item, index}) => renderItem({item, index})}
+              keyExtractor={item => item.id.toString()}
+              numColumns={1} // Set the number of columns to 2 for a 2-column layout
+            />
+          )}
+          <ExamNavigateButtons
+            setExitExamModalVisible={setExitExamModalVisible}
+            showFullPage={showFullPage}
+            currentQuestion={currentQuestion}
+            setCurrentQuestion={setCurrentQuestion}
+            totalQuestionsLength={currentViewExam.length}
+          />
+
+          <ExamLeaveModal
+            exitExamModalVisible={exitExamModalVisible}
+            setExitExamModalVisible={setExitExamModalVisible}
+            examStatusData={{
+              total: exam.examQuestion.length,
+              answered: userAnswers?.length || 0,
+            }}
+            resetViewQuesstions={resetViewQuesstions}
+            handleSubmitExam={handleSubmitExam}
+            timeLeft={timer}
+            isTimeOver={isTimeOver}
+          />
+
+          <DirectionModal direction={direction} setDirection={setDirection} />
+        </>
+      )}
 
       <PracticeModeModal
         practiceModeModalVisible={practiceModeModalVisible}
@@ -239,8 +255,6 @@ const PracticeQuestion = ({route}) => {
         setIsPracticeMode={setIsPracticeMode}
         setStartTimer={setStartTimer}
       />
-
-      <DirectionModal direction={direction} setDirection={setDirection} />
     </SafeAreaView>
   );
 };

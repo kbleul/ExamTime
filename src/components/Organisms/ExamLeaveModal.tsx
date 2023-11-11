@@ -9,7 +9,7 @@ const ExamLeaveModal: React.FC<{
     total: number;
     answered: number;
   };
-  filterUnansweredQuestions: () => void;
+  resetViewQuesstions: () => void;
   handleSubmitExam: () => void;
   timeLeft?: string;
   isTimeOver?: boolean;
@@ -17,7 +17,7 @@ const ExamLeaveModal: React.FC<{
   exitExamModalVisible,
   setExitExamModalVisible,
   examStatusData,
-  filterUnansweredQuestions,
+  resetViewQuesstions,
   handleSubmitExam,
   timeLeft,
   isTimeOver,
@@ -69,6 +69,21 @@ const ExamLeaveModal: React.FC<{
             )}
           </View>
 
+          <TouchableOpacity
+            style={[styles.optionButton, styles.optionButtonAll]}>
+            <Text
+              style={[
+                styles.optionButtonText,
+                styles.optionButtonTextSecondary,
+              ]}
+              onPress={() => {
+                resetViewQuesstions();
+                setExitExamModalVisible(false);
+              }}>
+              View / Review All Questions
+            </Text>
+          </TouchableOpacity>
+
           <View style={styles.optionsContainer}>
             {!isTimeOver && (
               <TouchableOpacity style={styles.optionButton}>
@@ -76,7 +91,7 @@ const ExamLeaveModal: React.FC<{
                   style={styles.optionButtonText}
                   onPress={() => {
                     setExitExamModalVisible(false);
-                    filterUnansweredQuestions();
+                    // filterUnansweredQuestions();
                   }}>
                   Continue Exam
                 </Text>
@@ -130,8 +145,8 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   modalImageContaner: {
-    width: '30%',
-    height: 140,
+    width: '40%',
+    height: 160,
     overflow: 'hidden',
     marginBottom: 10,
   },
@@ -212,6 +227,11 @@ const styles = StyleSheet.create({
   optionButtonSecondary: {
     backgroundColor: '#1E90FF',
     borderWidth: 0,
+  },
+  optionButtonAll: {
+    backgroundColor: '#008E97',
+    borderWidth: 0,
+    width: '80%',
   },
   optionButtonText: {
     textAlign: 'center',

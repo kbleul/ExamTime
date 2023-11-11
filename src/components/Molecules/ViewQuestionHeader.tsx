@@ -1,26 +1,29 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
 import {screenWidth} from '../../utils/Data/data';
 
 const ViewQuestionHeader: React.FC<{
   title: string;
   setShowFullPage?: React.Dispatch<React.SetStateAction<boolean>>;
   showFullPage?: boolean;
-}> = ({title, setShowFullPage, showFullPage}) => {
-  const navigator = useNavigation();
-
+  unansweredQuestionsLength: number;
+  filterUnansweredQuestions: () => void;
+}> = ({
+  title,
+  setShowFullPage,
+  showFullPage,
+  unansweredQuestionsLength,
+  filterUnansweredQuestions,
+}) => {
   return (
     <View style={styles.container}>
       {/* <TouchableOpacity touchSoundDisabled onPress={() => navigator.goBack()}>
         <Ionicons name="chevron-back" color="black" size={30} />
       </TouchableOpacity> */}
+
       <Text style={styles.titleText}>{title}</Text>
 
       {/* <TouchableOpacity touchSoundDisabled>
@@ -31,31 +34,52 @@ const ViewQuestionHeader: React.FC<{
               style={styles.icon}
             />
           </TouchableOpacity> */}
-
-      {setShowFullPage ? (
+      <View style={styles.buttonsContainer}>
         <TouchableOpacity
           touchSoundDisabled
-          onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}
-          style={
-            showFullPage
-              ? [styles.pageToggle, styles.pageToggleActive]
-              : styles.pageToggle
+          style={styles.flagBtn}
+          onPress={() =>
+            unansweredQuestionsLength > 0 && filterUnansweredQuestions()
           }>
-          <FontAwesome
-            name="file-text-o"
-            size={showFullPage ? 20 : 18}
-            color={showFullPage ? '#1E90FF' : '#fff'}
-            style={styles.icon}
-          />
+          <View style={styles.flagContainer}>
+            <MaterialCommunityIcons
+              name="folder-text-outline"
+              size={36}
+              color="#1E90FF"
+            />
+            {unansweredQuestionsLength !== 0 && (
+              <Text style={styles.flagBtnCounterText}>
+                {unansweredQuestionsLength}
+              </Text>
+            )}
+          </View>
         </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          touchSoundDisabled
-          onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}
-          style={styles.lockStyle}>
-          <FontAwesome name="file-text-o" size={16} color={'#fff'} />
-        </TouchableOpacity>
-      )}
+
+        {setShowFullPage ? (
+          <TouchableOpacity
+            touchSoundDisabled
+            onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}
+            style={
+              showFullPage
+                ? styles.pageToggle
+                : [styles.pageToggle, styles.pageToggleActive]
+            }>
+            <FontAwesome
+              name="file-text-o"
+              size={20}
+              color={showFullPage ? '#fff' : '#d9d9d9'}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            touchSoundDisabled
+            onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}
+            style={styles.lockStyle}>
+            <FontAwesome name="file-text-o" size={16} color={'#fff'} />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
@@ -65,13 +89,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: 20,
     paddingLeft: 5,
     paddingRight: 15,
     marginBottom: 5,
   },
   titleText: {
-    width: '90%',
+    width: '75%',
     color: 'black',
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.04,
@@ -81,6 +105,12 @@ const styles = StyleSheet.create({
   },
   titleTextSecondary: {
     width: '90%',
+  },
+  buttonsContainer: {
+    width: '25%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   doneContainer: {
     borderRadius: 5,
@@ -101,20 +131,37 @@ const styles = StyleSheet.create({
   icon: {
     paddingTop: 2,
   },
+  flagBtn: {
+    padding: 2,
+  },
+  flagContainer: {
+    position: 'relative',
+  },
+  flagBtnCounterText: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    color: 'white',
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: screenWidth * 0.03,
+    borderRadius: 10,
+    backgroundColor: '#1E90FF',
+    width: 18,
+    height: 18,
+    textAlign: 'center',
+  },
   pageToggle: {
     width: 35,
     height: 35,
-    backgroundColor: '#2968F5',
+    backgroundColor: '#1E90FF',
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 2,
-    borderColor: '#1E90FF',
   },
   pageToggleActive: {
     borderRadius: 80,
-    backgroundColor: '#fff',
-    borderWidth: 2,
+    backgroundColor: '#35494A',
   },
   lockStyle: {
     backgroundColor: '#2968F5',

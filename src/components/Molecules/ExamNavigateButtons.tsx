@@ -68,7 +68,6 @@ const Buttons: React.FC<{
     else {
     }
     setExitExamModalVisible(true);
-    setCurrentQuestion && setCurrentQuestion(0);
   };
   return (
     <TouchableOpacity
