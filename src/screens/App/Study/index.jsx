@@ -211,5 +211,7 @@ const styles = ScaledSheet.create({
         color: '#858585',
     },
 
+    
+
 });
 export default Index;
