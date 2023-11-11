@@ -169,7 +169,7 @@ const styles = ScaledSheet.create({
     },
     imgContainer: {
         width: '30%',
-        padding: 4,
+        padding: 5,
         backgroundColor: 'white',
         borderTopStartRadius: 10,
         borderBottomLeftRadius: 10,
