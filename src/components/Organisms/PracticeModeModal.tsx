@@ -1,19 +1,22 @@
 import React from 'react';
 import {ImageBackground, TouchableOpacity} from 'react-native';
-import {Alert, Modal, StyleSheet, Text, View} from 'react-native';
+import {Modal, StyleSheet, Text, View} from 'react-native';
 import Tips from '../Molecules/Tips';
+import {useNavigation} from '@react-navigation/native';
+import {examType} from '../../types';
 
 const PracticeModeModal: React.FC<{
   practiceModeModalVisible: boolean;
   setPracticeModeModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsPracticeMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setStartTimer: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedExam: React.Dispatch<React.SetStateAction<examType | null>>;
+  selectedExam: examType | null;
 }> = ({
   practiceModeModalVisible,
   setPracticeModeModalVisible,
-  setIsPracticeMode,
-  setStartTimer,
+  setSelectedExam,
+  selectedExam,
 }) => {
+  const navigator = useNavigation();
   return (
     <Modal
       animationType="slide"
@@ -47,9 +50,12 @@ const PracticeModeModal: React.FC<{
             <TouchableOpacity
               style={[styles.optionButton, styles.optionButtonSecondary]}
               onPress={() => {
-                setIsPracticeMode(false);
                 setPracticeModeModalVisible(false);
-                setStartTimer(true);
+                navigator.navigate('Exam-View', {
+                  exam: selectedExam,
+                  isPracticeMode: false,
+                });
+                setSelectedExam(null);
               }}>
               <Text
                 style={[
@@ -67,9 +73,12 @@ const PracticeModeModal: React.FC<{
                   styles.optionButtonTextSecondary,
                 ]}
                 onPress={() => {
-                  setIsPracticeMode(true);
                   setPracticeModeModalVisible(false);
-                  setStartTimer(true);
+                  navigator.navigate('Exam-View', {
+                    exam: selectedExam,
+                    isPracticeMode: true,
+                  });
+                  setSelectedExam(null);
                 }}>
                 Yes
               </Text>

@@ -68,7 +68,7 @@ const style = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: '#D3D3D3',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: screenWidth * 0.035,
   },
   buttonTextSelected: {

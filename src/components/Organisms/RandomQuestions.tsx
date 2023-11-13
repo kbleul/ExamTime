@@ -15,6 +15,7 @@ const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
   const [currentAmount, setCurrentAmount] = useState(minimumAmount);
   //catch on every render
   const sliderBgMinValue = `${(currentAmount / maximumAmount) * 100}%`;
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Random Questions</Text>
@@ -52,6 +53,7 @@ const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
           onPress={() =>
             navigator.navigate('Random-Exam', {
               selectedSubject: selectedSubject,
+              amount: currentAmount,
             })
           }>
           <Text style={styles.startButtonText}>Start</Text>

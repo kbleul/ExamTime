@@ -146,6 +146,7 @@ const ExamReview = ({route}) => {
         title={'Answer Review'}
         setShowFullPage={setShowFullPage}
         showFullPage={showFullPage}
+        isReview={true}
       />
 
       <ButtonNav

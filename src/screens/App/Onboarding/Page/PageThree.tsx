@@ -137,7 +137,7 @@ const style = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: '#FFFFFF',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Montserrat-SemiBold',
     textTransform: 'uppercase',
   },
   activeButtonText: {
@@ -148,7 +148,7 @@ const style = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   title: {
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: screenWidth * 0.07,
     color: '#2D466A',
     textAlign: 'left',

@@ -9,14 +9,16 @@ const ViewQuestionHeader: React.FC<{
   title: string;
   setShowFullPage?: React.Dispatch<React.SetStateAction<boolean>>;
   showFullPage?: boolean;
-  unansweredQuestionsLength: number;
-  filterUnansweredQuestions: () => void;
+  unansweredQuestionsLength?: number;
+  filterUnansweredQuestions?: () => void;
+  isReview?: boolean;
 }> = ({
   title,
   setShowFullPage,
   showFullPage,
   unansweredQuestionsLength,
   filterUnansweredQuestions,
+  isReview,
 }) => {
   return (
     <View style={styles.container}>
@@ -34,26 +36,36 @@ const ViewQuestionHeader: React.FC<{
               style={styles.icon}
             />
           </TouchableOpacity> */}
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          touchSoundDisabled
-          style={styles.flagBtn}
-          onPress={() =>
-            unansweredQuestionsLength > 0 && filterUnansweredQuestions()
-          }>
-          <View style={styles.flagContainer}>
-            <MaterialCommunityIcons
-              name="folder-text-outline"
-              size={36}
-              color="#1E90FF"
-            />
-            {unansweredQuestionsLength !== 0 && (
-              <Text style={styles.flagBtnCounterText}>
-                {unansweredQuestionsLength}
-              </Text>
-            )}
-          </View>
-        </TouchableOpacity>
+      <View
+        style={
+          isReview
+            ? [styles.buttonsContainer, styles.buttonsContainerSingle]
+            : styles.buttonsContainer
+        }>
+        {!isReview && (
+          <TouchableOpacity
+            touchSoundDisabled
+            style={styles.flagBtn}
+            onPress={() =>
+              unansweredQuestionsLength &&
+              filterUnansweredQuestions &&
+              unansweredQuestionsLength > 0 &&
+              filterUnansweredQuestions()
+            }>
+            <View style={styles.flagContainer}>
+              <MaterialCommunityIcons
+                name="folder-text-outline"
+                size={36}
+                color="#1E90FF"
+              />
+              {unansweredQuestionsLength !== 0 && (
+                <Text style={styles.flagBtnCounterText}>
+                  {unansweredQuestionsLength}
+                </Text>
+              )}
+            </View>
+          </TouchableOpacity>
+        )}
 
         {setShowFullPage ? (
           <TouchableOpacity
@@ -111,6 +123,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  buttonsContainerSingle: {
+    justifyContent: 'flex-end',
   },
   doneContainer: {
     borderRadius: 5,

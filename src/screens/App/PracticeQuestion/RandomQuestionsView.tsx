@@ -8,28 +8,26 @@ import {
   Text,
 } from 'react-native';
 import Question from '../../../components/Molecules/Question';
-import ExamTimer from '../../../components/Molecules/ExamTimer';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
 import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
-import PracticeModeModal from '../../../components/Organisms/PracticeModeModal';
 import {examQuestionType} from '../../../types';
 import {useNavigation} from '@react-navigation/native';
 import DirectionModal from '../../../components/Organisms/DirectionModal';
 import {useGetRandomExamMutation} from '../../../reduxToolkit/Services/auth';
 import {answersType, filterUnanswered} from './index';
-import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
 import {View} from 'react-native';
 import Loading from '../../../components/Atoms/Loading';
+import {checkIsOnline} from '../../../utils/Functions/Helper';
 const RandomQuestionsView = ({route}: {route: any}) => {
   //   const {subject} = route.params;
   const navigator: any = useNavigation();
   const flatListRef = useRef<FlatList<any> | null>(null);
 
-  const {selectedSubject} = route.params;
+  const {selectedSubject, amount} = route.params;
   const [getRandomExam, {isLoading, error}] = useGetRandomExamMutation();
 
   const [exam, setExam] = useState<any[] | null>(null);
@@ -53,7 +51,7 @@ const RandomQuestionsView = ({route}: {route: any}) => {
         const response: any = await getRandomExam({
           grade: 'grade_8',
           subject: selectedSubject.subject.subject,
-          noOfQuestions: 20,
+          noOfQuestions: amount,
         }).unwrap();
 
         setCurrentViewExam(response?.randomQuestions);
@@ -77,9 +75,11 @@ const RandomQuestionsView = ({route}: {route: any}) => {
             : 'Unable to get exams',
       });
 
-      setTimeout(() => {
-        navigator.navigate('Practice');
-      }, 3000);
+      if (!checkIsOnline(navigator)) {
+        setTimeout(() => {
+          navigator.navigate('Practice');
+        }, 3000);
+      }
     }
   }, [error]);
 

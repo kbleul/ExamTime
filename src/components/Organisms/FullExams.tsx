@@ -18,6 +18,7 @@ import {examType} from '../../types';
 import Toast from 'react-native-toast-message';
 import {Exam, Grade, Subject} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
+import PracticeModeModal from './PracticeModeModal';
 
 export const ExamCatagories = [
   {
@@ -51,6 +52,11 @@ const FullExams: React.FC<{
   const [getExams, {isLoading, error}] = useGetExamsMutation();
 
   const [exams, setExams] = useState<examType[] | []>([]);
+
+  const [selectedExam, setSelectedExam] = useState<examType | null>(null);
+
+  const [practiceModeModalVisible, setPracticeModeModalVisible] =
+    useState(false);
 
   useEffect(() => {
     if (selectedSubject) {
@@ -109,6 +115,15 @@ const FullExams: React.FC<{
         exams={exams}
         subject={(selectedSubject && selectedSubject.subject?.subject) || ''}
         selectedExamType={selectedExamType}
+        setPracticeModeModalVisible={setPracticeModeModalVisible}
+        setSelectedExam={setSelectedExam}
+      />
+
+      <PracticeModeModal
+        practiceModeModalVisible={practiceModeModalVisible}
+        setPracticeModeModalVisible={setPracticeModeModalVisible}
+        setSelectedExam={setSelectedExam}
+        selectedExam={selectedExam}
       />
     </View>
   );
@@ -120,8 +135,17 @@ const Exams: React.FC<{
   exams: examType[];
   subject: string;
   selectedExamType: string;
-}> = ({isLoading, error, exams, subject, selectedExamType}) => {
-  const navigator = useNavigation();
+  setPracticeModeModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedExam: React.Dispatch<React.SetStateAction<examType | null>>;
+}> = ({
+  isLoading,
+  error,
+  exams,
+  subject,
+  selectedExamType,
+  setPracticeModeModalVisible,
+  setSelectedExam,
+}) => {
   const [showAllExams, setShowAllExams] = useState(false);
   return (
     <View style={examsStyle.container}>
@@ -134,7 +158,9 @@ const Exams: React.FC<{
             touchSoundDisabled
             style={examsStyle.imgContainer}
             onPress={() => {
-              navigator.navigate('Exam-View', {exam});
+              //  navigator.navigate('Exam-View', {exam});
+              setPracticeModeModalVisible(true);
+              setSelectedExam(exam);
             }}>
             <ImageBackground
               style={examsStyle.imageBG}

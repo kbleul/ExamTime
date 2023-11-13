@@ -22,34 +22,34 @@ const HeaderCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   //scroll animation with interval
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+  // useEffect(() => {
+  //   let interval: NodeJS.Timeout | null = null;
 
-    if (flatListRef.current) {
-      interval = setInterval(() => {
-        //return to first carousel item if active is last item
-        if (Math.round(activeIndex) >= CarouselData_guest.length - 1) {
-          flatListRef.current?.scrollToIndex({
-            index: 0,
-            animated: true,
-          });
-        }
-        //return scroll to next
-        else {
-          flatListRef.current?.scrollToIndex({
-            index: activeIndex + 1,
-            animated: true,
-          });
-        }
-      }, 2000);
-    }
+  //   if (flatListRef.current) {
+  //     interval = setInterval(() => {
+  //       //return to first carousel item if active is last item
+  //       if (Math.round(activeIndex) >= CarouselData_guest.length - 1) {
+  //         flatListRef.current?.scrollToIndex({
+  //           index: 0,
+  //           animated: true,
+  //         });
+  //       }
+  //       //return scroll to next
+  //       else {
+  //         flatListRef.current?.scrollToIndex({
+  //           index: activeIndex + 1,
+  //           animated: true,
+  //         });
+  //       }
+  //     }, 2000);
+  //   }
 
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [activeIndex]);
+  //   return () => {
+  //     if (interval) {
+  //       clearInterval(interval);
+  //     }
+  //   };
+  // }, [activeIndex]);
 
   const renderItem = ({item, index}: {item: Item; index: number}) => {
     return (

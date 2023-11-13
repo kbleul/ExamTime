@@ -98,11 +98,7 @@ const ChosenCourses = () => {
           title={item.subject.subject}
           lessonsCount={12}
           progress={item.progress}
-          bgImage={
-            DummySubjects[index]
-              ? DummySubjects[index].bgImage
-              : DummySubjects[DummySubjects.length - 1]
-          }
+          bgImage={{uri: item.icon}}
         />
       </View>
     );
@@ -162,11 +158,5 @@ const ChosenCourses = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContaier: {
-    width: '100%',
-  },
-});
 
 export default ChosenCourses;

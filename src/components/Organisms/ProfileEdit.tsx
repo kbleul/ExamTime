@@ -1,26 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StatusBar,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {ScrollView, StatusBar, Text} from 'react-native';
 import {View} from 'react-native';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
-import {get_from_localStorage} from '../../utils/Functions/Get';
 import {
   useChangePasswordMutation,
   useChangeProfileMutation,
   useLoginMutation,
 } from '../../reduxToolkit/Services/auth';
 import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import Toast from 'react-native-toast-message';
 import {ScaledSheet, ms} from 'react-native-size-matters';
 import {useGetRegionsMutation} from '../../reduxToolkit/Services/region';

@@ -145,11 +145,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '90%',
+    width: '80%',
   },
   modalImageContaner: {
     width: '40%',
-    height: 160,
+    height: 140,
     overflow: 'hidden',
     marginBottom: 10,
   },
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   optionButton: {
-    width: '42%',
+    width: '46%',
     borderRadius: 7,
     paddingVertical: 8,
     borderWidth: 1,

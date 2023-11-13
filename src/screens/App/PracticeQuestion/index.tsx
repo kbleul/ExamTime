@@ -15,7 +15,6 @@ import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
-import PracticeModeModal from '../../../components/Organisms/PracticeModeModal';
 import {examQuestionType} from '../../../types';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import DirectionModal from '../../../components/Organisms/DirectionModal';
@@ -66,7 +65,7 @@ const PracticeQuestion = ({route}: {route: any}) => {
   const navigationState = useNavigationState(state => state);
   const currentScreen = navigationState.routes[navigationState.index].name;
 
-  const {exam} = route.params;
+  const {exam, isPracticeMode} = route.params;
 
   const {useRealm, useQuery} = AuthContext;
   const realm = useRealm();
@@ -82,14 +81,12 @@ const PracticeQuestion = ({route}: {route: any}) => {
   const [isTimeOver, setIsTimeOver] = useState(false);
 
   const [currentViewExam, setCurrentViewExam] = useState(exam.examQuestion);
-  const [practiceModeModalVisible, setPracticeModeModalVisible] =
-    useState(true);
+
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
 
   const [showSideNav, setShowSideNav] = useState(false);
   const [showFullPage, setShowFullPage] = useState(false);
 
-  const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
@@ -180,6 +177,9 @@ const PracticeQuestion = ({route}: {route: any}) => {
     };
   }, [currentScreen]);
 
+  useEffect(() => {
+    setStartTimer(true);
+  }, []);
   const renderItem = ({
     item,
     index,
@@ -207,108 +207,97 @@ const PracticeQuestion = ({route}: {route: any}) => {
           ? [IndexStyle.container, styles.container]
           : IndexStyle.container
       }>
-      {!practiceModeModalVisible && (
-        <>
-          {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
+      {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
-          <ViewQuestionHeader
-            title={exam.examName}
-            setShowFullPage={setShowFullPage}
-            showFullPage={showFullPage}
-            unansweredQuestionsLength={
-              userAnswers ? exam.examQuestion.length - userAnswers.length : 0
-            }
-            filterUnansweredQuestions={filterUnansweredQuestions}
-          />
-          {!isPracticeMode && (
-            <ExamTimer
-              formatedTime={formatedTime}
-              timer={timer}
-              setTimer={setTimer}
-              startTimer={startTimer}
-              setIsTimeOver={setIsTimeOver}
-              setExitExamModalVisible={setExitExamModalVisible}
-            />
-          )}
-
-          {currentViewExam.length === 0 && (
-            <Text style={styles.emptyText}>No more questions left !</Text>
-          )}
-
-          {!showFullPage && currentViewExam?.length > 0 && (
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={showFullPage}>
-              <Question
-                key={
-                  currentViewExam[currentQuestion]
-                    ? currentViewExam[currentQuestion].id
-                    : '---'
-                }
-                showFullPage={showFullPage}
-                question={currentViewExam[currentQuestion]}
-                questionCounter={currentQuestion + 1}
-                total={currentViewExam.length}
-                isPracticeMode={isPracticeMode}
-                setUserAnswers={setUserAnswers}
-                setDirection={setDirection}
-                userAnswers={userAnswers}
-              />
-            </ScrollView>
-          )}
-
-          {showFullPage && currentViewExam?.length > 0 && (
-            <View style={styles.scrollContentFullPage}>
-              <FlatList
-                ref={flatListRef}
-                data={currentViewExam}
-                initialNumToRender={4}
-                renderItem={({item, index}) => renderItem({item, index})}
-                keyExtractor={item => item.id.toString()}
-                numColumns={1} // Set the number of columns to 2 for a 2-column layout
-              />
-            </View>
-          )}
-          <ExamNavigateButtons
-            setExitExamModalVisible={setExitExamModalVisible}
-            showFullPage={showFullPage}
-            currentQuestion={currentQuestion}
-            setCurrentQuestion={setCurrentQuestion}
-            totalQuestionsLength={currentViewExam.length}
-          />
-
-          <ExamLeaveModal
-            exitExamModalVisible={exitExamModalVisible}
-            setExitExamModalVisible={setExitExamModalVisible}
-            examStatusData={{
-              total: exam.examQuestion.length,
-              answered: userAnswers?.length || 0,
-            }}
-            resetViewQuesstions={resetViewQuesstions}
-            handleSubmitExam={handleSubmitExam}
-            timeLeft={isPracticeMode ? false : timer}
-            isTimeOver={isTimeOver}
-            showViewReviewBtn={
-              currentViewExam
-                ? exam.examQuestion.length === currentViewExam.length
-                  ? exam.examQuestion.length === userAnswers?.length
-                    ? true
-                    : false
-                  : true
-                : false
-            }
-          />
-
-          <DirectionModal direction={direction} setDirection={setDirection} />
-        </>
+      <ViewQuestionHeader
+        title={exam.examName}
+        setShowFullPage={setShowFullPage}
+        showFullPage={showFullPage}
+        unansweredQuestionsLength={
+          userAnswers ? exam.examQuestion.length - userAnswers.length : 0
+        }
+        filterUnansweredQuestions={filterUnansweredQuestions}
+      />
+      {!isPracticeMode && (
+        <ExamTimer
+          formatedTime={formatedTime}
+          timer={timer}
+          setTimer={setTimer}
+          startTimer={startTimer}
+          setIsTimeOver={setIsTimeOver}
+          setExitExamModalVisible={setExitExamModalVisible}
+        />
       )}
 
-      <PracticeModeModal
-        practiceModeModalVisible={practiceModeModalVisible}
-        setPracticeModeModalVisible={setPracticeModeModalVisible}
-        setIsPracticeMode={setIsPracticeMode}
-        setStartTimer={setStartTimer}
+      {currentViewExam.length === 0 && (
+        <Text style={styles.emptyText}>No more questions left !</Text>
+      )}
+
+      {!showFullPage && currentViewExam?.length > 0 && (
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={showFullPage}>
+          <Question
+            key={
+              currentViewExam[currentQuestion]
+                ? currentViewExam[currentQuestion].id
+                : '---'
+            }
+            showFullPage={showFullPage}
+            question={currentViewExam[currentQuestion]}
+            questionCounter={currentQuestion + 1}
+            total={currentViewExam.length}
+            isPracticeMode={isPracticeMode}
+            setUserAnswers={setUserAnswers}
+            setDirection={setDirection}
+            userAnswers={userAnswers}
+          />
+        </ScrollView>
+      )}
+
+      {showFullPage && currentViewExam?.length > 0 && (
+        <View style={styles.scrollContentFullPage}>
+          <FlatList
+            ref={flatListRef}
+            data={currentViewExam}
+            initialNumToRender={4}
+            renderItem={({item, index}) => renderItem({item, index})}
+            keyExtractor={item => item.id.toString()}
+            numColumns={1} // Set the number of columns to 2 for a 2-column layout
+          />
+        </View>
+      )}
+      <ExamNavigateButtons
+        setExitExamModalVisible={setExitExamModalVisible}
+        showFullPage={showFullPage}
+        currentQuestion={currentQuestion}
+        setCurrentQuestion={setCurrentQuestion}
+        totalQuestionsLength={currentViewExam.length}
       />
+
+      <ExamLeaveModal
+        exitExamModalVisible={exitExamModalVisible}
+        setExitExamModalVisible={setExitExamModalVisible}
+        examStatusData={{
+          total: exam.examQuestion.length,
+          answered: userAnswers?.length || 0,
+        }}
+        resetViewQuesstions={resetViewQuesstions}
+        handleSubmitExam={handleSubmitExam}
+        timeLeft={isPracticeMode ? false : timer}
+        isTimeOver={isTimeOver}
+        showViewReviewBtn={
+          currentViewExam
+            ? exam.examQuestion.length === currentViewExam.length
+              ? exam.examQuestion.length === userAnswers?.length
+                ? true
+                : false
+              : true
+            : false
+        }
+      />
+
+      <DirectionModal direction={direction} setDirection={setDirection} />
     </SafeAreaView>
   );
 };

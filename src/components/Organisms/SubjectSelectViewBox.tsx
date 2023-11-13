@@ -29,7 +29,7 @@ const SubjectSelectViewBox: React.FC<{
         <ChosenCoursesCard
           title={SelectedSubject?.subject?.subject || ''}
           lessonsCount={10}
-          bgImage={DummySubjects[0].bgImage}
+          bgImage={{uri: SelectedSubject.icon}}
         />
         <Text style={styles.dot} />
       </View>

@@ -117,7 +117,7 @@ const style = StyleSheet.create({
     lineHeight: 40,
   },
   gradesContainer: {
-    width: '90%',
+    width: '98%',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

@@ -22,12 +22,13 @@ export const checkIsOnline = async (
     const state = await NetInfo.fetch();
     if (!state.isConnected || !state.isInternetReachable) {
       navigator.navigate('network-error');
+      return true;
     }
-    return;
+    return false;
   } catch (error) {
     // Handle any errors (e.g., request timeout)
     navigator.navigate('network-error');
-    return; // Assume offline on error
+    return true; // Assume offline on error
   }
 };
 
