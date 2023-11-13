@@ -4,17 +4,17 @@ import Slider from '@react-native-community/slider';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {Subject} from '../../Realm';
 
 const minimumAmount = 10;
 const maximumAmount = 100;
 
-const RandomQuestions = () => {
+const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
   const navigator = useNavigation();
   const [currentAmount, setCurrentAmount] = useState(minimumAmount);
-
   //catch on every render
   const sliderBgMinValue = `${(currentAmount / maximumAmount) * 100}%`;
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Random Questions</Text>
@@ -49,9 +49,13 @@ const RandomQuestions = () => {
         <TouchableOpacity
           touchSoundDisabled
           style={styles.startButton}
-          onPress={() => navigator.navigate('Exam-View')}>
+          onPress={() =>
+            navigator.navigate('Random-Exam', {
+              selectedSubject: selectedSubject,
+            })
+          }>
           <Text style={styles.startButtonText}>Start</Text>
-          <AntDesign name="right" color="white" />
+          <AntDesign name="right" color="white" size={screenWidth * 0.03} />
         </TouchableOpacity>
       </View>
     </View>
@@ -60,13 +64,13 @@ const RandomQuestions = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 15,
+    marginVertical: screenHeight * 0.01,
     marginHorizontal: 5,
   },
   title: {
     color: '#008E97',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: 16,
+    fontSize: screenWidth * 0.04,
   },
   sliderContainer: {
     borderWidth: 1,
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: screenWidth * 0.009,
   },
   sliderSubContainer: {
     width: '80%',
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
   sliderText: {
     color: '#858585',
     fontFamily: 'PoppinsRegular',
-    fontSize: 10,
+    fontSize: screenWidth * 0.025,
   },
   startButton: {
     width: '20%',
@@ -131,9 +135,10 @@ const styles = StyleSheet.create({
     width: '70%',
     color: 'white',
     fontFamily: 'PoppinsSemiBold',
+    fontSize: screenWidth * 0.03,
     textAlign: 'right',
-    paddingTop: 8,
-    paddingBottom: 4,
+    paddingTop: 4,
+    paddingBottom: 2,
   },
 });
 

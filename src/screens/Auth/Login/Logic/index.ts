@@ -4,15 +4,13 @@ import {checkIsOnline} from '../../../../utils/Functions/Helper';
 import {FormData} from '../Types';
 import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
-import {
-  setObject_to_localStorage,
-  set_to_localStorage,
-} from '../../../../utils/Functions/Set';
+
 import {
   LocalObjectDataKeys,
   LocalStorageDataKeys,
 } from '../../../../utils/Data/data';
 import {UserData} from '../../../../Realm';
+import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 
@@ -33,6 +31,7 @@ export const handleLogin = async (
   newUserData: ResultsType<UserData>,
   realm: Realm,
   IsDefaultPasswordChanged: boolean,
+  setChanged: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   checkIsOnline(navigator);
 
@@ -41,7 +40,6 @@ export const handleLogin = async (
       phoneNumber: '+251' + data.phoneNumber,
       password: data.password,
     }).unwrap();
-
     dispatch(
       loginSuccess({
         user: response.user,
@@ -58,7 +56,8 @@ export const handleLogin = async (
       realm,
     );
 
-    console.log(response);
+    // Manually reset the controlled inputs
+    setChanged && setChanged(prev => !prev);
 
     response.IsDefaultPasswordChanged
       ? navigator.navigate('Home')
@@ -70,11 +69,12 @@ export const handleLogin = async (
     ) {
       navigator.navigate('network-error');
     }
+    console.log(error);
     return false;
   }
 };
 
-export const updateRealmUserData = (
+export const updateRealmUserData = async (
   newUserData: ResultsType<UserData>,
   user: userType,
   token: string,
@@ -87,15 +87,28 @@ export const updateRealmUserData = (
         firstName,
         lastName,
         phoneNumber,
-        grade,
         gender,
         email,
         verificationCode,
         region,
       } = user;
       let newUser;
+
+      const grade = await getObject_from_localStorage(
+        LocalStorageDataKeys.userGrade,
+      );
+
+      let newGrade;
+
       realm.write(() => {
         const newRegion = realm.create(LocalObjectDataKeys.Region, {...region});
+
+        newGrade = realm.create('Grade', {
+          id: grade.value.id,
+          grade: grade.value.grade,
+          createdAt: grade.value.createdAt,
+          updatedAt: grade.value.updatedAt,
+        });
 
         newUser = realm.create(LocalObjectDataKeys.User, {
           id,
@@ -105,13 +118,14 @@ export const updateRealmUserData = (
           region: newRegion,
           isVerified: false,
           isActive: true,
-          grade: grade?.grade,
+          grade: newGrade,
           gender,
           email,
           verificationCode: verificationCode ? verificationCode : null,
         });
         newUserData.user = newUser;
         newUserData.token = token;
+        newUserData.grade = newGrade;
       });
     }
   } catch (e) {

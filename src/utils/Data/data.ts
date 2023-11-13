@@ -10,24 +10,6 @@ type ProfileMenuItems = {
 
 type TopCatagoriesType = string[];
 
-export const DummyDataScience = [
-  {subjName: 'Mathematics'},
-  {subjName: 'English'},
-  {subjName: 'Biology'},
-  {subjName: 'Physics'},
-  {subjName: 'SAT'},
-  {subjName: 'Chemistry'},
-];
-
-export const DummyDataSocial = [
-  {subjName: 'History'},
-  {subjName: 'English'},
-  {subjName: 'Geography'},
-  {subjName: 'Civics'},
-  {subjName: 'Math'},
-  {subjName: 'Economics'},
-];
-
 export const CourseCatagories: TopCatagoriesType = ['Study', 'Challenge'];
 export const TestQustionsCatagories: TopCatagoriesType = [
   'Model Questions',
@@ -143,6 +125,7 @@ export const trialStatus = {
   trial: 'trial',
 };
 
+//for realm db
 export const LocalStorageDataKeys = {
   token: 'token',
   userData: 'userData',
@@ -151,10 +134,17 @@ export const LocalStorageDataKeys = {
   userGrade: 'userGrade',
 };
 
+//for async storage
 export const LocalObjectDataKeys = {
   User: 'User',
   UserData: 'UserData',
   Region: 'Region',
+  Subject: 'Subject',
+  SingleSubject: 'SingleSubject',
+  Grade: 'Grade',
+  ExamQuestion: 'ExamQuestion',
+  Exam: 'Exam',
+  UserExamAnswers: 'UserExamAnswers',
 };
 
 export const CarouselData_guest = [

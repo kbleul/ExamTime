@@ -1,19 +1,204 @@
-import React, {useState} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  BackHandler,
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import Question from '../../../components/Molecules/Question';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ExamTimer from '../../../components/Molecules/ExamTimer';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
 import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
-import {screenHeight} from '../../../utils/Data/data';
+import PracticeModeModal from '../../../components/Organisms/PracticeModeModal';
+import {examQuestionType} from '../../../types';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
+import DirectionModal from '../../../components/Organisms/DirectionModal';
+import {AuthContext} from '../../../Realm/model';
+import {Exam} from '../../../Realm';
+import {LocalObjectDataKeys} from '../../../utils/Data/data';
 
-const PracticeQuestion = () => {
+export type answersType = {
+  id: string;
+  index: number;
+  userAnswer: string;
+  correctAnswer: string;
+};
+
+export const filterUnanswered = (
+  examQuestions: examQuestionType[],
+  answers: answersType[] | [],
+) => {
+  const answerIdArr = answers.map(answer => answer.id);
+
+  const unansweredQuestions = examQuestions.filter(
+    question => !answerIdArr.includes(question.id),
+  );
+
+  return unansweredQuestions;
+};
+
+function formatTime(minutes: number) {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  let timeString = '';
+
+  if (hours < 1) {
+    timeString += '00:';
+  } else if (hours < 10) {
+    timeString += '0' + hours.toString() + ':';
+  } else {
+    timeString += hours.toString() + ':';
+  }
+
+  timeString += remainingMinutes.toString().padStart(2, '0') + ':00';
+
+  return timeString;
+}
+
+const PracticeQuestion = ({route}: {route: any}) => {
+  const navigationState = useNavigationState(state => state);
+  const currentScreen = navigationState.routes[navigationState.index].name;
+
+  const {exam} = route.params;
+
+  const {useRealm, useQuery} = AuthContext;
+  const realm = useRealm();
+  const savedExam = useQuery(Exam, examItems => {
+    return examItems.filtered(`id == "${exam.id}"`);
+  });
+
+  const navigator: any = useNavigation();
+  const flatListRef = useRef<FlatList<any> | null>(null);
+  const formatedTime = formatTime(exam.duration);
+  const [timer, setTimer] = useState(formatedTime);
+  const [startTimer, setStartTimer] = useState(false);
+  const [isTimeOver, setIsTimeOver] = useState(false);
+
+  const [currentViewExam, setCurrentViewExam] = useState(exam.examQuestion);
+  const [practiceModeModalVisible, setPracticeModeModalVisible] =
+    useState(true);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
+
   const [showSideNav, setShowSideNav] = useState(false);
   const [showFullPage, setShowFullPage] = useState(false);
+
+  const [isPracticeMode, setIsPracticeMode] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+
+  const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
+
+  const [direction, setDirection] = useState<string | null>(null);
+
+  const filterUnansweredQuestions = () => {
+    const filteredQusetions = filterUnanswered(
+      exam.examQuestion,
+      userAnswers || [],
+    );
+
+    setCurrentViewExam([...filteredQusetions]);
+    setCurrentQuestion(0);
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({offset: 0, animated: true});
+    }
+  };
+
+  useEffect(() => {
+    console.log({userAnswers: userAnswers ? userAnswers.length : 0});
+  }, [userAnswers]);
+
+  const resetViewQuesstions = () => {
+    setCurrentViewExam(exam.examQuestion);
+    setCurrentQuestion(0);
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({offset: 0, animated: true});
+    }
+  };
+
+  const handleSubmitExam = () => {
+    if (savedExam[0] && userAnswers) {
+      const answersArray: any[] = [];
+
+      try {
+        realm.write(() => {
+          userAnswers.forEach(answerItem => {
+            const newAnswer = realm.create(
+              LocalObjectDataKeys.UserExamAnswers,
+              {
+                ...answerItem,
+              },
+            );
+
+            answersArray.push(newAnswer);
+          });
+
+          savedExam[0].userExamAnswers = answersArray;
+          savedExam[0].isExamTaken = true;
+        });
+      } catch (e) {
+        console.log('error', e);
+      }
+    }
+
+    navigator.navigate('Exam-Result', {
+      userAnswers: userAnswers || [],
+      total: exam.examQuestion.length,
+      timeTaken: timer,
+      examQuestions: exam.examQuestion,
+      isPracticeMode,
+    });
+  };
+
+  useEffect(() => {
+    const backAction = () => {
+      setExitExamModalVisible(prev => !prev);
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'Exam-View') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
+  }, [currentScreen]);
+
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: examQuestionType;
+    index: number;
+  }) => (
+    <Question
+      key={item.id}
+      showFullPage={showFullPage}
+      question={item}
+      questionCounter={index + 1}
+      total={currentViewExam.length}
+      isPracticeMode={isPracticeMode}
+      setUserAnswers={setUserAnswers}
+      setDirection={setDirection}
+      userAnswers={userAnswers}
+    />
+  );
 
   return (
     <SafeAreaView
@@ -22,39 +207,107 @@ const PracticeQuestion = () => {
           ? [IndexStyle.container, styles.container]
           : IndexStyle.container
       }>
-      {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
+      {!practiceModeModalVisible && (
+        <>
+          {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
-      <ViewQuestionHeader
-        title="Biology 2010 exam"
-        setShowSideNav={() => setShowSideNav(true)}
-        setShowFullPage={setShowFullPage}
-        showFullPage={showFullPage}
-      />
-      <ExamTimer />
+          <ViewQuestionHeader
+            title={exam.examName}
+            setShowFullPage={setShowFullPage}
+            showFullPage={showFullPage}
+            unansweredQuestionsLength={
+              userAnswers ? exam.examQuestion.length - userAnswers.length : 0
+            }
+            filterUnansweredQuestions={filterUnansweredQuestions}
+          />
+          {!isPracticeMode && (
+            <ExamTimer
+              formatedTime={formatedTime}
+              timer={timer}
+              setTimer={setTimer}
+              startTimer={startTimer}
+              setIsTimeOver={setIsTimeOver}
+              setExitExamModalVisible={setExitExamModalVisible}
+            />
+          )}
 
-      <ScrollView
-        contentContainerStyle={showFullPage ? styles.scrollContent : {}}
-        showsVerticalScrollIndicator={showFullPage}>
-        <Question showFullPage={showFullPage} />
-        {showFullPage && (
-          <>
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-            <Question showFullPage={showFullPage} />
-          </>
-        )}
-      </ScrollView>
-      <ExamNavigateButtons
-        setExitExamModalVisible={setExitExamModalVisible}
-        showFullPage={showFullPage}
-      />
+          {currentViewExam.length === 0 && (
+            <Text style={styles.emptyText}>No more questions left !</Text>
+          )}
 
-      <ExamLeaveModal
-        exitExamModalVisible={exitExamModalVisible}
-        setExitExamModalVisible={setExitExamModalVisible}
+          {!showFullPage && currentViewExam?.length > 0 && (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={showFullPage}>
+              <Question
+                key={
+                  currentViewExam[currentQuestion]
+                    ? currentViewExam[currentQuestion].id
+                    : '---'
+                }
+                showFullPage={showFullPage}
+                question={currentViewExam[currentQuestion]}
+                questionCounter={currentQuestion + 1}
+                total={currentViewExam.length}
+                isPracticeMode={isPracticeMode}
+                setUserAnswers={setUserAnswers}
+                setDirection={setDirection}
+                userAnswers={userAnswers}
+              />
+            </ScrollView>
+          )}
+
+          {showFullPage && currentViewExam?.length > 0 && (
+            <View style={styles.scrollContentFullPage}>
+              <FlatList
+                ref={flatListRef}
+                data={currentViewExam}
+                initialNumToRender={4}
+                renderItem={({item, index}) => renderItem({item, index})}
+                keyExtractor={item => item.id.toString()}
+                numColumns={1} // Set the number of columns to 2 for a 2-column layout
+              />
+            </View>
+          )}
+          <ExamNavigateButtons
+            setExitExamModalVisible={setExitExamModalVisible}
+            showFullPage={showFullPage}
+            currentQuestion={currentQuestion}
+            setCurrentQuestion={setCurrentQuestion}
+            totalQuestionsLength={currentViewExam.length}
+          />
+
+          <ExamLeaveModal
+            exitExamModalVisible={exitExamModalVisible}
+            setExitExamModalVisible={setExitExamModalVisible}
+            examStatusData={{
+              total: exam.examQuestion.length,
+              answered: userAnswers?.length || 0,
+            }}
+            resetViewQuesstions={resetViewQuesstions}
+            handleSubmitExam={handleSubmitExam}
+            timeLeft={isPracticeMode ? false : timer}
+            isTimeOver={isTimeOver}
+            showViewReviewBtn={
+              currentViewExam
+                ? exam.examQuestion.length === currentViewExam.length
+                  ? exam.examQuestion.length === userAnswers?.length
+                    ? true
+                    : false
+                  : true
+                : false
+            }
+          />
+
+          <DirectionModal direction={direction} setDirection={setDirection} />
+        </>
+      )}
+
+      <PracticeModeModal
+        practiceModeModalVisible={practiceModeModalVisible}
+        setPracticeModeModalVisible={setPracticeModeModalVisible}
+        setIsPracticeMode={setIsPracticeMode}
+        setStartTimer={setStartTimer}
       />
     </SafeAreaView>
   );
@@ -65,7 +318,16 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   scrollContent: {
-    paddingBottom: 80,
+    paddingBottom: 65,
+  },
+  scrollContentFullPage: {
+    paddingBottom: 140,
+  },
+  emptyText: {
+    color: 'black',
+    paddingTop: 50,
+    fontFamily: 'PoppinsRegular',
+    textAlign: 'center',
   },
 });
 

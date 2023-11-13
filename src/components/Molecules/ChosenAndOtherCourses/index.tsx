@@ -8,14 +8,9 @@ import img3 from '../../../assets/Images/home/s3.png';
 import img4 from '../../../assets/Images/home/s4.png';
 import img5 from '../../../assets/Images/home/s5.png';
 import OtherCoursesCard from './OtherCoursesCard';
-
-interface SubjectItemType {
-  id: string;
-  title: string;
-  lessonsCount: number;
-  progress?: number;
-  bgImage: any;
-}
+import {Subject, UserData} from '../../../Realm';
+import {AuthContext} from '../../../Realm/model';
+import {subjectType} from '../../../types';
 
 interface CourseItemType {
   id: string;
@@ -91,23 +86,38 @@ const DummyCourses = [
 ];
 
 const ChosenCourses = () => {
-  const renderItem = ({
-    item,
-    index,
-  }: {
-    item: SubjectItemType;
-    index: number;
-  }) => {
+  const {useQuery} = AuthContext;
+
+  const savedSubjects = useQuery(Subject);
+  const savedUserData = useQuery(UserData);
+
+  const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
       <View>
         <ChosenCoursesCard
-          title={item.title}
-          lessonsCount={item.lessonsCount}
+          title={item.subject.subject}
+          lessonsCount={12}
           progress={item.progress}
-          bgImage={item.bgImage}
+          bgImage={
+            DummySubjects[index]
+              ? DummySubjects[index].bgImage
+              : DummySubjects[DummySubjects.length - 1]
+          }
         />
       </View>
     );
+  };
+
+  const PushFavorateToFront = (favoritesArray: string[]) => {
+    const favorites = savedSubjects.filter(item =>
+      favoritesArray.includes(item.id),
+    );
+    const notFavorites = savedSubjects.filter(
+      item => !favoritesArray.includes(item.id),
+    );
+    const favoritesFirstArray = [...favorites.reverse(), ...notFavorites];
+
+    return favoritesFirstArray;
   };
 
   const renderItemCourse = ({
@@ -134,7 +144,7 @@ const ChosenCourses = () => {
 
       <FlatList
         keyExtractor={item => item.id}
-        data={DummySubjects}
+        data={PushFavorateToFront(savedUserData[0].selectedSubjects || [])}
         renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator={false}

@@ -22,6 +22,9 @@ import PracticeQuestion from '../screens/App/PracticeQuestion';
 import {ProfileMenuItemsAuth} from '../utils/Data/data';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
 import UserGuide from '../screens/App/UserGuide/index';
+import ExamResult from '../screens/App/PracticeQuestion/ExamResult';
+import ExamReview from '../screens/App/PracticeQuestion/ExamReview';
+import RandomQuestionsView from '../screens/App/PracticeQuestion/RandomQuestionsView';
 
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
@@ -73,6 +76,21 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="Exam-View"
           component={PracticeQuestion}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Exam-Review"
+          component={ExamReview}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Exam-Result"
+          component={ExamResult}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Random-Exam"
+          component={RandomQuestionsView}
           options={{headerShown: false}}
         />
         <Stack.Screen

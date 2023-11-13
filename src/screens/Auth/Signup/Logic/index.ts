@@ -181,7 +181,7 @@ export const resendOtp = async (
     isCorrectCode.current = true;
     setISResend(prev => !prev);
   } catch (error: any) {
-    console.error('Error submitting form///:', error);
+    console.error('Error submitting form:', error);
   }
 };
 

@@ -6,22 +6,23 @@ const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 const OtherCoursesCard: React.FC<{
-  grade: number;
+  grade: string | number;
   subTitle: string;
   subjectsCount: number;
   isOnboarding?: boolean;
   onPress?: () => void;
-}> = ({grade, subTitle, subjectsCount, isOnboarding, onPress}) => {
+  index?: number;
+}> = ({grade, subTitle, subjectsCount, isOnboarding, onPress, index}) => {
   const useStyle = isOnboarding ? stylesSecondary : styles;
   return (
     <View style={useStyle.container}>
-      <Text style={useStyle.title}>Grade - {grade}</Text>
-      <Text style={useStyle.subTitle}>{subTitle}</Text>
+      <Text style={useStyle.title}>{grade}</Text>
+      <Text style={useStyle.subTitle}>{subTitle} </Text>
       <TouchableOpacity touchSoundDisabled onPress={onPress}>
         <Text
           style={
-            grade === 8
-              ? [useStyle.courses, useStyle.coursesEight]
+            index && index % 2 === 0
+              ? [useStyle.courses, useStyle.coursesSecondary]
               : useStyle.courses
           }>
           {subjectsCount} Subjects
@@ -35,6 +36,7 @@ export const styles = StyleSheet.create({
   container: {
     width: screenWidth * (5 / 10),
     height: screenHeight * (1 / 5.5),
+    maxHeight: 120,
     marginHorizontal: 5,
     marginBottom: 10,
     padding: 15,
@@ -47,13 +49,14 @@ export const styles = StyleSheet.create({
     fontSize: screenWidth * 0.04,
     fontFamily: 'Montserrat-SemiBold',
     paddingBottom: 3,
+    textTransform: 'uppercase',
   },
   subTitle: {
     color: 'black',
     fontSize: screenWidth * 0.028,
     fontFamily: 'Montserrat-Regular',
     marginTop: 2,
-    height: 36,
+    marginBottom: 20,
   },
   courses: {
     width: '100%',
@@ -65,7 +68,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#0F6098',
     textAlign: 'center',
   },
-  coursesEight: {
+  coursesSecondary: {
     backgroundColor: '#37A9B3',
   },
 });
@@ -104,7 +107,7 @@ export const stylesSecondary = StyleSheet.create({
     backgroundColor: '#0F6098',
     textAlign: 'center',
   },
-  coursesEight: {
+  coursesSecondary: {
     backgroundColor: '#37A9B3',
   },
 });
