@@ -195,5 +195,6 @@ const styles = ScaledSheet.create({
     fontSize: '28@ms',
     fontWeight: 'bold',
   },
+
 });
 export default ProfileContent;

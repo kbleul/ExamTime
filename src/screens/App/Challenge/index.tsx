@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Card, Divider } from 'react-native-paper';
 import Accordion from 'react-native-collapsible/Accordion';
 import { ScrollView } from 'react-native-gesture-handler';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const Index = ({ progress = 70 }) => {
   const showToast = () => {
     ToastAndroid.show('View Calander', ToastAndroid.SHORT);
@@ -84,21 +85,70 @@ const Index = ({ progress = 70 }) => {
       content: 'Lorem ipsum...',
     },
   ];
-  const [activeSections, setActiveSections] = useState([]);
+  const [activeSections, setActiveSections] = useState<number[]>([]);
 
-  const renderSectionTitle = (section: any) => {
-    return (
-      <View style={styles.content}>
-        <Text>{section.content}</Text>
-      </View>
-    );
-  };
+  // const renderSectionTitle = (section: any) => {
+  //   return (
+  //     <View style={styles.content}>
+  //       <Text>{section.content}</Text>
+  //     </View>
+  //   );
+  // };
 
-  const renderHeader = (section: any) => {
+  // const toggleSection = (index) => {
+  //   const newSections = [...activeSections];
+  //   const sectionIndex = newSections.indexOf(index);
+  //   if (sectionIndex !== -1) {
+  //     newSections.splice(sectionIndex, 1);
+  //   } else {
+  //     newSections.push(index);
+  //   }
+  //   setActiveSections(newSections);
+  // };
+  const renderHeader = (section: any, index: number, isActive: boolean) => {
+    const toggleSection = () => {
+      setActiveSections((prevSections) => {
+        if (prevSections.includes(index)) {
+          return prevSections.filter((sectionIndex) => sectionIndex !== index);
+        } else {
+          return [...prevSections, index];
+        }
+      });
+    };
     return (
-      <View style={styles.header}>
-        <Text style={styles.headerText}>{section.title}</Text>
-      </View>
+      // <View style={styles.header}>
+      <TouchableOpacity style={isActive ? styles.Activelcontainer : styles.lcontainer} onPress={toggleSection}
+        activeOpacity={0.8}>
+
+        <View style={styles.imgContainer}>
+          <ImageBackground
+            style={styles.imagebg}
+            source={require('./book.png')}
+          >
+            <Text>{''} </Text>
+          </ImageBackground>
+        </View>
+
+        <View style={styles.infoContainer}>
+          <View>
+            <Text style={styles.subject}>{section.title}</Text>
+            <Text style={styles.units}>{section.title} units</Text>
+            <View style={styles.indicatorContainer}>
+            </View>
+            </View>
+            <AntDesign
+              name={isActive ? 'up' : 'down'}
+              size={20}
+              color="#333333"
+            />
+            {/* <Text style={}></Text> */}
+        
+
+
+        </View>
+
+      </TouchableOpacity>
+
     );
   };
 
@@ -116,143 +166,145 @@ const Index = ({ progress = 70 }) => {
   return (
     <View style={styles.container}>
       <ScrollView>
-      <View style={styles.backicon}>
-        <BackWithItem type="Study section" />
-      </View>
-      <View style={styles.Headercontainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            Keep going, you're almost there! The study challenge is testing your limits and preparing you for greatness.
-          </Text>
-
+        <View style={styles.backicon}>
+          <BackWithItem type="Study section" />
         </View>
-        <View style={styles.right}>
+        <View style={styles.Headercontainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>
+              Keep going, you're almost there! The study challenge is testing your limits and preparing you for greatness.
+            </Text>
 
-          <AnimatedCircularProgress
-            size={100}
-            width={5}
-            backgroundWidth={4}
-            fill={progress}
-            tintColor="white"
-            backgroundColor="#FFE48F"
-            rotation={0}
-          >
-            {(fill) => (
-              <View style={{ alignItems: "center", justifyContent: "center" }}>
-
-                <Text style={{ fontSize: 25, fontWeight: 'bold', color: "white" }}>
-                  {Math.round(fill)}%
-                </Text>
-                <Text style={{ fontSize: 10, fontWeight: 'bold', color: "white" }}>
-                  Complated
-                </Text>
-              </View>
-
-            )}
-          </AnimatedCircularProgress>
-        </View>
-      </View>
-
-      <View style={styles.weeksContainer}>
-        {weeks.map((week) => (
-          <View
-            key={week.id}
-            style={[
-              styles.weekContainer
-            ]}
-          >
-            <Text style={styles.weekText}>Week</Text>
-            <View
-              style={[
-                styles.circle,
-                week.isActive ? styles.activeCircle : styles.inactiveCircle,
-              ]}
-            >
-              <Text style={week.isActive ? styles.idActiveText : styles.idInActiveText}>{week.id}</Text>
-            </View>
           </View>
-        ))}
-      </View>
+          <View style={styles.right}>
 
-      <View style={styles.ThisContainer}>
-        <View style={styles.ThisContainerHeader}>
-          <Text style={styles.ThisContainerHeaderWeekText}>Week</Text>
+            <AnimatedCircularProgress
+              size={100}
+              width={5}
+              backgroundWidth={4}
+              fill={progress}
+              tintColor="white"
+              backgroundColor="#FFE48F"
+              rotation={0}
+            >
+              {(fill) => (
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
 
-          <TouchableNativeFeedback onPress={showToast}>
-            <View style={styles.ViewCalander}>
-              <Text style={styles.calandertext}>View Calander</Text>
-              <Icon name="angle-right" size={15} color="#908F92" />
-            </View>
-          </TouchableNativeFeedback>
+                  <Text style={{ fontSize: 25, fontWeight: 'bold', color: "white" }}>
+                    {Math.round(fill)}%
+                  </Text>
+                  <Text style={{ fontSize: 10, fontWeight: 'bold', color: "white" }}>
+                    Complated
+                  </Text>
+                </View>
 
+              )}
+            </AnimatedCircularProgress>
+          </View>
         </View>
-        <View style={styles.divider} />
-        {/* <Divider style={{ flex: 1, width: "100%", height: 2, backgroundColor: 'red' }} /> */}
-        <View style={styles.weekdaysContainer} >
-          {days.map((week) => (
 
+        <View style={styles.weeksContainer}>
+          {weeks.map((week) => (
             <View
-              key={week.dayNumber}
+              key={week.id}
               style={[
-                week.isActive ? styles.ActiveweekDaysContainer : styles.inActiveweekDaysContainer,
+                styles.weekContainer
               ]}
             >
-              <Text style={week.isActive ? styles.ActiveweekText : styles.inActiveweekText}>{week.dayName}</Text>
+              <Text style={styles.weekText}>Week</Text>
               <View
                 style={[
                   styles.circle,
-                  week.isActive ? styles.ActiveweekDaysTextCircle : styles.inActiveweekDaysTextCircle,
+                  week.isActive ? styles.activeCircle : styles.inactiveCircle,
                 ]}
               >
-                <Text style={styles.weekDaysText}>{week.dayNumber}</Text>
+                <Text style={week.isActive ? styles.idActiveText : styles.idInActiveText}>{week.id}</Text>
               </View>
-              <View style={week.isActive ? styles.dotActive : styles.dotInactive} />
             </View>
-
           ))}
+        </View>
+
+        <View style={styles.ThisContainer}>
+          <View style={styles.ThisContainerHeader}>
+            <Text style={styles.ThisContainerHeaderWeekText}>Week</Text>
+
+            <TouchableNativeFeedback onPress={showToast}>
+              <View style={styles.ViewCalander}>
+                <Text style={styles.calandertext}>View Calander</Text>
+                <Icon name="angle-right" size={15} color="#908F92" />
+              </View>
+            </TouchableNativeFeedback>
+
+          </View>
+          <View style={styles.divider} />
+          {/* <Divider style={{ flex: 1, width: "100%", height: 2, backgroundColor: 'red' }} /> */}
+          <View style={styles.weekdaysContainer} >
+            {days.map((week) => (
+
+              <View
+                key={week.dayNumber}
+                style={[
+                  week.isActive ? styles.ActiveweekDaysContainer : styles.inActiveweekDaysContainer,
+                ]}
+              >
+                <Text style={week.isActive ? styles.ActiveweekText : styles.inActiveweekText}>{week.dayName}</Text>
+                <View
+                  style={[
+                    styles.circle,
+                    week.isActive ? styles.ActiveweekDaysTextCircle : styles.inActiveweekDaysTextCircle,
+                  ]}
+                >
+                  <Text style={styles.weekDaysText}>{week.dayNumber}</Text>
+                </View>
+                <View style={week.isActive ? styles.dotActive : styles.dotInactive} />
+              </View>
+
+            ))}
+
+          </View>
+        </View>
+
+        <View style={styles.SubjectList}>
+          {SubjectUnikt.map((subject) =>
+            <View>
+              <TouchableOpacity
+                style={styles.lcontainer}
+                onPress={() => console.log("sjfd")}
+              >
+
+                <View style={styles.imgContainer}>
+                  <ImageBackground
+                    style={styles.imagebg}
+                    source={require('./book.png')}
+                  >
+                    <Text>{''} </Text>
+                  </ImageBackground>
+                </View>
+
+                <View style={styles.infoContainer}>
+                  <Text style={styles.subject}>{subject.Lesson}</Text>
+                  <Text style={styles.units}>{subject.unit} units</Text>
+                  <View style={styles.indicatorContainer}>
+                    {/* <Text style={}></Text> */}
+                  </View>
+                  <Text style={styles.progressText}>{subject.progress}% completed</Text>
+                </View>
+              </TouchableOpacity>
+            </View>)}
+
 
         </View>
-      </View>
 
-      <View style={styles.SubjectList}>
-        {SubjectUnikt.map((subject) =>
-          <View>
-            <TouchableOpacity
-              style={styles.lcontainer}
-              onPress={() => console.log("sjfd")}
-            >
-
-              <View style={styles.imgContainer}>
-                <ImageBackground
-                  style={styles.imagebg}
-                  source={require('./book.png')}
-                >
-                  <Text>{''} </Text>
-                </ImageBackground>
-              </View>
-
-              <View style={styles.infoContainer}>
-                <Text style={styles.subject}>{subject.Lesson}</Text>
-                <Text style={styles.units}>{subject.unit} units</Text>
-                <View style={styles.indicatorContainer}>
-                  {/* <Text style={}></Text> */}
-                </View>
-                <Text style={styles.progressText}>{subject.progress}% completed</Text>
-              </View>
-            </TouchableOpacity>
-          </View>)}
-        <View>
+        <View style={styles.AccordionContainer}>
           <Accordion
             sections={SECTIONS}
             activeSections={activeSections}
-            renderSectionTitle={renderSectionTitle}
+            // renderSectionTitle={renderSectionTitle}
             renderHeader={renderHeader}
             renderContent={renderContent}
-            onChange={updateSections}
+            onChange={setActiveSections}
           />
         </View>
-
-      </View>
       </ScrollView>
     </View>
 
@@ -279,7 +331,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     width: screenWidth - 20,
-    height: screenHeight / 6,
+    height: screenHeight / 5.5,
     borderRadius: 10,
   },
   textContainer: {
@@ -312,6 +364,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   centerText: {
+    fontFamily: "PoppinsRegular",
     fontSize: 14,
     fontWeight: 'bold',
     color: 'black',
@@ -497,11 +550,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FAFCFA',
     padding: '1%',
-    marginHorizontal: 2,
-    marginVertical: 10,
-    elevation: 1,
-    borderRadius: 1,
-    shadowColor: 'rgba(0, 0, 0, 0.4)',
+    marginBottom: 5,
+
+    borderColor: "#E1E1E1",
+    borderWidth: 1,
+    borderRadius: 10,
+
+  },
+  Activelcontainer: {
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#FAFCFA',
+    padding: '1%',
+    // marginBottom: 5,
+
+    borderBottomWidth: 0
+
   },
   imgContainer: {
     width: '20%',
@@ -515,9 +580,11 @@ const styles = StyleSheet.create({
   infoContainer: {
     width: '80%',
     padding: 10,
+    flexDirection: "row",
     borderTopEndRadius: 10,
     borderBottomEndRadius: 10,
-    justifyContent: 'flex-end',
+    alignItems: "center",
+    justifyContent: 'space-between',
   },
   subject: {
     fontSize: 24,
@@ -553,18 +620,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#E0E0E0',
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
+
   },
   headerText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333333',
+    marginVertical: 30,
   },
   content: {
     padding: 16,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: 'white',
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
   },
+  AccordionContainer: {
+    width: "95%",
+    marginHorizontal: 10,
+  }
 });
 
 export default Index;
