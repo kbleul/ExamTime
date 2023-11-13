@@ -131,10 +131,9 @@ const Index = ({ progress = 70 }) => {
 
         <View style={styles.infoContainer}>
           <View>
-            <Text style={styles.subject}>{section.title}</Text>
-            <Text style={styles.units}>{section.title} units</Text>
-            <View style={styles.indicatorContainer}>
-            </View>
+            <Text style={styles.subject}>{section.unit}</Text>
+            <Text style={styles.units}>{section.Lesson} units</Text>
+        
             </View>
             <AntDesign
               name={isActive ? 'up' : 'down'}
@@ -155,7 +154,13 @@ const Index = ({ progress = 70 }) => {
   const renderContent = (section: any) => {
     return (
       <View style={styles.content}>
-        <Text>{section.content}</Text>
+           
+            <Text style={styles.contenttext}>
+            Your expected ability for this chapter is between 2.0 - 2.4 . Estimated your ability using the following self-assessment.
+            </Text>
+
+        
+        {/* <Text>{section.content}</Text> */}
       </View>
     );
   };
@@ -264,40 +269,9 @@ const Index = ({ progress = 70 }) => {
           </View>
         </View>
 
-        <View style={styles.SubjectList}>
-          {SubjectUnikt.map((subject) =>
-            <View>
-              <TouchableOpacity
-                style={styles.lcontainer}
-                onPress={() => console.log("sjfd")}
-              >
-
-                <View style={styles.imgContainer}>
-                  <ImageBackground
-                    style={styles.imagebg}
-                    source={require('./book.png')}
-                  >
-                    <Text>{''} </Text>
-                  </ImageBackground>
-                </View>
-
-                <View style={styles.infoContainer}>
-                  <Text style={styles.subject}>{subject.Lesson}</Text>
-                  <Text style={styles.units}>{subject.unit} units</Text>
-                  <View style={styles.indicatorContainer}>
-                    {/* <Text style={}></Text> */}
-                  </View>
-                  <Text style={styles.progressText}>{subject.progress}% completed</Text>
-                </View>
-              </TouchableOpacity>
-            </View>)}
-
-
-        </View>
-
         <View style={styles.AccordionContainer}>
           <Accordion
-            sections={SECTIONS}
+            sections={SubjectUnikt}
             activeSections={activeSections}
             // renderSectionTitle={renderSectionTitle}
             renderHeader={renderHeader}
@@ -587,14 +561,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   subject: {
-    fontSize: 24,
-    fontFamily: 'Montserrat-Bold',
+    fontSize: 18,
+    fontFamily: 'PoppinsMedium',
     textTransform: 'capitalize',
     color: '#1E90FF',
   },
   units: {
-    fontSize: 18,
-    fontFamily: 'Montserrat-Regular',
+    fontSize: 16,
+    fontFamily: 'PoppinsMedium',
     textTransform: 'capitalize',
     color: '#858585',
     paddingVertical: 2,
@@ -629,7 +603,7 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   content: {
-    padding: 16,
+    padding: 6,
     backgroundColor: 'white',
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
@@ -637,6 +611,16 @@ const styles = StyleSheet.create({
   AccordionContainer: {
     width: "95%",
     marginHorizontal: 10,
+  },
+  contenttext:{
+    borderColor: "#E1E1E1",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding:10,
+    fontFamily: "PoppinsRegular",
+    color: 'grey',
+    fontSize: screenHeight * 0.02,
+
   }
 });
 
