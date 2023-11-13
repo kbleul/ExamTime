@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import CircularProgress from 'react-native-circular-progress-indicator';
 import {
   BackHandler,
   StyleSheet,
@@ -75,7 +76,7 @@ const ExamResult = ({route}: {route: any}) => {
 
   return (
     <View style={styles.container}>
-      <View
+      {/* <View
         style={
           gradePrercentage.status === gradeStatus.Passed
             ? styles.topSection
@@ -92,9 +93,24 @@ const ExamResult = ({route}: {route: any}) => {
           }>
           {gradePrercentage.status}
         </Text>
-        {/* <View style={styles.topSectionHiddenSection} />
-        <View style={styles.topSectionHiddenSection} /> */}
-      </View>
+      </View> */}
+
+      <CircularProgress
+        value={correctAnswers}
+        radius={screenWidth * 0.25}
+        duration={1000}
+        progressValueColor={'black'}
+        activeStrokeColor={
+          gradePrercentage.status === gradeStatus.Passed ? '#3CAB8C' : 'red'
+        }
+        inActiveStrokeColor={'#d9d9d9'}
+        maxValue={total}
+        title={gradePrercentage.status}
+        titleColor={
+          gradePrercentage.status === gradeStatus.Passed ? '#3CAB8C' : 'red'
+        }
+        titleStyle={{fontWeight: 'bold'}}
+      />
 
       <View style={styles.midSection}>
         <View
