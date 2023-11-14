@@ -45,7 +45,16 @@ const RandomQuestionsView = ({route}: {route: any}) => {
 
   const [direction, setDirection] = useState<string | null>(null);
 
+  const refIndex = useRef(0);
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+  const onViewCallBack = React.useCallback((viewableItems: any) => {
+    refIndex.current = viewableItems.changed[0].index;
+    // Use viewable items in state or as intended
+  }, []);
+
   useEffect(() => {
+    const backHandler = null;
+
     const getExam = async () => {
       try {
         const response: any = await getRandomExam({
@@ -56,13 +65,23 @@ const RandomQuestionsView = ({route}: {route: any}) => {
 
         setCurrentViewExam(response?.randomQuestions);
         setExam(response?.randomQuestions);
+
+        const backAction = () => {
+          setExitExamModalVisible(prev => !prev);
+          return true;
+        };
+
+        BackHandler.addEventListener('hardwareBackPress', backAction);
+
+        return () => backHandler && backHandler.remove();
       } catch (err: any) {
-        console.log(err?.data?.message);
+        console.log(err?.data?.message, 'aaa');
+        backHandler && backHandler.remove();
       }
     };
 
     getExam();
-  }, []);
+  }, [error]);
 
   useEffect(() => {
     if (error) {
@@ -117,20 +136,12 @@ const RandomQuestionsView = ({route}: {route: any}) => {
     }
   };
 
-  useEffect(() => {
-    const backAction = () => {
-      setExitExamModalVisible(prev => !prev);
-      return true;
-    };
+  // useEffect(() => {
+  //   const backHandler = null;
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    // Clean up the event listener when the component is unmounted
-    return () => backHandler.remove();
-  }, []);
+  //   // Clean up the event listener when the component is unmounted
+  //   return () => backHandler && backHandler.remove();
+  // }, [isLoading, error]);
 
   const renderItem = ({
     item,
@@ -171,6 +182,8 @@ const RandomQuestionsView = ({route}: {route: any}) => {
               exam ? (userAnswers ? exam.length - userAnswers.length : 0) : 0
             }
             filterUnansweredQuestions={filterUnansweredQuestions}
+            setCurrentQuestion={setCurrentQuestion}
+            refIndex={refIndex}
           />
 
           {currentViewExam.length === 0 && (
@@ -184,7 +197,11 @@ const RandomQuestionsView = ({route}: {route: any}) => {
               <Question
                 key={currentViewExam[currentQuestion].id}
                 showFullPage={showFullPage}
-                question={currentViewExam[currentQuestion]}
+                question={
+                  refIndex.current
+                    ? currentViewExam[refIndex.current]
+                    : currentViewExam[currentQuestion]
+                }
                 questionCounter={currentQuestion + 1}
                 total={currentViewExam.length}
                 isPracticeMode={false}
@@ -200,10 +217,12 @@ const RandomQuestionsView = ({route}: {route: any}) => {
               <FlatList
                 ref={flatListRef}
                 data={currentViewExam}
-                initialNumToRender={4}
+                initialNumToRender={10}
                 renderItem={({item, index}) => renderItem({item, index})}
                 keyExtractor={item => item.id.toString()}
                 numColumns={1} // Set the number of columns to 2 for a 2-column layout
+                onViewableItemsChanged={onViewCallBack}
+                viewabilityConfig={viewConfigRef.current}
               />
             </View>
           )}
@@ -253,7 +272,7 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   },
   scrollContentFullPage: {
-    paddingBottom: 140,
+    paddingBottom: 155,
   },
   emptyText: {
     color: 'black',

@@ -93,6 +93,13 @@ const PracticeQuestion = ({route}: {route: any}) => {
 
   const [direction, setDirection] = useState<string | null>(null);
 
+  const refIndex = useRef(0);
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+  const onViewCallBack = React.useCallback((viewableItems: any) => {
+    refIndex.current = viewableItems.changed[0].index;
+    // Use viewable items in state or as intended
+  }, []);
+
   const filterUnansweredQuestions = () => {
     const filteredQusetions = filterUnanswered(
       exam.examQuestion,
@@ -105,10 +112,6 @@ const PracticeQuestion = ({route}: {route: any}) => {
       flatListRef.current.scrollToOffset({offset: 0, animated: true});
     }
   };
-
-  useEffect(() => {
-    console.log({userAnswers: userAnswers ? userAnswers.length : 0});
-  }, [userAnswers]);
 
   const resetViewQuesstions = () => {
     setCurrentViewExam(exam.examQuestion);
@@ -217,6 +220,8 @@ const PracticeQuestion = ({route}: {route: any}) => {
           userAnswers ? exam.examQuestion.length - userAnswers.length : 0
         }
         filterUnansweredQuestions={filterUnansweredQuestions}
+        setCurrentQuestion={setCurrentQuestion}
+        refIndex={refIndex}
       />
       {!isPracticeMode && (
         <ExamTimer
@@ -244,7 +249,11 @@ const PracticeQuestion = ({route}: {route: any}) => {
                 : '---'
             }
             showFullPage={showFullPage}
-            question={currentViewExam[currentQuestion]}
+            question={
+              refIndex.current
+                ? currentViewExam[refIndex.current]
+                : currentViewExam[currentQuestion]
+            }
             questionCounter={currentQuestion + 1}
             total={currentViewExam.length}
             isPracticeMode={isPracticeMode}
@@ -260,10 +269,12 @@ const PracticeQuestion = ({route}: {route: any}) => {
           <FlatList
             ref={flatListRef}
             data={currentViewExam}
-            initialNumToRender={4}
+            initialNumToRender={10}
             renderItem={({item, index}) => renderItem({item, index})}
             keyExtractor={item => item.id.toString()}
             numColumns={1} // Set the number of columns to 2 for a 2-column layout
+            onViewableItemsChanged={onViewCallBack}
+            viewabilityConfig={viewConfigRef.current}
           />
         </View>
       )}
@@ -310,7 +321,7 @@ const styles = StyleSheet.create({
     paddingBottom: 65,
   },
   scrollContentFullPage: {
-    paddingBottom: 140,
+    paddingBottom: 200,
   },
   emptyText: {
     color: 'black',

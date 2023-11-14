@@ -75,9 +75,9 @@ export const styles = StyleSheet.create({
 
 export const stylesSecondary = StyleSheet.create({
   container: {
-    width: '45%',
+    width: '35%',
     marginHorizontal: 5,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 10,
     marginBottom: 15,
     borderRadius: 15,
@@ -86,24 +86,24 @@ export const stylesSecondary = StyleSheet.create({
   },
   title: {
     color: 'black',
-    fontSize: screenWidth * 0.04,
+    fontSize: screenWidth * 0.03,
     fontFamily: 'Montserrat-SemiBold',
-    paddingBottom: 3,
   },
   subTitle: {
     color: 'black',
-    fontSize: screenWidth * 0.028,
+    fontSize: screenWidth * 0.025,
     fontFamily: 'Montserrat-Regular',
     marginVertical: 4,
     paddingVertical: 2,
   },
   courses: {
-    width: '100%',
+    width: '90%',
+    marginLeft: '5%',
     borderRadius: 30,
     color: 'white',
-    fontSize: screenWidth * 0.028,
+    fontSize: screenWidth * 0.025,
     fontFamily: 'Montserrat-SemiBold',
-    paddingVertical: 8,
+    paddingVertical: 6,
     backgroundColor: '#0F6098',
     textAlign: 'center',
   },

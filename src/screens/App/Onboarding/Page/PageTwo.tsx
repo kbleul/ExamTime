@@ -41,40 +41,33 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
   };
   return (
     <View style={style.container}>
-      <ScrollView
-        contentContainerStyle={style.scrollContainer}
-        showsVerticalScrollIndicator={false}>
-        <TopIndicator
-          setPageCounter={setPageCounter}
-          pageCounter={pageCounter}
-        />
+      <TopIndicator setPageCounter={setPageCounter} pageCounter={pageCounter} />
 
-        <View style={style.imgContainer}>
-          <Image source={img} style={style.img} />
+      <View style={style.imgContainer}>
+        <Image source={img} style={style.img} />
+      </View>
+
+      <View style={style.secondContainer}>
+        <View style={style.titleContainer}>
+          <Text style={style.title}>What Grade are you in ?</Text>
         </View>
-
-        <View style={style.secondContainer}>
-          <View style={style.titleContainer}>
-            <Text style={style.title}>What Grade are you in ?</Text>
+        {!isLoading && !error && gradesArray && (
+          <View style={style.gradesContainer}>
+            {gradesArray.map((grade, index) => (
+              <OtherCoursesCard
+                key={grade.id}
+                grade={grade.grade}
+                subTitle="Natural Science Student"
+                subjectsCount={6}
+                isOnboarding
+                onPress={() => saveGrade(grade)}
+                index={index}
+              />
+            ))}
           </View>
-          {!isLoading && !error && gradesArray && (
-            <View style={style.gradesContainer}>
-              {gradesArray.map((grade, index) => (
-                <OtherCoursesCard
-                  key={grade.id}
-                  grade={grade.grade}
-                  subTitle="Natural Science Student"
-                  subjectsCount={6}
-                  isOnboarding
-                  onPress={() => saveGrade(grade)}
-                  index={index}
-                />
-              ))}
-            </View>
-          )}
-          {isLoading && <Loading />}
-        </View>
-      </ScrollView>
+        )}
+        {isLoading && <Loading />}
+      </View>
       <Toast />
     </View>
   );
@@ -84,12 +77,11 @@ const style = StyleSheet.create({
   container: {
     paddingTop: 30,
     flex: 1,
-  },
-  scrollContainer: {
-    height: screenHeight,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    height: screenHeight,
   },
+
   imgContainer: {
     width: '100%',
     height: screenHeight * (3.5 / 10),
@@ -117,9 +109,9 @@ const style = StyleSheet.create({
     lineHeight: 40,
   },
   gradesContainer: {
-    width: '98%',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
 });
 

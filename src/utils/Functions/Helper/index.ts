@@ -22,10 +22,15 @@ export const checkIsOnline = async (
     const state = await NetInfo.fetch();
     if (!state.isConnected || !state.isInternetReachable) {
       navigator.navigate('network-error');
+      console.log('error');
+
       return true;
     }
+    console.log({error: 'network-error'});
+
     return false;
   } catch (error) {
+    console.log({error});
     // Handle any errors (e.g., request timeout)
     navigator.navigate('network-error');
     return true; // Assume offline on error

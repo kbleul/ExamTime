@@ -12,6 +12,8 @@ const ViewQuestionHeader: React.FC<{
   unansweredQuestionsLength?: number;
   filterUnansweredQuestions?: () => void;
   isReview?: boolean;
+  setCurrentQuestion?: React.Dispatch<React.SetStateAction<number>>;
+  refIndex?: React.MutableRefObject<number>;
 }> = ({
   title,
   setShowFullPage,
@@ -19,6 +21,8 @@ const ViewQuestionHeader: React.FC<{
   unansweredQuestionsLength,
   filterUnansweredQuestions,
   isReview,
+  setCurrentQuestion,
+  refIndex,
 }) => {
   return (
     <View style={styles.container}>
@@ -67,10 +71,17 @@ const ViewQuestionHeader: React.FC<{
           </TouchableOpacity>
         )}
 
-        {setShowFullPage ? (
+        {setShowFullPage && (
           <TouchableOpacity
             touchSoundDisabled
-            onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}
+            onPress={() => {
+              setShowFullPage && setShowFullPage(prev => !prev);
+
+              if (setCurrentQuestion && refIndex && refIndex.current) {
+                setCurrentQuestion(refIndex.current);
+                refIndex.current = 0;
+              }
+            }}
             style={
               showFullPage
                 ? styles.pageToggle
@@ -82,13 +93,6 @@ const ViewQuestionHeader: React.FC<{
               color={showFullPage ? '#fff' : '#d9d9d9'}
               style={styles.icon}
             />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            touchSoundDisabled
-            onPress={() => setShowFullPage && setShowFullPage(prev => !prev)}
-            style={styles.lockStyle}>
-            <FontAwesome name="file-text-o" size={16} color={'#fff'} />
           </TouchableOpacity>
         )}
       </View>
