@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
-import { ScaledSheet } from 'react-native-size-matters';
+import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
+import {Dropdown} from 'react-native-element-dropdown';
+import {ScaledSheet} from 'react-native-size-matters';
 import LoadingRegions from '../Atoms/LoadingRegions';
 import RegionError from '../Atoms/RegionError';
 
@@ -24,7 +24,6 @@ const DropdownForRegionField: React.FC<DropdownForRegionFieldProps> = ({
   isLoadingRegions,
   regionError,
 }) => {
-
   return (
     <View style={styles.container}>
       <Dropdown
@@ -44,7 +43,7 @@ const DropdownForRegionField: React.FC<DropdownForRegionFieldProps> = ({
         value={region}
         onFocus={() => setIsFocusRegion(true)}
         onBlur={() => setIsFocusRegion(false)}
-        onChange={(item) => {
+        onChange={item => {
           setRegion(item.value);
           setIsFocusRegion(false);
         }}
@@ -52,7 +51,6 @@ const DropdownForRegionField: React.FC<DropdownForRegionFieldProps> = ({
       {isLoadingRegions && <LoadingRegions />}
       <RegionError error={regionError} />
     </View>
-  
   );
 };
 
@@ -67,12 +65,11 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     marginHorizontal: '20@s',
     marginVertical: '3@vs',
-    paddingHorizontal: '20@s'
+    paddingHorizontal: '20@s',
   },
   dropdown: {
     width: '100%',
     height: '42@vs',
-    textTransform: 'uppercase',
     color: '#d4d4d4',
   },
   placeholderStyle: {

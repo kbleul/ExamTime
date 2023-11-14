@@ -90,6 +90,7 @@ export const api = createApi({
       {token: String; profileData: Partial<userType>}
     >({
       query: data => {
+        console.log({userdata: data.profileData});
         return {
           url: `user/changeprofile/`,
           method: 'PUT',

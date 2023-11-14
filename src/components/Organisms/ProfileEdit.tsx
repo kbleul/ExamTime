@@ -62,7 +62,9 @@ const ProfileEdit: React.FC = () => {
   const [updatePassword] = useChangePasswordMutation();
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
-  const [region, setRegion] = useState<string | null>(null);
+  const [region, setRegion] = useState<string | null>(
+    user?.region?.region || null,
+  );
   const [regionError, setRegionError] = useState<string | null>(null);
   const [regionsListItems, setRegionsListItems] = useState<
     regionItemsType[] | []
@@ -72,7 +74,6 @@ const ProfileEdit: React.FC = () => {
     getRegions,
     {isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion},
   ] = useGetRegionsMutation();
-
   type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
 
   const handleUpdateProfile = async () => {
@@ -84,11 +85,13 @@ const ProfileEdit: React.FC = () => {
         phoneNumber: phone,
         grade: grade,
         gender: user?.gender ?? '',
-        region: region,
+        region: region?.toLocaleLowerCase(),
       };
 
       try {
         const result = await changeProfile({token, profileData});
+
+        console.log({result: result});
         if (result.data.user) {
           dispatch(
             loginSuccess({
@@ -125,7 +128,6 @@ const ProfileEdit: React.FC = () => {
         setFullName('');
         setPhone('');
         setGrade('');
-        setCity('');
       } catch (error) {
         Toast.show({
           type: 'error',

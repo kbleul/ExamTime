@@ -55,6 +55,7 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   useEffect(() => {
     const backHandler = null;
 
+    checkIsOnline(navigator);
     const getExam = async () => {
       try {
         const response: any = await getRandomExam({
@@ -67,7 +68,9 @@ const RandomQuestionsView = ({route}: {route: any}) => {
         setExam(response?.randomQuestions);
 
         const backAction = () => {
-          setExitExamModalVisible(prev => !prev);
+          isLoading || error
+            ? navigator.navgate('Practice')
+            : setExitExamModalVisible(prev => !prev);
           return true;
         };
 
