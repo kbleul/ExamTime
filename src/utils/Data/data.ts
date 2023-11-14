@@ -25,7 +25,7 @@ export const ProfileMenuItems: ProfileMenuItems = {
   },
   'About Us': {
     name: 'About Us',
-    color: '#B5C3E5',
+    color: '#f5c02f',
     navigate: 'Aboutus',
   },
   'Contact Us': {
