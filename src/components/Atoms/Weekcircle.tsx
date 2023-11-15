@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#E8EAEE',
   },
-  idInActiveText: {
+  idInactiveText: {
     fontSize: 18,
     textAlign: "center",
     fontFamily: "PoppinsMedium",

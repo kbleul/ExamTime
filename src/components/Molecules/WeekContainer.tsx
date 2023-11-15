@@ -20,7 +20,7 @@ const WeekContainer: React.FC<WeekContainerProps> = ({ weekId, isActive }) => {
 
 const styles = StyleSheet.create({
   weekContainer: {
-    marginVertical:10,
+    marginVertical:20,
     gap: 5,
     alignItems: 'center',
   },
