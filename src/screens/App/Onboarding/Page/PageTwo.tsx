@@ -57,7 +57,6 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
               <OtherCoursesCard
                 key={grade.id}
                 grade={grade.grade}
-                subTitle="Natural Science Student"
                 subjectsCount={6}
                 isOnboarding
                 onPress={() => saveGrade(grade)}

@@ -55,7 +55,6 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   useEffect(() => {
     const backHandler = null;
 
-    checkIsOnline(navigator);
     const getExam = async () => {
       try {
         const response: any = await getRandomExam({

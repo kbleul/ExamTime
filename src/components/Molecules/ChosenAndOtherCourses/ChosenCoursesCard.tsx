@@ -16,26 +16,28 @@ const ChosenCoursesCard: React.FC<{
           : [styles.container, styles.containerSecondary]
       }>
       <ImageBackground style={styles.imageBg} source={bgImage}>
-        <Text style={styles.title}>{title}</Text>
-        <Text
-          style={
-            progress !== undefined
-              ? styles.lessons
-              : [styles.lessons, styles.lessonsSecondary]
-          }>
-          {lessonsCount} Lessons
-        </Text>
+        <View style={styles.contentContainer}>
+          <Text style={styles.title}>{title}</Text>
+          <Text
+            style={
+              progress !== undefined
+                ? styles.lessons
+                : [styles.lessons, styles.lessonsSecondary]
+            }>
+            {lessonsCount} Lessons
+          </Text>
 
-        {progress !== undefined && (
-          <>
-            <View style={styles.progressBar}>
-              <View
-                style={[styles.progressBarIndicator, {width: '50%'}]} // calculate progress dynamically
-              />
-            </View>
-            <Text style={styles.progressText}>{progress}% completed</Text>
-          </>
-        )}
+          {progress !== undefined && (
+            <>
+              <View style={styles.progressBar}>
+                <View
+                  style={[styles.progressBarIndicator, {width: '50%'}]} // calculate progress dynamically
+                />
+              </View>
+              <Text style={styles.progressText}>{progress}% completed</Text>
+            </>
+          )}
+        </View>
       </ImageBackground>
     </View>
   );
@@ -57,8 +59,12 @@ export const styles = StyleSheet.create({
   imageBg: {
     height: '100%',
     width: screenWidth * (1 / 2.6),
-    paddingHorizontal: 10,
     justifyContent: 'flex-end',
+  },
+  contentContainer: {
+    backgroundColor: 'rgba(0,0,0,0.07)',
+    width: screenWidth * (1 / 2.5),
+    paddingHorizontal: 10,
   },
   title: {
     color: 'white',

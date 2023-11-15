@@ -16,6 +16,7 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
   setSelectedSubjects,
 }) => {
   const onPress = () => {
+    console.log({text, subjectId});
     if (selectedSubjects === null) {
       setSelectedSubjects([subjectId]);
       return;
@@ -24,7 +25,9 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
     if (selectedSubjects.includes(subjectId)) {
       setSelectedSubjects(selectedSubjects.filter(item => item !== subjectId));
     } else {
-      setSelectedSubjects(prev => prev && [...prev, subjectId]);
+      setSelectedSubjects(prev => {
+        return prev && [...prev, subjectId];
+      });
     }
   };
 

@@ -1,11 +1,19 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import Slider from '@react-native-community/slider';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {Subject} from '../../Realm';
+import {checkIsOnline} from '../../utils/Functions/Helper';
+import Toast from 'react-native-toast-message';
 
 const minimumAmount = 10;
 const maximumAmount = 100;
@@ -13,6 +21,9 @@ const maximumAmount = 100;
 const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
   const navigator = useNavigation();
   const [currentAmount, setCurrentAmount] = useState(minimumAmount);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   //catch on every render
   const sliderBgMinValue = `${(currentAmount / maximumAmount) * 100}%`;
 
@@ -50,14 +61,39 @@ const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
         <TouchableOpacity
           touchSoundDisabled
           style={styles.startButton}
-          onPress={() =>
-            navigator.navigate('Random-Exam', {
-              selectedSubject: selectedSubject,
-              amount: currentAmount,
-            })
-          }>
-          <Text style={styles.startButtonText}>Start</Text>
-          <AntDesign name="right" color="white" size={screenWidth * 0.03} />
+          onPress={async () => {
+            setIsLoading(true);
+
+            let isonline = await checkIsOnline(navigator);
+
+            console.log({isonline});
+            if (isonline) {
+              navigator.navigate('Random-Exam', {
+                selectedSubject: selectedSubject,
+                amount: currentAmount,
+              });
+            } else {
+              Toast.show({
+                type: 'error',
+                text1: 'Fetch random exams failed.',
+                text2: 'Network Error',
+              });
+            }
+
+            setIsLoading(false);
+            // navigator.navigate('Random-Exam', {
+            //   selectedSubject: selectedSubject,
+            //   amount: currentAmount,
+            // });
+          }}>
+          {isLoading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.startButtonText}>Start</Text>
+          )}
+          {!isLoading && (
+            <AntDesign name="right" color="white" size={screenWidth * 0.03} />
+          )}
         </TouchableOpacity>
       </View>
     </View>

@@ -20,20 +20,21 @@ export const checkIsOnline = async (
 ) => {
   try {
     const state = await NetInfo.fetch();
+
+    console.log(state.isConnected, state.isInternetReachable);
     if (!state.isConnected || !state.isInternetReachable) {
       navigator.navigate('network-error');
       console.log('error');
 
+      return false;
+    } else if (state.isConnected && state.isInternetReachable) {
       return true;
     }
-    console.log({error: 'network-error'});
-
-    return false;
   } catch (error) {
     console.log({error});
     // Handle any errors (e.g., request timeout)
     navigator.navigate('network-error');
-    return true; // Assume offline on error
+    return false; // Assume offline on error
   }
 };
 
