@@ -1,6 +1,6 @@
 import React from 'react';
-import {ImageBackground, Text} from 'react-native';
-import {StyleSheet, View} from 'react-native';
+import { ImageBackground, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileContent from '../../../components/Organisms/ProfileContent';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';

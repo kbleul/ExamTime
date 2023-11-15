@@ -152,7 +152,6 @@ export const DeleteUserAccount = async (
       password,
       token,
     }).unwrap();
-
     dispatch(logoutSuccess());
     setShowLastPrompt(false);
     setShowLDeleteDialog(false);
