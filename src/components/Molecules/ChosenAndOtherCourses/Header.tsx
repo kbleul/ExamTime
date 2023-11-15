@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {screenHeight} from '../../../utils/Data/data';
 
 const Header: React.FC<{
   title: string;
@@ -25,7 +26,7 @@ const Header: React.FC<{
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
+    paddingVertical: screenHeight * 0.015,
     paddingHorizontal: 10,
   },
   title: {

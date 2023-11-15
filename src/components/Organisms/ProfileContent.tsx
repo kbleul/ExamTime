@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { ScaledSheet, ms ,mvs, s,vs} from 'react-native-size-matters';
+import {ScaledSheet, ms, mvs, s, vs} from 'react-native-size-matters';
 import MenuItemsProfile from '../Molecules/MenuItemsProfile';
 import badgeImg from '../../assets/Images/Profile/badge.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -15,6 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
+//import badgeImg from '../../assets/Images/Profile/1.png';
 
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -90,7 +91,7 @@ const styles = ScaledSheet.create({
     top: '26%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius:'30@vs',
+    borderTopLeftRadius: '30@vs',
     borderTopRightRadius: '30@vs',
     height: '70%',
     width: '100%',
@@ -105,9 +106,9 @@ const styles = ScaledSheet.create({
     marginVertical: '10@vs',
     paddingVertical: '10@vs',
     paddingHorizontal: '30@s',
-    borderRadius:5,
+    borderRadius: 5,
     overflow: 'visible',
-    position: 'relative', 
+    position: 'relative',
   },
   activityContainer: {
     width: '70%',
@@ -127,12 +128,12 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor:"red",
-    position: 'absolute', 
-    top: '-50@ms', 
-    right: '2%', 
-    transform: [{translateX: 12.5}], 
+    position: 'absolute',
+    top: '-50@ms',
+    right: '2%',
+    transform: [{translateX: 12.5}],
     width: '140@s',
-    height:'180@vs',
+    height: '180@vs',
     objectFit: 'contain',
   },
   adsBtnContainer: {
@@ -186,6 +187,7 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
     fontSize: '15@ms',
     fontFamily: 'PoppinsSemiBold',
+    color: 'black',
   },
   editIcon: {
     backgroundColor: 'white',

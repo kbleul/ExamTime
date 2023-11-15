@@ -13,7 +13,6 @@ import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
 import ContactUs from '../screens/App/ContactUs/index';
 import FAQ from '../screens/App/FAQ/index';
-
 import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
@@ -22,8 +21,12 @@ import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
 import Practice from '../screens/App/Practice/index';
 import PracticeQuestion from '../screens/App/PracticeQuestion';
 import {ProfileMenuItemsAuth} from '../utils/Data/data';
-import SetNewPassword from '../components/Organisms/SetNewPassword';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
+import UserGuide from '../screens/App/UserGuide/index';
+import ExamResult from '../screens/App/PracticeQuestion/ExamResult';
+import ExamReview from '../screens/App/PracticeQuestion/ExamReview';
+import RandomQuestionsView from '../screens/App/PracticeQuestion/RandomQuestionsView';
+
 const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
   showOnboarding,
@@ -77,6 +80,21 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="Exam-Review"
+          component={ExamReview}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Exam-Result"
+          component={ExamResult}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Random-Exam"
+          component={RandomQuestionsView}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="Profile"
           component={Profile}
           options={{headerShown: false}}
@@ -91,6 +109,12 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
           component={FAQ}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name={ProfileMenuItemsAuth['User Guide'].navigate}
+          component={UserGuide}
+          options={{headerShown: false}}
+        />
+
         <Stack.Screen
           name="Profile-Edit"
           component={ProfileEditIndex}
@@ -136,7 +160,7 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
           component={SetNewPasswordPage}
           options={{headerShown: false}}
         />
-          <Stack.Screen
+        <Stack.Screen
           name="StudySection"
           component={StudySection}
           options={{headerShown: false}}

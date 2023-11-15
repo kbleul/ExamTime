@@ -1,19 +1,36 @@
-import React, {useState} from 'react';
-import {Image, ImageBackground, TouchableOpacity} from 'react-native';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import React from 'react';
+import {ImageBackground, TouchableOpacity} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, View} from 'react-native';
 
 const ExamLeaveModal: React.FC<{
   exitExamModalVisible: boolean;
   setExitExamModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({exitExamModalVisible, setExitExamModalVisible}) => {
+  examStatusData: {
+    total: number;
+    answered: number;
+  };
+  resetViewQuesstions: () => void;
+  handleSubmitExam: () => void;
+  timeLeft?: string | boolean;
+  isTimeOver?: boolean;
+  showViewReviewBtn?: boolean;
+}> = ({
+  exitExamModalVisible,
+  setExitExamModalVisible,
+  examStatusData,
+  resetViewQuesstions,
+  handleSubmitExam,
+  timeLeft,
+  isTimeOver,
+  showViewReviewBtn,
+}) => {
   return (
     <Modal
       animationType="slide"
       transparent={true}
       visible={exitExamModalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-        setExitExamModalVisible(false);
+        setExitExamModalVisible(prev => !prev);
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
@@ -25,7 +42,11 @@ const ExamLeaveModal: React.FC<{
             />
           </View>
 
-          <Text style={styles.modalText}>You haven’t completed the exam!</Text>
+          {examStatusData.total - examStatusData.answered > 0 && (
+            <Text style={styles.modalText}>
+              You haven’t completed the exam!
+            </Text>
+          )}
 
           <Text style={styles.modalText}>
             Are you sure you want to finish ?
@@ -33,32 +54,64 @@ const ExamLeaveModal: React.FC<{
 
           <View style={styles.infoContainer}>
             <Text style={styles.infoText}>
-              <Text style={styles.infoTextGreen}>40 </Text>answers
+              <Text style={styles.infoTextGreen}>{examStatusData.total} </Text>
+              Questions
             </Text>
             <Text style={[styles.infoText, styles.infoTextSecondary]}>
-              <Text style={styles.infoTextYellow}>10 </Text>remaining
+              <Text style={styles.infoTextYellow}>
+                {examStatusData.total - examStatusData.answered}{' '}
+              </Text>
+              Remaining
             </Text>
-            <Text style={[styles.infoText, styles.infoTextThird]}>
-              <Text style={styles.infoTextPurple}>2:20 </Text>time left
-            </Text>
+            {timeLeft && (
+              <Text style={[styles.infoText, styles.infoTextThird]}>
+                <Text style={styles.infoTextPurple}>{timeLeft} </Text>Time Left
+              </Text>
+            )}
           </View>
 
-          <View style={styles.optionsContainer}>
-            <TouchableOpacity style={styles.optionButton}>
+          {showViewReviewBtn && showViewReviewBtn === true && (
+            <TouchableOpacity
+              style={[styles.optionButton, styles.optionButtonAll]}>
               <Text
-                style={styles.optionButtonText}
-                onPress={() => setExitExamModalVisible(false)}>
-                cancle
+                style={[
+                  styles.optionButtonText,
+                  styles.optionButtonTextSecondary,
+                ]}
+                onPress={() => {
+                  resetViewQuesstions();
+                  setExitExamModalVisible(false);
+                }}>
+                View / Review All Questions
               </Text>
             </TouchableOpacity>
+          )}
+
+          <View style={styles.optionsContainer}>
+            {!isTimeOver && (
+              <TouchableOpacity style={styles.optionButton}>
+                <Text
+                  style={styles.optionButtonText}
+                  onPress={() => {
+                    setExitExamModalVisible(false);
+                    // filterUnansweredQuestions();
+                  }}>
+                  Continue Exam
+                </Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
-              style={[styles.optionButton, styles.optionButtonSecondary]}>
+              style={[styles.optionButton, styles.optionButtonSecondary]}
+              onPress={() => {
+                setExitExamModalVisible(false);
+                handleSubmitExam();
+              }}>
               <Text
                 style={[
                   styles.optionButtonText,
                   styles.optionButtonTextSecondary,
                 ]}>
-                Finish now
+                Submit Exam
               </Text>
             </TouchableOpacity>
           </View>
@@ -92,7 +145,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '90%',
+    width: '80%',
   },
   modalImageContaner: {
     width: '40%',
@@ -168,7 +221,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   optionButton: {
-    width: '42%',
+    width: '46%',
     borderRadius: 7,
     paddingVertical: 8,
     borderWidth: 1,
@@ -178,10 +231,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E90FF',
     borderWidth: 0,
   },
+  optionButtonAll: {
+    backgroundColor: '#008E97',
+    borderWidth: 0,
+    width: '80%',
+  },
   optionButtonText: {
     textAlign: 'center',
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 16,
+    fontSize: 14,
     color: '#F5A52D',
   },
   optionButtonTextSecondary: {

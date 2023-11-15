@@ -4,7 +4,7 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 export const styles = StyleSheet.create({
   container: {
     width: screenWidth - 20,
-    height: screenHeight / 5,
+    height: screenHeight / 6,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',

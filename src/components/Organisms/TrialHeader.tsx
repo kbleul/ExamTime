@@ -60,7 +60,11 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
           style={HeaderStyle.notificationBtn}
           touchSoundDisabled>
           <Text style={HeaderStyle.dot} />
-          <MaterialIcons name="notifications-none" size={screenWidth * 0.075} />
+          <MaterialIcons
+            name="notifications-none"
+            size={screenWidth * 0.075}
+            color="#000"
+          />
         </TouchableOpacity>
       </View>
     </View>

@@ -1,6 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {userType} from '../../types';
 import Config from 'react-native-config';
+import {Credentials} from 'realm/dist/bundle';
 
 type ExamParamsType = {
   page?: number;
@@ -13,7 +14,7 @@ type ExamParamsType = {
 };
 
 const createUrlWithParams = (url: string, params: ExamParamsType) => {
-  const newUrl = url;
+  let newUrl = url;
   let loopCounter = 0;
 
   Object.keys(params).forEach((key: string) => {
@@ -23,7 +24,6 @@ const createUrlWithParams = (url: string, params: ExamParamsType) => {
 
     ++loopCounter;
   });
-
   return newUrl;
 };
 
@@ -33,22 +33,45 @@ export const api = createApi({
     getExams: build.mutation<
       {},
       {
-        token: string;
         params: ExamParamsType;
       }
     >({
       query: credentials => {
         return {
-          url: 'exam/publishedexams',
+          url: createUrlWithParams('exam/publishedexams', {
+            grade: credentials.params.grade,
+          }),
           method: 'GET',
+        };
+      },
+    }),
+    getRandomExam: build.mutation<
+      {},
+      {
+        grade: string;
+        subject: string;
+        noOfQuestions: number;
+      }
+    >({
+      query: credentials => {
+        return {
+          url: 'exam/randomexam',
+          body: {
+            subject: credentials.subject,
+            grade: credentials.grade,
+            noOfQuestions: credentials.noOfQuestions,
+            unit: '',
+          },
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${credentials.token}`,
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ODY3MWRlYS1jZmQ3LTQ2M2MtOTAzZi01YmQ4NjFkMjMwN2QiLCJpYXQiOjE2OTkyNzI4MTZ9.riBXZdA0Cny8OGybmCyG4xRJZTlVxUmS6taG0t9ADQg',
           },
+          method: 'POST',
         };
       },
     }),
   }),
 });
 
-export const {useGetExamsMutation} = api;
+export const {useGetExamsMutation, useGetRandomExamMutation} = api;
