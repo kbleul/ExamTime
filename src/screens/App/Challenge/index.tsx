@@ -9,6 +9,9 @@ import { Card, Divider } from 'react-native-paper';
 import Accordion from 'react-native-collapsible/Accordion';
 import { ScrollView } from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import ProgressHeader from '../../../components/Organisms/ProgressHeader';
+import WeekContainer from '../../../components/Molecules/WeekContainer';
+import WeeksScreen from '../../../components/Organisms/WeeksScreem';
 
 const Index = ({ progress = 70 }) => {
   const showToast = () => {
@@ -89,24 +92,6 @@ const Index = ({ progress = 70 }) => {
   ];
   const [activeSections, setActiveSections] = useState<number[]>([]);
 
-  // const renderSectionTitle = (section: any) => {
-  //   return (
-  //     <View style={styles.content}>
-  //       <Text>{section.content}</Text>
-  //     </View>
-  //   );
-  // };
-
-  // const toggleSection = (index) => {
-  //   const newSections = [...activeSections];
-  //   const sectionIndex = newSections.indexOf(index);
-  //   if (sectionIndex !== -1) {
-  //     newSections.splice(sectionIndex, 1);
-  //   } else {
-  //     newSections.push(index);
-  //   }
-  //   setActiveSections(newSections);
-  // };
   const renderHeader = (section: any, index: number, isActive: boolean) => {
     const toggleSection = () => {
       setActiveSections((prevSections) => {
@@ -238,70 +223,14 @@ const Index = ({ progress = 70 }) => {
     );
   };
 
-  const updateSections = (activeSections: any) => {
-    setActiveSections(activeSections);
-  };
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.backicon}>
-          <BackWithItem type="Study section" />
+          <BackWithItem type="Challange Section" />
         </View>
-        <View style={styles.Headercontainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>
-              Keep going, you're almost there! The study challenge is testing your limits and preparing you for greatness.
-            </Text>
-
-          </View>
-          <View style={styles.right}>
-
-            <AnimatedCircularProgress
-              size={100}
-              width={5}
-              backgroundWidth={4}
-              fill={progress}
-              tintColor="white"
-              backgroundColor="#FFE48F"
-              rotation={0}
-            >
-              {(fill) => (
-                <View style={{ alignItems: "center", justifyContent: "center" }}>
-
-                  <Text style={{ fontSize: 25, fontWeight: 'bold', color: "white" }}>
-                    {Math.round(fill)}%
-                  </Text>
-                  <Text style={{ fontSize: 10, fontWeight: 'bold', color: "white" }}>
-                    Complated
-                  </Text>
-                </View>
-
-              )}
-            </AnimatedCircularProgress>
-          </View>
-        </View>
-
-        <View style={styles.weeksContainer}>
-          {weeks.map((week) => (
-            <View
-              key={week.id}
-              style={[
-                styles.weekContainer
-              ]}
-            >
-              <Text style={styles.weekText}>Week</Text>
-              <View
-                style={[
-                  styles.circle,
-                  week.isActive ? styles.activeCircle : styles.inactiveCircle,
-                ]}
-              >
-                <Text style={week.isActive ? styles.idActiveText : styles.idInActiveText}>{week.id}</Text>
-              </View>
-            </View>
-          ))}
-        </View>
-
+        <ProgressHeader />
+        <WeeksScreen />
         <View style={styles.ThisContainer}>
           <View style={styles.ThisContainerHeader}>
             <Text style={styles.ThisContainerHeaderWeekText}>Week</Text>
@@ -368,54 +297,7 @@ const styles = StyleSheet.create({
   backicon: {
     marginTop: screenHeight * 0.023,
   },
-  Headercontainer: {
-    marginVertical: 5,
-    marginHorizontal: 10,
-    flexDirection: 'row',
-    backgroundColor: '#FFA500',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    width: screenWidth - 20,
-    height: screenHeight / 5.5,
-    borderRadius: 10,
-  },
-  textContainer: {
-    width: '70%',
-    alignItems: 'flex-start',
-    gap: 10,
-    justifyContent: 'space-between',
-  },
 
-  text: {
-    fontFamily: "PoppinsRegular",
-    color: '#FFFFFF',
-    fontSize: screenHeight * 0.02,
-
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  right: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  circleContainer: {
-    position: 'relative',
-    width: 100,
-    height: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  centerText: {
-    fontFamily: "PoppinsRegular",
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: 'black',
-  },
   weeksContainer: {
     width: screenWidth - 20,
     height: screenHeight / 8,
@@ -453,18 +335,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#E8EAEE',
   },
-  idInActiveText: {
-    fontSize: 18,
-    textAlign: "center",
-    fontFamily: "PoppinsMedium",
-    color: '#494949',
-  },
-  idActiveText: {
-    textAlign: "center",
-    fontSize: 18,
-    fontFamily: "PoppinsMedium",
-    color: 'white',
-  },
+
   ThisContainer: {
     width: screenWidth - 20,
     marginHorizontal: 10,
@@ -613,8 +484,8 @@ const styles = StyleSheet.create({
     // marginBottom: 5,
     borderColor: "lightgrey",
     borderWidth: 1,
-    borderTopLeftRadius:10,
-    borderTopRightRadius:10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     borderBottomWidth: 0
 
   },
@@ -683,9 +554,9 @@ const styles = StyleSheet.create({
     padding: 6,
     borderColor: "lightgrey",
     borderWidth: 1,
-    borderBottomLeftRadius:10,
-    borderBottomRightRadius:10,
-    borderTopWidth:0,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopWidth: 0,
     backgroundColor: '#FAFCFA',
     // borderBottomLeftRadius: 4,
     // borderBottomRightRadius: 4,
