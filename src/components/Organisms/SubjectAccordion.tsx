@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Accordion from 'react-native-collapsible/Accordion';
-import SubjectHeader from '../molecules/SubjectHeader';
-import SubjectContent from '../molecules/SubjectContent';
+import SubjectHeader from '../Molecules/SubjectHeader';
+import SubjectContent from '../Molecules/SubjectContent';
+import { StyleSheet, View } from 'react-native';
+import { screenWidth } from '../../utils/Data/data';
+
 
 interface Subject {
   unit: string;
@@ -13,7 +16,7 @@ interface SubjectAccordionProps {
     SubjectUnikt: Subject[];
 }
 
-const SubjectAccordion: React.FC<SubjectAccordionProps> = ({ subjects }) => {
+const SubjectAccordion: React.FC<SubjectAccordionProps> = ({ SubjectUnikt }) => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
 
   const toggleSection = (index: number) => {
@@ -42,14 +45,34 @@ const SubjectAccordion: React.FC<SubjectAccordionProps> = ({ subjects }) => {
   };
 
   return (
+    <View style={styles.SubjectList}>
     <Accordion
-      sections={subjects}
+      sections={SubjectUnikt}
       activeSections={activeSections}
       renderHeader={renderHeader}
       renderContent={renderContent}
       onChange={setActiveSections}
     />
+    </View>
   );
 };
+const styles = StyleSheet.create({
 
+    SubjectList: {
+      alignItems: 'stretch',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        backgroundColor: '#FAFCFA',
+        paddingVertical: '2%',
+        paddingHorizontal:"2%",
+        marginBottom: 5,
+        width: screenWidth - 20,
+        borderColor: "lightgrey",
+        borderWidth: 1,
+        borderRadius: 10,
+        marginHorizontal:10
+        
+    },
+  }
+);
 export default SubjectAccordion;

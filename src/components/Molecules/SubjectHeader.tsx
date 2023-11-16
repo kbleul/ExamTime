@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, ImageBackground, StyleSheet } from 'react-native';
-import  Ionicons  from 'react-native-vector-icons';
+import  Ionicons  from 'react-native-vector-icons/Ionicons';
 import { screenWidth } from '../../utils/Data/data';
 
 interface SubjectHeaderProps {
@@ -26,7 +26,7 @@ const SubjectHeader: React.FC<SubjectHeaderProps> = ({
 
   return (
     <TouchableOpacity
-      style={isActive ? styles.Activelcontainer : styles.container}
+      style={isActive ? styles.Activelcontainer : styles.INActivelcontainer}
       onPress={toggleSection}
       activeOpacity={0.8}
     >
@@ -67,26 +67,32 @@ const styles = StyleSheet.create({
     
       },
       Activelcontainer: {
-        alignItems: 'stretch',
+        alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
         backgroundColor: '#FAFCFA',
         padding: '1%',
-        // marginBottom: 5,
+        marginBottom: 5,
+        borderColor: "lightgrey",
+         borderBottomWidth: 0
+      },
+      INActivelcontainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        backgroundColor: '#FAFCFA',
+        padding: '1%',
+        marginBottom: 5,
         borderColor: "lightgrey",
         borderWidth: 1,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        borderBottomWidth: 0
-    
+        borderRadius:10,
       },
       imgContainer: {
         width: '20%',
         padding: 8,
       },
       imagebg: {
-        width: '100%',
-        height: 80,
+        height: 60,
         objectFit: "cover",
       },
       infoContainer: {

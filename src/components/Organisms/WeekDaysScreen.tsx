@@ -50,7 +50,6 @@ const days: Day[] = [
 
 const WeekDaysScreen: React.FC = () => {
   const showToast = () => {
-    // Implement your logic for showing toast
   };
 
   return (
@@ -67,7 +66,6 @@ const WeekDaysScreen: React.FC = () => {
 
     </View>
     <View style={styles.divider} />
-    {/* <Divider style={{ flex: 1, width: "100%", height: 2, backgroundColor: 'red' }} /> */}
     <View style={styles.weekdaysContainer}>
         {days.map((day) => (
           <DayBlock key={day.dayNumber} day={day} />
@@ -80,6 +78,7 @@ const styles = StyleSheet.create({
     ThisContainer: {
         width: screenWidth - 20,
         marginHorizontal: 10,
+        marginBottom:10,
         padding: screenWidth * 0.02,
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -88,9 +87,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         shadowColor: 'rgba(0, 0, 0, 0.4)',
         backgroundColor: "#FAFCFA"
-    
-    
-    
       },
       ThisContainerHeader: {
         paddingHorizontal: 10,
