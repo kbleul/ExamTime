@@ -15,17 +15,21 @@ import NetworkError from '../screens/Shared/NetworkError';
 import ContactUs from '../screens/App/ContactUs/index';
 import FAQ from '../screens/App/FAQ/index';
 
-import { StatusBar } from 'react-native';
+import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
 import ViewSubjectDetails from '../screens/App/Courses/ViewSubjectDetails';
 import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
 import Practice from '../screens/App/Practice/index';
 import PracticeQuestion from '../screens/App/PracticeQuestion';
-import { ProfileMenuItemsAuth } from '../utils/Data/data';
+import {ProfileMenuItemsAuth} from '../utils/Data/data';
 import SetNewPassword from '../components/Organisms/SetNewPassword';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
-const AppRoutes: React.FC<{ Stack: StackType; showOnboarding: boolean }> = ({
+import ExamReview from '../screens/App/PracticeQuestion/ExamReview';
+import ExamResult from '../screens/App/PracticeQuestion/ExamResult';
+import RandomQuestionsView from '../screens/App/PracticeQuestion/RandomQuestionsView';
+import UserGuide from '../screens/App/UserGuide';
+const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
   Stack,
   showOnboarding,
 }) => {
@@ -78,6 +82,21 @@ const AppRoutes: React.FC<{ Stack: StackType; showOnboarding: boolean }> = ({
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="Exam-Review"
+          component={ExamReview}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Exam-Result"
+          component={ExamResult}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Random-Exam"
+          component={RandomQuestionsView}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="Profile"
           component={Profile}
           options={{ headerShown: false }}
@@ -92,6 +111,12 @@ const AppRoutes: React.FC<{ Stack: StackType; showOnboarding: boolean }> = ({
           component={FAQ}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name={ProfileMenuItemsAuth['User Guide'].navigate}
+          component={UserGuide}
+          options={{headerShown: false}}
+        />
+
         <Stack.Screen
           name="Profile-Edit"
           component={ProfileEditIndex}

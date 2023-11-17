@@ -14,7 +14,6 @@ import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import { ScaledSheet } from 'react-native-size-matters';
 import { screenHeight, screenWidth } from '../../../utils/Data/data';
 import { useNavigation } from '@react-navigation/native';
-
 const courses = [
     { subject: 'Subject 1', units: 8, progress: 0 },
     { subject: 'Subject 2', units: 8, progress: 0 },
@@ -24,6 +23,7 @@ const courses = [
     // Add more courses here...
 ];
 const CourseItem = ({ item }) => (
+
     <TouchableOpacity
         style={styles.lcontainer}
         onPress={() => console.log("sjfd")}
@@ -48,7 +48,7 @@ const CourseItem = ({ item }) => (
     </TouchableOpacity>
 );
 const Index = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
     return (
         <View style={styles.container}>
             {/* <ScrollView
@@ -61,7 +61,7 @@ const Index = () => {
                         <Text style={styles.text}>
                             Find your path to success through new knowledge
                         </Text>
-                        <TouchableWithoutFeedback onPress={() => navigation.navigate('ChallengeScreen')}>
+                        <TouchableWithoutFeedback onPress={() =>   navigation.navigate('ChallengeScreen')}>
                             <View style={styles.button}>
                                 <Text style={styles.buttonText}>Start Challenge</Text>
                             </View>
@@ -169,7 +169,7 @@ const styles = ScaledSheet.create({
     },
     imgContainer: {
         width: '30%',
-        padding: 5,
+        padding: 4,
         backgroundColor: 'white',
         borderTopStartRadius: 10,
         borderBottomLeftRadius: 10,
@@ -210,8 +210,6 @@ const styles = ScaledSheet.create({
     progressText: {
         color: '#858585',
     },
-
-    
 
 });
 export default Index;

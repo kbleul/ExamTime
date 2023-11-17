@@ -53,19 +53,6 @@ const SubjectHeader: React.FC<SubjectHeaderProps> = ({
   );
 };
 const styles = StyleSheet.create({
-    lcontainer: {
-        alignItems: 'stretch',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#FAFCFA',
-        padding: '1%',
-        marginBottom: 5,
-        width: screenWidth - 20,
-        borderColor: "lightgrey",
-        borderWidth: 1,
-        borderRadius: 10,
-    
-      },
       Activelcontainer: {
         alignItems: 'center',
         justifyContent: 'center',

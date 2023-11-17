@@ -4,8 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileContent from '../../../components/Organisms/ProfileContent';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../reduxToolkit/Store';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
+import Toast from 'react-native-toast-message';
 
 const Index = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -20,12 +21,13 @@ const Index = () => {
           >
             <Text>{''}</Text>
           </ImageBackground>
-        ) :
+        ) : (
           <View style={styles.noiImageContainer}>
-            <Text style={styles.noiImageText}>{user?.firstName?.charAt(0)}</Text>
+            <Text style={styles.noiImageText}>
+              {user?.firstName?.charAt(0)}
+            </Text>
           </View>
-
-        }
+        )}
 
         {!user && (
           <View style={styles.avatarContainer}>
@@ -35,6 +37,7 @@ const Index = () => {
       </View>
 
       <ProfileContent />
+      <Toast />
 
       <MainBottomNav />
     </View>
@@ -62,14 +65,14 @@ const styles = StyleSheet.create({
   noiImageContainer: {
     height: '100%',
     width: '100%',
-    backgroundColor: "#0066B2",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: '#0066B2',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   noiImageText: {
     fontSize: 35,
-    color: "white",
-    paddingBottom:20
+    color: 'white',
+    paddingBottom: 20,
   },
   avatarContainer: {
     justifyContent: 'center',

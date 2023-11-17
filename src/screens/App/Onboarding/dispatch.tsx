@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import PageOne from './Page/PageOne';
 import PageTwo from './Page/PageTwo';
@@ -9,29 +9,18 @@ const Dispatch: React.FC<PagesCounterType> = ({
   pageCounter,
   setPageCounter,
 }) => {
-  const [selectedGrade, setSelectedGrade] = useState(1);
-
   switch (pageCounter) {
     case 1:
       return <PageOne setPageCounter={setPageCounter} />;
 
     case 2:
       return (
-        <PageTwo
-          pageCounter={pageCounter}
-          setPageCounter={setPageCounter}
-          selectedGrade={selectedGrade}
-          setSelectedGrade={setSelectedGrade}
-        />
+        <PageTwo pageCounter={pageCounter} setPageCounter={setPageCounter} />
       );
 
     case 3:
       return (
-        <PageThree
-          pageCounter={pageCounter}
-          setPageCounter={setPageCounter}
-          selectedGrade={selectedGrade}
-        />
+        <PageThree pageCounter={pageCounter} setPageCounter={setPageCounter} />
       );
 
     default:

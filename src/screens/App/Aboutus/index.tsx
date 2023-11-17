@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-} from 'react-native';
-import { ScaledSheet, ms } from 'react-native-size-matters';
+import {View, Text, Image} from 'react-native';
+import {ScaledSheet, ms} from 'react-native-size-matters';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';

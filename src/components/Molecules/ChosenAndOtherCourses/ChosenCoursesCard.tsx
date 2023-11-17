@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Dimensions,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {screenHeight, screenWidth} from '../../../utils/Data/data';
 
 const ChosenCoursesCard: React.FC<{
   title: string;
@@ -18,33 +11,33 @@ const ChosenCoursesCard: React.FC<{
   return (
     <View
       style={
-        progress
+        progress !== undefined
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
-      <ImageBackground
-        style={styles.imageBg}
-        source={bgImage} // Replace with the correct path to your image
-      >
-        <Text style={styles.title}>{title}</Text>
-        <Text
-          style={
-            progress
-              ? styles.lessons
-              : [styles.lessons, styles.lessonsSecondary]
-          }>
-          {lessonsCount} Lessons
-        </Text>
-        {progress && (
-          <View style={styles.progressBar}>
-            <View
-              style={[styles.progressBarIndicator, {width: progress + '%'}]}
-            />
-          </View>
-        )}
-        {progress && (
-          <Text style={styles.progressText}>{progress}% completed</Text>
-        )}
+      <ImageBackground style={styles.imageBg} source={bgImage}>
+        <View style={styles.contentContainer}>
+          <Text style={styles.title}>{title}</Text>
+          <Text
+            style={
+              progress !== undefined
+                ? styles.lessons
+                : [styles.lessons, styles.lessonsSecondary]
+            }>
+            {lessonsCount} Lessons
+          </Text>
+
+          {progress !== undefined && (
+            <>
+              <View style={styles.progressBar}>
+                <View
+                  style={[styles.progressBarIndicator, {width: '50%'}]} // calculate progress dynamically
+                />
+              </View>
+              <Text style={styles.progressText}>{progress}% completed</Text>
+            </>
+          )}
+        </View>
       </ImageBackground>
     </View>
   );
@@ -52,46 +45,50 @@ const ChosenCoursesCard: React.FC<{
 
 export const styles = StyleSheet.create({
   container: {
-    height: screenHeight * (1 / 3.3),
-    width: screenWidth * (3.7 / 10),
+    height: screenHeight * (1 / 3.8),
+    width: screenWidth * (1 / 2.6),
     marginHorizontal: 5,
     borderRadius: 15,
     overflow: 'hidden',
-    maxHeight: 200,
+    maxHeight: 220,
   },
   containerSecondary: {
-    height: screenHeight * (1 / 4),
-    width: screenWidth * (3.7 / 12),
+    height: screenHeight * (1 / 4.5),
+    width: screenWidth * (1 / 3),
   },
   imageBg: {
     height: '100%',
-    width: screenWidth * (3.7 / 10),
-    paddingHorizontal: 10,
+    width: screenWidth * (1 / 2.6),
     justifyContent: 'flex-end',
+  },
+  contentContainer: {
+    backgroundColor: 'rgba(0,0,0,0.07)',
+    width: screenWidth * (1 / 2.5),
+    paddingHorizontal: 10,
   },
   title: {
     color: 'white',
-    fontSize: screenWidth * 0.04,
+    fontSize: screenWidth * 0.035,
     fontFamily: 'Montserrat-SemiBold',
-    paddingBottom: screenHeight * 0.01,
-    paddingLeft: 5,
+    paddingBottom: screenHeight * 0.005,
+    paddingLeft: 1,
   },
   lessons: {
-    width: '100%',
-    paddingVertical: screenHeight * 0.005,
+    width: '80%',
+    paddingVertical: screenHeight * 0.003,
     paddingHorizontal: screenWidth * 0.02,
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 100,
     color: 'white',
-    fontSize: screenWidth * 0.03,
+    fontSize: screenWidth * 0.028,
     fontFamily: 'Montserrat-SemiBold',
   },
   lessonsSecondary: {
     width: '80%',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   progressBar: {
-    width: '100%',
+    width: '80%',
     height: 5,
     backgroundColor: '#B59F9F',
     borderRadius: 20,

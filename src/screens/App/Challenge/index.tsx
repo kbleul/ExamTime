@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableNativeFeedback, ToastAndroid, TouchableOpacity, ImageBackground } from 'react-native';
 import { screenWidth, screenHeight } from '../../../utils/Data/data';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Card, Divider } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import ProgressHeader from '../../../components/Organisms/ProgressHeader';
 import WeeksScreen from '../../../components/Organisms/WeeksScreem';
