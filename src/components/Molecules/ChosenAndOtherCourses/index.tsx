@@ -1,21 +1,11 @@
 import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
-import img1 from '../../../assets/Images/home/s1.png';
-import img2 from '../../../assets/Images/home/s2.png';
-import img3 from '../../../assets/Images/home/s3.png';
-import img4 from '../../../assets/Images/home/s4.png';
-import img5 from '../../../assets/Images/home/s5.png';
 import OtherCoursesCard from './OtherCoursesCard';
-
-interface SubjectItemType {
-  id: string;
-  title: string;
-  lessonsCount: number;
-  progress?: number;
-  bgImage: any;
-}
+import {Subject, UserData} from '../../../Realm';
+import {AuthContext} from '../../../Realm/model';
+import {subjectType} from '../../../types';
 
 interface CourseItemType {
   id: string;
@@ -23,51 +13,6 @@ interface CourseItemType {
   subTitle: string;
   subjectsCount: number;
 }
-
-export const DummySubjects = [
-  {
-    id: '0011',
-    title: 'SAT',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img1,
-  },
-  {
-    id: '0012',
-    title: 'Physics',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img2,
-  },
-  {
-    id: '0013',
-    title: 'Civics',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img3,
-  },
-  {
-    id: '0014',
-    title: 'Biology',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img4,
-  },
-  {
-    id: '0015',
-    title: 'MAth',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img5,
-  },
-  {
-    id: '0016',
-    title: 'Chemistry',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img5,
-  },
-];
 
 const DummyCourses = [
   {
@@ -91,23 +36,43 @@ const DummyCourses = [
 ];
 
 const ChosenCourses = () => {
-  const renderItem = ({
-    item,
-    index,
-  }: {
-    item: SubjectItemType;
-    index: number;
-  }) => {
+  const {useQuery} = AuthContext;
+
+  const savedSubjects = useQuery(Subject);
+  const savedUserData = useQuery(UserData);
+
+  const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
       <View>
         <ChosenCoursesCard
-          title={item.title}
-          lessonsCount={item.lessonsCount}
+          title={item.subject.subject}
+          lessonsCount={12}
           progress={item.progress}
-          bgImage={item.bgImage}
+          bgImage={{uri: item.icon}}
         />
       </View>
     );
+  };
+
+  const PushFavorateToFront = (favoritesArray: string[]) => {
+    const favorites: Subject[] = [];
+    favoritesArray.map(item => {
+      const favSubject = savedSubjects.find(subject => subject.id === item);
+
+      favSubject && favorites.push(favSubject);
+    });
+
+    // savedSubjects.filter(item =>
+    //   favoritesArray.includes(item.id),
+    // );
+    const notFavorites = savedSubjects.filter(
+      item => !favoritesArray.includes(item.id),
+    );
+
+    console.log(...favoritesArray);
+    const favoritesFirstArray = [...favorites, ...notFavorites];
+
+    return favoritesFirstArray;
   };
 
   const renderItemCourse = ({
@@ -134,7 +99,7 @@ const ChosenCourses = () => {
 
       <FlatList
         keyExtractor={item => item.id}
-        data={DummySubjects}
+        data={PushFavorateToFront(savedUserData[0].selectedSubjects || [])}
         renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -152,11 +117,5 @@ const ChosenCourses = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContaier: {
-    width: '100%',
-  },
-});
 
 export default ChosenCourses;

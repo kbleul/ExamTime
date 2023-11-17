@@ -7,14 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-<<<<<<< HEAD
-import MenuItems from '../Molecules/MenuItems';
-=======
+import {ScaledSheet, ms, mvs, s, vs} from 'react-native-size-matters';
 import MenuItemsProfile from '../Molecules/MenuItemsProfile';
 import badgeImg from '../../assets/Images/Profile/badge.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
->>>>>>> dev
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
@@ -32,7 +29,7 @@ const ProfileContent = () => {
               style={styles.iconContainer}
               touchSoundDisabled
               onPress={() => navigator.goBack()}>
-              <AntDesign name="left" style={styles.backIcon} size={24} />
+              <AntDesign name="left" style={styles.backIcon} size={ms(24)} />
             </TouchableOpacity>
             <View>
               <Text style={styles.userData}>
@@ -60,13 +57,8 @@ const ProfileContent = () => {
             </View>
             {/* <Text style={styles.name}>
               {user ? `${user.firstName} ${user.lastName}` : ''}
-<<<<<<< HEAD
-            </Text>
-            {/*<Image style={styles.badge} source={badgeImg} />*/}
-=======
             </Text> */}
             <Image style={styles.badge} source={badgeImg} />
->>>>>>> dev
           </View>
         )}
 
@@ -93,14 +85,14 @@ const ProfileContent = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     position: 'absolute',
     top: '26%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: '30@vs',
+    borderTopRightRadius: '30@vs',
     height: '70%',
     width: '100%',
     backgroundColor: '#F5F5F5',
@@ -111,11 +103,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 5,
     backgroundColor: '#fff',
-    marginVertical: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
+    marginVertical: '10@vs',
+    paddingVertical: '10@vs',
+    paddingHorizontal: '30@s',
+    borderRadius: 5,
     overflow: 'visible',
-    position: 'relative', // Add this line to make the container relative
+    position: 'relative',
   },
   activityContainer: {
     width: '70%',
@@ -123,24 +116,24 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   name: {
-    fontSize: 24,
-    fontFamily: 'Montserrat-SemiBold',
+    fontSize: '18@ms',
+    fontFamily: 'PoppinsSemiBold',
     color: 'black',
   },
   activity: {
-    fontFamily: 'Montserrat-SemiBold',
-    //  width:"20%"
+    fontFamily: 'PoppinsRegular',
+    fontSize: '12@ms',
   },
   badge: {
     justifyContent: 'center',
     alignItems: 'center',
-    //  backgroundColor:"red",
-    position: 'absolute', // Add this line to make the badge absolute
-    top: -50, // Adjust the value as needed to position the badge
-    right: '1%', // Adjust the value as needed to horizontally position the badge
-    transform: [{translateX: 12.5}], // Adjust the value as needed to center the badge horizontally
-    width: 140,
-    height: 200,
+    // backgroundColor:"red",
+    position: 'absolute',
+    top: '-50@ms',
+    right: '2%',
+    transform: [{translateX: 12.5}],
+    width: '140@s',
+    height: '180@vs',
     objectFit: 'contain',
   },
   adsBtnContainer: {
@@ -150,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: '3%',
     backgroundColor: '#fff',
-    marginBottom: 10,
+    marginBottom: '10@ms',
   },
   adsBtns: {
     width: '43%',
@@ -163,46 +156,45 @@ const styles = StyleSheet.create({
   },
   adsBtnsText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: '18@ms',
     color: '#FFFFFF',
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'PoppinsRegular',
   },
   profileHeaderContainer: {
-    // width: '100%',
-    // backgroundColor:"red",
     flexDirection: 'row',
     gap: 5,
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    marginVertical: '5@vs',
+    paddingVertical: '5@vs',
+    paddingHorizontal: '5@msr',
   },
   iconContainer: {
     color: 'black',
   },
   backIcon: {
     color: 'black',
-    fontSize: 28,
+    fontSize: '28@ms',
     fontWeight: 'bold',
   },
   userData: {
     textAlign: 'center',
-    fontSize: 18,
-    fontFamily: 'Montserrat-SemiBold',
+    fontSize: '18@ms',
+    fontFamily: 'PoppinsSemiBold',
     color: 'black',
   },
   location: {
     textAlign: 'center',
-    fontSize: 15,
-    fontFamily: 'Montserrat-SemiBold',
+    fontSize: '15@ms',
+    fontFamily: 'PoppinsSemiBold',
+    color: 'black',
   },
   editIcon: {
     backgroundColor: 'white',
-    padding: 5,
-    borderRadius: 50,
+    padding: '5@msr',
+    borderRadius: '50@ms',
     color: 'black',
-    fontSize: 28,
+    fontSize: '28@ms',
     fontWeight: 'bold',
   },
 });

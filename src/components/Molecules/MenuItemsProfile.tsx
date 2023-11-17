@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import IconContainer from './IconContainer';
 import LogoutAlertBox from '../Organisms/LogoutAlertBox';
 import ShareApp from '../Organisms/ShareApp';
@@ -11,7 +10,6 @@ import DeleteAccountAlertBox from '../Organisms/DeleteAccountAlertBox';
 
 const MenuItemsProfile = () => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const navigator = useNavigation();
 
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showDeleteDialog, setShowLDeleteDialog] = useState(false);
@@ -24,27 +22,9 @@ const MenuItemsProfile = () => {
             key={item + '--' + index}
             item={item}
             bgColor={ProfileMenuItemsAuth[item].color}
-<<<<<<< HEAD
-<<<<<<< HEAD:src/components/Molecules/MenuItems.tsx
-            navigate={ProfileMenuItems[item].navigate}
-            setShowLogoutDialog={setShowLogoutDialog}
-            
-=======
             navigate={ProfileMenuItemsAuth[item].navigate}
             setShowLogoutDialog={setShowLogoutDialog}
             setShowLDeleteDialog={setShowLDeleteDialog}
->>>>>>> dev:src/components/Molecules/MenuItemsProfile.tsx
-=======
-<<<<<<<< HEAD:src/components/Molecules/MenuItems.tsx
-            navigate={ProfileMenuItems[item].navigate}
-            setShowLogoutDialog={setShowLogoutDialog}
-            
-========
-            navigate={ProfileMenuItemsAuth[item].navigate}
-            setShowLogoutDialog={setShowLogoutDialog}
-            setShowLDeleteDialog={setShowLDeleteDialog}
->>>>>>>> dev:src/components/Molecules/MenuItemsProfile.tsx
->>>>>>> dev
           />
         ))}
 
@@ -56,19 +36,7 @@ const MenuItemsProfile = () => {
             bgColor={ProfileMenuItems[item].color}
             navigate={ProfileMenuItems[item].navigate}
             setShowLogoutDialog={setShowLogoutDialog}
-<<<<<<< HEAD
-<<<<<<< HEAD:src/components/Molecules/MenuItems.tsx
-
-=======
             setShowLDeleteDialog={setShowLDeleteDialog}
->>>>>>> dev:src/components/Molecules/MenuItemsProfile.tsx
-=======
-<<<<<<<< HEAD:src/components/Molecules/MenuItems.tsx
-
-========
-            setShowLDeleteDialog={setShowLDeleteDialog}
->>>>>>>> dev:src/components/Molecules/MenuItemsProfile.tsx
->>>>>>> dev
           />
         ))}
 

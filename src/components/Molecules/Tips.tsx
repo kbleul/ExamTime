@@ -7,31 +7,34 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
+import {screenWidth} from '../../utils/Data/data';
 
-const Tips = () => {
+const Tips: React.FC<{
+  title?: string;
+  note: string;
+  readonly: boolean;
+}> = ({title, note, readonly}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
-        {/* <ImageBackground
-          style={styles.imageBG}
-          source={require('../../assets/Images//Practice/tip.png')} // Replace with the correct path to your image
-          resizeMode="cover"
-        /> */}
         <Image
           style={styles.image}
           source={require('../../assets/Images//Practice/tip.png')}
           resizeMode="cover"
         />
       </View>
-      <TouchableOpacity touchSoundDisabled style={styles.textContainer}>
-        <Text style={styles.tipTitle}>TIPS & TRICKS FOR PHYSICS EXAM</Text>
-        <Text style={styles.tipText}>
-          Your expected ability for this chapter is between 2.0 -- 2.4.
-          Estimated your ability using the following Estimated your ability
-          using the followin{'...'}
-        </Text>
-        <Text style={[styles.readmore, styles.readmore]}>Read more</Text>
-      </TouchableOpacity>
+      {readonly ? (
+        <View style={styles.textContainer}>
+          {title && <Text style={styles.tipTitle}>{title}</Text>}
+          <Text style={styles.tipText}>{note}</Text>
+        </View>
+      ) : (
+        <TouchableOpacity touchSoundDisabled style={styles.textContainer}>
+          <Text style={styles.tipTitle}>{title}</Text>
+          <Text style={styles.tipText}>{note}</Text>
+          <Text style={[styles.readmore, styles.readmore]}>Read more</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginHorizontal: 5,
-    marginTop: 10,
+    marginTop: 6,
     paddingVertical: 5,
     borderWidth: 1,
     borderRadius: 10,
@@ -65,15 +68,16 @@ const styles = StyleSheet.create({
   tipTitle: {
     fontFamily: 'PoppinsSemiBold',
     color: 'black',
-    fontSize: 13,
+    fontSize: screenWidth * 0.032,
   },
   tipText: {
     fontFamily: 'PoppinsRegular',
     color: 'black',
-    fontSize: 13,
+    fontSize: screenWidth * 0.028,
   },
   readmore: {
     color: '#1E90FF',
+    fontSize: screenWidth * 0.032,
   },
 });
 

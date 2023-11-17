@@ -11,7 +11,6 @@ import {
 import {FormData} from '../../../screens/Auth/Login/Types';
 import {userType} from '../../../types';
 import {logoutSuccess} from '../../../reduxToolkit/Features/auth/authSlice';
-import Toast, {ToastProps} from 'react-native-toast-message';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type DeleteAccountMutationFn = ReturnType<typeof useDeleteAccountMutation>[0];
@@ -22,14 +21,20 @@ export const checkIsOnline = async (
   try {
     const state = await NetInfo.fetch();
 
+    console.log(state.isConnected, state.isInternetReachable);
     if (!state.isConnected || !state.isInternetReachable) {
       navigator.navigate('network-error');
+      console.log('error');
+
+      return false;
+    } else if (state.isConnected && state.isInternetReachable) {
+      return true;
     }
-    return;
   } catch (error) {
+    console.log({error});
     // Handle any errors (e.g., request timeout)
     navigator.navigate('network-error');
-    return; // Assume offline on error
+    return false; // Assume offline on error
   }
 };
 
@@ -118,14 +123,6 @@ export const verifyPassword = async (
     setShowLastPrompt(true);
     setShowPasswordForm(false);
     setUserPassword(data.password);
-
-    Toast.show({
-      type: 'success',
-      text1: 'success',
-      text2:
-        'Account deleted successfully. You can create a new accound using your old phone number.',
-      visibilityTime: 10000,
-    });
   } catch (error) {
     if (
       error instanceof TypeError &&
@@ -146,18 +143,25 @@ export const DeleteUserAccount = async (
   setShowLDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>,
   realm: Realm,
   savedUserData: ResultsType<UserData>,
+  Toast: any,
 ) => {
   checkIsOnline(navigator);
 
   try {
-    const response = await deleteAccount({
+    await deleteAccount({
       password,
       token,
     }).unwrap();
-    console.log(response);
     dispatch(logoutSuccess());
     setShowLastPrompt(false);
     setShowLDeleteDialog(false);
+
+    await Toast.show({
+      type: 'success',
+      text1: 'success',
+      text2: 'Account deleted successfully',
+      visibilityTime: 4000,
+    });
 
     removeRealmUserData(realm, savedUserData);
   } catch (error) {
@@ -167,6 +171,6 @@ export const DeleteUserAccount = async (
     ) {
       navigator.navigate('network-error');
     }
-    console.log(error, token);
+    console.log(error);
   }
 };

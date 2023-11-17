@@ -6,8 +6,12 @@ import {
   LocalStorageDataKeys,
   trialStatus,
 } from '../../../../utils/Data/data';
-import {get_from_localStorage} from '../../../../utils/Functions/Get';
+import {
+  getObject_from_localStorage,
+  get_from_localStorage,
+} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
+import {subjectType} from '../../../../types';
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -56,21 +60,68 @@ export const createRealmUserData = async (
   selectedSubjects: string[] | [],
   navigation: NavigationProp<ReactNavigation.RootParamList>,
 ) => {
-  const grade = await get_from_localStorage(LocalStorageDataKeys.userGrade);
+  try {
+    const grade = await getObject_from_localStorage(
+      LocalStorageDataKeys.userGrade,
+    );
 
-  const currentDate = new Date().toString();
+    const currentDate = new Date().toString();
 
-  realm.write(() => {
-    realm.create(LocalObjectDataKeys.UserData, {
-      _id: new Realm.BSON.ObjectId(),
-      token: null,
-      grade: grade.value,
-      initialDate: currentDate,
-      isSubscribed: false,
-      user: null,
-      selectedSubjects: [...selectedSubjects],
+    realm.write(() => {
+      realm.create(LocalObjectDataKeys.UserData, {
+        _id: new Realm.BSON.ObjectId(),
+        token: null,
+        grade: grade.value,
+        initialDate: currentDate,
+        isSubscribed: false,
+        user: null,
+        selectedSubjects: [...selectedSubjects],
+      });
     });
-  });
+  } catch (err) {
+    console.log(err);
+  }
 
   navigation.navigate('Home');
+};
+
+export const createRealmSubjectsData = async (
+  realm: Realm,
+  subjects: subjectType[] | [],
+) => {
+  try {
+    subjects.forEach(subject => {
+      const {
+        id,
+        description,
+        icon,
+        createdAt,
+        updatedAt,
+        grade,
+        subject: SingleSubject,
+      } = subject;
+
+      realm.write(() => {
+        const subjectObject = realm.create(LocalObjectDataKeys.SingleSubject, {
+          id: SingleSubject.id,
+          subject: SingleSubject.subject,
+          createdAt: SingleSubject.createdAt,
+          updatedAt: SingleSubject.updatedAt,
+        });
+
+        realm.create(LocalObjectDataKeys.Subject, {
+          id,
+          description,
+          icon,
+          createdAt,
+          updatedAt,
+          grade,
+          subject: subjectObject,
+          progress: 0,
+        });
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };

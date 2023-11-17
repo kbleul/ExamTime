@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import {RootState} from '../../reduxToolkit/Store';
+
 import {useSelector} from 'react-redux';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -135,10 +136,6 @@ export const FrameTwo: React.FC<{
             <Text style={frameTwostyles.firstText}>{title}</Text>
             <Text style={frameTwostyles.secondText}>{text}</Text>
           </View>
-        </View>
-
-        <View style={frameTwostyles.rightBoxContainer}>
-          <Text style={frameTwostyles.progressText}>{progrss}</Text>
         </View>
       </ImageBackground>
     </View>

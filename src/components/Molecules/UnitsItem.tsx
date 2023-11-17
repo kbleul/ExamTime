@@ -15,15 +15,10 @@ type UnitsItemProps = {
 };
 
 const UnitsItem: React.FC<UnitsItemProps> = ({unitData, setShowAuthPromp}) => {
-<<<<<<< HEAD
-  const navigation = useNavigation<any>();
-  const user = useSelector((state: RootState) => state.auth.user);
-=======
   const navigation = useNavigation();
   const isSubscribed = useSelector(
     (state: RootState) => state.auth.isSubscribed,
   );
->>>>>>> dev
 
   const [showMore, setShowMore] = useState(false);
 

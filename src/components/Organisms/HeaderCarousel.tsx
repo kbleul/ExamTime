@@ -1,6 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
-import {CarouselData_guest, screenWidth} from '../../utils/Data/data';
+import {
+  CarouselData_guest,
+  screenHeight,
+  screenWidth,
+} from '../../utils/Data/data';
 import {
   getItemLayout,
   handleCarouselScroll,
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginVertical: 5,
+    marginVertical: screenHeight * 0.005,
   },
   indicator: {
     backgroundColor: '#D9D9D9',

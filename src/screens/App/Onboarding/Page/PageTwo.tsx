@@ -1,15 +1,8 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import {PagesCounterType, PagesGradesProps} from './types';
 import img from '../../../../assets/Images/onboarding/2a.png';
-import {set_to_localStorage} from '../../../../utils/Functions/Set';
+import {setObject_to_localStorage} from '../../../../utils/Functions/Set';
 import {
   LocalStorageDataKeys,
   screenHeight,
@@ -17,60 +10,64 @@ import {
 } from '../../../../utils/Data/data';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
 import OtherCoursesCard from '../../../../components/Molecules/ChosenAndOtherCourses/OtherCoursesCard';
+import {useNavigation} from '@react-navigation/native';
+import {useGetGradeMutation} from '../../../../reduxToolkit/Services/grade';
+import {getGradesMutation} from './logic';
+import {gradeType} from '../../../../types';
+import Loading from '../../../../components/Atoms/Loading';
+import Toast from 'react-native-toast-message';
 
-const PageTwo: React.FC<PagesCounterType & PagesGradesProps> = ({
-  pageCounter,
-  setPageCounter,
-  selectedGrade,
-  setSelectedGrade,
-}) => {
-  const saveGrade = (grade: string) => {
-    set_to_localStorage(LocalStorageDataKeys.userGrade, grade);
+const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
+  const navigator = useNavigation();
+  const [getGrades, {isLoading, error}] = useGetGradeMutation();
+  const [gradesArray, setGradesArray] = useState<gradeType[] | null>(null);
+
+  useEffect(() => {
+    getGradesMutation(getGrades, navigator, setGradesArray);
+  }, []);
+
+  useEffect(() => {
+    error &&
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to get availble grades.',
+        text2: error?.data ? `${error?.data.message}` : 'Please try again',
+      });
+  }, [error]);
+
+  const saveGrade = (grade: gradeType) => {
+    setObject_to_localStorage(LocalStorageDataKeys.userGrade, grade);
     setPageCounter(3);
   };
   return (
     <View style={style.container}>
-      <ScrollView
-        contentContainerStyle={style.scrollContainer}
-        showsVerticalScrollIndicator={false}>
-        <TopIndicator
-          setPageCounter={setPageCounter}
-          pageCounter={pageCounter}
-        />
+      <TopIndicator setPageCounter={setPageCounter} pageCounter={pageCounter} />
 
-        <View style={style.imgContainer}>
-          <Image source={img} style={style.img} />
+      <View style={style.imgContainer}>
+        <Image source={img} style={style.img} />
+      </View>
+
+      <View style={style.secondContainer}>
+        <View style={style.titleContainer}>
+          <Text style={style.title}>What Grade are you in ?</Text>
         </View>
-
-        <View style={style.secondContainer}>
-          <View style={style.titleContainer}>
-            <Text style={style.title}>What Grade are you in ?</Text>
-          </View>
+        {!isLoading && !error && gradesArray && (
           <View style={style.gradesContainer}>
-            <OtherCoursesCard
-              grade={12}
-              subTitle="Natural Science Student"
-              subjectsCount={12}
-              isOnboarding
-              onPress={() => saveGrade('grade_12_natural')}
-            />
-            <OtherCoursesCard
-              grade={12}
-              subTitle="Social Science Student"
-              subjectsCount={9}
-              isOnboarding
-              onPress={() => saveGrade('grade_12_socials')}
-            />
-            <OtherCoursesCard
-              grade={8}
-              subTitle="Reginal Exam Taker"
-              subjectsCount={9}
-              isOnboarding
-              onPress={() => saveGrade('grade_8')}
-            />
+            {gradesArray.map((grade, index) => (
+              <OtherCoursesCard
+                key={grade.id}
+                grade={grade.grade}
+                subjectsCount={6}
+                isOnboarding
+                onPress={() => saveGrade(grade)}
+                index={index}
+              />
+            ))}
           </View>
-        </View>
-      </ScrollView>
+        )}
+        {isLoading && <Loading />}
+      </View>
+      <Toast />
     </View>
   );
 };
@@ -79,12 +76,11 @@ const style = StyleSheet.create({
   container: {
     paddingTop: 30,
     flex: 1,
-  },
-  scrollContainer: {
-    height: screenHeight,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    height: screenHeight,
   },
+
   imgContainer: {
     width: '100%',
     height: screenHeight * (3.5 / 10),
@@ -112,9 +108,9 @@ const style = StyleSheet.create({
     lineHeight: 40,
   },
   gradesContainer: {
-    width: '90%',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
 });
 
