@@ -16,7 +16,6 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
   setSelectedSubjects,
 }) => {
   const onPress = () => {
-    console.log({text, subjectId});
     if (selectedSubjects === null) {
       setSelectedSubjects([subjectId]);
       return;

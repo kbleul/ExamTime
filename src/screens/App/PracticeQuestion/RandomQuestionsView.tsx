@@ -104,6 +104,22 @@ const RandomQuestionsView = ({route}: {route: any}) => {
     }
   }, [error]);
 
+  const scrollToIndex = () => {
+    flatListRef &&
+      flatListRef.current &&
+      flatListRef.current.scrollToIndex({
+        animated: true,
+        index: currentQuestion,
+      });
+  };
+
+  useEffect(() => {
+    if (showFullPage) {
+      refIndex.current < currentViewExam.length &&
+        setTimeout(scrollToIndex, 500);
+    }
+  }, [showFullPage]);
+
   const filterUnansweredQuestions = () => {
     if (exam) {
       const filteredQusetions = filterUnanswered(exam, userAnswers || []);
@@ -225,6 +241,16 @@ const RandomQuestionsView = ({route}: {route: any}) => {
                 numColumns={1} // Set the number of columns to 2 for a 2-column layout
                 onViewableItemsChanged={onViewCallBack}
                 viewabilityConfig={viewConfigRef.current}
+                onScrollToIndexFailed={info => {
+                  const wait = new Promise(resolve => setTimeout(resolve, 500));
+                  wait.then(() => {
+                    flatListRef.current?.scrollToIndex({
+                      animated: true,
+                      index: info.index,
+                      viewPosition: 0.5,
+                    });
+                  });
+                }}
               />
             </View>
           )}

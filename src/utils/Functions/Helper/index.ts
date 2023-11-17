@@ -21,7 +21,6 @@ export const checkIsOnline = async (
   try {
     const state = await NetInfo.fetch();
 
-    console.log(state.isConnected, state.isInternetReachable);
     if (!state.isConnected || !state.isInternetReachable) {
       navigator.navigate('network-error');
       console.log('error');
