@@ -12,11 +12,6 @@ import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
 import ContactUs from '../screens/App/ContactUs/index';
 import FAQ from '../screens/App/FAQ/index';
-<<<<<<< HEAD
-import UserGuide from '../screens/App/UserGuide/index'
-=======
-
->>>>>>> dev
 import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
@@ -95,14 +90,6 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
           component={FAQ}
           options={{headerShown: false}}
         />
-<<<<<<< HEAD
-            <Stack.Screen
-          name={ProfileMenuItemsAuth['User Guide'].navigate}
-          component={UserGuide}
-          options={{headerShown: false}}
-        />
-=======
->>>>>>> dev
         <Stack.Screen
           name="Profile-Edit"
           component={ProfileEditIndex}
