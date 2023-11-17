@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { screenHeight, screenWidth } from '../../utils/Data/data';
 
 interface DayCircleProps {
     isActive: boolean;
@@ -19,9 +20,9 @@ const DayCircle: React.FC<DayCircleProps> = ({ isActive, dayNumber }) => {
 
 const styles = StyleSheet.create({
     circle: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
+        width: screenWidth * 0.07,
+        height: screenWidth * 0.07,
+        borderRadius: (screenWidth * 0.07) / 2,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     },
     weekDaysText: {
         textAlign: "center",
-        fontSize: 12,
+        fontSize:  screenHeight * 0.018,
         fontFamily: "PoppinsMedium",
         color: '#2A3061',
       },

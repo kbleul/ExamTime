@@ -39,9 +39,9 @@ const WeeksScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   weeksContainer: {
-    marginHorizontal:10,
+    marginHorizontal: screenWidth * 0.03,
     flex: 1,
-    width: screenWidth-20,
+    width: screenWidth - (screenWidth * 0.06),
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',

@@ -3,7 +3,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import SubjectHeader from '../Molecules/SubjectHeader';
 import SubjectContent from '../Molecules/SubjectContent';
 import { StyleSheet, View } from 'react-native';
-import { screenWidth } from '../../utils/Data/data';
+import { screenHeight, screenWidth } from '../../utils/Data/data';
 
 
 interface Subject {
@@ -65,12 +65,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#FAFCFA',
         paddingVertical: '2%',
         paddingHorizontal:"2%",
-        marginBottom: 5,
+        marginBottom: screenHeight * 0.006,
         width: screenWidth - 20,
         borderColor: "lightgrey",
         borderWidth: 1,
-        borderRadius: 10,
-        marginHorizontal:10
+        borderRadius: screenWidth * 0.03,
+        marginHorizontal: screenWidth * 0.03,
         
     },
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Circle from '../Atoms/Weekcircle';
+import { screenHeight } from '../../utils/Data/data';
 // import Circle from './Circle';
 
 
@@ -20,13 +21,12 @@ const WeekContainer: React.FC<WeekContainerProps> = ({ weekId, isActive }) => {
 
 const styles = StyleSheet.create({
   weekContainer: {
-    marginVertical:20,
-    gap: 5,
-    alignItems: 'center',
+    marginVertical: screenHeight * 0.04,
+    gap: screenHeight * 0.01,
   },
   weekText: {
-    fontSize: 16,
-    fontFamily: "PoppinsMedium",
+    fontSize: screenHeight * 0.022,
+    fontFamily: 'PoppinsMedium',
   },
 });
 

@@ -25,22 +25,21 @@ const ProgressHeader = () => {
 
 const styles = StyleSheet.create({
     Headercontainer: {
-        marginVertical: 5,
-        marginHorizontal: 10,
+        marginVertical: screenHeight * 0.006,
+        marginHorizontal: screenWidth * 0.038,
         flexDirection: 'row',
         backgroundColor: '#FFA500',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 10,
-        paddingVertical: 10,
-        width: screenWidth - 20,
+        paddingHorizontal: screenWidth * 0.03,
+        paddingVertical: screenHeight * 0.02,
         height: screenHeight / 5.5,
-        borderRadius: 10,
+        borderRadius: screenWidth * 0.03,
     },
     textContainer: {
         width: '70%',
         alignItems: 'flex-start',
-        gap: 10,
+        gap: screenHeight * 0.02,
         justifyContent: 'space-between',
     },
 

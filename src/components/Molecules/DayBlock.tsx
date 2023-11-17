@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import DayCircle from '../Atoms/DayCircle';
+import { screenHeight, screenWidth } from '../../utils/Data/data';
 // import DayCircle from './DayCircle';
 
 
@@ -30,62 +31,61 @@ const DayBlock: React.FC<DayBlockProps> = ({ day }) => {
 
 const styles = StyleSheet.create({
     ActiveweekDaysContainer: {
-        paddingHorizontal: 5,
-        paddingVertical: 10,
-        alignItems: 'center',
-        justifyContent: "center",
-        backgroundColor: '#1E90FF',
-        borderRadius: 5,
+      paddingHorizontal: screenWidth * 0.01,
+      paddingVertical: screenHeight * 0.02,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#1E90FF',
+      borderRadius: screenWidth * 0.01,
       },
       inActiveweekDaysContainer: {
-        paddingHorizontal: 5,
-        paddingVertical: 10,
+        paddingHorizontal: screenWidth * 0.01,
+        paddingVertical: screenHeight * 0.02,
         alignItems: 'center',
-        justifyContent: "center",
-        // backgroundColor: '#E8EAEE',
+        justifyContent: 'center',
       },
       ActiveweekText: {
-        textAlign: "center",
-        fontSize: 15,
-        fontFamily: "PoppinsMedium",
+        textAlign: 'center',
+        fontSize: screenHeight * 0.018,
+        fontFamily: 'PoppinsMedium',
         color: 'white',
-        paddingBottom: 15,
+        paddingBottom: screenHeight * 0.03,
       },
       inActiveweekText: {
-        paddingBottom: 15,
-        textAlign: "center",
-        fontSize: 15,
-        fontFamily: "PoppinsMedium",
+        paddingBottom: screenHeight * 0.03,
+        textAlign: 'center',
+        fontSize: screenHeight * 0.018,
+        fontFamily: 'PoppinsMedium',
         color: '#828484',
       },
       dotActive: {
-        marginTop: 5,
-        height: 10,
-        width: 10,
-        borderRadius: 50,
-        backgroundColor: "#FDC738"
+        marginTop: screenHeight * 0.01,
+        height: screenHeight * 0.012,
+        width: screenHeight * 0.012,
+        borderRadius: screenHeight * 0.01,
+        backgroundColor: '#FDC738',
       },
       dotInactive: {
-        marginTop: 5,
-        height: 10,
-        width: 10,
-        borderRadius: 50,
-        backgroundColor: "#1E90FF"
+        marginTop: screenHeight * 0.01,
+        height: screenHeight * 0.012,
+        width: screenHeight * 0.012,
+        borderRadius: screenHeight * 0.01,
+        backgroundColor: '#1E90FF',
       },
-  activeDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: 'green',
-    marginTop: 5,
-  },
-  inactiveDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: 'transparent',
-    marginTop: 5,
-  },
+      activeDot: {
+        width: screenWidth * 0.012,
+        height: screenWidth * 0.012,
+        borderRadius: screenWidth * 0.006,
+        backgroundColor: 'green',
+        marginTop: screenHeight * 0.01,
+      },
+      inactiveDot: {
+        width: screenWidth * 0.012,
+        height: screenWidth * 0.012,
+        borderRadius: screenWidth * 0.006,
+        backgroundColor: 'transparent',
+        marginTop: screenHeight * 0.01,
+      },
 });
 
 export default DayBlock;

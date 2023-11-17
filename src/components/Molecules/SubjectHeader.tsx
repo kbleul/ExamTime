@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, ImageBackground, StyleSheet } from 'react-native';
 import  Ionicons  from 'react-native-vector-icons/Ionicons';
-import { screenWidth } from '../../utils/Data/data';
+import { screenHeight, screenWidth } from '../../utils/Data/data';
 
 interface SubjectHeaderProps {
   section: {
@@ -41,7 +41,7 @@ const SubjectHeader: React.FC<SubjectHeaderProps> = ({
       <View style={styles.infoContainer}>
         <View>
           <Text style={styles.subject}>{section.unit}</Text>
-          <Text style={styles.units}>{section.lesson} units</Text>
+          <Text style={styles.units}>{section.Lesson}</Text>
         </View>
         <Ionicons
           name={isActive ? 'caret-up' : 'caret-down'}
@@ -68,41 +68,41 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         backgroundColor: '#FAFCFA',
-        padding: '1%',
-        marginBottom: 5,
-        borderColor: "lightgrey",
+        padding: screenWidth * 0.01,
+        marginBottom: screenHeight * 0.01,
+        borderColor: 'lightgrey',
         borderWidth: 1,
-        borderRadius:10,
+        borderRadius: screenWidth * 0.02,
       },
       imgContainer: {
         width: '20%',
-        padding: 8,
+        padding: screenWidth * 0.02,
       },
       imagebg: {
-        height: 60,
+        height: screenHeight * 0.089,
         objectFit: "cover",
       },
       infoContainer: {
         width: '80%',
-        padding: 10,
-        flexDirection: "row",
-        borderTopEndRadius: 10,
-        borderBottomEndRadius: 10,
-        alignItems: "center",
+        padding: screenWidth * 0.02,
+        flexDirection: 'row',
+        borderTopEndRadius: screenWidth * 0.02,
+        borderBottomEndRadius: screenWidth * 0.02,
+        alignItems: 'center',
         justifyContent: 'space-between',
       },
       subject: {
-        fontSize: 18,
+        fontSize: screenHeight * 0.020,
         fontFamily: 'PoppinsMedium',
         textTransform: 'capitalize',
         color: '#1E90FF',
       },
       units: {
-        fontSize: 16,
+        fontSize: screenHeight * 0.018,
         fontFamily: 'PoppinsMedium',
         textTransform: 'capitalize',
         color: '#858585',
-        paddingVertical: 2,
+        paddingVertical: screenHeight * 0.004,
       },
   });
 export default SubjectHeader;
