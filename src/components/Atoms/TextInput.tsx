@@ -30,11 +30,11 @@ const styles = ScaledSheet.create({
     borderWidth: 1,
     borderRadius: '10@s',
     color: '#858585',
-    fontSize: '16@ms',
+    fontSize: '14@ms',
     marginHorizontal: '20@s',
     marginVertical: '5@vs',
     paddingHorizontal: '20@s',
-    paddingVertical: '10@vs',
+    paddingVertical: '8@vs',
   },
 });
 

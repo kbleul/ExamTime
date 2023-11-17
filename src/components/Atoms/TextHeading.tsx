@@ -13,8 +13,8 @@ const styles = ScaledSheet.create({
     heading: {
         color: '#858585',
         fontFamily: 'PoppinsRegular',
-        fontSize: '18@ms',
-        paddingHorizontal: '10@s',
+        fontSize: '16@ms',
+        paddingHorizontal: '20@s',
 
     },
 });

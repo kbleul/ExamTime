@@ -38,14 +38,13 @@ const styles = ScaledSheet.create({
     fontFamily: 'PoppinsRegular',
     flexDirection: 'row',
     marginHorizontal: '20@s',
-    marginVertical: '3@vs',
     paddingHorizontal: '20@s',
   },
   inputContainer: {
     color: '#9E9E9E',
     flex: 1,
-    fontSize: '16@ms',
-    paddingVertical: '10@vs',
+    fontSize: '14@ms',
+     paddingVertical: '8@vs',
   },
 });
 
