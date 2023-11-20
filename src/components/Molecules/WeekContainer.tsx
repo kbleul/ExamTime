@@ -21,11 +21,13 @@ const WeekContainer: React.FC<WeekContainerProps> = ({ weekId, isActive }) => {
 
 const styles = StyleSheet.create({
   weekContainer: {
-    marginVertical: screenHeight * 0.04,
+    alignItems:"center",
+    justifyContent:"center",
+    marginVertical: screenHeight * 0.02,
     gap: screenHeight * 0.01,
   },
   weekText: {
-    fontSize: screenHeight * 0.022,
+    fontSize: screenHeight * 0.020,
     fontFamily: 'PoppinsMedium',
   },
 });

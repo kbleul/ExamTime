@@ -76,9 +76,10 @@ const WeekDaysScreen: React.FC = () => {
 };
 const styles = StyleSheet.create({
   ThisContainer: {
+    overflow:"hidden",
     width: screenWidth - (screenWidth * 0.04),
     marginHorizontal: screenWidth * 0.02,
-    marginBottom: screenHeight * 0.02,
+    marginBottom: screenHeight * 0.01,
     padding: screenWidth * 0.02,
     flexDirection: 'column',
     justifyContent: 'space-between',

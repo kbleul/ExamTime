@@ -52,12 +52,17 @@ const SubjectAccordion: React.FC<SubjectAccordionProps> = ({ SubjectUnikt }) => 
       renderHeader={renderHeader}
       renderContent={renderContent}
       onChange={setActiveSections}
+      containerStyle={styles.accordion}
+      
     />
     </View>
   );
 };
 const styles = StyleSheet.create({
-
+  accordion: {
+    backgroundColor:"white",
+    marginBottom: 10, // Adjust the margin bottom value as needed
+  },
     SubjectList: {
       alignItems: 'stretch',
         justifyContent: 'center',
@@ -71,6 +76,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: screenWidth * 0.03,
         marginHorizontal: screenWidth * 0.03,
+
         
     },
   }

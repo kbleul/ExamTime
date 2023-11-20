@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8EAEE',
   },
   idInactiveText: {
-    fontSize: screenHeight * 0.025,
+    fontSize: screenHeight * 0.022,
     textAlign: "center",
     fontFamily: "PoppinsMedium",
     color: '#494949',
   },
   idActiveText: {
     textAlign: "center",
-    fontSize: screenHeight * 0.025,
+    fontSize: screenHeight * 0.022,
     fontFamily: "PoppinsMedium",
     color: 'white',
   },

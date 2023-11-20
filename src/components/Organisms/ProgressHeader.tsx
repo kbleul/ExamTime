@@ -25,15 +25,15 @@ const ProgressHeader = () => {
 
 const styles = StyleSheet.create({
     Headercontainer: {
-        marginVertical: screenHeight * 0.006,
+        marginVertical: screenHeight * 0.007,
         marginHorizontal: screenWidth * 0.038,
         flexDirection: 'row',
         backgroundColor: '#FFA500',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: screenWidth * 0.03,
-        paddingVertical: screenHeight * 0.02,
-        height: screenHeight / 5.5,
+        // paddingVertical: screenHeight * 0.01,
+        height: screenHeight / 7,
         borderRadius: screenWidth * 0.03,
     },
     textContainer: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: "PoppinsRegular",
         color: '#FFFFFF',
-        fontSize: screenHeight * 0.02,
+        fontSize: screenHeight * 0.017,
 
     },
     buttonText: {
