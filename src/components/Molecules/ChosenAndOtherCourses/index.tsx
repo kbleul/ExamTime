@@ -41,7 +41,7 @@ const ChosenCourses = () => {
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
 
-  const renderItem = ({item, index}: {item: subjectType; index: number}) => {
+  const renderItem = ({item}: {item: subjectType}) => {
     return (
       <View>
         <ChosenCoursesCard
@@ -62,26 +62,16 @@ const ChosenCourses = () => {
       favSubject && favorites.push(favSubject);
     });
 
-    // savedSubjects.filter(item =>
-    //   favoritesArray.includes(item.id),
-    // );
     const notFavorites = savedSubjects.filter(
       item => !favoritesArray.includes(item.id),
     );
 
-    console.log(...favoritesArray);
     const favoritesFirstArray = [...favorites, ...notFavorites];
 
     return favoritesFirstArray;
   };
 
-  const renderItemCourse = ({
-    item,
-    index,
-  }: {
-    item: CourseItemType;
-    index: number;
-  }) => {
+  const renderItemCourse = ({item}: {item: CourseItemType}) => {
     return (
       <View>
         <OtherCoursesCard
