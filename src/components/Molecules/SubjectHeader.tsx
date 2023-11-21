@@ -1,7 +1,13 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, ImageBackground, StyleSheet } from 'react-native';
-import  Ionicons  from 'react-native-vector-icons/Ionicons';
-import { screenHeight, screenWidth } from '../../utils/Data/data';
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  ImageBackground,
+  StyleSheet,
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 interface SubjectHeaderProps {
   section: {
@@ -28,13 +34,11 @@ const SubjectHeader: React.FC<SubjectHeaderProps> = ({
     <TouchableOpacity
       style={isActive ? styles.Activelcontainer : styles.INActivelcontainer}
       onPress={toggleSection}
-      activeOpacity={0.8}
-    >
+      activeOpacity={0.8}>
       <View style={styles.imgContainer}>
         <ImageBackground
           style={styles.imagebg}
-          source={require('./book.png')}
-        >
+          source={require('./../../assets/Images/book.png')}>
           <Text>{''}</Text>
         </ImageBackground>
       </View>
@@ -53,56 +57,56 @@ const SubjectHeader: React.FC<SubjectHeaderProps> = ({
   );
 };
 const styles = StyleSheet.create({
-      Activelcontainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#FAFCFA',
-        padding: '1%',
-        marginBottom: 5,
-        borderColor: "lightgrey",
-         borderBottomWidth: 0
-      },
-      INActivelcontainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#FAFCFA',
-        // padding: screenWidth * 0.01,
-        marginBottom: screenHeight * 0.004,
-        borderColor: 'lightgrey',
-        borderWidth: 1,
-        borderRadius: screenWidth * 0.02,
-      },
-      imgContainer: {
-        width: '20%',
-        padding: screenWidth * 0.02,
-      },
-      imagebg: {
-        height: screenHeight * 0.089,
-        objectFit: "cover",
-      },
-      infoContainer: {
-        width: '80%',
-        padding: screenWidth * 0.02,
-        flexDirection: 'row',
-        borderTopEndRadius: screenWidth * 0.02,
-        borderBottomEndRadius: screenWidth * 0.02,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      },
-      subject: {
-        fontSize: screenHeight * 0.020,
-        fontFamily: 'PoppinsMedium',
-        textTransform: 'capitalize',
-        color: '#1E90FF',
-      },
-      units: {
-        fontSize: screenHeight * 0.018,
-        fontFamily: 'PoppinsMedium',
-        textTransform: 'capitalize',
-        color: '#858585',
-        paddingVertical: screenHeight * 0.004,
-      },
-  });
+  Activelcontainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#FAFCFA',
+    padding: '1%',
+    marginBottom: 5,
+    borderColor: 'lightgrey',
+    borderBottomWidth: 0,
+  },
+  INActivelcontainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#FAFCFA',
+    // padding: screenWidth * 0.01,
+    marginBottom: screenHeight * 0.004,
+    borderColor: 'lightgrey',
+    borderWidth: 1,
+    borderRadius: screenWidth * 0.02,
+  },
+  imgContainer: {
+    width: '20%',
+    padding: screenWidth * 0.02,
+  },
+  imagebg: {
+    height: screenHeight * 0.089,
+    objectFit: 'cover',
+  },
+  infoContainer: {
+    width: '80%',
+    padding: screenWidth * 0.02,
+    flexDirection: 'row',
+    borderTopEndRadius: screenWidth * 0.02,
+    borderBottomEndRadius: screenWidth * 0.02,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  subject: {
+    fontSize: screenHeight * 0.02,
+    fontFamily: 'PoppinsMedium',
+    textTransform: 'capitalize',
+    color: '#1E90FF',
+  },
+  units: {
+    fontSize: screenHeight * 0.018,
+    fontFamily: 'PoppinsMedium',
+    textTransform: 'capitalize',
+    color: '#858585',
+    paddingVertical: screenHeight * 0.004,
+  },
+});
 export default SubjectHeader;
