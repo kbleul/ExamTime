@@ -200,6 +200,10 @@ const PracticeQuestion = ({route}: {route: any}) => {
     }
   }, [showFullPage]);
 
+  useEffect(() => {
+    isTimeOver && setTimeout(handleSubmitExam, 2500);
+  }, [isTimeOver]);
+
   const renderItem = ({
     item,
     index,
