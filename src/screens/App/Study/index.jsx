@@ -59,7 +59,7 @@ const Index = () => {
                 <View style={styles.Headercontainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.text}>
-                            Find your path to success through new knowledge
+                        Join the challenge phase and get a structured timeline of tasks to help you achieve your study goals!
                         </Text>
                         <TouchableWithoutFeedback onPress={() =>   navigation.navigate('ChallengeScreen')}>
                             <View style={styles.button}>
@@ -117,7 +117,7 @@ const styles = ScaledSheet.create({
     text: {
         fontFamily: "PoppinsRegular",
         color: '#FFFFFF',
-        fontSize: screenHeight * 0.02,
+        fontSize: screenHeight * 0.015,
     },
     button: {
         backgroundColor: 'white',

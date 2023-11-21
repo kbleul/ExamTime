@@ -26,8 +26,7 @@ const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
           <Text style={style.contentTitle}>Study To Pass</Text>
 
           <Text style={style.contentText}>
-            Study and get the highest score in your class, the exam won't be
-            this fun,
+          Welcome to Exam Time App, the ultimate solution for students aiming to excel in exams and enhance their e-learning experience.
           </Text>
         </View>
 

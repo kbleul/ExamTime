@@ -52,7 +52,7 @@ const PracticeModeModal: React.FC<{
           </ImageBackground>
 
           <Text style={styles.modalText}>
-            Do you want practice mode to be on ?
+          Do you want Exam mode to be on?
           </Text>
 
           <View style={styles.modalSubTextContainer}>
