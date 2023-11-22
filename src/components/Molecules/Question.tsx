@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {examQuestionType} from '../../types';
 import {answersType} from '../../screens/App/PracticeQuestion';
 

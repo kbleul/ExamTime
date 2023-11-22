@@ -22,7 +22,11 @@ const Index = () => {
 
         <View style={styles.textContainer}>
           <Text style={styles.text}>
-          Welcome to the Exam Time App, the ultimate platform dedicated to enhancing your learning experience. We understand the challenges students face throughout their educational journey, and our mission is to simplify the process, boost productivity, and foster academic growth. With a strong emphasis on time management, easy access to educational resources, and effective learning techniques, our carefully curated features empower you to maximize your study efforts. From an extensive library of subject-specific materials to interactive quizzes and engaging video tutorials, we provide the necessary tools to support your learning journey. Join us as we revolutionize the digital landscape, unlocking your potential for an exceptional learning experience.
+            Exam Time App is your comprehensive companion for learning in the
+            digital age. We empower students to make the most of their education
+            by providing support, extensive resources, and effective learning
+            tools. Our app helps you learn more efficiently and effectively, so
+            you can confidently achieve your academic goals.
           </Text>
         </View>
         <View style={styles.imageBg}>
@@ -53,10 +57,11 @@ const styles = ScaledSheet.create({
   },
   imageBg: {
     height: '25%',
-    width: '100%',
-    padding: '10@ms',
+    width: '70%',
+    marginLeft: '15%',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: '15@ms',
   },
   img: {
     height: '100%',
@@ -81,6 +86,7 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
     color: '#222E50',
     fontFamily: 'Montserrat-Regular',
+    lineHeight: '24@ms',
   },
   textContainer: {
     marginTop: '10@vs',
