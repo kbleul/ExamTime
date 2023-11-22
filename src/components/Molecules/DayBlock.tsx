@@ -31,8 +31,8 @@ const DayBlock: React.FC<DayBlockProps> = ({ day }) => {
 
 const styles = StyleSheet.create({
     ActiveweekDaysContainer: {
-      // paddingHorizontal: screenWidth * 0.01,
-      // paddingVertical: screenHeight * 0.012,
+      paddingHorizontal: screenWidth * 0.01,
+      paddingVertical: screenHeight * 0.012,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#1E90FF',

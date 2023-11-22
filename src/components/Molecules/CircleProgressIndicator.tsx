@@ -19,10 +19,10 @@ const CircleProgressIndicator = () => {
       {(fill) => (
         <View style={{ alignItems: "center", justifyContent: "center" }}>
 
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: "white" }}>
+          <Text style={{ fontSize: screenHeight * 0.029,fontFamily: "PoppinsMedium", color: "white" }}>
             {Math.round(fill)}%
           </Text>
-          <Text style={{ fontSize: 10, fontWeight: 'bold', color: "white" }}>
+          <Text style={{ fontSize: screenHeight * 0.017,fontFamily: "PoppinsRegular", color: "white" }}>
             Complated
           </Text>
         </View>

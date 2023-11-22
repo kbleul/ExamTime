@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   weekContainer: {
     alignItems:"center",
     justifyContent:"center",
-    marginVertical: screenHeight * 0.02,
+    marginVertical: screenHeight * 0.002,
     gap: screenHeight * 0.01,
   },
   weekText: {
