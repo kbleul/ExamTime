@@ -5,12 +5,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { screenHeight, screenWidth } from '../../utils/Data/data';
 
 const CircleProgressIndicator = () => {
-  const progress = 70
+  const progress = 43
   return (
     <AnimatedCircularProgress
       size={100}
-      width={5}
-      backgroundWidth={4}
+      width={3}
+      backgroundWidth={2}
       fill={progress}
       tintColor="white"
       backgroundColor="#FFE48F"
@@ -19,7 +19,7 @@ const CircleProgressIndicator = () => {
       {(fill) => (
         <View style={{ alignItems: "center", justifyContent: "center" }}>
 
-          <Text style={{ fontSize: 25, fontWeight: 'bold', color: "white" }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: "white" }}>
             {Math.round(fill)}%
           </Text>
           <Text style={{ fontSize: 10, fontWeight: 'bold', color: "white" }}>

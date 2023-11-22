@@ -23,7 +23,7 @@ const Index = () => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.backicon}>
-          <BackWithItem type="Challange Section" />
+          <BackWithItem type="Challenge Path" />
         </View>
 
         <ProgressHeader />
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    backgroundColor:"#FBFDFF"
   },
   backicon: {
     marginTop: screenHeight * 0.023,
