@@ -22,13 +22,11 @@ const Index = () => {
 
         <View style={styles.textContainer}>
           <Text style={styles.text}>
-            Think Hub ET is an innovation company founded with the purpose of
-            developing a high-quality E-learning platform for current
-            generation. Our dynamic staff provides training, and flexible
-            support services to the Exam taker community. We promote an
-            atmosphere for growth in teaching and learning via creative problem
-            solving, collaboration, and reflection in order to best assist our
-            students, teachers, and staff.
+            Exam Time App is your comprehensive companion for learning in the
+            digital age. We empower students to make the most of their education
+            by providing support, extensive resources, and effective learning
+            tools. Our app helps you learn more efficiently and effectively, so
+            you can confidently achieve your academic goals.
           </Text>
         </View>
         <View style={styles.imageBg}>
@@ -59,10 +57,11 @@ const styles = ScaledSheet.create({
   },
   imageBg: {
     height: '25%',
-    width: '100%',
-    padding: '10@ms',
+    width: '70%',
+    marginLeft: '15%',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: '15@ms',
   },
   img: {
     height: '100%',
@@ -83,13 +82,14 @@ const styles = ScaledSheet.create({
   },
   text: {
     padding: '10@ms',
-    fontSize: '15@ms',
+    fontSize: '14@ms',
     textAlign: 'center',
     color: '#222E50',
     fontFamily: 'Montserrat-Regular',
+    lineHeight: '24@ms',
   },
   textContainer: {
-    marginTop: '20@vs',
+    marginTop: '10@vs',
     padding: '5@ms',
     width: '100%',
     overflow: 'hidden',

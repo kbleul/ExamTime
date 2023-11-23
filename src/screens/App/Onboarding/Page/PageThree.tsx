@@ -61,7 +61,7 @@ const PageThree: React.FC<PagesCounterType> = ({
         <View style={style.titleContainer}>
           <Text style={style.title}>Hello.</Text>
           <Text style={style.subtitle}>
-            Pick your favorite topics to set up your feeds
+          Sign up for a free trial today and experience the Exam Time difference!
           </Text>
         </View>
 

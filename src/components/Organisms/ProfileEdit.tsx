@@ -276,7 +276,7 @@ const ProfileEdit: React.FC = () => {
                   <View style={styles.iconContainerForPasswordHeader}>
                     <FontAwesome5
                       name="exclamation"
-                      size={ms(15)}
+                      size={ms(12)}
                       style={{transform: [{rotate: '180deg'}], color: 'white'}}
                     />
                   </View>
@@ -342,8 +342,10 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: '10@s',
+    marginHorizontal: '15@s',
+    marginTop: '10@vs',
     flex: 1,
+  
   },
   changePassword: {
     backgroundColor: '#1E90FF',
@@ -417,16 +419,15 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     backgroundColor: '#2196F3',
     borderRadius: '50@s',
-    height: '25@ms',
+    height: '20@ms',
     justifyContent: 'center',
     marginRight: '15@s',
-    padding: '5@s',
-    width: '25@ms',
+    width: '20@ms',
   },
   inputContainer: {
     color: '#9E9E9E',
     flex: 1,
-    fontSize: '16@ms',
+    fontSize: '12@ms',
     paddingVertical: '10@vs',
   },
   inputContiner: {
@@ -435,7 +436,7 @@ const styles = ScaledSheet.create({
     borderWidth: 1,
     borderRadius: '10@s',
     color: '#858585',
-    fontSize: '16@ms',
+    fontSize: '12@ms',
     marginHorizontal: '20@s',
     marginVertical: '5@vs',
     paddingHorizontal: '20@s',
@@ -473,12 +474,13 @@ const styles = ScaledSheet.create({
   title: {
     color: '#858585',
     fontFamily: 'PoppinsRegular',
-    fontSize: '18@ms',
+    fontSize: '16@ms',
     paddingHorizontal: '10@s',
   },
   topFormContainer: {
     borderRadius: 10,
     paddingVertical: '1@vs',
+  
   },
 
   //dropdown input field

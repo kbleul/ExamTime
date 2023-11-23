@@ -64,7 +64,7 @@ const styles = ScaledSheet.create({
     fontFamily: 'PoppinsRegular',
     flexDirection: 'row',
     marginHorizontal: '20@s',
-    marginVertical: '3@vs',
+    marginVertical: '5@vs',
     paddingHorizontal: '20@s',
   },
   dropdown: {
@@ -73,7 +73,7 @@ const styles = ScaledSheet.create({
     color: '#d4d4d4',
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: '14@vs',
     color: '#d4d4d4',
   },
   selectedTextStyle: {

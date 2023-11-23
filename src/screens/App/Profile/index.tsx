@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Text } from 'react-native';
+import { Image, ImageBackground, Text } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileContent from '../../../components/Organisms/ProfileContent';
@@ -20,7 +20,10 @@ const Index = () => {
             source={require('../../../assets/Images/Profile/1.png')} // Replace with the correct path to your image
           >
             <Text>{''}</Text>
+        
+            
           </ImageBackground>
+
         ) : (
           <View style={styles.noiImageContainer}>
             <Text style={styles.noiImageText}>
@@ -80,5 +83,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+
 });
 export default Index;
