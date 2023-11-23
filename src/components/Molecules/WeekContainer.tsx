@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Circle from '../Atoms/Weekcircle';
 import { screenHeight } from '../../utils/Data/data';
+import { scale } from 'react-native-size-matters';
 // import Circle from './Circle';
 
 
@@ -27,7 +28,8 @@ const styles = StyleSheet.create({
     gap: screenHeight * 0.01,
   },
   weekText: {
-    fontSize: screenHeight * 0.020,
+    color:"#828484",
+    fontSize: scale(14),
     fontFamily: 'PoppinsMedium',
   },
 });

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { screenHeight, screenWidth } from '../../utils/Data/data';
 import DayBlock from '../Molecules/DayBlock';
-
+import scale from '../../utils/Functions/Scale';
 interface Day {
   dayNumber: number;
   dayName: string;
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth:1,
     borderColor:"lightgrey",
-    // shadowColor: 'rgba(0, 0, 0.7, 0.7)',
+    shadowColor: 'rgba(0, 0, 0.7, 0.7)',
     backgroundColor: '#FAFCFA',
   },
   ThisContainerHeader: {
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   ThisContainerHeaderWeekText: {
     textAlign: "center",
-    fontSize: screenHeight * 0.022,
+    fontSize: scale(12),
     fontFamily: "PoppinsMedium",
     color: '#BBBCC3',
   },
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   calandertext: {
+    fontSize:scale(12),
     textAlign: "center",
     gap: screenWidth * 0.02,
     fontFamily: "Poppins",

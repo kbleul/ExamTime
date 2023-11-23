@@ -5,6 +5,7 @@ import { screenWidth, screenHeight } from '../../utils/Data/data';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
+import scale from '../../utils/Functions/Scale';
 
 const ProgressHeader = () => {
 
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: screenWidth * 0.03,
-        // paddingVertical: screenHeight * 0.01,
+         paddingVertical: screenHeight * 0.01,
         height: screenHeight / 7,
         borderRadius: screenWidth * 0.03,
     },
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: "PoppinsRegular",
         color: '#FFFFFF',
-        fontSize: screenHeight * 0.017,
+        fontSize: scale(14),
 
     },
     buttonText: {

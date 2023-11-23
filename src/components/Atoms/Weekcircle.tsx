@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { screenHeight, screenWidth } from '../../utils/Data/data';
+import scale from '../../utils/Functions/Scale';
 
 interface CircleProps {
   isActive: boolean;
@@ -20,9 +21,9 @@ const Circle: React.FC<CircleProps> = ({ isActive, id }) => {
 
 const styles = StyleSheet.create({
   circle: {
-    width: screenWidth * 0.07,
-    height: screenWidth * 0.07,
-    borderRadius: (screenWidth * 0.07) / 2,
+    width: scale(32),
+    height: scale(32),
+    borderRadius: scale(32),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -37,14 +38,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8EAEE',
   },
   idInactiveText: {
-    fontSize: screenHeight * 0.022,
+    fontSize: scale(18),
     textAlign: "center",
     fontFamily: "PoppinsMedium",
     color: '#494949',
   },
   idActiveText: {
     textAlign: "center",
-    fontSize: screenHeight * 0.022,
+    fontSize: scale(18),
     fontFamily: "PoppinsMedium",
     color: 'white',
   },
