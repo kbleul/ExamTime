@@ -14,9 +14,9 @@ const Index = () => {
   console.log('Device width:', width);
   console.log('Device height:', height);
   const SubjectUnikt = [
-    { unit: 'Unit One', Lesson: "Cell Biology", progress: 0 },
-    { unit: 'Unit Two', Lesson: "Metabolis", progress: 0 },
-    { unit: 'Unit Three', Lesson: "Bio-technology", progress: 0 },
+    { unit: 'Unit One', lesson: "Cell Biology", progress: 0 },
+    { unit: 'Unit Two', lesson: "Metabolis", progress: 0 },
+    { unit: 'Unit Three', lesson: "Bio-technology", progress: 0 },
 
   ];
   return (

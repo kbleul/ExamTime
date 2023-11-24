@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, ImageBackground, Text, TouchableOpacity } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileEdit from '../../../components/Organisms/ProfileEdit';
 import { screenHeight, screenWidth } from '../../../utils/Data/data';
-
+import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 const ProfileEditIndex = () => {
+  const [avatar, setAvatar] = useState('');
+  const uploadImage = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      compressImageQuality: 0.8,
+      includeBase64: true,
+    }).then((image: ImageOrVideo | null) => {
+      if (image) {
+        setAvatar('data:image/jpeg;base64,' + image);
+      }
+    }).catch((e)=>console.error);
+  };
   return (
     <View style={styles.container}>
 
       <View style={styles.imageBg}>
         <ImageBackground
           style={styles.img}
-          source={require('../../../assets/Images/Profile/1.png')} // Replace with the correct path to your image
+          source={{ uri: avatar
+            ? avatar:require('../../../assets/Images/Profile/1.png')}} // Replace with the correct path to your image
         >
           <Text>{''}</Text>
-          <TouchableOpacity style={styles.editIconContainer} onPress={()=>{}}>
+          <TouchableOpacity style={styles.editIconContainer} onPress={uploadImage}>
               <Image style={styles.editIcon} source={require('../../../assets/Images/Profile/edit.png')} />
           </TouchableOpacity>
 
