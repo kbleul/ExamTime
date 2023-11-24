@@ -5,9 +5,19 @@ import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileEdit from '../../../components/Organisms/ProfileEdit';
 import { screenHeight, screenWidth } from '../../../utils/Data/data';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
+import { Platform } from 'react-native';
+import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import checkCameraPermission from '../../../utils/Functions/Helper/CameraPermisstion';
+
 const ProfileEditIndex = () => {
   const [avatar, setAvatar] = useState('');
-  const uploadImage = () => {
+  const uploadImage = async() => {
+         const permissionStatus = await checkCameraPermission();
+         if (permissionStatus !== RESULTS.GRANTED) {
+           console.log('Camera permission denied');
+           return;
+         }
+   
     ImagePicker.openPicker({
       width: 300,
       height: 300,
@@ -27,7 +37,7 @@ const ProfileEditIndex = () => {
         <ImageBackground
           style={styles.img}
           source={{ uri: avatar
-            ? avatar:  'https://th.bing.com/th/id/OIP.nub7_Qz4ZciQCswUMV1KpAHaJj?w=768&h=990&rs=1&pid=ImgDetMain',}} // Replace with the correct path to your image
+            ? avatar: 'https://th.bing.com/th/id/OIP.fmwdQXSSqKuRzNiYrbcNFgHaHa?rs=1&pid=ImgDetMain',}} 
         >
           <Text>{''}</Text>
           <TouchableOpacity style={styles.editIconContainer} onPress={uploadImage}>
@@ -61,8 +71,10 @@ const styles = StyleSheet.create({
   },
   img: {
     height: '100%',
+    // aspectRatio: 1, 
+    flex: 1,
     width: '100%',
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
   iconContainer: {
     marginTop: '20%',
