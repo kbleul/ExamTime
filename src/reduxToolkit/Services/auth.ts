@@ -8,6 +8,7 @@ import {
   SignupDataType,
   gradeType,
   regionItemsType,
+  studyType,
   subjectType,
   userType,
 } from '../../types';
@@ -178,12 +179,19 @@ export const api = createApi({
             noOfQuestions: credentials.noOfQuestions,
             unit: '',
           },
+          method: 'POST',
+        };
+      },
+    }),
+    getStudy: build.mutation<{styudies: studyType[]}, {token: string}>({
+      query: credentials => {
+        return {
+          url: 'study/user/study',
+          method: 'Get',
           headers: {
             'Content-Type': 'application/json',
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ODY3MWRlYS1jZmQ3LTQ2M2MtOTAzZi01YmQ4NjFkMjMwN2QiLCJpYXQiOjE2OTkyNzI4MTZ9.riBXZdA0Cny8OGybmCyG4xRJZTlVxUmS6taG0t9ADQg',
+            Authorization: `Bearer ${credentials.token}`,
           },
-          method: 'POST',
         };
       },
     }),
@@ -203,4 +211,5 @@ export const {
   useGetExamsMutation,
   useGetSubjectMutation,
   useGetRandomExamMutation,
+  useGetStudyMutation,
 } = api;

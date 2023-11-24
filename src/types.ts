@@ -116,6 +116,7 @@ export type year =
       updatedAt: string;
     }
   | string;
+
 export type gradeType = {
   id: string;
   grade: string;
@@ -136,11 +137,35 @@ export type subjectType = {
   createdAt: string;
   updatedAt: string;
   grade: gradeType;
-  subject: {
-    id: string;
-    subject: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+  subject: singleSubjectType;
   progress?: number;
+};
+
+export type unitType = {
+  id: string;
+  unit: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type sectionType = {
+  id: string;
+  section: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type studyType = {
+  id: string;
+  title: string;
+  objective: string;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  grade: gradeType;
+  subject: singleSubjectType;
+  year: year;
+  unit: unitType;
+  section: sectionType;
+  selectedQuestion: examQuestionType[] | [];
 };

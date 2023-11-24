@@ -16,10 +16,10 @@ const ChosenCoursesCard: React.FC<{
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
-      <SvgUri width="100%" height="100%" style={styles.imageBg} uri={bgImage} />
+      {/* <SvgUri width="100%" height="100%" style={styles.imageBg} uri={bgImage} /> */}
 
       <ImageBackground style={styles.imageBg} source={bgImage}>
-        {/* <View style={styles.contentContainer}>
+        <View style={styles.contentContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text
             style={
@@ -40,7 +40,7 @@ const ChosenCoursesCard: React.FC<{
               <Text style={styles.progressText}>{progress}% completed</Text>
             </>
           )}
-        </View> */}
+        </View>
       </ImageBackground>
     </View>
   );

@@ -42,6 +42,8 @@ export const getSubjectsMutation = async (
 
     const subjects = response.subjects;
 
+    console.log('////////////////////', response.subjects);
+
     setSubjectsArray(subjects);
 
     createRealmSubjectsData(realm, subjects);
