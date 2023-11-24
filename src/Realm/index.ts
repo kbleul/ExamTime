@@ -3,6 +3,7 @@ import {
   examQuestionType,
   gradeType,
   singleSubjectType,
+  subjectType,
   userType,
 } from '../types';
 import {answersType} from '../screens/App/PracticeQuestion';
@@ -230,6 +231,41 @@ class Exam extends Realm.Object {
   };
 }
 
+class Study extends Realm.Object {
+  id: string = '';
+  title: string = '';
+  objective: string = '';
+  isPublished: boolean = true;
+  createdAt: string = '';
+  updatedAt: string = '';
+  grade: gradeType | null = null;
+  subject: subjectType | null = null;
+  year: string = '';
+  unit: string = '';
+  section: string | null = '';
+  selectedQuestion: examQuestionType[] = [];
+  progress: number = 0;
+
+  static schema = {
+    name: 'Study',
+    properties: {
+      id: 'string',
+      title: 'string',
+      objective: 'string',
+      isPublished: 'bool',
+      createdAt: 'string',
+      updatedAt: 'string',
+      grade: 'Grade?',
+      subject: 'SingleSubject?',
+      year: 'string',
+      unit: 'string',
+      section: 'string',
+      selectedQuestion: 'ExamQuestion[]',
+      progress: 'int',
+    },
+  };
+}
+
 export {
   UserData,
   User,
@@ -240,4 +276,5 @@ export {
   ExamQuestion,
   Exam,
   UserExamAnswers,
+  Study,
 };

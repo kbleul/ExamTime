@@ -2,7 +2,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetExamsMutation} from '../../../reduxToolkit/Services/exams';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
-import {examType as examTsType} from '../../../types';
+import {examQuestionType, examType as examTsType} from '../../../types';
 
 type GetRegionsMutationFn = ReturnType<typeof useGetExamsMutation>[0];
 
@@ -59,7 +59,7 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
         year,
       } = exam;
 
-      const questionsArray: any[] = [];
+      const questionsArray: examQuestionType[] = [];
 
       realm.write(() => {
         year = year.year;

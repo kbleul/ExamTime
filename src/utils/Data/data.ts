@@ -145,6 +145,7 @@ export const LocalObjectDataKeys = {
   ExamQuestion: 'ExamQuestion',
   Exam: 'Exam',
   UserExamAnswers: 'UserExamAnswers',
+  Study: 'Study',
 };
 
 export const CarouselData_guest = [

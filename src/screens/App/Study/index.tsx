@@ -13,19 +13,26 @@ import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {ScaledSheet} from 'react-native-size-matters';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {useNavigation} from '@react-navigation/native';
-import {Subject, UserData} from '../../../Realm';
+import {Study, Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
 import {getAllStudies} from './logic';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
+import Toast from 'react-native-toast-message';
+import {singleSubjectType} from '../../../types';
 
-const CourseItem = ({item}) => {
+const CourseItem = ({item}: {item: singleSubjectType}) => {
+  const navigator: any = useNavigation();
   return (
     <TouchableOpacity
       style={styles.lcontainer}
-      onPress={() => console.log('sjfd')}>
+      onPress={() =>
+        navigator.navigate('StudyDetails', {
+          subject: item.subject,
+        })
+      }>
       <View style={styles.imgContainer}>
         <ImageBackground
           style={styles.imagebg}
@@ -50,16 +57,19 @@ const Index = () => {
   const navigation = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
 
-  const {useQuery} = AuthContext;
+  const {useRealm, useQuery} = AuthContext;
+  const realm = useRealm();
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
+  const savedStudies = useQuery(Study);
 
   const [getStudy, {isLoading, error}] = useGetStudyMutation();
 
   useEffect(() => {
-    console.log('here');
-    getAllStudies(getStudy, navigation, token);
+    if (!savedStudies || savedStudies.length === 0) {
+      getAllStudies(getStudy, navigation, token, realm, Toast);
+    }
   }, []);
 
   return (
@@ -93,8 +103,9 @@ const Index = () => {
         renderItem={({item}) => <CourseItem item={item} />}
         keyExtractor={(item, index) => index.toString()}
       />
-      {/* </ScrollView> */}
       <MainBottomNav />
+
+      <Toast />
     </View>
   );
 };
