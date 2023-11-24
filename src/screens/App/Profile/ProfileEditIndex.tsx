@@ -16,7 +16,7 @@ const ProfileEditIndex = () => {
       includeBase64: true,
     }).then((image: ImageOrVideo | null) => {
       if (image) {
-        setAvatar('data:image/jpeg;base64,' + image);
+        setAvatar('data:image/jpeg;base64,' + image.data);
       }
     }).catch((e)=>console.error);
   };
@@ -27,7 +27,7 @@ const ProfileEditIndex = () => {
         <ImageBackground
           style={styles.img}
           source={{ uri: avatar
-            ? avatar:require('../../../assets/Images/Profile/1.png')}} // Replace with the correct path to your image
+            ? avatar:  'https://th.bing.com/th/id/OIP.nub7_Qz4ZciQCswUMV1KpAHaJj?w=768&h=990&rs=1&pid=ImgDetMain',}} // Replace with the correct path to your image
         >
           <Text>{''}</Text>
           <TouchableOpacity style={styles.editIconContainer} onPress={uploadImage}>
