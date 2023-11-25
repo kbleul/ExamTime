@@ -1,44 +1,71 @@
-import React from 'react';
-import {View, Text, Image} from 'react-native';
-import {ScaledSheet, ms} from 'react-native-size-matters';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { ScaledSheet, ms } from 'react-native-size-matters';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../reduxToolkit/Store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../reduxToolkit/Store';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import ShareApp from '../../../components/Organisms/ShareApp';
+import { useGetAboutUsMutation } from '../../../reduxToolkit/Services/auth';
+import Loading from '../../../components/Atoms/Loading';
 
 const Index = () => {
+  const [getAboutUs] = useGetAboutUsMutation();
+  const [aboutUs, setAboutUS] = useState(undefined)
+  const [loading, setLoading] = useState(true);
+  const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
+  useEffect(() => {
+    const fetchAboutUs = async () => {
+      try {
+        const response = await getAboutUs(token);
 
+        if (response.error) {
+          console.error(response.error);
+        } else if (response.data[0].aboutUs) {
+          console.log("Indeed object data");
+          const aboutUsData = response.data[0].aboutUs;
+          setAboutUS(aboutUsData);
+          setLoading(false);
+        } else {
+          console.error('Invalid response format - missing or empty array:', response.data[0].aboutUs);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error('Error fetching about us data:', error);
+      }
+    };
+
+    fetchAboutUs(); 
+  }, []);
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.backicon}>
-          <BackWithItem type="About Us" isTrial={user ? false : true} />
-        </View>
+      {loading ? (<View style={styles.loadingIndicator}>
+        <Loading />
+      </View>) :
+        (<ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.backicon}>
+            <BackWithItem type="About Us" isTrial={user ? false : true} />
+          </View>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            Exam Time App is your comprehensive companion for learning in the
-            digital age. We empower students to make the most of their education
-            by providing support, extensive resources, and effective learning
-            tools. Our app helps you learn more efficiently and effectively, so
-            you can confidently achieve your academic goals.
-          </Text>
-        </View>
-        <View style={styles.imageBg}>
-          <Image
-            source={require('../../../assets/Logo/ThinkHubIcon.png')}
-            style={styles.img}
-          />
-        </View>
-        <View style={styles.share}>
-          <ShareApp />
-        </View>
-      </ScrollView>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>
+              {aboutUs}
+            </Text>
+          </View>
+          <View style={styles.imageBg}>
+            <Image
+              source={require('../../../assets/Logo/ThinkHubIcon.png')}
+              style={styles.img}
+            />
+          </View>
+          <View style={styles.share}>
+            <ShareApp />
+          </View>
+        </ScrollView>)}
       <MainBottomNav />
     </View>
   );
@@ -46,11 +73,18 @@ const Index = () => {
 
 const styles = ScaledSheet.create({
   backicon: {
-    marginTop: '25@ms',
+    marginTop: '20@ms',
   },
   container: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    flex: 1,
+    width: '100%',
+    backgroundColor: '#F9FCFF',
+  },
+  loadingIndicator: {
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
     width: '100%',
     backgroundColor: '#F9FCFF',
@@ -73,6 +107,7 @@ const styles = ScaledSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom:'100@ms'
   },
   share: {
     justifyContent: 'flex-end',
@@ -82,10 +117,10 @@ const styles = ScaledSheet.create({
   },
   text: {
     padding: '10@ms',
-    fontSize: '14@ms',
+    fontSize: '12@ms',
     textAlign: 'center',
-    color: '#222E50',
-    fontFamily: 'Montserrat-Regular',
+    color: 'black',
+    fontFamily: 'PoppinsRegular',
     lineHeight: '24@ms',
   },
   textContainer: {

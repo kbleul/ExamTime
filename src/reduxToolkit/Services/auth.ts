@@ -187,6 +187,22 @@ export const api = createApi({
         };
       },
     }),
+    getAboutUs: build.mutation<String,{}>({
+      query: () => {
+          return {
+              url: 'about-us/user/aboutus',
+              method: 'GET',
+          };
+      },
+  }),
+  getUserGuide: build.mutation<String,{}>({
+    query: () => {
+        return {
+            url: 'user-guide/user/userguide',
+            method: 'GET',
+        };
+    },
+}),
   }),
 });
 
@@ -203,4 +219,6 @@ export const {
   useGetExamsMutation,
   useGetSubjectMutation,
   useGetRandomExamMutation,
+  useGetAboutUsMutation,
+  useGetUserGuideMutation
 } = api;

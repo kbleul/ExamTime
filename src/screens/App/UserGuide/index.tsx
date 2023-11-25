@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -15,11 +15,14 @@ import {useNavigation} from '@react-navigation/native';
 import PrimaryBtn from '../../../components/Atoms/PrimaryBtn';
 import YoutubeCard from '../../../components/Molecules/YoutubeCard';
 import GuideTexts from '../../../components/Molecules/GuideHederText';
+import { useGetUserGuideMutation } from '../../../reduxToolkit/Services/auth';
 
 const Index = () => {
   const navigator = useNavigation<any>();
   const [Index, SetIndex] = useState(0);
-
+  const [userGuide, setuserGuide] = useState(null);
+  const [loading, setLoading] = useState(true);
+const [getUserGuide]=useGetUserGuideMutation()
   const Width = Dimensions.get('window').width;
   type DataType = {
     id: any;
@@ -45,6 +48,30 @@ const Index = () => {
       text: 'how to',
     },
   ];
+  useEffect(() => {
+    const fetchUserguide = async () => {
+      setLoading(true);
+      try {
+        const response = await getUserGuide();
+
+        if (response.error) {
+          console.error(response.error);
+        } else if (response.data) {
+          
+          setuserGuide(response.data);
+           setLoading(false);
+        } else {
+          console.error('Invalid response format - missing or empty array:', response.data[0].aboutUs);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error('Error fetching about us data:', error);
+      }
+    };
+
+    fetchUserguide(); 
+  }, []);
+  
   const handelScroll = useCallback(({viewableItems}) => {
     if (viewableItems.length === 1) {
       SetIndex(viewableItems[0].index);
@@ -80,9 +107,9 @@ const Index = () => {
             body={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '}
           />
           <FlatList
-            data={data}
+            data={userGuide}
             keyExtractor={item => item.id}
-            renderItem={({item}) => <YoutubeCard item={item} />}
+            renderItem={({item}) => <YoutubeCard item={item} loadinga={loading} />}
             horizontal={true}
             pagingEnabled={true}
             showsHorizontalScrollIndicator={false}
