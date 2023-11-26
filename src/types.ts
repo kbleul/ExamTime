@@ -155,6 +155,16 @@ export type sectionType = {
   updatedAt: string;
 };
 
+export type pdfType = {
+  id: string;
+  pdfDocument: string;
+};
+
+export type videoType = {
+  id: string;
+  videoLink: string;
+};
+
 export type studyType = {
   id: string;
   title: string;
@@ -168,4 +178,6 @@ export type studyType = {
   unit: unitType;
   section: sectionType;
   selectedQuestion: examQuestionType[] | [];
+  pdf: pdfType[] | [];
+  videoLink: videoType[] | [];
 };

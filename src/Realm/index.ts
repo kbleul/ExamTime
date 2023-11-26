@@ -2,9 +2,11 @@ import Realm from 'realm';
 import {
   examQuestionType,
   gradeType,
+  pdfType,
   singleSubjectType,
   subjectType,
   userType,
+  videoType,
 } from '../types';
 import {answersType} from '../screens/App/PracticeQuestion';
 
@@ -231,6 +233,32 @@ class Exam extends Realm.Object {
   };
 }
 
+class Pdf extends Realm.Object {
+  id: string = '';
+  pdfDocument: string = '';
+
+  static schema = {
+    name: 'Pdf',
+    properties: {
+      id: 'string',
+      pdfDocument: 'string',
+    },
+  };
+}
+
+class VideoLink extends Realm.Object {
+  id: string = '';
+  videoLink: string = '';
+
+  static schema = {
+    name: 'VideoLink',
+    properties: {
+      id: 'string',
+      videoLink: 'string',
+    },
+  };
+}
+
 class Study extends Realm.Object {
   id: string = '';
   title: string = '';
@@ -245,6 +273,8 @@ class Study extends Realm.Object {
   section: string | null = '';
   selectedQuestion: examQuestionType[] = [];
   progress: number = 0;
+  pdf: pdfType[] = [];
+  videoLink: videoType[] = [];
 
   static schema = {
     name: 'Study',
@@ -262,6 +292,8 @@ class Study extends Realm.Object {
       section: 'string',
       selectedQuestion: 'ExamQuestion[]',
       progress: 'int',
+      pdf: 'Pdf[]',
+      videoLink: 'VideoLink[]',
     },
   };
 }
@@ -277,4 +309,6 @@ export {
   Exam,
   UserExamAnswers,
   Study,
+  Pdf,
+  VideoLink,
 };

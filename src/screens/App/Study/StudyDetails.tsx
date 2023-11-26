@@ -1,20 +1,20 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
 import StudyDetalsHeader from '../../../components/Molecules/StudyDetalsHeader';
-import {IndexStyle} from '../../../styles/Theme/IndexStyle';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {useNavigation} from '@react-navigation/native';
 
 const StudyDetails = ({route}) => {
   const {subject} = route.params;
 
   const {useQuery} = AuthContext;
 
-  console.log(subject);
-
-  const savedSubjects = useQuery(Study, studies => {
+  const savedStudies = useQuery(Study, studies => {
     return studies.filtered(
       `subject.id = "${subject.id}" OR subject.subject = "${subject.subject}"`,
     );
@@ -23,39 +23,113 @@ const StudyDetails = ({route}) => {
   //   const savedExam = useQuery(Exam, examItems => {
   //     return examItems.filtered(`id == "${exam.id}"`);
   //   });
-  console.log(savedSubjects.length);
+
   return (
     <View style={style.container}>
-      {savedSubjects && savedSubjects[0] && (
+      {savedStudies && savedStudies[0] && (
         <>
           <StudyDetalsHeader
-            subjectName={savedSubjects[0].title}
-            progress={savedSubjects[0].progress}
+            subjectName={subject.subject}
+            progress={savedStudies[0].progress}
           />
-
-          <UnitsCard />
-          <UnitsCard />
-          <UnitsCard />
-          <UnitsCard />
+          {savedStudies.map((study, index) => (
+            <UnitsCard key={study.id + '--' + index} study={study} />
+          ))}
         </>
       )}
     </View>
   );
 };
 
-const UnitsCard = () => {
+const UnitsCard = ({study}: {study: Study}) => {
+  const [showContent, setShowContent] = useState(false);
   return (
     <View style={unitCardStyles.container}>
-      <View style={unitCardStyles.menuContainer}>
-        <AntDesign name="menuunfold" size={50} color="#EEEAFF" />
-      </View>
-      <View style={unitCardStyles.textContainer}>
-        <Text style={unitCardStyles.textTitle}>Unit One</Text>
-        <Text style={unitCardStyles.textSubTitle}>Cell Biology</Text>
-      </View>
-      <View style={unitCardStyles.downBtn}>
-        <AntDesign name="caretdown" size={16} color="#4d4d4d" />
-      </View>
+      <TouchableOpacity
+        touchSoundDisabled
+        style={unitCardStyles.topcontainer}
+        onPress={() => setShowContent(prev => !prev)}>
+        <View style={unitCardStyles.menuContainer}>
+          <AntDesign name="menuunfold" size={40} color="#EEEAFF" />
+        </View>
+        <View style={unitCardStyles.textContainer}>
+          <Text style={unitCardStyles.textTitle}>{study.unit}</Text>
+          <Text style={unitCardStyles.textSubTitle}>{study.title}</Text>
+        </View>
+        <View style={unitCardStyles.downBtn}>
+          <AntDesign
+            name={showContent ? 'caretup' : 'caretdown'}
+            size={16}
+            color="#4d4d4d"
+          />
+        </View>
+      </TouchableOpacity>
+      {showContent && <Accordion study={study} />}
+    </View>
+  );
+};
+
+const Accordion = ({study}: {study: Study}) => {
+  const navigator: any = useNavigation();
+
+  console.log({study: study.selectedQuestion.length});
+  return (
+    <View>
+      {study.selectedQuestion && study.selectedQuestion.length > 0 && (
+        <View style={accordiontyles.container}>
+          <TouchableOpacity
+            touchSoundDisabled
+            style={accordiontyles.assessmentBtn}>
+            <View style={accordiontyles.assessmentIcon}>
+              <SimpleLineIcons name="user-following" size={20} />
+            </View>
+            <Text style={accordiontyles.assessmentTitle}>Self Assessment</Text>
+            <View style={accordiontyles.square} />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {study.pdf && study.pdf.length > 0 && (
+        <View style={accordiontyles.container}>
+          <TouchableOpacity
+            touchSoundDisabled
+            style={accordiontyles.assessmentBtn}
+            onPress={() => navigator.navigate('ViewPdf', {pdf: study.pdf})}>
+            <View
+              style={[
+                accordiontyles.assessmentIcon,
+                accordiontyles.assessmentIconBg,
+              ]}
+            />
+
+            <Text style={accordiontyles.assessmentTitle}>Unit Review Note</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {study.videoLink &&
+        study.videoLink.length > 0 &&
+        study.videoLink.map((link, index) => (
+          <View style={accordiontyles.container}>
+            <TouchableOpacity
+              key={link.videoLink + '' + index + 'links'}
+              touchSoundDisabled
+              style={accordiontyles.videoContainer}
+              onPress={() =>
+                navigator.navigate('ViewVideo', {
+                  videos: study.videoLink,
+                  selectedVideoIndex: index,
+                })
+              }>
+              <Text style={accordiontyles.videoText}>
+                0{index + 1}. Study video
+              </Text>
+              <View style={accordiontyles.videoIcon}>
+                <Entypo name="controller-play" size={30} color="#fff" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        ))}
     </View>
   );
 };
@@ -72,12 +146,14 @@ const style = StyleSheet.create({
 
 const unitCardStyles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     marginHorizontal: 10,
-    marginTop: 5,
+    marginVertical: 5,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#E1E1E1',
+    borderColor: '#949090',
+  },
+  topcontainer: {
+    flexDirection: 'row',
     paddingVertical: 10,
     paddingHorizontal: 4,
   },
@@ -98,13 +174,76 @@ const unitCardStyles = StyleSheet.create({
   textSubTitle: {
     color: '#000',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.035,
+    fontSize: screenWidth * 0.033,
     position: 'absolute',
-    bottom: -1,
+    bottom: -10,
   },
   downBtn: {
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
+  },
+});
+
+const accordiontyles = StyleSheet.create({
+  container: {
+    marginHorizontal: 10,
+    marginVertical: 5,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#E1E1E1',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  videoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 10,
+    marginVertical: 10,
+  },
+  videoText: {
+    color: '#A4A4AE',
+    fontSize: screenWidth * 0.04,
+    fontFamily: 'PoppinsSemiBold',
+  },
+  videoIcon: {
+    backgroundColor: '#9A85FC',
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    justifyContent: 'center',
+  },
+  assessmentBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  assessmentIcon: {
+    marginHorizontal: 5,
+    marginVertical: 7,
+    backgroundColor: '#EEF1F6',
+    borderRadius: 8,
+    width: '15%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 13,
+  },
+  assessmentIconBg: {
+    backgroundColor: '#399BE2',
+    height: 45,
+  },
+  assessmentTitle: {
+    fontFamily: 'PoppinsBold',
+    fontSize: screenWidth * 0.04,
+    marginLeft: screenWidth * 0.03,
+    color: '#000',
+    width: '72%',
+  },
+  square: {
+    width: 18,
+    height: 18,
+    borderWidth: 1,
+    borderRadius: 3,
+    alignSelf: 'flex-start',
   },
 });
 

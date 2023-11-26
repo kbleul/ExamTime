@@ -1,7 +1,7 @@
 import {NavigationProp} from '@react-navigation/native';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
-import {examQuestionType, studyType} from '../../../types';
+import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
 
 type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[11];
@@ -17,10 +17,12 @@ export const getAllStudies = async (
     checkIsOnline(navigator);
 
     try {
+      console.log('---object');
+
       const response = await getStudy({
         token,
       }).unwrap();
-
+      console.log(response.studies);
       saveStudyToRealm(realm, response.studies, Toast);
     } catch (error) {
       if (
@@ -59,6 +61,8 @@ export const saveStudyToRealm = async (
         unit,
         section,
         selectedQuestion,
+        pdf,
+        videoLink,
       } = study;
 
       const yearString = year.year;
@@ -81,6 +85,8 @@ export const saveStudyToRealm = async (
         });
 
         const examQuestionArr: examQuestionType[] = [];
+        const pdfObjArr: pdfType[] = [];
+        const videoObjArr: videoType[] = [];
 
         selectedQuestion.forEach(question => {
           let {
@@ -119,7 +125,28 @@ export const saveStudyToRealm = async (
           examQuestionArr.push(questiontObject);
         });
 
-        realm.create(LocalObjectDataKeys.Study, {
+        pdf.forEach(pdfItem => {
+          const {id: pdfId, pdfDocument} = pdfItem;
+          const pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
+            id: pdfId,
+            pdfDocument,
+          });
+
+          pdfObjArr.push(pdfObject);
+        });
+
+        videoLink.forEach(videoItem => {
+          const {id: videoId, videoLink} = videoItem;
+
+          const videoObject = realm.create(LocalObjectDataKeys.VideoLink, {
+            id: videoId,
+            videoLink,
+          });
+
+          videoObjArr.push(videoObject);
+        });
+
+        const newObj = realm.create(LocalObjectDataKeys.Study, {
           id,
           title,
           objective,
@@ -133,7 +160,11 @@ export const saveStudyToRealm = async (
           section: sectionString,
           selectedQuestion: examQuestionArr,
           progress: 0,
+          pdf: pdfObjArr,
+          videoLink: videoObjArr,
         });
+
+        console.log('mypdf', newObj);
       });
     });
   } catch (err) {

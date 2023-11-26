@@ -23,14 +23,15 @@ import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
 import Practice from '../screens/App/Practice/index';
 import PracticeQuestion from '../screens/App/PracticeQuestion';
 import {ProfileMenuItemsAuth} from '../utils/Data/data';
-import SetNewPassword from '../components/Organisms/SetNewPassword';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
 import ExamReview from '../screens/App/PracticeQuestion/ExamReview';
 import ExamResult from '../screens/App/PracticeQuestion/ExamResult';
 import RandomQuestionsView from '../screens/App/PracticeQuestion/RandomQuestionsView';
 import UserGuide from '../screens/App/UserGuide';
 import StudyDetails from '../screens/App/Study/StudyDetails';
-const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
+import ViewPdf from '../screens/App/Study/ViewPdf';
+import ViewVideo from '../screens/App/Study/ViewVideo';
+const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
   Stack,
   showOnboarding,
 }) => {
@@ -173,6 +174,17 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
           component={StudyDetails}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name="ViewPdf"
+          component={ViewPdf}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewVideo"
+          component={ViewVideo}
+          options={{headerShown: false}}
+        />
+
         <Stack.Screen
           name="ChallengeScreen"
           component={ChallengeSection}
