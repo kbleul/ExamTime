@@ -9,6 +9,14 @@ const ChosenCoursesCard: React.FC<{
   progress?: number;
   bgImage: any;
 }> = ({title, lessonsCount, progress, bgImage}) => {
+  console.log(bgImage.uri);
+  const onError = (e: Error) => {
+    console.log('----------------', e.message);
+  };
+  const onLoad = () => {
+    console.log('Svg loaded!');
+  };
+
   return (
     <View
       style={
@@ -16,9 +24,15 @@ const ChosenCoursesCard: React.FC<{
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
-      {/* <SvgUri width="100%" height="100%" style={styles.imageBg} uri={bgImage} /> */}
+      <SvgUri
+        width="100"
+        height="100"
+        uri={bgImage.uri}
+        onError={onError}
+        onLoad={onLoad}
+      />
 
-      <ImageBackground style={styles.imageBg} source={bgImage}>
+      {/* <ImageBackground style={styles.imageBg} source={bgImage}>
         <View style={styles.contentContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text
@@ -41,7 +55,7 @@ const ChosenCoursesCard: React.FC<{
             </>
           )}
         </View>
-      </ImageBackground>
+      </ImageBackground> */}
     </View>
   );
 };
