@@ -10,11 +10,7 @@ import RenderHtml from 'react-native-render-html';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {examQuestionType} from '../../types';
 import {answersType} from '../../screens/App/PracticeQuestion';
-
-const isHtml = (input: string) => {
-  const htmlRegex = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
-  return htmlRegex.test(input);
-};
+import {isHtml} from '../../utils/Functions/Helper';
 
 const tagsStylesQuestion = {
   p: {

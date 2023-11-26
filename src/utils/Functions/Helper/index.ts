@@ -195,3 +195,8 @@ export const PushFavorateToFront = (
 
   return favoritesFirstArray;
 };
+
+export const isHtml = (input: string) => {
+  const htmlRegex = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
+  return htmlRegex.test(input);
+};
