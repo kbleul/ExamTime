@@ -72,14 +72,19 @@ const UnitsCard = ({study}: {study: Study}) => {
 const Accordion = ({study}: {study: Study}) => {
   const navigator: any = useNavigation();
 
-  console.log({study: study.selectedQuestion.length});
   return (
     <View>
       {study.selectedQuestion && study.selectedQuestion.length > 0 && (
         <View style={accordiontyles.container}>
           <TouchableOpacity
             touchSoundDisabled
-            style={accordiontyles.assessmentBtn}>
+            style={accordiontyles.assessmentBtn}
+            onPress={() =>
+              navigator.navigate('ViewAssessment', {
+                questions: study.selectedQuestion,
+                selectedSubject: study.subject ? study.subject.subject : '',
+              })
+            }>
             <View style={accordiontyles.assessmentIcon}>
               <SimpleLineIcons name="user-following" size={20} />
             </View>
@@ -110,9 +115,10 @@ const Accordion = ({study}: {study: Study}) => {
       {study.videoLink &&
         study.videoLink.length > 0 &&
         study.videoLink.map((link, index) => (
-          <View style={accordiontyles.container}>
+          <View
+            style={accordiontyles.container}
+            key={link.videoLink + '' + index + 'links'}>
             <TouchableOpacity
-              key={link.videoLink + '' + index + 'links'}
               touchSoundDisabled
               style={accordiontyles.videoContainer}
               onPress={() =>

@@ -23,8 +23,6 @@ const ViewVideo = ({route}) => {
     .split('?v=')[1]
     .split('&')[0];
 
-  console.log(youtubeVideoId);
-  console.log('vid', videos.length);
   return (
     <View style={styles.container}>
       <TouchableOpacity

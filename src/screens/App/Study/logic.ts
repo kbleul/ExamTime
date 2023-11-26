@@ -17,12 +17,9 @@ export const getAllStudies = async (
     checkIsOnline(navigator);
 
     try {
-      console.log('---object');
-
       const response = await getStudy({
         token,
       }).unwrap();
-      console.log(response.studies);
       saveStudyToRealm(realm, response.studies, Toast);
     } catch (error) {
       if (
@@ -163,8 +160,6 @@ export const saveStudyToRealm = async (
           pdf: pdfObjArr,
           videoLink: videoObjArr,
         });
-
-        console.log('mypdf', newObj);
       });
     });
   } catch (err) {

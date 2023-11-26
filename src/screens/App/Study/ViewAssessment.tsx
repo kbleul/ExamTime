@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   BackHandler,
@@ -6,41 +7,31 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
+import DirectionModal from '../../../components/Organisms/DirectionModal';
+import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
+import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
 import Question from '../../../components/Molecules/Question';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
 import ExamSideNav from '../../../components/Organisms/ExamSideNav';
-import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
+import {answersType, filterUnanswered} from '../PracticeQuestion';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
-import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
 import {examQuestionType} from '../../../types';
-import {useNavigation} from '@react-navigation/native';
-import DirectionModal from '../../../components/Organisms/DirectionModal';
-import {useGetRandomExamMutation} from '../../../reduxToolkit/Services/auth';
-import {answersType, filterUnanswered} from './index';
-import Toast from 'react-native-toast-message';
-import {View} from 'react-native';
-import Loading from '../../../components/Atoms/Loading';
-import {checkIsOnline} from '../../../utils/Functions/Helper';
-const RandomQuestionsView = ({route}: {route: any}) => {
-  //   const {subject} = route.params;
+
+const ViewAssessment = ({route}) => {
+  const {questions, selectedSubject} = route.params;
   const navigator: any = useNavigation();
+
   const flatListRef = useRef<FlatList<any> | null>(null);
-
-  const {selectedSubject, amount} = route.params;
-  const [getRandomExam, {isLoading, error}] = useGetRandomExamMutation();
-
-  const [exam, setExam] = useState<any[] | null>(null);
-
-  const [currentViewExam, setCurrentViewExam] = useState<any[] | null>(null);
-
+  const [currentViewExam, setCurrentViewExam] = useState<any[] | null>([
+    ...questions,
+  ]);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
-
   const [showSideNav, setShowSideNav] = useState(false);
   const [showFullPage, setShowFullPage] = useState(false);
-
   const [currentQuestion, setCurrentQuestion] = useState(0);
-
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
 
   const [direction, setDirection] = useState<string | null>(null);
@@ -53,55 +44,17 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   }, []);
 
   useEffect(() => {
-    const backHandler = null;
+    const backHandler: any = null;
 
-    const getExam = async () => {
-      try {
-        const response: any = await getRandomExam({
-          grade: 'grade_8',
-          subject: selectedSubject.subject.subject,
-          noOfQuestions: amount,
-        }).unwrap();
-
-        setCurrentViewExam(response?.randomQuestions);
-        setExam(response?.randomQuestions);
-
-        const backAction = () => {
-          isLoading || error
-            ? navigator.navgate('Practice')
-            : setExitExamModalVisible(prev => !prev);
-          return true;
-        };
-
-        BackHandler.addEventListener('hardwareBackPress', backAction);
-
-        return () => backHandler && backHandler.remove();
-      } catch (err: any) {
-        backHandler && backHandler.remove();
-      }
+    const backAction = () => {
+      setExitExamModalVisible(prev => !prev);
+      return true;
     };
 
-    getExam();
-  }, [error]);
+    BackHandler.addEventListener('hardwareBackPress', backAction);
 
-  useEffect(() => {
-    if (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Fetch random exams failed.',
-        text2:
-          error?.data && error?.data?.message
-            ? error.data.message
-            : 'Unable to get exams',
-      });
-
-      if (!checkIsOnline(navigator)) {
-        setTimeout(() => {
-          navigator.navigate('Practice');
-        }, 3000);
-      }
-    }
-  }, [error]);
+    return () => backHandler && backHandler.remove();
+  }, []);
 
   const scrollToIndex = () => {
     flatListRef &&
@@ -113,15 +66,15 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   };
 
   useEffect(() => {
-    if (showFullPage) {
+    if (showFullPage && currentViewExam) {
       refIndex.current < currentViewExam.length &&
         setTimeout(scrollToIndex, 500);
     }
   }, [showFullPage]);
 
   const filterUnansweredQuestions = () => {
-    if (exam) {
-      const filteredQusetions = filterUnanswered(exam, userAnswers || []);
+    if (questions) {
+      const filteredQusetions = filterUnanswered(questions, userAnswers || []);
 
       setCurrentViewExam([...filteredQusetions]);
       setCurrentQuestion(0);
@@ -132,8 +85,8 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   };
 
   const resetViewQuesstions = () => {
-    if (exam) {
-      setCurrentViewExam([...exam]);
+    if (questions) {
+      setCurrentViewExam([...questions]);
       setCurrentQuestion(0);
       if (flatListRef.current) {
         flatListRef.current.scrollToOffset({offset: 0, animated: true});
@@ -142,23 +95,16 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   };
 
   const handleSubmitExam = () => {
-    if (exam) {
+    if (questions) {
       navigator.navigate('Exam-Result', {
         userAnswers: userAnswers || [],
-        total: exam.length,
+        total: questions.length,
         timeTaken: null,
-        examQuestions: exam,
+        examQuestions: questions,
         isPracticeMode: false,
       });
     }
   };
-
-  // useEffect(() => {
-  //   const backHandler = null;
-
-  //   // Clean up the event listener when the component is unmounted
-  //   return () => backHandler && backHandler.remove();
-  // }, [isLoading, error]);
 
   const renderItem = ({
     item,
@@ -182,7 +128,7 @@ const RandomQuestionsView = ({route}: {route: any}) => {
 
   return (
     <View style={styles.container}>
-      {!isLoading && !error && currentViewExam && (
+      {currentViewExam && (
         <SafeAreaView
           style={
             showFullPage
@@ -192,11 +138,15 @@ const RandomQuestionsView = ({route}: {route: any}) => {
           {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
           <ViewQuestionHeader
-            title={`Random Questions ${selectedSubject?.subject?.subject}`}
+            title={`Assessment Questions ${selectedSubject}`}
             setShowFullPage={setShowFullPage}
             showFullPage={showFullPage}
             unansweredQuestionsLength={
-              exam ? (userAnswers ? exam.length - userAnswers.length : 0) : 0
+              questions
+                ? userAnswers
+                  ? questions.length - userAnswers.length
+                  : 0
+                : 0
             }
             filterUnansweredQuestions={filterUnansweredQuestions}
             setCurrentQuestion={setCurrentQuestion}
@@ -265,7 +215,7 @@ const RandomQuestionsView = ({route}: {route: any}) => {
             exitExamModalVisible={exitExamModalVisible}
             setExitExamModalVisible={setExitExamModalVisible}
             examStatusData={{
-              total: exam ? exam.length : 0,
+              total: questions ? questions.length : 0,
               answered: userAnswers?.length || 0,
             }}
             resetViewQuesstions={resetViewQuesstions}
@@ -273,7 +223,7 @@ const RandomQuestionsView = ({route}: {route: any}) => {
             timeLeft={false}
             showViewReviewBtn={
               currentViewExam
-                ? exam && exam.length === currentViewExam.length
+                ? questions && questions.length === currentViewExam.length
                   ? false
                   : true
                 : false
@@ -283,7 +233,6 @@ const RandomQuestionsView = ({route}: {route: any}) => {
           <DirectionModal direction={direction} setDirection={setDirection} />
         </SafeAreaView>
       )}
-      {isLoading && <Loading />}
 
       <Toast />
     </View>
@@ -309,4 +258,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RandomQuestionsView;
+export default ViewAssessment;

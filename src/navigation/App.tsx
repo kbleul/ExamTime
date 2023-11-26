@@ -1,5 +1,4 @@
 import React from 'react';
-import {StackType} from './types';
 import Onboarding from '../screens/App/Onboarding/index';
 import Home from '../screens/App/Home/index';
 import Courses from '../screens/App/Courses/index';
@@ -31,6 +30,7 @@ import UserGuide from '../screens/App/UserGuide';
 import StudyDetails from '../screens/App/Study/StudyDetails';
 import ViewPdf from '../screens/App/Study/ViewPdf';
 import ViewVideo from '../screens/App/Study/ViewVideo';
+import ViewAssessment from '../screens/App/Study/ViewAssessment';
 const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
   Stack,
   showOnboarding,
@@ -182,6 +182,11 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="ViewVideo"
           component={ViewVideo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewAssessment"
+          component={ViewAssessment}
           options={{headerShown: false}}
         />
 

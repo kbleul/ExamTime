@@ -28,17 +28,13 @@ const ViewPdf = ({route}) => {
       <Pdf
         trustAllCerts={false}
         source={source}
-        onLoadComplete={(numberOfPages, filePath) => {
-          console.log(`Number of pages: ${numberOfPages}`);
-          setIsLoading(false);
-        }}
+        onLoadComplete={(numberOfPages, filePath) => setIsLoading(false)}
         onError={error => {
           console.log(error);
         }}
         onPressLink={uri => {
           console.log(`Link pressed: ${uri}`);
         }}
-        singlePage
         style={styles.pdf}
       />
 
