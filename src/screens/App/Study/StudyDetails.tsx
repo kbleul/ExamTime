@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
 import StudyDetalsHeader from '../../../components/Molecules/StudyDetalsHeader';
@@ -10,6 +17,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useNavigation} from '@react-navigation/native';
 import {calculateProgress} from './logic';
+import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 
 const StudyDetails = ({route}) => {
   const {subject} = route.params;
@@ -27,19 +35,24 @@ const StudyDetails = ({route}) => {
   //   });
 
   return (
-    <View style={style.container}>
-      {savedStudies && savedStudies[0] && (
-        <>
-          <StudyDetalsHeader
-            subjectName={subject.subject}
-            progress={calculateProgress(savedStudies)}
-          />
-          {savedStudies.map((study, index) => (
-            <UnitsCard key={study.id + '--' + index} study={study} />
-          ))}
-        </>
-      )}
-    </View>
+    <SafeAreaView style={[IndexStyle.container, style.container]}>
+      <ScrollView
+        style={style.ScrollView}
+        contentContainerStyle={style.contentContainer}
+        showsVerticalScrollIndicator={false}>
+        {savedStudies && savedStudies[0] && (
+          <>
+            <StudyDetalsHeader
+              subjectName={subject.subject}
+              progress={calculateProgress(savedStudies)}
+            />
+            {savedStudies.map((study, index) => (
+              <UnitsCard key={study.id + '--' + index} study={study} />
+            ))}
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -153,11 +166,17 @@ const Accordion = ({study}: {study: Study}) => {
 
 const style = StyleSheet.create({
   container: {
-    paddingVertical: 40,
     paddingHorizontal: 10,
+    paddingTop: 30,
     width: '100%',
     backgroundColor: '#F9FCFF',
     flex: screenHeight,
+  },
+  ScrollView: {
+    flex: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
   },
 });
 

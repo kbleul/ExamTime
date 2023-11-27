@@ -22,6 +22,7 @@ import {getAllStudies} from './logic';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import Toast from 'react-native-toast-message';
 import {singleSubjectType} from '../../../types';
+import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
 
 const CourseItem = ({item}: {item: singleSubjectType}) => {
   const navigator: any = useNavigation();
@@ -44,10 +45,11 @@ const CourseItem = ({item}: {item: singleSubjectType}) => {
       <View style={styles.infoContainer}>
         <Text style={styles.subject}>{item.subject.subject}</Text>
         <Text style={styles.units}>15 units</Text>
+        <Text style={styles.progressText}>completed 45% </Text>
+
         <View style={styles.indicatorContainer}>
-          {/* <Text style={}></Text> */}
+          <Text style={[styles.indicator, {width: '50%'}]} />
         </View>
-        <Text style={styles.progressText}>45% completed</Text>
       </View>
     </TouchableOpacity>
   );
@@ -76,9 +78,13 @@ const Index = () => {
     <View style={styles.container}>
       {/* <ScrollView
                 showsVerticalScrollIndicator={false}> */}
-      <View style={styles.backicon}>
-        <BackWithItem type="Study section" />
+      {/* <Text style={styles.headerTitle}>Study Section</Text>
+        <Text>asdjkasdksadjaskl</Text>
+      </View> */}
+      <View style={styles.headerContainerTop}>
+        <Text style={styles.headerTitle}>Study Section</Text>
       </View>
+
       <View style={styles.Headercontainer}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>
@@ -95,6 +101,8 @@ const Index = () => {
         <Image source={require('./course.png')} style={styles.image} />
       </View>
 
+      <Header title="My learning" subTitle="Your Chosen Courses" />
+
       <FlatList
         data={PushFavorateToFront(
           savedUserData[0].selectedSubjects || [],
@@ -102,6 +110,7 @@ const Index = () => {
         )}
         renderItem={({item}) => <CourseItem item={item} />}
         keyExtractor={(item, index) => index.toString()}
+        showsVerticalScrollIndicator={false}
       />
       <MainBottomNav />
 
@@ -114,31 +123,42 @@ const styles = ScaledSheet.create({
   backicon: {
     marginTop: '25@ms',
   },
+
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
     flex: 1,
     width: screenWidth,
     backgroundColor: '#F9FCFF',
+    paddingTop: 40,
+    paddingBottom: 70,
+    paddingHorizontal: 10,
     // backgroundColor: 'red',
   },
+  headerContainerTop: {
+    paddingHorizontal: screenWidth * 0.02,
+  },
+  headerTitle: {
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: screenWidth * 0.065, //28
+    color: '#000',
+    lineHeight: screenHeight * 0.05, //34
+    marginTop: screenWidth * 0.009,
+  },
   Headercontainer: {
-    marginVertical: 15,
-    marginHorizontal: 10,
+    marginVertical: 2,
     flexDirection: 'row',
     backgroundColor: '#FFA500',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: '10@ms',
-    width: screenWidth - 20,
+    width: screenWidth - 30,
     height: screenHeight / 6,
+    minHeight: 150,
     borderRadius: 10,
-    // margin:10,
-    // overflow: 'hidden'
+    position: 'relative',
   },
   textContainer: {
-    width: '60%',
+    width: '70%',
     alignItems: 'flex-start',
     gap: 10,
     justifyContent: 'space-between',
@@ -146,35 +166,35 @@ const styles = ScaledSheet.create({
   text: {
     fontFamily: 'PoppinsRegular',
     color: '#FFFFFF',
-    fontSize: screenHeight * 0.015,
+    fontSize: screenWidth * 0.035,
   },
   button: {
     backgroundColor: 'white',
-    width: '80%',
-    height: screenHeight * 0.04,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 15,
+    borderRadius: 100,
+    paddingHorizontal: screenWidth * 0.05,
+    paddingTop: screenWidth * 0.018,
+    paddingBottom: screenWidth * 0.01,
   },
   buttonText: {
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     color: '#000000',
-    fontFamily: 'PoppinsSemiBold',
+    fontFamily: 'PoppinsBold',
     fontSize: screenHeight * 0.017,
   },
   image: {
     width: '40%',
-    height: screenHeight / 6 + 10,
+    height: screenHeight / 6 + 45,
     resizeMode: 'contain',
     position: 'absolute',
     right: 0,
-    top: -10,
     bottom: 0,
   },
   imageBg: {
-    height: '25%',
+    height: '35%',
     width: '100%',
     padding: '10@ms',
     justifyContent: 'center',
@@ -183,24 +203,21 @@ const styles = ScaledSheet.create({
 
   lcontainer: {
     alignItems: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     flexDirection: 'row',
-    backgroundColor: '#EDF7F6',
-    width: '96%',
-    marginLeft: '2%',
-    padding: '1%',
     marginHorizontal: 2,
-    marginVertical: 10,
+    padding: 2,
+    marginBottom: 10,
     borderRadius: 10,
     borderColor: '#E1E1E1',
     borderWidth: 1,
+    backgroundColor: 'white',
   },
   imgContainer: {
     width: '30%',
-    padding: 4,
+    margin: 4,
     backgroundColor: 'white',
-    borderTopStartRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderRadius: 10,
   },
   imagebg: {
     width: '100%',
@@ -208,7 +225,7 @@ const styles = ScaledSheet.create({
     borderRadius: 10,
   },
   infoContainer: {
-    width: '70%',
+    width: '67%',
     padding: 10,
     backgroundColor: 'white',
     borderTopEndRadius: 10,
@@ -216,26 +233,40 @@ const styles = ScaledSheet.create({
     justifyContent: 'flex-end',
   },
   subject: {
-    fontSize: 24,
-    fontFamily: 'Montserrat-Bold',
+    fontSize: screenWidth * 0.05,
+    fontFamily: 'PoppinsSemiBold',
     textTransform: 'capitalize',
-    color: '#1E90FF',
+    color: '#000',
   },
   units: {
-    fontSize: 18,
-    fontFamily: 'Montserrat-Regular',
+    fontSize: screenWidth * 0.033,
+    fontFamily: 'PoppinsSemiBold',
     textTransform: 'capitalize',
-    color: '#858585',
+    color: '#000',
     paddingVertical: 2,
+    paddingTop: 3,
+    paddingLeft: 16,
+    marginVertical: 8,
+    borderRadius: 100,
+    backgroundColor: '#9ED2E3',
+    maxWidth: '68%',
   },
   indicatorContainer: {
     width: '100%',
     height: 6,
-    borderRadius: 10,
+    borderRadius: 100,
     backgroundColor: '#e8e6e6',
   },
+  indicator: {
+    height: 6,
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 100,
+    backgroundColor: '#6067B3',
+  },
   progressText: {
-    color: '#858585',
+    color: '#000',
+    fontFamily: 'PoppinsRegular',
+    fontSize: screenWidth * 0.033,
   },
 });
 export default Index;

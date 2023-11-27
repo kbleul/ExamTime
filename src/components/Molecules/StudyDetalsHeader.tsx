@@ -13,7 +13,7 @@ const StudyDetalsHeader = ({
 }) => {
   const navigator = useNavigation();
   return (
-    <View>
+    <View style={styles.container}>
       <TouchableOpacity
         touchSoundDisabled
         onPress={() => navigator.goBack()}
@@ -33,6 +33,9 @@ const StudyDetalsHeader = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: screenWidth * 0.04,
+  },
   button: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
   progressText: {
     fontSize: screenWidth * 0.045,
     color: '#37383A',
-    marginLeft: 10,
+    marginLeft: 3,
   },
 });
 

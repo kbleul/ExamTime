@@ -11,15 +11,19 @@ const Header: React.FC<{
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      {seeAll && (
-        <View style={styles.bottomBox}>
-          <Text style={styles.subtext}>{subTitle}</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>See all</Text>
-            <MaterialIcons name="navigate-next" color="#99BCE0" />
-          </TouchableOpacity>
-        </View>
-      )}
+
+      {seeAll ||
+        (subTitle && (
+          <View style={styles.bottomBox}>
+            {subTitle && <Text style={styles.subtext}>{subTitle}</Text>}
+            {seeAll && (
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>See all</Text>
+                <MaterialIcons name="navigate-next" color="#99BCE0" />
+              </TouchableOpacity>
+            )}
+          </View>
+        ))}
     </View>
   );
 };
