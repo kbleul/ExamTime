@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Alert } from 'react-native';
 import { ScaledSheet, ms } from 'react-native-size-matters';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import { useSelector } from 'react-redux';
@@ -19,21 +19,20 @@ const Index = () => {
   useEffect(() => {
     const fetchAboutUs = async () => {
       try {
-        const response = await getAboutUs(token);
+        const response:any = await getAboutUs({});
 
         if (response.error) {
-          console.error(response.error);
+          Alert.alert(response.error);
         } else if (response.data[0].aboutUs) {
-          console.log("Indeed object data");
           const aboutUsData = response.data[0].aboutUs;
           setAboutUS(aboutUsData);
           setLoading(false);
         } else {
-          console.error('Invalid response format - missing or empty array:', response.data[0].aboutUs);
+          Alert.alert('Invalid response format - missing or empty array:', response.data[0].aboutUs);
         }
-      } catch (error) {
+      } catch (error:any) {
         setLoading(false);
-        console.error('Error fetching about us data:', error);
+        Alert.alert('Error fetching about us data:', error);
       }
     };
 

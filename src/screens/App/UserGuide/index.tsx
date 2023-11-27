@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,22 +7,25 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
+  Alert,
 } from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import PrimaryBtn from '../../../components/Atoms/PrimaryBtn';
 import YoutubeCard from '../../../components/Molecules/YoutubeCard';
 import GuideTexts from '../../../components/Molecules/GuideHederText';
 import { useGetUserGuideMutation } from '../../../reduxToolkit/Services/auth';
+import scale from '../../../utils/Functions/Scale';
+import BackWithItem from '../../../components/Organisms/BackWithItem';
 
 const Index = () => {
   const navigator = useNavigation<any>();
   const [Index, SetIndex] = useState(0);
   const [userGuide, setuserGuide] = useState(null);
   const [loading, setLoading] = useState(true);
-const [getUserGuide]=useGetUserGuideMutation()
+  const [getUserGuide] = useGetUserGuideMutation()
   const Width = Dimensions.get('window').width;
   type DataType = {
     id: any;
@@ -52,27 +55,26 @@ const [getUserGuide]=useGetUserGuideMutation()
     const fetchUserguide = async () => {
       setLoading(true);
       try {
-        const response = await getUserGuide();
-
+        const response :any= await getUserGuide({});
         if (response.error) {
-          console.error(response.error);
+          Alert.alert(response.error);
         } else if (response.data) {
-          
           setuserGuide(response.data);
-           setLoading(false);
+          setLoading(false);
         } else {
-          console.error('Invalid response format - missing or empty array:', response.data[0].aboutUs);
+          Alert.alert('Invalid response format - missing or empty array:', response.data[0].aboutUs);
         }
-      } catch (error) {
+      } catch (error:any) {
         setLoading(false);
-        console.error('Error fetching about us data:', error);
+        Alert.alert('Error fetching about us data:', error);
+
       }
     };
 
-    fetchUserguide(); 
+    fetchUserguide();
   }, []);
-  
-  const handelScroll = useCallback(({viewableItems}) => {
+
+  const handelScroll = useCallback(({ viewableItems }:any) => {
     if (viewableItems.length === 1) {
       SetIndex(viewableItems[0].index);
     }
@@ -90,13 +92,9 @@ const [getUserGuide]=useGetUserGuideMutation()
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topHeader}>
-        <TouchableOpacity onPress={() => navigator.goBack()}>
-          <Ionicons name="chevron-back-outline" color="#000" size={28} />
-        </TouchableOpacity>
-
-        <Text style={styles.headerText}>User Guide</Text>
+    <View style={styles.container}>
+      <View style={styles.backicon}>
+        <BackWithItem type="User Guide" />
       </View>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
@@ -109,12 +107,12 @@ const [getUserGuide]=useGetUserGuideMutation()
           <FlatList
             data={userGuide}
             keyExtractor={item => item.id}
-            renderItem={({item}) => <YoutubeCard item={item} loadinga={loading} />}
+            renderItem={({ item }) => <YoutubeCard item={item} loadinga={loading} />}
             horizontal={true}
             pagingEnabled={true}
             showsHorizontalScrollIndicator={false}
             style={styles.FlatListStyle}
-            viewabilityConfig={{viewAreaCoveragePercentThreshold: 100}}
+            viewabilityConfig={{ viewAreaCoveragePercentThreshold: 100 }}
             onViewableItemsChanged={handelScroll}
           />
 
@@ -126,8 +124,8 @@ const [getUserGuide]=useGetUserGuideMutation()
             body={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '}
           />
 
-          <View style={{padding: 10}}>
-            <PrimaryBtn text={'start now'} width={'auto'} />
+          <View style={{ padding: 10 }}>
+            <PrimaryBtn text={'start now'}  />
           </View>
         </View>
       </ScrollView>
@@ -135,7 +133,7 @@ const [getUserGuide]=useGetUserGuideMutation()
       <View>
         <MainBottomNav />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -143,10 +141,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F9FCFF',
     flex: 1,
-    paddingTop: 30,
+
   },
   scrollContainer: {
     paddingBottom: 40,
+  },
+  backicon: {
+    marginTop: scale(25),
   },
   topHeader: {
     flexDirection: 'row',

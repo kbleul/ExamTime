@@ -5,6 +5,8 @@ import { Button, Alert } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 import queryString from 'query-string';
 import Loading from '../Atoms/Loading';
+import { screenHeight } from '../../utils/Data/data';
+import scale from '../../utils/Functions/Scale';
 type YoutubeCardProps = {
   item: any,
   loadinga: boolean
@@ -21,19 +23,10 @@ const YoutubeCard: React.FC<YoutubeCardProps> = ({ item, loadinga }) => {
       setPlaying(false);
       Alert.alert("video has finished playing!");
     }
-  }, []);
+  }, [])
 
-  const togglePlaying = useCallback(() => {
-    setPlaying((prev) => !prev);
-  }, []);
   const urlParams = queryString.parseUrl(item.videoLink);
   const videoId = urlParams.query.v;
-  // if (loading) return 
-  // <View style={styles.loadingIndicator}>
-  //   <Loading />
-  // </View>
-  console.log(videoId);
-  // console.log(loading);
   return (
 
     <View style={{ width: Width, padding: 10 }}>
@@ -45,9 +38,9 @@ const YoutubeCard: React.FC<YoutubeCardProps> = ({ item, loadinga }) => {
 
       ) : (
         <>
-          <View style={{ width: '100%', height: 250, borderRadius: 10 }}>
+          <View style={{ width: '100%', height: screenHeight*0.35, borderRadius: 30}}>
             <YoutubePlayer
-              height={300}
+              height={screenHeight*0.35}
               play={playing}
               videoId={`${videoId}`}
               onChangeState={onStateChange}
@@ -57,7 +50,6 @@ const YoutubeCard: React.FC<YoutubeCardProps> = ({ item, loadinga }) => {
         </>
       )}
     </View>
-
   )
 }
 
@@ -72,22 +64,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    height: 250,
+    height: screenHeight*0.35,
     width: "100%",
-    // backgroundColor: 'green',
   },
   YoutubeText: {
     fontFamily: 'Poppins',
     fontWeight: '700',
-    fontSize: 12,
-    lineHeight: 14,
-    borderRadius: 25,
+    fontSize: scale(12),
+    lineHeight: scale(14),
+    borderRadius: scale(25),
     backgroundColor: 'white',
     color: '#5CADFC',
-    padding: 10,
+    padding: scale(10),
     position: 'absolute',
-    top: 20,
-    left: 15
+    top: scale(20),
+    left: scale(15)
   },
 })
 
