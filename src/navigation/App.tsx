@@ -109,6 +109,7 @@ const AppRoutes: React.FC<{Stack: StackType; showOnboarding: boolean}> = ({
           component={FAQ}
           options={{headerShown: false}}
         />
+
         <Stack.Screen
           name={ProfileMenuItemsAuth['User Guide'].navigate}
           component={UserGuide}
