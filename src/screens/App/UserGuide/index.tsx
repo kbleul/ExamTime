@@ -20,7 +20,6 @@ const Index = () => {
   const navigator = useNavigation<any>();
   const [Index, SetIndex] = useState(0);
 
-  const Width = Dimensions.get('window').width;
   type DataType = {
     id: any;
     image: any;
@@ -32,17 +31,20 @@ const Index = () => {
       id: '01',
       image: require('../../../assets/Images/card.png'),
       text: 'how to subscribe',
+      videoLink: '',
     },
     {
       id: '02',
       image: require('../../../assets/Images/pay.png'),
       text: 'how to pay',
+      videoLink: '',
     },
 
     {
       id: '03',
       image: require('../../../assets/Images/How.png'),
       text: 'how to',
+      videoLink: '',
     },
   ];
   const handelScroll = useCallback(({viewableItems}) => {
@@ -116,17 +118,15 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F9FCFF',
     flex: 1,
-    paddingTop: 30,
+    paddingTop: 20,
   },
-  scrollContainer: {
-    paddingBottom: 40,
-  },
+
   topHeader: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 5,
-    paddingVertical: 20,
+    marginBottom: 10,
   },
   headerText: {
     color: '#0F0F0F',

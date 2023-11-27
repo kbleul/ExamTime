@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,6 +18,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useNavigation} from '@react-navigation/native';
 import {calculateProgress} from './logic';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
+import Toast from 'react-native-toast-message';
 
 const StudyDetails = ({route}) => {
   const {subject} = route.params;
@@ -33,6 +34,15 @@ const StudyDetails = ({route}) => {
   //   const savedExam = useQuery(Exam, examItems => {
   //     return examItems.filtered(`id == "${exam.id}"`);
   //   });
+
+  useEffect(() => {
+    savedStudies.length === 0 &&
+      Toast.show({
+        type: 'error',
+        text1: 'No study items found',
+        text2: 'Try a different subject',
+      });
+  }, []);
 
   return (
     <SafeAreaView style={[IndexStyle.container, style.container]}>
@@ -52,6 +62,7 @@ const StudyDetails = ({route}) => {
           </>
         )}
       </ScrollView>
+      <Toast />
     </SafeAreaView>
   );
 };

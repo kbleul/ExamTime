@@ -23,9 +23,12 @@ import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import Toast from 'react-native-toast-message';
 import {singleSubjectType} from '../../../types';
 import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
+import {SvgUri} from 'react-native-svg';
+import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 
 const CourseItem = ({item}: {item: singleSubjectType}) => {
   const navigator: any = useNavigation();
+
   return (
     <TouchableOpacity
       style={styles.lcontainer}
@@ -35,11 +38,7 @@ const CourseItem = ({item}: {item: singleSubjectType}) => {
         })
       }>
       <View style={styles.imgContainer}>
-        <ImageBackground
-          style={styles.imagebg}
-          source={require('./course.png')}>
-          <Text>{''} </Text>
-        </ImageBackground>
+        <SvgUri style={styles.imagebg} uri={item.icon} onError={onError} />
       </View>
 
       <View style={styles.infoContainer}>
@@ -76,11 +75,6 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
-      {/* <ScrollView
-                showsVerticalScrollIndicator={false}> */}
-      {/* <Text style={styles.headerTitle}>Study Section</Text>
-        <Text>asdjkasdksadjaskl</Text>
-      </View> */}
       <View style={styles.headerContainerTop}>
         <Text style={styles.headerTitle}>Study Section</Text>
       </View>
@@ -193,13 +187,6 @@ const styles = ScaledSheet.create({
     right: 0,
     bottom: 0,
   },
-  imageBg: {
-    height: '35%',
-    width: '100%',
-    padding: '10@ms',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 
   lcontainer: {
     alignItems: 'stretch',
@@ -215,14 +202,16 @@ const styles = ScaledSheet.create({
   },
   imgContainer: {
     width: '30%',
-    margin: 4,
+    height: screenHeight * 0.16,
+    margin: 8,
     backgroundColor: 'white',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   imagebg: {
-    width: '100%',
-    height: 105,
-    borderRadius: 10,
+    height: '100%',
+    width: screenWidth * (1 / 2.6),
+    borderRadius: 5,
   },
   infoContainer: {
     width: '67%',
