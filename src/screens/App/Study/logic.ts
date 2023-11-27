@@ -3,6 +3,7 @@ import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
+import {Study} from '../../../Realm';
 
 type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[11];
 
@@ -143,7 +144,7 @@ export const saveStudyToRealm = async (
           videoObjArr.push(videoObject);
         });
 
-        const newObj = realm.create(LocalObjectDataKeys.Study, {
+        realm.create(LocalObjectDataKeys.Study, {
           id,
           title,
           objective,
@@ -159,6 +160,7 @@ export const saveStudyToRealm = async (
           progress: 0,
           pdf: pdfObjArr,
           videoLink: videoObjArr,
+          userExamAnswers: [],
         });
       });
     });
@@ -169,4 +171,18 @@ export const saveStudyToRealm = async (
       text1: 'Error saving studies for offline use',
     });
   }
+};
+
+export const calculateProgress = (studyObj: Study[]) => {
+  const prepareProgressArr = studyObj.map(item => item.progress);
+  // Perform calculations or further operations with prepareProgressArr if needed
+  const singleStudyPrecentage = 100 / studyObj.length;
+
+  let totalPreogress = 0;
+  prepareProgressArr.forEach(item => {
+    if (item !== 0) {
+      totalPreogress += (item * singleStudyPrecentage) / 100;
+    }
+  });
+  return totalPreogress;
 };

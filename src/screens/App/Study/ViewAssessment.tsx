@@ -19,10 +19,19 @@ import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import {answersType, filterUnanswered} from '../PracticeQuestion';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import {examQuestionType} from '../../../types';
+import {AuthContext} from '../../../Realm/model';
+import {Study} from '../../../Realm';
+import {LocalObjectDataKeys} from '../../../utils/Data/data';
 
 const ViewAssessment = ({route}) => {
-  const {questions, selectedSubject} = route.params;
+  const {questions, selectedSubject, subjectId} = route.params;
   const navigator: any = useNavigation();
+
+  const {useRealm, useQuery} = AuthContext;
+  const realm = useRealm();
+  const savedStudy = useQuery(Study, studyItem => {
+    return studyItem.filtered(`id == "${subjectId}"`);
+  });
 
   const flatListRef = useRef<FlatList<any> | null>(null);
   const [currentViewExam, setCurrentViewExam] = useState<any[] | null>([
@@ -95,7 +104,29 @@ const ViewAssessment = ({route}) => {
   };
 
   const handleSubmitExam = () => {
-    if (questions) {
+    if (questions && userAnswers && savedStudy && savedStudy[0]) {
+      const answersArray: any[] = [];
+
+      try {
+        realm.write(() => {
+          userAnswers.forEach(answerItem => {
+            const newAnswer = realm.create(
+              LocalObjectDataKeys.UserExamAnswers,
+              {
+                ...answerItem,
+              },
+            );
+
+            answersArray.push(newAnswer);
+          });
+
+          savedStudy[0].userExamAnswers = answersArray;
+          savedStudy[0].progress = 10;
+        });
+      } catch (e) {
+        console.log('error', e);
+      }
+
       navigator.navigate('Exam-Result', {
         userAnswers: userAnswers || [],
         total: questions.length,
@@ -103,6 +134,8 @@ const ViewAssessment = ({route}) => {
         examQuestions: questions,
         isPracticeMode: false,
       });
+    } else {
+      navigator.navigate('StudySection');
     }
   };
 

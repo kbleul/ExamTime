@@ -275,6 +275,7 @@ class Study extends Realm.Object {
   progress: number = 0;
   pdf: pdfType[] = [];
   videoLink: videoType[] = [];
+  userExamAnswers: answersType[] | [] = [];
 
   static schema = {
     name: 'Study',
@@ -294,6 +295,7 @@ class Study extends Realm.Object {
       progress: 'int',
       pdf: 'Pdf[]',
       videoLink: 'VideoLink[]',
+      userExamAnswers: 'UserExamAnswers[]',
     },
   };
 }

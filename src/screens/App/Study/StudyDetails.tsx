@@ -6,8 +6,10 @@ import StudyDetalsHeader from '../../../components/Molecules/StudyDetalsHeader';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useNavigation} from '@react-navigation/native';
+import {calculateProgress} from './logic';
 
 const StudyDetails = ({route}) => {
   const {subject} = route.params;
@@ -30,7 +32,7 @@ const StudyDetails = ({route}) => {
         <>
           <StudyDetalsHeader
             subjectName={subject.subject}
-            progress={savedStudies[0].progress}
+            progress={calculateProgress(savedStudies)}
           />
           {savedStudies.map((study, index) => (
             <UnitsCard key={study.id + '--' + index} study={study} />
@@ -80,16 +82,25 @@ const Accordion = ({study}: {study: Study}) => {
             touchSoundDisabled
             style={accordiontyles.assessmentBtn}
             onPress={() =>
+              study.userExamAnswers.length <= 0 &&
               navigator.navigate('ViewAssessment', {
                 questions: study.selectedQuestion,
                 selectedSubject: study.subject ? study.subject.subject : '',
+                subjectId: study.id,
               })
             }>
             <View style={accordiontyles.assessmentIcon}>
               <SimpleLineIcons name="user-following" size={20} />
             </View>
             <Text style={accordiontyles.assessmentTitle}>Self Assessment</Text>
-            <View style={accordiontyles.square} />
+            {/* <View style={accordiontyles.square} /> */}
+            <Feather
+              name={
+                study.userExamAnswers.length > 0 ? 'check-square' : 'square'
+              }
+              size={24}
+              style={accordiontyles.square}
+            />
           </TouchableOpacity>
         </View>
       )}
@@ -245,10 +256,7 @@ const accordiontyles = StyleSheet.create({
     width: '72%',
   },
   square: {
-    width: 18,
-    height: 18,
-    borderWidth: 1,
-    borderRadius: 3,
+    color: '#000',
     alignSelf: 'flex-start',
   },
 });
