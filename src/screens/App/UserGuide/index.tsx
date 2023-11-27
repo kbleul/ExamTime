@@ -15,45 +15,19 @@ import {useNavigation} from '@react-navigation/native';
 import PrimaryBtn from '../../../components/Atoms/PrimaryBtn';
 import YoutubeCard from '../../../components/Molecules/YoutubeCard';
 import GuideTexts from '../../../components/Molecules/GuideHederText';
+import {userGuideData} from '../../../utils/Data/data';
 
 const Index = () => {
   const navigator = useNavigation<any>();
   const [Index, SetIndex] = useState(0);
 
-  type DataType = {
-    id: any;
-    image: any;
-    text: any;
-  };
-
-  const data: DataType[] = [
-    {
-      id: '01',
-      image: require('../../../assets/Images/card.png'),
-      text: 'how to subscribe',
-      videoLink: '',
-    },
-    {
-      id: '02',
-      image: require('../../../assets/Images/pay.png'),
-      text: 'how to pay',
-      videoLink: '',
-    },
-
-    {
-      id: '03',
-      image: require('../../../assets/Images/How.png'),
-      text: 'how to',
-      videoLink: '',
-    },
-  ];
   const handelScroll = useCallback(({viewableItems}) => {
     if (viewableItems.length === 1) {
       SetIndex(viewableItems[0].index);
     }
   }, []);
   const Indicator = () => {
-    return data.map((item, index) => {
+    return userGuideData.map((item, index) => {
       if (Index == index) {
         return <View key={index} style={styles.IndectorSubcontainer} />;
       } else {
@@ -73,18 +47,18 @@ const Index = () => {
 
         <Text style={styles.headerText}>User Guide</Text>
       </View>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.Guide}>
           <GuideTexts
             title={'videos'}
             body={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '}
           />
           <FlatList
-            data={data}
+            data={userGuideData}
             keyExtractor={item => item.id}
-            renderItem={({item}) => <YoutubeCard item={item} />}
+            renderItem={({item, index}) => (
+              <YoutubeCard item={item} index={index} />
+            )}
             horizontal={true}
             pagingEnabled={true}
             showsHorizontalScrollIndicator={false}

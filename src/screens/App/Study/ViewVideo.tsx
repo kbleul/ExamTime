@@ -22,7 +22,7 @@ const ViewVideo = ({route}) => {
   const youtubeVideoId = videos[displayedVideo].videoLink
     .split('?v=')[1]
     .split('&')[0];
-
+  console.log('object', videos[displayedVideo].videoLink);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -53,7 +53,7 @@ const ViewVideo = ({route}) => {
                     ? [styles.videoText, styles.videoTextActive]
                     : styles.videoText
                 }>
-                0{index + 1}. Study video
+                {video.text ? `${video.text}` : `0${index + 1}. Study video`}
               </Text>
               <View
                 style={
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: screenWidth * 0.04,
     fontFamily: 'PoppinsSemiBold',
+    textTransform: 'capitalize',
   },
   videoTextActive: {
     color: '#A4A4AE',

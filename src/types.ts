@@ -181,3 +181,10 @@ export type studyType = {
   pdf: pdfType[] | [];
   videoLink: videoType[] | [];
 };
+
+export type GuideDataType = {
+  id: string;
+  image: any;
+  text: string;
+  videoLink: string;
+};
