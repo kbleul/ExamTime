@@ -18,13 +18,12 @@ const styles = ScaledSheet.create({
   doneContainer: {
     alignItems: 'flex-end',
     justifyContent: 'center',
-    marginLeft: '5@s',
-    marginTop: '10@vs',
+  
   },
   doneText: {
     color: '#1E90FF',
     fontFamily: 'PoppinsRegular',
-    fontSize: '20@ms',
+    fontSize: '18@ms',
   },
 });
 

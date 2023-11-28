@@ -1,9 +1,11 @@
 import React from 'react';
-import {ImageBackground, TouchableOpacity} from 'react-native';
+import {ImageBackground, TouchableOpacity, Image, Button} from 'react-native';
 import {Modal, StyleSheet, Text, View} from 'react-native';
-import Tips from '../Molecules/Tips';
 import {useNavigation} from '@react-navigation/native';
 import {examType} from '../../types';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const PracticeModeModal: React.FC<{
   practiceModeModalVisible: boolean;
@@ -16,7 +18,7 @@ const PracticeModeModal: React.FC<{
   setSelectedExam,
   selectedExam,
 }) => {
-  const navigator = useNavigation();
+  const navigator: any = useNavigation();
   return (
     <Modal
       animationType="slide"
@@ -27,24 +29,39 @@ const PracticeModeModal: React.FC<{
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View style={styles.modalImageContaner}>
-            <ImageBackground
+          <ImageBackground
+            style={styles.modalImageContaner}
+            source={require('../../assets/Images/Practice/running_bg.png')} // Replace with the correct path to your image
+            resizeMode="cover">
+            <Image
+              source={require('../../assets/Images/Practice/running.png')}
               style={styles.modalImg}
-              source={require('../../assets/Images/Practice/running.png')} // Replace with the correct path to your image
-              resizeMode="cover"
             />
-          </View>
+
+            <TouchableOpacity
+              touchSoundDisabled
+              onPress={() => setPracticeModeModalVisible(false)}
+              style={styles.cancelIconBtn}>
+              <AntDesign
+                name="closecircleo"
+                style={styles.cancelIcon}
+                size={26}
+                color="white"
+              />
+            </TouchableOpacity>
+          </ImageBackground>
 
           <Text style={styles.modalText}>
-            Do you want practice mode to be on ?
+          Do you want Exam mode to be on?
           </Text>
 
-          <Tips
-            note="If practice mode is on you will see the correct answer immediately
-            after answering each question and your results will not be saved in
-            your exams hstory"
-            readonly={true}
-          />
+          <View style={styles.modalSubTextContainer}>
+            <Text style={styles.modalSubText}>
+              If practice mode is on you will see the correct answer right away
+              after answering each questions and note that your results will not
+              be saved in your exams history.
+            </Text>
+          </View>
 
           <View style={styles.optionsContainer}>
             <TouchableOpacity
@@ -99,11 +116,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   modalView: {
-    paddingTop: 10,
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 10,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -114,18 +129,27 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: '90%',
+    overflow: 'hidden',
+    height: (screenHeight * 4.3) / 5,
+    maxHeight: 600,
   },
   modalImageContaner: {
-    width: '60%',
-    height: 180,
+    width: '100%',
+    height: 280,
     overflow: 'hidden',
-    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  cancelIconBtn: {
+    position: 'absolute',
+    top: 10,
+    right: 20,
   },
   modalImg: {
-    width: '100%',
-    height: '100%',
+    width: '60%',
+    height: '70%',
     borderRadius: 10,
-    marginTop: 10,
   },
   button: {
     borderRadius: 20,
@@ -140,9 +164,24 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: 16,
-    width: '70%',
-    color: '#4d4d4d',
+    fontSize: screenWidth * 0.05,
+    width: '80%',
+    color: '#505050',
+    marginVertical: 20,
+  },
+  modalSubTextContainer: {
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    borderColor: '#e1e1e1',
+    width: '92%',
+    marginVertical: 10,
+    borderWidth: 1,
+  },
+  modalSubText: {
+    fontFamily: 'PoppinsRegular',
+    fontSize: screenWidth * 0.035,
+    color: '#505050',
+    margin: 4,
   },
   optionsContainer: {
     marginTop: 25,
@@ -156,8 +195,8 @@ const styles = StyleSheet.create({
   },
   optionButton: {
     width: '30%',
-    borderRadius: 100,
-    paddingVertical: 6,
+    borderRadius: 10,
+    paddingVertical: 8,
     borderWidth: 1,
     borderColor: '#F5A52D',
   },

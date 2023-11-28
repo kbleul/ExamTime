@@ -66,7 +66,6 @@ const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
 
             let isonline = await checkIsOnline(navigator);
 
-            console.log({isonline});
             if (isonline) {
               navigator.navigate('Random-Exam', {
                 selectedSubject: selectedSubject,

@@ -183,6 +183,27 @@ const PracticeQuestion = ({route}: {route: any}) => {
   useEffect(() => {
     setStartTimer(true);
   }, []);
+
+  const scrollToIndex = () => {
+    flatListRef &&
+      flatListRef.current &&
+      flatListRef.current.scrollToIndex({
+        animated: true,
+        index: currentQuestion,
+      });
+  };
+
+  useEffect(() => {
+    if (showFullPage) {
+      refIndex.current < currentViewExam.length &&
+        setTimeout(scrollToIndex, 500);
+    }
+  }, [showFullPage]);
+
+  useEffect(() => {
+    isTimeOver && setTimeout(handleSubmitExam, 2500);
+  }, [isTimeOver]);
+
   const renderItem = ({
     item,
     index,
@@ -275,6 +296,16 @@ const PracticeQuestion = ({route}: {route: any}) => {
             numColumns={1} // Set the number of columns to 2 for a 2-column layout
             onViewableItemsChanged={onViewCallBack}
             viewabilityConfig={viewConfigRef.current}
+            onScrollToIndexFailed={info => {
+              const wait = new Promise(resolve => setTimeout(resolve, 500));
+              wait.then(() => {
+                flatListRef.current?.scrollToIndex({
+                  animated: true,
+                  index: info.index,
+                  viewPosition: 0.5,
+                });
+              });
+            }}
           />
         </View>
       )}
@@ -321,7 +352,7 @@ const styles = StyleSheet.create({
     paddingBottom: 65,
   },
   scrollContentFullPage: {
-    paddingBottom: 200,
+    paddingBottom: 140,
   },
   emptyText: {
     color: 'black',

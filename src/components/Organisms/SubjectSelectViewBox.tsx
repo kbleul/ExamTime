@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   renderStyle: {
     width: '48%',
     marginHorizontal: '1%',
-    marginVertical: '1.5%',
+    marginVertical: '3%',
   },
   subjectsButton: {
     backgroundColor: '#D9D9D9',

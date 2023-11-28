@@ -26,8 +26,8 @@ const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
           <Text style={style.contentTitle}>Study To Pass</Text>
 
           <Text style={style.contentText}>
-            Study and get the highest score in your class, the exam won't be
-            this fun,
+            Welcome to Exam Time App, the ultimate solution for students aiming
+            to excel in exams and enhance their e-learning experience.
           </Text>
         </View>
 
@@ -63,7 +63,7 @@ const style = StyleSheet.create({
   },
   imgContainer: {
     width: '100%',
-    height: screenHeight * (4 / 10),
+    height: screenHeight * (3.8 / 10),
     marginTop: screenHeight * (1 / 10),
   },
   img: {
@@ -75,10 +75,11 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     height: screenHeight * (3 / 10),
+    marginTop: screenHeight * 0.05,
   },
   contentTitle: {
     fontSize: screenWidth * 0.06,
-    marginBottom: screenHeight * 0.055,
+    marginVertical: screenHeight * 0.033,
     color: '#2D466A',
     fontFamily: 'Montserrat-Bold',
   },
@@ -95,7 +96,6 @@ const style = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     height: screenHeight * (3 / 10),
-    paddingVertical: 20,
   },
   buttonContainer_first: {
     width: 85,

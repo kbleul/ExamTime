@@ -1,6 +1,7 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
+import {SvgUri} from 'react-native-svg';
 
 const ChosenCoursesCard: React.FC<{
   title: string;
@@ -15,8 +16,10 @@ const ChosenCoursesCard: React.FC<{
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
+      <SvgUri width="100%" height="100%" style={styles.imageBg} uri={bgImage} />
+
       <ImageBackground style={styles.imageBg} source={bgImage}>
-        <View style={styles.contentContainer}>
+        {/* <View style={styles.contentContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text
             style={
@@ -37,7 +40,7 @@ const ChosenCoursesCard: React.FC<{
               <Text style={styles.progressText}>{progress}% completed</Text>
             </>
           )}
-        </View>
+        </View> */}
       </ImageBackground>
     </View>
   );
@@ -60,12 +63,14 @@ export const styles = StyleSheet.create({
     height: '100%',
     width: screenWidth * (1 / 2.6),
     justifyContent: 'flex-end',
+    borderWidth: 4,
   },
   contentContainer: {
     backgroundColor: 'rgba(0,0,0,0.07)',
     width: screenWidth * (1 / 2.5),
     paddingHorizontal: 10,
   },
+
   title: {
     color: 'white',
     fontSize: screenWidth * 0.035,

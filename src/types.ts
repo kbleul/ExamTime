@@ -74,6 +74,10 @@ export type regionItemsType = {
   label: string;
   value: string;
 };
+export type faqItemsType = {
+  question: string;
+  answer: string;
+};
 
 export type examQuestionType = {
   id: string;

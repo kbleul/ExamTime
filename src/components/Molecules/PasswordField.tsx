@@ -39,7 +39,7 @@ const PasswordField: FC<PasswordFieldProps> = ({
           style={styles.smallBox}
           touchSoundDisabled
           onPress={togglePassword}>
-          <Ionicons name="eye-outline" size={28} color="#81afe6" />
+          <Ionicons name="eye-outline" size={20} color="#81afe6" />
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
@@ -48,7 +48,7 @@ const PasswordField: FC<PasswordFieldProps> = ({
           onPress={togglePassword}>
           <Ionicons
             name="eye-off-outline"
-            size={28}
+            size={20}
             color="#81afe6"
           />
         </TouchableOpacity>
@@ -60,8 +60,8 @@ const styles = ScaledSheet.create({
     inputContainer: {
         color: '#9E9E9E',
         flex: 1,
-        fontSize: '16@ms',
-        paddingVertical: '10@vs',
+        fontSize: '14@ms',
+        paddingVertical: '8@vs',
       },
       changePassword: {
         backgroundColor: '#1E90FF',

@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {ScrollView, Text, View, TextInput, StyleSheet} from 'react-native';
 import Antdesign from 'react-native-vector-icons/AntDesign';
 import Accordion from '../Molecules/Accordion';
 import {FAQ, screenHeight} from '../../utils/Data/data';
+import { useGetFaqMutation } from '../../reduxToolkit/Services/auth';
+import { checkIsOnline } from '../../utils/Functions/Helper';
 const FaqContener = () => {
+  const [faq,setFaq] =useState([])
+  const [
+    getFaq,
+    {isLoading: loading},
+  ] = useGetFaqMutation();
+  const fetchFaq = async()=>{
+    try {
+      const response = await getFaq().unwrap();
+      setFaq(response?.data)
+      console.log(faq)
+    
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  useEffect(() => {
+   fetchFaq()
+  }, []);
+  if(loading){
+    return(
+      <View style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+        <Text>Loading</Text>
+      </View>
+    )
+  }
   return (
     <View>
       <Text style={styles.subHeadtext}>Find Answers to Your Questions</Text>
@@ -19,8 +46,8 @@ const FaqContener = () => {
           nestedScrollEnabled={true}>
           <Text style={styles.faqText}>Frequently asked questions</Text>
 
-          {FAQ.map((item, index) => (
-            <Accordion key={index} question={item.ques} answer={item.ans} />
+          {faq?.map((item, index) => (
+            <Accordion key={index} question={item.question} answer={item.answer} />
           ))}
         </ScrollView>
       </View>

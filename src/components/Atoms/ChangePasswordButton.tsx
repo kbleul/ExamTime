@@ -3,6 +3,7 @@ import {TouchableOpacity, Text} from 'react-native';
 
 import {ScaledSheet} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { screenHeight } from '../../utils/Data/data';
 
 interface ChangePasswordButtonProps {
   onPress: () => void;
@@ -27,7 +28,8 @@ const styles = ScaledSheet.create({
     color: '#9E9E9E',
     flex: 1,
     fontSize: '16@ms',
-    paddingVertical: '10@vs',
+    marginTop:screenHeight*0.008,
+    paddingVertical: '8@vs',
   },
   changePassword: {
     backgroundColor: '#1E90FF',

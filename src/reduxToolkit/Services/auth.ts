@@ -28,6 +28,8 @@ export const api = createApi({
     }),
     createUser: build.mutation<{user: userType}, SignupDataType>({
       query: credentials => {
+        credentials.grade = credentials.grade?.grade;
+
         return {
           url: 'user/create',
           method: 'POST',
@@ -118,6 +120,14 @@ export const api = createApi({
         };
       },
     }),
+    getFaq: build.mutation({
+      query: () => {
+        return {
+          url: 'frequently-asked-question/user/faq',
+          method: 'GET',
+        };
+      },
+    }),
     deleteAccount: build.mutation<
       {user: userType},
       {password: string; token: string}
@@ -201,4 +211,6 @@ export const {
   useGetExamsMutation,
   useGetSubjectMutation,
   useGetRandomExamMutation,
+  useGetFaqMutation
+
 } = api;
