@@ -87,7 +87,7 @@ const style = StyleSheet.create({
     fontSize: screenWidth * 0.04,
     color: '#2D466A',
     lineHeight: 22,
-    paddingHorizontal: 60,
+    paddingHorizontal: screenWidth * 0.08,
     textAlign: 'center',
     fontFamily: 'Montserrat-Regular',
     marginBottom: screenHeight * 0.055,

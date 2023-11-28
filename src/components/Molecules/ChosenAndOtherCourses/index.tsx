@@ -6,6 +6,7 @@ import OtherCoursesCard from './OtherCoursesCard';
 import {Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
+import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 
 interface CourseItemType {
   id: string;
@@ -54,23 +55,6 @@ const ChosenCourses = () => {
     );
   };
 
-  const PushFavorateToFront = (favoritesArray: string[]) => {
-    const favorites: Subject[] = [];
-    favoritesArray.map(item => {
-      const favSubject = savedSubjects.find(subject => subject.id === item);
-
-      favSubject && favorites.push(favSubject);
-    });
-
-    const notFavorites = savedSubjects.filter(
-      item => !favoritesArray.includes(item.id),
-    );
-
-    const favoritesFirstArray = [...favorites, ...notFavorites];
-
-    return favoritesFirstArray;
-  };
-
   const renderItemCourse = ({item}: {item: CourseItemType}) => {
     return (
       <View>
@@ -89,7 +73,10 @@ const ChosenCourses = () => {
 
       <FlatList
         keyExtractor={item => item.id}
-        data={PushFavorateToFront(savedUserData[0].selectedSubjects || [])}
+        data={PushFavorateToFront(
+          savedUserData[0].selectedSubjects || [],
+          savedSubjects,
+        )}
         renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator={false}

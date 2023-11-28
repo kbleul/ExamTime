@@ -80,7 +80,7 @@ const Index = () => {
     }
   }, []);
   const Indicator = () => {
-    return data.map((item, index) => {
+    return userGuideData.map((item, index) => {
       if (Index == index) {
         return <View key={index} style={styles.IndectorSubcontainer} />;
       } else {
@@ -96,9 +96,7 @@ const Index = () => {
       <View style={styles.backicon}>
         <BackWithItem type="User Guide" />
       </View>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.Guide}>
           <GuideTexts
             title={'videos'}
@@ -141,7 +139,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F9FCFF',
     flex: 1,
-
   },
   scrollContainer: {
     paddingBottom: 40,
@@ -154,7 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 5,
-    paddingVertical: 20,
+    marginBottom: 10,
   },
   headerText: {
     color: '#0F0F0F',

@@ -91,7 +91,6 @@ const ProfileEdit: React.FC = () => {
       try {
         const result = await changeProfile({token, profileData});
 
-        console.log({result: result});
         if (result.data.user) {
           dispatch(
             loginSuccess({
@@ -346,7 +345,6 @@ const styles = ScaledSheet.create({
     marginHorizontal: '15@s',
     marginTop: '10@vs',
     flex: 1,
-  
   },
   changePassword: {
     backgroundColor: '#1E90FF',
@@ -481,7 +479,6 @@ const styles = ScaledSheet.create({
   topFormContainer: {
     borderRadius: 10,
     paddingVertical: '1@vs',
-  
   },
 
   //dropdown input field

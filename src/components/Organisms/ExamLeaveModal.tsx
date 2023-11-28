@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    width: '90%',
+    width: '94%',
     marginHorizontal: 20,
   },
   optionButton: {

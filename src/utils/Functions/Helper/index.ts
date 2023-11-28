@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NavigationProp} from '@react-navigation/native';
 import {NativeScrollEvent, NativeSyntheticEvent} from 'react-native';
-import {UserData} from '../../../Realm';
+import {Subject, UserData} from '../../../Realm';
 import {Dispatch} from 'react';
 import {ActionCreatorWithPayload, AnyAction} from '@reduxjs/toolkit';
 import {
@@ -172,4 +172,31 @@ export const DeleteUserAccount = async (
     }
     console.log(error);
   }
+};
+
+export const PushFavorateToFront = (
+  favoritesArray: string[],
+  savedSubjects: ResultsType<Subject>,
+) => {
+  const favorites: Subject[] = [];
+  favoritesArray.map(item => {
+    const favSubject = savedSubjects.find(
+      (subject: any) => subject.id === item,
+    );
+
+    favSubject && favorites.push(favSubject);
+  });
+
+  const notFavorites = savedSubjects.filter(
+    (item: any) => !favoritesArray.includes(item.id),
+  );
+
+  const favoritesFirstArray = [...favorites, ...notFavorites];
+
+  return favoritesFirstArray;
+};
+
+export const isHtml = (input: string) => {
+  const htmlRegex = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
+  return htmlRegex.test(input);
 };

@@ -1,4 +1,8 @@
 import {Dimensions} from 'react-native';
+import {GuideDataType} from '../../types';
+
+export const screenWidth = Dimensions.get('window').width;
+export const screenHeight = Dimensions.get('window').height;
 
 type ProfileMenuItems = {
   [key: string]: {
@@ -64,6 +68,7 @@ export const ProfileMenuItemsAuth: ProfileMenuItems = {
     navigate: 'Delete Account',
   },
 };
+
 export const FAQ = [
   {
     id: 1,
@@ -145,6 +150,9 @@ export const LocalObjectDataKeys = {
   ExamQuestion: 'ExamQuestion',
   Exam: 'Exam',
   UserExamAnswers: 'UserExamAnswers',
+  Study: 'Study',
+  Pdf: 'Pdf',
+  VideoLink: 'VideoLink',
 };
 
 export const CarouselData_guest = [
@@ -162,5 +170,24 @@ export const CarouselData_guest = [
   },
 ];
 
-export const screenWidth = Dimensions.get('window').width;
-export const screenHeight = Dimensions.get('window').height;
+export const userGuideData: GuideDataType[] = [
+  {
+    id: '01',
+    image: require('../../assets/Images/card.png'),
+    text: 'how to subscribe',
+    videoLink: 'https://www.youtube.com/watch?v=B53L62DqOXg',
+  },
+  {
+    id: '02',
+    image: require('../../assets/Images/pay.png'),
+    text: 'how to pay',
+    videoLink: 'https://www.youtube.com/watch?v=6l1K-bHPWbU',
+  },
+
+  {
+    id: '03',
+    image: require('../../assets/Images/How.png'),
+    text: 'how to take exams',
+    videoLink: 'https://www.youtube.com/watch?v=fD4uGhNa5ec',
+  },
+];
