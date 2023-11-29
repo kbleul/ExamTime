@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {ScrollView, Text, View, TextInput, StyleSheet} from 'react-native';
 import Antdesign from 'react-native-vector-icons/AntDesign';
 import Accordion from '../Molecules/Accordion';
-import {FAQ, screenHeight} from '../../utils/Data/data';
+import { screenHeight} from '../../utils/Data/data';
 import { useGetFaqMutation } from '../../reduxToolkit/Services/auth';
 import { checkIsOnline } from '../../utils/Functions/Helper';
+import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const FaqContener = () => {
   const [faq,setFaq] =useState([])
   const [
@@ -14,12 +15,16 @@ const FaqContener = () => {
   const fetchFaq = async()=>{
     try {
       const response = await getFaq().unwrap();
-      setFaq(response?.data)
-      console.log(faq)
+      setFaq(response)
+      
     
     } catch (err) {
       console.log(err);
     }
+  }
+  const HandelSearch = (input)=>{
+    console.log(input)
+    setFaq(faq?.filter((faq)=>faq.question.toUpperCase().includes(input.toUpperCase())))
   }
   useEffect(() => {
    fetchFaq()
@@ -27,7 +32,7 @@ const FaqContener = () => {
   if(loading){
     return(
       <View style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-        <Text>Loading</Text>
+        <Text style={{color:'black',fontSize:18}}>Loading....</Text>
       </View>
     )
   }
@@ -35,7 +40,7 @@ const FaqContener = () => {
     <View>
       <Text style={styles.subHeadtext}>Find Answers to Your Questions</Text>
       <View style={styles.faqInput}>
-        <TextInput placeholder="write your question" style={styles.input} />
+        <TextInput onChangeText={HandelSearch} placeholder="write your question" style={styles.input} />
         <Antdesign name="search1" size={24} color="#d4d4d4" />
       </View>
 
