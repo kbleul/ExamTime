@@ -122,6 +122,7 @@ const DeleteAccountAlertBox: React.FC<{
                   setShowLDeleteDialog,
                   realm,
                   savedUserData,
+                  Toast,
                 )
               }>
               {isLoading ? (

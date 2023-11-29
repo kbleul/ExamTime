@@ -57,8 +57,6 @@ const SetNewPassword: React.FC<{
     (state: RootState) => state.auth.IsDefaultPasswordChanged,
   );
 
-  console.log('==========', user);
-
   const schema = yup.object().shape({
     currentPassword: IsDefaultPasswordChanged
       ? yup.string()

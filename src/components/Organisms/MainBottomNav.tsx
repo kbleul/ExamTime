@@ -42,13 +42,13 @@ const MainBottomNav = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Courses')}
+          onPress={() => navigation.navigate('StudySection')}
           style={style.buttonWrapper}>
-          {currentScreen === 'Courses' && <View style={style.dot} />}
+          {currentScreen === 'StudySection' && <View style={style.dot} />}
 
           <View
             style={
-              currentScreen === 'Courses'
+              currentScreen === 'StudySection'
                 ? [style.button, style.buttonSelected]
                 : style.button
             }>
@@ -56,12 +56,12 @@ const MainBottomNav = () => {
               name="book-open"
               size={screenWidth * 0.063}
               style={
-                currentScreen === 'Courses' ? style.iconActive : style.icon
+                currentScreen === 'StudySection' ? style.iconActive : style.icon
               }
             />
             <Text
               style={
-                currentScreen === 'Courses'
+                currentScreen === 'StudySection'
                   ? style.buttonTextActive
                   : style.buttonText
               }>
@@ -177,6 +177,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    height: screenHeight * 0.088,
   },
   btnsContainer: {
     flexDirection: 'row',
@@ -193,9 +194,9 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
-    margin: screenHeight * 0.025,
-    marginBottom: screenHeight * 0.002,
-    width: screenWidth * 0.13,
+    margin: screenHeight * 0.015,
+    marginBottom: screenHeight * 0.001,
+    width: screenWidth * 0.15,
     height: screenWidth * 0.12,
     maxWidth: 55,
     maxHeight: 55,

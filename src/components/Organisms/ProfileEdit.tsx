@@ -1,26 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StatusBar,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {ScrollView, StatusBar, Text} from 'react-native';
 import {View} from 'react-native';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
-import {get_from_localStorage} from '../../utils/Functions/Get';
 import {
   useChangePasswordMutation,
   useChangeProfileMutation,
   useLoginMutation,
 } from '../../reduxToolkit/Services/auth';
 import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import Toast from 'react-native-toast-message';
 import {ScaledSheet, ms} from 'react-native-size-matters';
 import {useGetRegionsMutation} from '../../reduxToolkit/Services/region';
@@ -32,7 +23,14 @@ import {UserData} from '../../Realm';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {passwordSchema} from '../../utils/Functions/Helper/PasswordSchema';
 import {regionItemsType} from '../../types';
-import {Dropdown} from 'react-native-element-dropdown';
+import TextHeading from '../Atoms/TextHeading';
+import NameInput from '../Molecules/NameInput';
+import PhoneInputWithPrefix from '../Molecules/PhoneInputWithPrefix';
+import DropdownForRegionField from '../Molecules/DropdownForRegionField';
+import BackButton from '../Atoms/BackButton';
+import DoneButton from '../Atoms/DoneButton';
+import PasswordField from '../Molecules/PasswordField';
+import ChangePasswordButton from '../Atoms/ChangePasswordButton';
 
 const ProfileEdit: React.FC = () => {
   const dispatch = useDispatch();
@@ -62,21 +60,20 @@ const ProfileEdit: React.FC = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [changeProfile, {isLoading}] = useChangeProfileMutation();
   const [updatePassword] = useChangePasswordMutation();
-  // const [getRegions] = useGetRegionsMutation();
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
-  const [region, setRegion] = useState<string | null>(null);
+  const [region, setRegion] = useState<string | null>(
+    user?.region?.region || null,
+  );
   const [regionError, setRegionError] = useState<string | null>(null);
-  const [rigionOptions, setRegionOptions] = useState([]);
+  const [regionsListItems, setRegionsListItems] = useState<
+    regionItemsType[] | []
+  >([]);
+  const [refetchRegions, setRefetchRegions] = useState(false);
   const [
     getRegions,
     {isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion},
   ] = useGetRegionsMutation();
-  const [regionsListItems, setRegionsListItems] = useState<
-    regionItemsType[] | []
-  >([]);
-
-  const [refetchRegions, setRefetchRegions] = useState(false);
   type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
 
   const handleUpdateProfile = async () => {
@@ -88,12 +85,13 @@ const ProfileEdit: React.FC = () => {
         phoneNumber: phone,
         grade: grade,
         gender: user?.gender ?? '',
-        region: city,
+        region: region?.toLocaleLowerCase(),
       };
 
       try {
         const result = await changeProfile({token, profileData});
-        console.log(result.error);
+
+        console.log({result: result});
         if (result.data.user) {
           dispatch(
             loginSuccess({
@@ -127,11 +125,9 @@ const ProfileEdit: React.FC = () => {
         });
 
         setTimeout(() => navigation.navigate('Profile'), 1000);
-        // setName('')
         setFullName('');
         setPhone('');
         setGrade('');
-        setCity('');
       } catch (error) {
         Toast.show({
           type: 'error',
@@ -145,32 +141,38 @@ const ProfileEdit: React.FC = () => {
   //password schema
   const schema = passwordSchema;
 
-  const handleSubmitPassword = async values => {
+  const handleSubmitPassword = async (values: {
+    newPassword: string;
+    confirmPassword: string;
+    password: string;
+  }) => {
     if (values.newPassword === values.confirmPassword) {
       try {
-        const tokenResult = await get_from_localStorage('token');
-        if (tokenResult.status && tokenResult.value) {
-          const token = tokenResult.value;
-          const response = await updatePassword({
-            currentPassword: values.password,
-            newPassword: values.newPassword,
-            token,
-          });
-
+        const response = await updatePassword({
+          currentPassword: values.password,
+          newPassword: values.newPassword,
+          token,
+        });
+        if (!response.error) {
           await Toast.show({
             type: 'success',
             text1: 'success',
             text2: 'Password updated successfuly',
             visibilityTime: 4000,
           });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Error!',
+            text2: 'Something went wrong',
+          });
         }
       } catch (error) {
-        await Toast.show({
+        Toast.show({
           type: 'error',
-          text1: 'Hello',
-          text2: 'Something went wrong',
+          text1: 'Error!',
+          text2: `${error}`,
         });
-        console.error(error);
       }
     }
   };
@@ -219,7 +221,9 @@ const ProfileEdit: React.FC = () => {
     };
     fetchGradeData(); // Call the fetch function
   }, []);
-
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
   return (
     <>
       <StatusBar hidden={true} />
@@ -227,73 +231,30 @@ const ProfileEdit: React.FC = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* back Icon and DoneTExt Container */}
           <View style={styles.backIconandDoneTExtContainer}>
-            <TouchableOpacity
-              style={styles.iconContainer}
-              touchSoundDisabled
-              onPress={() => navigation.goBack()}>
-              <AntDesign name="left" style={styles.backIcon} size={ms(24)} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.doneContainer}
-              onPress={handleUpdateProfile}>
-              <Text style={styles.doneText}>Done</Text>
-            </TouchableOpacity>
+            <BackButton onPress={handleGoBack} />
+            <DoneButton onPress={handleUpdateProfile} />
           </View>
-
           {/* Profile Update Forms */}
           <View style={styles.topFormContainer}>
-            <Text style={styles.title}>My profile</Text>
-            <TextInput
-              style={styles.inputContiner}
-              onChangeText={setFullName}
-              value={fullName}
-            />
-            <View style={styles.commonTextFeildStyle}>
-              <Text style={styles.prefixText}>+251</Text>
-              <TextInput
-                style={styles.inputContainer}
-                onChangeText={setPhone}
-                value={phone.replace('+251', '')}
-                autoComplete="tel"
-                keyboardType="numeric"
-              />
-            </View>
+            <TextHeading text="My profile" />
 
-            <View style={styles.commonTextFeildStyle}>
-              <Dropdown
-                style={[styles.dropdown]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                itemTextStyle={styles.itemListStyle}
-                iconStyle={styles.iconStyle}
-                data={regionsListItems}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocusRegion ? 'Select region' : '...'}
-                searchPlaceholder="Search..."
-                value={region}
-                onFocus={() => setIsFocusRegion(true)}
-                onBlur={() => setIsFocusRegion(false)}
-                onChange={item => {
-                  setRegion(item.value);
-                  setIsFocusRegion(false);
-                }}
-              />
-              {isLoadingRegions && (
-                <View style={styles.loadingContainer}>
-                  <ActivityIndicator size={14} />
-                  <Text style={styles.loadingText}>Loading regions ...</Text>
-                </View>
-              )}
-              {regionError && !region ? (
-                <Text style={styles.error}>Region is required *</Text>
-              ) : (
-                <Text style={styles.error}>{''}</Text>
-              )}
-            </View>
+            <NameInput fullName={fullName} setFullName={setFullName} />
+
+            <PhoneInputWithPrefix
+              prefix="+251"
+              onChangeText={setPhone}
+              value={phone.replace('+251', '')}
+            />
+
+            <DropdownForRegionField
+              regionsListItems={regionsListItems}
+              isFocusRegion={isFocusRegion}
+              region={region}
+              setIsFocusRegion={setIsFocusRegion}
+              setRegion={setRegion}
+              isLoadingRegions={isLoadingRegions}
+              regionError={regionError}
+            />
           </View>
 
           {/* password update  */}
@@ -315,126 +276,52 @@ const ProfileEdit: React.FC = () => {
                   <View style={styles.iconContainerForPasswordHeader}>
                     <FontAwesome5
                       name="exclamation"
-                      size={15}
+                      size={ms(12)}
                       style={{transform: [{rotate: '180deg'}], color: 'white'}}
                     />
                   </View>
                 </View>
 
-                <View style={styles.commonTextFeildStyle}>
-                  <TextInput
-                    style={styles.inputContainer}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    placeholder="old password"
-                    secureTextEntry={showPassword}
-                    placeholderTextColor={'#d4d4d4'}
-                  />
-                  {showPassword ? (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(false)}>
-                      <Ionicons name="eye-outline" size={28} color="#81afe6" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(true)}>
-                      <Ionicons
-                        name="eye-off-outline"
-                        size={28}
-                        color="#81afe6"
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
+                <PasswordField
+                  label="Old Password"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  placeholder="Old password"
+                  showPassword={showPassword}
+                  togglePassword={() => setShowPassword(!showPassword)}
+                />
                 {errors.password && touched.password && (
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
 
-                <View style={styles.commonTextFeildStyle}>
-                  <TextInput
-                    style={styles.inputContainer}
-                    onChangeText={handleChange('newPassword')}
-                    onBlur={handleBlur('newPassword')}
-                    value={values.newPassword}
-                    placeholder="New password"
-                    secureTextEntry={showPassword}
-                    placeholderTextColor={'#d4d4d4'}
-                  />
-                  {showPassword ? (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(false)}>
-                      <Ionicons name="eye-outline" size={28} color="#81afe6" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(true)}>
-                      <Ionicons
-                        name="eye-off-outline"
-                        size={28}
-                        color="#81afe6"
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
+                <PasswordField
+                  label="New Password"
+                  value={values.newPassword}
+                  onChangeText={handleChange('newPassword')}
+                  onBlur={handleBlur('newPassword')}
+                  placeholder="New password"
+                  showPassword={showPassword}
+                  togglePassword={() => setShowPassword(!showPassword)}
+                />
                 {errors.newPassword && touched.newPassword && (
                   <Text style={styles.errorText}>{errors.newPassword}</Text>
                 )}
-                <View style={styles.commonTextFeildStyle}>
-                  <TextInput
-                    style={styles.inputContainer}
-                    onChangeText={handleChange('confirmPassword')}
-                    onBlur={handleBlur('confirmPassword')}
-                    value={values.confirmPassword}
-                    placeholder="Confirm password"
-                    secureTextEntry={showPassword}
-                    placeholderTextColor={'#d4d4d4'}
-                  />
-                  {showPassword ? (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(false)}>
-                      <Ionicons name="eye-outline" size={28} color="#81afe6" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.smallBox}
-                      touchSoundDisabled
-                      onPress={() => setShowPassword(true)}>
-                      <Ionicons
-                        name="eye-off-outline"
-                        size={28}
-                        color="#81afe6"
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
+
+                <PasswordField
+                  label="Confirm Password"
+                  value={values.confirmPassword}
+                  onChangeText={handleChange('confirmPassword')}
+                  onBlur={handleBlur('confirmPassword')}
+                  placeholder="Confirm password"
+                  showPassword={showPassword}
+                  togglePassword={() => setShowPassword(!showPassword)}
+                />
                 {errors.confirmPassword && touched.confirmPassword && (
                   <Text style={styles.errorText}>{errors.confirmPassword}</Text>
                 )}
 
-                <TouchableOpacity
-                  style={[
-                    styles.inputContainer,
-                    styles.changePassword,
-                    styles.changePasswordButton,
-                  ]}
-                  onPress={handleSubmit}>
-                  <Text style={styles.changePasswordText}>Change Password</Text>
-                  <AntDesign
-                    name="right"
-                    style={styles.changepasswordButtonIcon}
-                  />
-                </TouchableOpacity>
+                <ChangePasswordButton onPress={handleSubmit} />
               </View>
             )}
           </Formik>
@@ -455,8 +342,10 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: '10@s',
+    marginHorizontal: '15@s',
+    marginTop: '10@vs',
     flex: 1,
+  
   },
   changePassword: {
     backgroundColor: '#1E90FF',
@@ -530,16 +419,15 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     backgroundColor: '#2196F3',
     borderRadius: '50@s',
-    height: '25@ms',
+    height: '20@ms',
     justifyContent: 'center',
     marginRight: '15@s',
-    padding: '5@s',
-    width: '25@ms',
+    width: '20@ms',
   },
   inputContainer: {
     color: '#9E9E9E',
     flex: 1,
-    fontSize: '16@ms',
+    fontSize: '12@ms',
     paddingVertical: '10@vs',
   },
   inputContiner: {
@@ -548,7 +436,7 @@ const styles = ScaledSheet.create({
     borderWidth: 1,
     borderRadius: '10@s',
     color: '#858585',
-    fontSize: '16@ms',
+    fontSize: '12@ms',
     marginHorizontal: '20@s',
     marginVertical: '5@vs',
     paddingHorizontal: '20@s',
@@ -586,12 +474,13 @@ const styles = ScaledSheet.create({
   title: {
     color: '#858585',
     fontFamily: 'PoppinsRegular',
-    fontSize: '18@ms',
+    fontSize: '16@ms',
     paddingHorizontal: '10@s',
   },
   topFormContainer: {
     borderRadius: 10,
     paddingVertical: '1@vs',
+  
   },
 
   //dropdown input field
@@ -632,20 +521,15 @@ const styles = ScaledSheet.create({
   },
   submitBtnPassword: {
     backgroundColor: '#1E90FF',
-    borderRadius: 10,
-    width: 200,
-    paddingVertical: 11,
+    borderRadius: '10@ms',
+    width: '200@vs',
+    paddingVertical: '10@vs',
     alignSelf: 'flex-end',
   },
   submitText: {
     color: '#FFFFFF',
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 18,
-    textAlign: 'center',
-  },
-  error: {
-    color: '#f08273',
-    paddingHorizontal: 8,
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: '18@ms',
     textAlign: 'right',
   },
   loadingContainer: {
@@ -654,8 +538,8 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
   },
   loadingText: {
-    fontSize: 14,
-    fontFamily: 'Montserrat-Regular',
+    fontSize: '14@ms',
+    fontFamily: 'PoppinsRegular',
     color: '#b3b3b3',
   },
 });

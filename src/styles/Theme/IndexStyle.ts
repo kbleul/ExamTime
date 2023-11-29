@@ -8,7 +8,6 @@ export const IndexStyle = StyleSheet.create({
     padding: 5,
     backgroundColor: '#F9FCFF',
     paddingTop: 25,
-    paddingBottom: 80,
   },
   ScrollView: {
     height: screenHeight,

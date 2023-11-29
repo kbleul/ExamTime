@@ -1,64 +1,150 @@
-import React, {useState} from 'react';
-import {Image, ImageBackground, TouchableOpacity} from 'react-native';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import React from 'react';
+import {ImageBackground, TouchableOpacity, Image} from 'react-native';
+import {Modal, StyleSheet, Text, View} from 'react-native';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 const ExamLeaveModal: React.FC<{
   exitExamModalVisible: boolean;
   setExitExamModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({exitExamModalVisible, setExitExamModalVisible}) => {
+  examStatusData: {
+    total: number;
+    answered: number;
+  };
+  resetViewQuesstions: () => void;
+  handleSubmitExam: () => void;
+  timeLeft?: string | boolean;
+  isTimeOver?: boolean;
+  showViewReviewBtn?: boolean;
+}> = ({
+  exitExamModalVisible,
+  setExitExamModalVisible,
+  examStatusData,
+  resetViewQuesstions,
+  handleSubmitExam,
+  timeLeft,
+  isTimeOver,
+  showViewReviewBtn,
+}) => {
   return (
     <Modal
       animationType="slide"
       transparent={true}
       visible={exitExamModalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-        setExitExamModalVisible(false);
+        setExitExamModalVisible(prev => !prev);
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View style={styles.modalImageContaner}>
+          {/* <View style={styles.modalImageContaner}>
             <ImageBackground
               style={styles.modalImg}
               source={require('../../assets/Images/Practice/modal1.png')} // Replace with the correct path to your image
               resizeMode="cover"
             />
-          </View>
+          </View> */}
 
-          <Text style={styles.modalText}>You haven’t completed the exam!</Text>
+          {/* {examStatusData.total - examStatusData.answered > 0 && (
+            <Text style={styles.modalText}>
+              You haven’t completed the exam!
+            </Text>
+          )} */}
 
-          <Text style={styles.modalText}>
+          <ImageBackground
+            style={styles.modalImageContaner}
+            source={require('../../assets/Images/Practice/running_bg.png')} // Replace with the correct path to your image
+            resizeMode="cover">
+            <Image
+              source={require('../../assets/Images/Practice/bell_bg.png')}
+              style={styles.modalImg}
+            />
+          </ImageBackground>
+
+          <Text style={styles.infoTextYellow}>
+            {examStatusData.total - examStatusData.answered}{' '}
+            <Text style={styles.infoTextYellowSubtext}>Questions left</Text>
+          </Text>
+
+          {!isTimeOver && (
+            <Text style={styles.modalText}>
+              You haven’t completed the exam! are you sure you want to finish?
+            </Text>
+          )}
+
+          {timeLeft && (
+            <View style={styles.infoText}>
+              <Text style={styles.infoTextPurple}>{timeLeft} </Text>
+              <Text style={styles.infoTextPurpleSecondary}>remaining </Text>
+            </View>
+          )}
+
+          {/* <Text style={styles.modalText}>
             Are you sure you want to finish ?
           </Text>
 
           <View style={styles.infoContainer}>
             <Text style={styles.infoText}>
-              <Text style={styles.infoTextGreen}>40 </Text>answers
+              <Text style={styles.infoTextGreen}>{examStatusData.total} </Text>
+              Questions
             </Text>
             <Text style={[styles.infoText, styles.infoTextSecondary]}>
-              <Text style={styles.infoTextYellow}>10 </Text>remaining
+              <Text style={styles.infoTextYellow}>
+                {examStatusData.total - examStatusData.answered}{' '}
+              </Text>
+              Remaining
             </Text>
-            <Text style={[styles.infoText, styles.infoTextThird]}>
-              <Text style={styles.infoTextPurple}>2:20 </Text>time left
-            </Text>
-          </View>
+            {timeLeft && (
+              <Text style={[styles.infoText, styles.infoTextThird]}>
+                <Text style={styles.infoTextPurple}>{timeLeft} </Text>Time Left
+              </Text>
+            )}
+          </View> */}
 
-          <View style={styles.optionsContainer}>
-            <TouchableOpacity style={styles.optionButton}>
+          {showViewReviewBtn && showViewReviewBtn === true && (
+            <TouchableOpacity
+              style={[styles.optionButton, styles.optionButtonAll]}>
               <Text
-                style={styles.optionButtonText}
-                onPress={() => setExitExamModalVisible(false)}>
-                cancle
+                style={[
+                  styles.optionButtonText,
+                  styles.optionButtonTextSecondary,
+                ]}
+                onPress={() => {
+                  resetViewQuesstions();
+                  setExitExamModalVisible(false);
+                }}>
+                View / Review All Questions
               </Text>
             </TouchableOpacity>
+          )}
+
+          <View style={styles.optionsContainer}>
+            {!isTimeOver && (
+              <TouchableOpacity
+                style={[styles.optionButton, styles.optionButtonSecondary]}>
+                <Text
+                  style={[
+                    styles.optionButtonText,
+                    styles.optionButtonTextSecondary,
+                  ]}
+                  onPress={() => {
+                    setExitExamModalVisible(false);
+                    // filterUnansweredQuestions();
+                  }}>
+                  Cancle
+                </Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
-              style={[styles.optionButton, styles.optionButtonSecondary]}>
+              style={[styles.optionButton, styles.optionButtonSecondary]}
+              onPress={() => {
+                setExitExamModalVisible(false);
+                handleSubmitExam();
+              }}>
               <Text
                 style={[
                   styles.optionButtonText,
                   styles.optionButtonTextSecondary,
                 ]}>
-                Finish now
+                Finish Now
               </Text>
             </TouchableOpacity>
           </View>
@@ -75,14 +161,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
     width: '100%',
+    height: (screenHeight * 4.3) / 5,
+    maxHeight: 620,
   },
   modalView: {
-    paddingTop: 10,
-
-    margin: 20,
+    height: (screenHeight * 4.8) / 5,
+    maxHeight: 620,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 5,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -93,18 +179,21 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: '90%',
+    overflow: 'hidden',
   },
   modalImageContaner: {
-    width: '40%',
-    height: 140,
+    width: '100%',
+    height: 280,
     overflow: 'hidden',
-    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modalImg: {
-    width: '100%',
-    height: '100%',
+    width: '45%',
+    height: '55%',
     borderRadius: 10,
   },
+
   button: {
     borderRadius: 20,
     padding: 10,
@@ -122,12 +211,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
-    marginVertical: 4,
+    marginBottom: 10,
+    marginHorizontal: 8,
     textAlign: 'center',
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 16,
-    width: '100%',
-    color: '#4d4d4d',
+    fontSize: screenWidth * 0.04,
+    width: '80%',
+    color: '#505050',
   },
   infoContainer: {
     marginVertical: 10,
@@ -135,15 +225,16 @@ const styles = StyleSheet.create({
   infoText: {
     textAlign: 'center',
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 18,
+    fontSize: screenWidth * 0.05,
     width: '100%',
     color: '#4d4d4d',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
   },
   infoTextSecondary: {
     color: '#F5A52D',
-  },
-  infoTextThird: {
-    color: '#6A5ACD',
+    fontSize: screenWidth * 0.035,
   },
   infoTextGreen: {
     fontFamily: 'Montserrat-Bold',
@@ -151,11 +242,24 @@ const styles = StyleSheet.create({
   },
   infoTextYellow: {
     fontFamily: 'Montserrat-Bold',
-    color: '#F5A52D',
+    color: '#FF7B52',
+    marginVertical: 20,
+    fontSize: screenWidth * 0.07,
+  },
+  infoTextYellowSubtext: {
+    fontFamily: 'Montserrat-SemiBold',
+    color: '#000',
+    fontSize: screenWidth * 0.05,
   },
   infoTextPurple: {
-    fontFamily: 'Montserrat-Bold',
-    color: '#6A5ACD',
+    fontFamily: 'Montserrat-SemiBold',
+    color: '#FF7B52',
+    fontSize: screenWidth * 0.08,
+  },
+  infoTextPurpleSecondary: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#000',
+    fontSize: screenWidth * 0.04,
   },
   optionsContainer: {
     marginTop: 10,
@@ -168,9 +272,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   optionButton: {
-    width: '42%',
+    width: '35%',
     borderRadius: 7,
-    paddingVertical: 8,
+    paddingVertical: 12,
     borderWidth: 1,
     borderColor: '#F5A52D',
   },
@@ -178,10 +282,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E90FF',
     borderWidth: 0,
   },
+  optionButtonAll: {
+    backgroundColor: '#008E97',
+    borderWidth: 0,
+    width: '80%',
+  },
   optionButtonText: {
     textAlign: 'center',
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 16,
+    fontSize: 14,
     color: '#F5A52D',
   },
   optionButtonTextSecondary: {

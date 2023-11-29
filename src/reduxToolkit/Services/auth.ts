@@ -6,7 +6,9 @@ import {
   OTPDataType,
   ResendCodeDataType,
   SignupDataType,
+  gradeType,
   regionItemsType,
+  subjectType,
   userType,
 } from '../../types';
 import Config from 'react-native-config';
@@ -26,6 +28,8 @@ export const api = createApi({
     }),
     createUser: build.mutation<{user: userType}, SignupDataType>({
       query: credentials => {
+        credentials.grade = credentials.grade?.grade;
+
         return {
           url: 'user/create',
           method: 'POST',
@@ -55,7 +59,6 @@ export const api = createApi({
     }),
     createPassword: build.mutation<{user: userType}, CreatePassworDataType>({
       query: credentials => {
-        console.log("credentials.userId",credentials.userId)
         return {
           url: `user/createpassword/${credentials.userId}`,
           method: 'PUT',
@@ -89,6 +92,7 @@ export const api = createApi({
       {token: String; profileData: Partial<userType>}
     >({
       query: data => {
+        console.log({userdata: data.profileData});
         return {
           url: `user/changeprofile/`,
           method: 'PUT',
@@ -118,7 +122,7 @@ export const api = createApi({
     }),
     deleteAccount: build.mutation<
       {user: userType},
-      {userId: string; token: string}
+      {password: string; token: string}
     >({
       query: credentials => {
         return {
@@ -131,6 +135,55 @@ export const api = createApi({
             'Content-Type': 'application/json',
             Authorization: `Bearer ${credentials.token}`,
           },
+        };
+      },
+    }),
+    getExams: build.mutation<
+      {user: userType},
+      {token: string; subject: string}
+    >({
+      query: credentials => {
+        return {
+          url: 'exam/publishedexams',
+          method: 'Get',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
+    getSubject: build.mutation<{subjects: subjectType[]}, {grade: string}>({
+      query: credentials => {
+        return {
+          url: `subjectmanagement/user/subjects?grade=${credentials.grade}`,
+          method: 'GET',
+        };
+      },
+    }),
+    getRandomExam: build.mutation<
+      {},
+      {
+        grade: string;
+        subject: string;
+        noOfQuestions: number;
+      }
+    >({
+      query: credentials => {
+        return {
+          url: 'exam/randomexam',
+          body: {
+            subject: credentials.subject,
+            grade: credentials.grade,
+            noOfQuestions: credentials.noOfQuestions,
+            unit: '',
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ODY3MWRlYS1jZmQ3LTQ2M2MtOTAzZi01YmQ4NjFkMjMwN2QiLCJpYXQiOjE2OTkyNzI4MTZ9.riBXZdA0Cny8OGybmCyG4xRJZTlVxUmS6taG0t9ADQg',
+          },
+          method: 'POST',
         };
       },
     }),
@@ -147,4 +200,7 @@ export const {
   useChangePasswordMutation,
   useGetRegionsMutation,
   useDeleteAccountMutation,
+  useGetExamsMutation,
+  useGetSubjectMutation,
+  useGetRandomExamMutation,
 } = api;
