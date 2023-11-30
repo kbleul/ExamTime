@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
-import {SvgUri} from 'react-native-svg';
+import {SvgXml} from 'react-native-svg';
 
 export const onError = (e: Error) => {
   console.log('----------------', e.message);
@@ -13,7 +13,7 @@ const ChosenCoursesCard: React.FC<{
   progress?: number;
   bgImage: any;
 }> = ({title, lessonsCount, progress, bgImage}) => {
-  console.log('---//', bgImage.uri);
+  // console.log('---//', bgImage.uri);
 
   return (
     <View
@@ -22,7 +22,7 @@ const ChosenCoursesCard: React.FC<{
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
-      <SvgUri style={styles.imageBg} uri={bgImage.uri} onError={onError} />
+      <SvgXml style={styles.imageBg} xml={bgImage.uri} onError={onError} />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text
@@ -38,7 +38,7 @@ const ChosenCoursesCard: React.FC<{
           <>
             <View style={styles.progressBar}>
               <View
-                style={[styles.progressBarIndicator, {width: '50%'}]} // calculate progress dynamically
+                style={[styles.progressBarIndicator, {width: progress + '%'}]} // calculate progress dynamically
               />
             </View>
             <Text style={styles.progressText}>{progress}% completed</Text>

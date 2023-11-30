@@ -21,12 +21,12 @@ import {useSelector} from 'react-redux';
 import {getAllStudies} from './logic';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import Toast from 'react-native-toast-message';
-import {singleSubjectType} from '../../../types';
+import {subjectType} from '../../../types';
 import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
-import {SvgUri} from 'react-native-svg';
+import {SvgXml} from 'react-native-svg';
 import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 
-const CourseItem = ({item}: {item: singleSubjectType}) => {
+const CourseItem = ({item}: {item: subjectType}) => {
   const navigator: any = useNavigation();
 
   return (
@@ -38,16 +38,16 @@ const CourseItem = ({item}: {item: singleSubjectType}) => {
         })
       }>
       <View style={styles.imgContainer}>
-        <SvgUri style={styles.imagebg} uri={item.icon} onError={onError} />
+        <SvgXml style={styles.imagebg} xml={item.icon} onError={onError} />
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={styles.subject}>{item.subject.subject}</Text>
         <Text style={styles.units}>15 units</Text>
-        <Text style={styles.progressText}>completed 45% </Text>
+        <Text style={styles.progressText}>completed {item.progress}% </Text>
 
         <View style={styles.indicatorContainer}>
-          <Text style={[styles.indicator, {width: '50%'}]} />
+          <Text style={[styles.indicator, {width: item.progress + '%'}]} />
         </View>
       </View>
     </TouchableOpacity>
@@ -65,7 +65,7 @@ const Index = () => {
   const savedUserData = useQuery(UserData);
   const savedStudies = useQuery(Study);
 
-  const [getStudy, {isLoading, error}] = useGetStudyMutation();
+  const [getStudy] = useGetStudyMutation();
 
   useEffect(() => {
     if (!savedStudies || savedStudies.length === 0) {

@@ -141,6 +141,17 @@ export type subjectType = {
   progress?: number;
 };
 
+export type downloadedSubjectType = {
+  id: string;
+  description: string;
+  icon: Realm.Types.Data | null;
+  createdAt: string;
+  updatedAt: string;
+  grade: gradeType;
+  subject: singleSubjectType;
+  progress?: number;
+};
+
 export type unitType = {
   id: string;
   unit: string;

@@ -65,8 +65,6 @@ const Question: React.FC<{
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
-  console.log('issssHtml', isHtml(question.question));
-
   return (
     <>
       {question && (

@@ -123,7 +123,7 @@ class SingleSubject extends Realm.Object {
 class Subject extends Realm.Object {
   id: string = '';
   description: string = '';
-  icon: string = '';
+  icon: string | null = null;
   createdAt: string = '';
   updatedAt: string = '';
   grade: gradeType | null = null;
@@ -135,7 +135,7 @@ class Subject extends Realm.Object {
     properties: {
       id: 'string',
       description: 'string',
-      icon: 'string',
+      icon: 'string?',
       createdAt: 'string',
       updatedAt: 'string',
       subject: 'SingleSubject?',

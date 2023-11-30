@@ -35,20 +35,6 @@ const ExamLeaveModal: React.FC<{
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          {/* <View style={styles.modalImageContaner}>
-            <ImageBackground
-              style={styles.modalImg}
-              source={require('../../assets/Images/Practice/modal1.png')} // Replace with the correct path to your image
-              resizeMode="cover"
-            />
-          </View> */}
-
-          {/* {examStatusData.total - examStatusData.answered > 0 && (
-            <Text style={styles.modalText}>
-              You haven’t completed the exam!
-            </Text>
-          )} */}
-
           <ImageBackground
             style={styles.modalImageContaner}
             source={require('../../assets/Images/Practice/running_bg.png')} // Replace with the correct path to your image
@@ -66,7 +52,9 @@ const ExamLeaveModal: React.FC<{
 
           {!isTimeOver && (
             <Text style={styles.modalText}>
-              You haven’t completed the exam! are you sure you want to finish?
+              {examStatusData.total - examStatusData.answered > 0
+                ? 'You haven’t completed the exam! are you sure you want to finish?'
+                : ''}
             </Text>
           )}
 
@@ -76,28 +64,6 @@ const ExamLeaveModal: React.FC<{
               <Text style={styles.infoTextPurpleSecondary}>remaining </Text>
             </View>
           )}
-
-          {/* <Text style={styles.modalText}>
-            Are you sure you want to finish ?
-          </Text>
-
-          <View style={styles.infoContainer}>
-            <Text style={styles.infoText}>
-              <Text style={styles.infoTextGreen}>{examStatusData.total} </Text>
-              Questions
-            </Text>
-            <Text style={[styles.infoText, styles.infoTextSecondary]}>
-              <Text style={styles.infoTextYellow}>
-                {examStatusData.total - examStatusData.answered}{' '}
-              </Text>
-              Remaining
-            </Text>
-            {timeLeft && (
-              <Text style={[styles.infoText, styles.infoTextThird]}>
-                <Text style={styles.infoTextPurple}>{timeLeft} </Text>Time Left
-              </Text>
-            )}
-          </View> */}
 
           {showViewReviewBtn && showViewReviewBtn === true && (
             <TouchableOpacity
