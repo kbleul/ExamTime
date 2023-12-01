@@ -200,3 +200,18 @@ export const isHtml = (input: string) => {
   const htmlRegex = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
   return htmlRegex.test(input);
 };
+
+export const isOnline = async () => {
+  try {
+    const state = await NetInfo.fetch();
+
+    if (!state.isConnected || !state.isInternetReachable) {
+      return false;
+    } else if (state.isConnected && state.isInternetReachable) {
+      return true;
+    }
+  } catch (error) {
+    console.log({error});
+    return false; // Assume offline on error
+  }
+};

@@ -122,7 +122,6 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
           grade: gradeObject,
           subject: subjectObject,
           year: year,
-          userExamAnswers: [],
           isExamTaken: false,
         });
       });

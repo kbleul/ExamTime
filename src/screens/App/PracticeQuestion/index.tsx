@@ -138,7 +138,29 @@ const PracticeQuestion = ({route}: {route: any}) => {
             answersArray.push(newAnswer);
           });
 
-          savedExam[0].userExamAnswers = answersArray;
+          realm.create(LocalObjectDataKeys.ExamAnswers, {
+            examId: savedExam[0].id,
+            examDate: new Date().toISOString(),
+            userExamAnswers: [...answersArray],
+          });
+          // realm.create('ExamAnswers', {
+          //   id,
+          //   title,
+          //   objective,
+          //   isPublished,
+          //   createdAt,
+          //   updatedAt,
+          //   grade: gradeObject,
+          //   subject: subjectObject,
+          //   year: yearString,
+          //   unit: unitString,
+          //   section: sectionString,
+          //   selectedQuestion: examQuestionArr,
+          //   progress: 0,
+          //   pdf: pdfObjArr,
+          //   videoLink: videoObjArr,
+          //   userExamAnswers: [],
+          // });
           savedExam[0].isExamTaken = true;
         });
       } catch (e) {

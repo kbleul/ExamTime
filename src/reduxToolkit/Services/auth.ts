@@ -6,13 +6,13 @@ import {
   OTPDataType,
   ResendCodeDataType,
   SignupDataType,
-  gradeType,
   regionItemsType,
   studyType,
   subjectType,
   userType,
 } from '../../types';
 import Config from 'react-native-config';
+import {newAnswerType} from '../../hooks/usePostSyncData';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({baseUrl: Config.API_URL}),
@@ -194,22 +194,49 @@ export const api = createApi({
         };
       },
     }),
-    getAboutUs: build.mutation<String,{}>({
+    getAboutUs: build.mutation<String, {}>({
       query: () => {
-          return {
-              url: 'about-us/user/aboutus',
-              method: 'GET',
-          };
-      },
-  }),
-  getUserGuide: build.mutation<String,{}>({
-    query: () => {
         return {
-            url: 'user-guide/user/userguide',
-            method: 'GET',
+          url: 'about-us/user/aboutus',
+          method: 'GET',
         };
-    },
-}),
+      },
+    }),
+    getUserGuide: build.mutation<String, {}>({
+      query: () => {
+        return {
+          url: 'user-guide/user/userguide',
+          method: 'GET',
+        };
+      },
+    }),
+    postExamResults: build.mutation<
+      any,
+      {
+        token: string | null;
+        examId: string;
+        answers: {
+          answers: newAnswerType[];
+          takenDate: string | null;
+        };
+      }
+    >({
+      query: data => {
+        return {
+          url: 'exam-result/create',
+          body: {
+            examId: data.examId,
+            examDate: data.answers.takenDate,
+            userAnswers: [...data.answers.answers],
+          },
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -229,4 +256,5 @@ export const {
   useGetAboutUsMutation,
   useGetUserGuideMutation,
   useGetStudyMutation,
+  usePostExamResultsMutation,
 } = api;

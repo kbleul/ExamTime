@@ -31,10 +31,6 @@ const StudyDetails = ({route}) => {
     );
   });
 
-  //   const savedExam = useQuery(Exam, examItems => {
-  //     return examItems.filtered(`id == "${exam.id}"`);
-  //   });
-
   useEffect(() => {
     savedStudies.length === 0 &&
       Toast.show({
@@ -106,7 +102,6 @@ const Accordion = ({study}: {study: Study}) => {
             touchSoundDisabled
             style={accordiontyles.assessmentBtn}
             onPress={() =>
-              study.userExamAnswers.length <= 0 &&
               navigator.navigate('ViewAssessment', {
                 questions: study.selectedQuestion,
                 selectedSubject: study.subject ? study.subject.subject : '',

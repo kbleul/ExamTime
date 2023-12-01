@@ -192,6 +192,21 @@ class UserExamAnswers extends Realm.Object {
   };
 }
 
+class ExamAnswers extends Realm.Object {
+  examId: string = '';
+  examDate: string = '';
+  userExamAnswers: answersType[] = [];
+
+  static schema = {
+    name: 'ExamAnswers',
+    properties: {
+      examId: 'string',
+      examDate: 'string',
+      userExamAnswers: 'UserExamAnswers[]',
+    },
+  };
+}
+
 class Exam extends Realm.Object {
   id: string = '';
   examName: string = '';
@@ -207,7 +222,6 @@ class Exam extends Realm.Object {
   grade: gradeType | null = null;
   subject: singleSubjectType | null = null;
   year: string = '';
-  userExamAnswers: answersType[] | null = null;
   isExamTaken: boolean = false;
 
   static schema = {
@@ -227,7 +241,6 @@ class Exam extends Realm.Object {
       grade: 'Grade?',
       subject: 'SingleSubject?',
       year: 'string',
-      userExamAnswers: 'UserExamAnswers[]',
       isExamTaken: 'bool',
     },
   };
@@ -308,6 +321,7 @@ export {
   SingleSubject,
   Subject,
   ExamQuestion,
+  ExamAnswers,
   Exam,
   UserExamAnswers,
   Study,
