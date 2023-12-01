@@ -16,14 +16,12 @@ const FaqContener = () => {
     try {
       const response = await getFaq().unwrap();
       setFaq(response)
-      
-    
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   }
   const HandelSearch = (input)=>{
-    console.log(input)
+    //console.log(input)
     setFaq(faq?.filter((faq)=>faq.question.toUpperCase().includes(input.toUpperCase())))
   }
   useEffect(() => {

@@ -1,10 +1,17 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Linking} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import SendUsmessage from '../Molecules/SendUsmessage';
 
 const ContactUs: React.FC<{onPress: () => void}> = ({onPress}) => {
+
+  const handelPhonecall=()=>{
+    Linking.openURL('tel:+251912462133');
+  }
+  const handelTelegram=()=>{
+    Linking.openURL('https://t.me/thinkhub');
+  }
   return (
     <View style={styles.AboutusContener}>
       <View style={styles.textContener}>
@@ -20,13 +27,13 @@ const ContactUs: React.FC<{onPress: () => void}> = ({onPress}) => {
         <Text style={styles.befamText}>
           be a part of our famliy by joining our telegram Channale
         </Text>
-        <View style={styles.telegramlink}>
+        <TouchableOpacity style={styles.telegramlink} onPress={handelTelegram}>
           <Text style={styles.linkText}> https://t.me/thinkhub</Text>
           <Feather name="external-link" color="#1E90FF" size={16} />
-        </View>
+        </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.befamTextContener2}>
+      <TouchableOpacity style={styles.befamTextContener2} onPress={handelPhonecall}>
         <SimpleLineIcons name="earphones-alt" size={22} />
         <Text style={styles.callText}>Call custommer service</Text>
       </TouchableOpacity>
