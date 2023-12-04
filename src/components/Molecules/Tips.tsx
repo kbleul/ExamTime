@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#5EB4CF',
   },
   imgContainer: {

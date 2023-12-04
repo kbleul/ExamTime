@@ -86,7 +86,6 @@ const ForgotPasswordForm: React.FC<{
       setStepCounter(prev => ++prev);
     } catch (error: any) {
       setIsLoading(false);
-      console.error('Error submitting form:', error);
       if (
         error instanceof TypeError &&
         (error.message === 'Network request failed' ||

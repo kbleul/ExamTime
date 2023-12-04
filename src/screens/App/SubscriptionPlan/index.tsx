@@ -27,7 +27,6 @@ const Index: React.FC = () => {
     {
       key: '1',
       planname: 'Basic Plan',
-      image: require('./frame_blue.png'),
       price: 200,
       current: true,
       color: '#F5A52D',
@@ -54,7 +53,6 @@ const Index: React.FC = () => {
       key: '2',
       planname: 'Intermediate Plan',
       price: 200,
-      image: require('./frame_blue.png'),
       current: false,
       color: '#4F8FCB',
       packages: [
@@ -78,7 +76,6 @@ const Index: React.FC = () => {
     },
     {
       key: '3',
-      image: require('./frame_blue.png'),
       planname: 'Pro Plan',
       price: 200,
       current: false,
@@ -103,17 +100,7 @@ const Index: React.FC = () => {
       ],
     },
   ]);
-  const data1 = [
-    {
-      image: require('./frame_blue.png'),
-    },
-    {
-      image: require('./frame_blue.png'),
-    },
-    {
-      image: require('./frame_blue.png'),
-    },
-  ];
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -131,7 +118,6 @@ const Index: React.FC = () => {
 
         <View style={styles.HorizontalList}>
           <SubscriptionPlanCards data={data} pagination={true} />
-          {/* <CustomImageCarousal data={data} pagination={true} /> */}
         </View>
       </ScrollView>
       <MainBottomNav />

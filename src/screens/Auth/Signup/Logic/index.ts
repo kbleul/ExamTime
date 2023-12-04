@@ -10,10 +10,7 @@ import {
 } from '../../../../types';
 import {checkIsOnline} from '../../../../utils/Functions/Helper';
 import {LocalStorageDataKeys} from '../../../../utils/Data/data';
-import {
-  getObject_from_localStorage,
-  get_from_localStorage,
-} from '../../../../utils/Functions/Get';
+import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 
 type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[1];
 type VerifyCodeMutationFnMutationFn = ReturnType<typeof useLoginMutation>[2];
@@ -77,7 +74,6 @@ export const handleCreateUser = async (
         grade: userGrade?.value,
       }).unwrap();
 
-      console.log(response);
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
@@ -170,7 +166,6 @@ export const resendOtp = async (
     const response = await resendCode({
       userId: unregisteredUser?.id,
     }).unwrap();
-    console.log(response);
     if (unregisteredUser) {
       const newUser = {
         ...unregisteredUser,
