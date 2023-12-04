@@ -5,12 +5,15 @@ import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileEdit from '../../../components/Organisms/ProfileEdit';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
-import {Platform} from 'react-native';
-import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+import {RESULTS} from 'react-native-permissions';
 import checkCameraPermission from '../../../utils/Functions/Helper/CameraPermisstion';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
 
 const ProfileEditIndex = () => {
   const [avatar, setAvatar] = useState('');
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const uploadImage = async () => {
     const permissionStatus = await checkCameraPermission();
     if (permissionStatus !== RESULTS.GRANTED) {
@@ -31,6 +34,7 @@ const ProfileEditIndex = () => {
       })
       .catch(e => console.error);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageBg}>
@@ -39,6 +43,8 @@ const ProfileEditIndex = () => {
           source={{
             uri: avatar
               ? avatar
+              : user && user?.profilePicture
+              ? user?.profilePicture
               : 'https://th.bing.com/th/id/OIP.fmwdQXSSqKuRzNiYrbcNFgHaHa?rs=1&pid=ImgDetMain',
           }}>
           <Text>{''}</Text>

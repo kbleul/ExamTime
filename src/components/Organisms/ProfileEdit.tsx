@@ -223,7 +223,7 @@ const ProfileEdit: React.FC = () => {
   const handleGoBack = () => {
     navigation.goBack();
   };
-  
+
   return (
     <>
       <StatusBar hidden={true} />

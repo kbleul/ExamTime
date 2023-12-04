@@ -3,7 +3,6 @@
 import {useDispatch} from 'react-redux';
 import {loginSuccess} from '../../../../reduxToolkit/Features/auth/authSlice';
 import {useChangeProfileMutation} from '../../../../reduxToolkit/Services/auth';
-import {updateRealmUserData} from '../../../../screens/Auth/Login/Logic';
 
 export const updateProfile: React.FC =
   () =>

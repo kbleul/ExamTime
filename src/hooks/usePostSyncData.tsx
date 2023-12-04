@@ -15,10 +15,85 @@ export type newAnswerType = {
   };
 };
 
-const usePostSyncData = () => {
+export type singleAnswerType = {
+  [id: string]: string;
+};
+
+export const getUserAnswers = (
+  savedExamAnswers: ResultsType<Exam>,
+  examId: string,
+) => {
+  return savedExamAnswers.filter(
+    (examAnser: ExamAnswers) => examAnser.examId === examId,
+  );
+};
+
+export const prepareSyncData = (
+  savedTakenExams: ResultsType<Exam>,
+  savedExamAnswers: ResultsType<ExamAnswers>,
+) => {
+  const mainAnsersObjsArr: newAnswerType[] = [];
+
+  savedTakenExams.forEach((takenExam: Exam) => {
+    const userAnswers = getUserAnswers(savedExamAnswers, takenExam.id);
+
+    if (userAnswers && userAnswers.length > 0) {
+      userAnswers.forEach((userAnswer: any) => {
+        const newAnswer: any[] = [];
+        userAnswer.userExamAnswers.forEach((answer: any) => {
+          newAnswer.push({[`${answer.id}`]: answer.userAnswer});
+        });
+        mainAnsersObjsArr.push({
+          [`${takenExam.id}`]: {
+            answers: [...newAnswer],
+            takenDate: userAnswer.examDate,
+          },
+        });
+      });
+    }
+  });
+
+  return mainAnsersObjsArr;
+};
+
+export const syncDataToDB = async (
+  postExamResults: any,
+  token: string,
+  savedTakenExams: ResultsType<Exam>,
+  savedExamAnswers: ResultsType<ExamAnswers>,
+  setIsSyncing?: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  const preparedData = prepareSyncData(savedTakenExams, savedExamAnswers);
+
+  const promises: Promise<any>[] = [];
+
+  preparedData.forEach(data => {
+    const examId = Object.keys(data)[0];
+    const promise = postExamResults({
+      token,
+      examId,
+      answers: data[examId],
+    }).finally(() => {
+      setIsSyncing && setIsSyncing(false);
+    });
+
+    promises.push(promise);
+  });
+
+  try {
+    await Promise.all(promises);
+    console.error('Data syncing exams:');
+  } catch (err) {
+    console.error('Error syncing exams:', err);
+  }
+};
+
+const usePostSyncData = (
+  setIsSyncing: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
-  const [postExamResults, {isLoading, error}] = usePostExamResultsMutation();
+  const [postExamResults] = usePostExamResultsMutation();
   const {useQuery} = AuthContext;
 
   const savedTakenExams = useQuery(Exam, exam => {
@@ -27,65 +102,6 @@ const usePostSyncData = () => {
 
   const savedExamAnswers = useQuery(ExamAnswers);
 
-  const prepareSyncData = () => {
-    const mainAnsersObjsArr: newAnswerType[] = [];
-
-    savedTakenExams.forEach(takenExam => {
-      const userAnswers = getUserAnswers(takenExam.id);
-
-      if (userAnswers && userAnswers.length > 0) {
-        userAnswers.forEach(userAnswer => {
-          const newAnswer = []
-          userAnswer.userExamAnswers.forEach(answer => {
-            newAnswer.push(`[${answer.id}]` : )
-          })
-          // mainAnsersObjsArr.push({
-          //   [`${takenExam.id}`]: {
-          //     answers: [...userAnswer.userExamAnswers[0].],
-          //     takenDate: userAnswer.examDate,
-          //   },
-          // });
-        });
-      }
-    });
-
-    return mainAnsersObjsArr;
-  };
-
-  const getUserAnswers = (examId: string) => {
-    return savedExamAnswers.filter(examAnser => examAnser.examId === examId);
-  };
-
-  const syncDataToDB = async () => {
-    const preparedData = prepareSyncData();
-    console.log('lengt', preparedData);
-    const promises: Promise<any>[] = [];
-
-    preparedData.forEach(data => {
-      const examId = Object.keys(data)[0];
-      const promise = postExamResults({
-        token,
-        examId,
-        answers: data[examId],
-      })
-        .then(response => {
-          console.log('response', response);
-        })
-        .catch(error => {
-          console.error('Error syncing exam:', error);
-        });
-
-      promises.push(promise);
-    });
-
-    try {
-      await Promise.all(promises);
-      console.log('All exams synced successfully');
-    } catch (err) {
-      console.error('Error syncing exams:', err);
-    }
-  };
-
   useEffect(() => {
     const handleSync = async () => {
       // Check for internet connection (you can use an appropriate library or method)
@@ -93,10 +109,16 @@ const usePostSyncData = () => {
 
       if (isConnected && savedTakenExams.length > 0) {
         // Perform data sync with the database
-        await syncDataToDB();
+        setIsSyncing(true);
+        await syncDataToDB(
+          postExamResults,
+          token ? token : '',
+          savedTakenExams,
+          savedExamAnswers,
+          setIsSyncing,
+        );
 
         // Navigate to the desired screen after syncing
-        console.log('----------------------------------------');
       }
     };
 

@@ -13,8 +13,6 @@ const ChosenCoursesCard: React.FC<{
   progress?: number;
   bgImage: any;
 }> = ({title, lessonsCount, progress, bgImage}) => {
-  // console.log('---//', bgImage.uri);
-
   return (
     <View
       style={

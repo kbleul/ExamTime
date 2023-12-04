@@ -237,6 +237,27 @@ export const api = createApi({
         };
       },
     }),
+    getExamResults: build.mutation<
+      any,
+      {
+        token: string;
+        user: userType;
+      }
+    >({
+      query: data => {
+        return {
+          url: 'exam-result/results',
+          body: {
+            id: data.user.id,
+          },
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -257,4 +278,5 @@ export const {
   useGetUserGuideMutation,
   useGetStudyMutation,
   usePostExamResultsMutation,
+  useGetExamResultsMutation,
 } = api;

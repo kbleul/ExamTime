@@ -20,6 +20,7 @@ export type userType = {
   gender: 'MALE' | 'FEMALE';
   email: string | null;
   verificationCode?: string;
+  profilePicture: string | null;
 };
 
 export type seterProps = {
