@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
@@ -14,18 +14,18 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {Subject} from '../../Realm';
 import {checkIsOnline} from '../../utils/Functions/Helper';
 import Toast from 'react-native-toast-message';
-
-const minimumAmount = 10;
-const maximumAmount = 100;
+import {
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+} from '@gluestack-ui/themed';
 
 const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
   const navigator: any = useNavigation();
-  const [currentAmount, setCurrentAmount] = useState(minimumAmount);
+  const [currentAmount, setCurrentAmount] = useState(10);
 
   const [isLoading, setIsLoading] = useState(false);
-
-  //catch on every render
-  const sliderBgMinValue = `${(currentAmount / maximumAmount) * 100}%`;
 
   return (
     <View style={styles.container}>
@@ -35,25 +35,23 @@ const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
         <View style={styles.sliderSubContainer}>
           <View style={styles.sliderWrapper}>
             <Slider
-              style={styles.slider}
-              minimumValue={0}
-              maximumValue={maximumAmount}
-              minimumTrackTintColor="#1E90FF"
-              maximumTrackTintColor="#C6BFBF"
               step={10}
-              thumbTintColor="#1E90FF"
+              sliderTrackHeight={4}
               value={currentAmount}
-              onValueChange={e => setCurrentAmount(e)}
-            />
-            <View style={styles.sliderBG}>
-              <View
-                style={[styles.sliderBgMinValue, {width: sliderBgMinValue}]}
-              />
-            </View>
+              maxValue={100}
+              minValue={0}
+              onChange={v => {
+                setCurrentAmount(v);
+              }}>
+              <SliderTrack>
+                <SliderFilledTrack bg="#1E90FF" />
+              </SliderTrack>
+              <SliderThumb bg="#1E90FF" />
+            </Slider>
           </View>
 
           <View style={styles.sliderTextContainer}>
-            <Text style={styles.sliderText}>5 minimum</Text>
+            <Text style={styles.sliderText}>10 minimum</Text>
             <Text style={styles.sliderText}>{currentAmount}</Text>
             <Text style={styles.sliderText}>100 max</Text>
           </View>
@@ -128,24 +126,8 @@ const styles = StyleSheet.create({
   },
   sliderWrapper: {
     position: 'relative',
-  },
-  sliderBG: {
-    position: 'absolute',
-    top: 2,
-    backgroundColor: '#C6BFBF',
     width: '90%',
     marginLeft: '5%',
-    height: 8,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  sliderBgMinValue: {
-    position: 'absolute',
-    height: 8,
-    top: 0,
-    backgroundColor: '#1E90FF',
-    borderRadius: 10,
-    overflow: 'hidden',
   },
   sliderTextContainer: {
     flexDirection: 'row',
@@ -153,6 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     marginLeft: '5%',
+    marginTop: 3,
   },
   sliderText: {
     color: '#858585',
