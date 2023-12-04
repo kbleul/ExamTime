@@ -149,6 +149,7 @@ const styles = ScaledSheet.create({
     height: screenHeight / 6,
     minHeight: 150,
     borderRadius: 10,
+    overflow: 'hidden',
     position: 'relative',
   },
   textContainer: {
@@ -167,6 +168,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
+    overflow: 'hidden',
     paddingHorizontal: screenWidth * 0.05,
     paddingTop: screenWidth * 0.018,
     paddingBottom: screenWidth * 0.01,
@@ -212,6 +214,7 @@ const styles = ScaledSheet.create({
     height: '100%',
     width: screenWidth * (1 / 2.6),
     borderRadius: 5,
+    overflow: 'hidden',
   },
   infoContainer: {
     width: '67%',
@@ -237,6 +240,7 @@ const styles = ScaledSheet.create({
     paddingLeft: 16,
     marginVertical: 8,
     borderRadius: 100,
+    overflow: 'hidden',
     backgroundColor: '#9ED2E3',
     maxWidth: '68%',
   },
@@ -244,6 +248,7 @@ const styles = ScaledSheet.create({
     width: '100%',
     height: 6,
     borderRadius: 100,
+    overflow: 'hidden',
     backgroundColor: '#e8e6e6',
   },
   indicator: {

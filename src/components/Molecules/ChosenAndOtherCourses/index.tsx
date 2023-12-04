@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
 import OtherCoursesCard from './OtherCoursesCard';
@@ -7,6 +7,7 @@ import {Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
+import {screenHeight} from '../../../utils/Data/data';
 
 interface CourseItemType {
   id: string;
@@ -68,7 +69,7 @@ const ChosenCourses = () => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="My learning" subTitle="Your Chosen Courses" seeAll />
 
       <FlatList
@@ -82,7 +83,9 @@ const ChosenCourses = () => {
         showsHorizontalScrollIndicator={false}
       />
 
-      <Header title="Other Courses" />
+      <View style={styles.subContainer}>
+        <Header title="Other Courses" />
+      </View>
 
       <FlatList
         keyExtractor={item => item.id}
@@ -94,5 +97,13 @@ const ChosenCourses = () => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    marginTop: screenHeight * 0.01,
+  },
+  subContainer: {
+    marginTop: screenHeight * 0.01,
+  },
+});
 
 export default ChosenCourses;

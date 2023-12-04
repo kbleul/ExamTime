@@ -33,6 +33,7 @@ export const frameOnestyles = StyleSheet.create({
     borderRadius: 30,
     marginRight: 20,
     borderWidth: 2,
+    overflow: 'hidden',
   },
   helloText: {
     fontSize: screenWidth * 0.07,
@@ -145,6 +146,7 @@ export const frameThreestyles = StyleSheet.create({
     paddingVertical: 9,
     borderRadius: 10,
     backgroundColor: '#6A5ACD',
+    overflow: 'hidden',
   },
   adsBtns_secondary: {
     backgroundColor: '#0A6EC7',
@@ -175,6 +177,7 @@ export const frameFourstyles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     left: 10,
+    overflow: 'hidden',
   },
   text: {
     color: '#7fbbf5',

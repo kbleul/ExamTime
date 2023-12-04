@@ -87,6 +87,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: screenWidth * 0.02,
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
     borderRadius: 100,
+    overflow: 'hidden',
     color: 'white',
     fontSize: screenWidth * 0.028,
     fontFamily: 'Montserrat-SemiBold',
@@ -107,6 +108,7 @@ export const styles = StyleSheet.create({
     height: 5,
     backgroundColor: '#fff',
     borderRadiusLeft: 20,
+    overflow: 'hidden',
   },
   progressText: {
     color: 'white',

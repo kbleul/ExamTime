@@ -82,7 +82,6 @@ export const syncDataToDB = async (
 
   try {
     await Promise.all(promises);
-    console.error('Data syncing exams:');
   } catch (err) {
     console.error('Error syncing exams:', err);
   }

@@ -19,7 +19,7 @@ const minimumAmount = 10;
 const maximumAmount = 100;
 
 const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
-  const navigator = useNavigation();
+  const navigator: any = useNavigation();
   const [currentAmount, setCurrentAmount] = useState(minimumAmount);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -80,10 +80,6 @@ const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
             }
 
             setIsLoading(false);
-            // navigator.navigate('Random-Exam', {
-            //   selectedSubject: selectedSubject,
-            //   amount: currentAmount,
-            // });
           }}>
           {isLoading ? (
             <ActivityIndicator color="#fff" />
@@ -113,6 +109,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E1E1E1',
     borderRadius: 10,
+    overflow: 'hidden',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
@@ -126,6 +123,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 10,
     borderRadius: 5,
+    overflow: 'hidden',
     zIndex: 10,
   },
   sliderWrapper: {
@@ -139,6 +137,7 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     height: 8,
     borderRadius: 10,
+    overflow: 'hidden',
   },
   sliderBgMinValue: {
     position: 'absolute',
@@ -146,6 +145,7 @@ const styles = StyleSheet.create({
     top: 0,
     backgroundColor: '#1E90FF',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   sliderTextContainer: {
     flexDirection: 'row',
@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1E90FF',
     borderRadius: 8,
+    overflow: 'hidden',
     paddingHorizontal: 4,
   },
   startButtonText: {

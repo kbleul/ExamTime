@@ -43,6 +43,7 @@ export const HeaderStyle = StyleSheet.create({
     height: 10,
     borderRadius: 20,
     backgroundColor: '#0066B2',
+    overflow: 'hidden',
   },
   leftContainer: {
     marginHorizontal: 2,

@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: 'black',
     borderRadius: 20,
+    overflow: 'hidden',
     marginTop: 5,
   },
   subjectsButtonContaier: {
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
   subjectsButton: {
     backgroundColor: '#D9D9D9',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   subjectsButtonActive: {
     borderWidth: 1,
