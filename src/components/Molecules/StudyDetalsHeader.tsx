@@ -59,11 +59,13 @@ const styles = StyleSheet.create({
     width: '95%',
     backgroundColor: '#DAD0E2',
     borderRadius: 100,
+    overflow: 'hidden',
   },
   progressBar: {
     height: 8,
     backgroundColor: '#1B3C26',
     borderRadius: 100,
+    overflow: 'hidden',
   },
   progressText: {
     fontSize: screenWidth * 0.045,

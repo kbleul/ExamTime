@@ -2,6 +2,9 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {SvgXml} from 'react-native-svg';
+import {calculateProgress} from '../../../screens/App/Study/logic';
+import {AuthContext} from '../../../Realm/model';
+import {Study} from '../../../Realm';
 
 export const onError = (e: Error) => {
   console.log('----------------', e.message);
@@ -10,13 +13,24 @@ export const onError = (e: Error) => {
 const ChosenCoursesCard: React.FC<{
   title: string;
   lessonsCount: number;
-  progress?: number;
+  subjectId?: string;
   bgImage: any;
-}> = ({title, lessonsCount, progress, bgImage}) => {
+}> = ({title, lessonsCount, subjectId, bgImage}) => {
+  const {useQuery} = AuthContext;
+
+  const savedStudies = useQuery(Study, studies => {
+    return studies.filtered(
+      `subject.id = "${
+        subjectId ? subjectId : 0
+      }" OR subject.subject = "${title}"`,
+    );
+  });
+  const calProgress = calculateProgress(savedStudies) + '%';
+
   return (
     <View
       style={
-        progress !== undefined
+        subjectId !== undefined
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
@@ -25,21 +39,21 @@ const ChosenCoursesCard: React.FC<{
         <Text style={styles.title}>{title}</Text>
         <Text
           style={
-            progress !== undefined
+            subjectId !== undefined
               ? styles.lessons
               : [styles.lessons, styles.lessonsSecondary]
           }>
           {lessonsCount} Lessons
         </Text>
 
-        {progress !== undefined && (
+        {subjectId !== undefined && (
           <>
             <View style={styles.progressBar}>
               <View
-                style={[styles.progressBarIndicator, {width: progress + '%'}]} // calculate progress dynamically
+                style={[styles.progressBarIndicator, {width: calProgress}]} // calculate progress dynamically
               />
             </View>
-            <Text style={styles.progressText}>{progress}% completed</Text>
+            <Text style={styles.progressText}>{calProgress} completed</Text>
           </>
         )}
       </View>

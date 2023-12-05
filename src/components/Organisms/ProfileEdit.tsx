@@ -352,6 +352,7 @@ const styles = ScaledSheet.create({
   changePasswordButton: {
     alignItems: 'center',
     borderRadius: 10,
+    overflow: 'hidden',
     flexDirection: 'row',
     gap: 5,
     justifyContent: 'center',
@@ -373,7 +374,6 @@ const styles = ScaledSheet.create({
     backgroundColor: 'white',
     borderColor: '#abcef5',
     borderWidth: 1,
-    borderRadius: '10@ms',
     fontFamily: 'PoppinsRegular',
     flexDirection: 'row',
     marginHorizontal: '20@s',
@@ -418,6 +418,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     backgroundColor: '#2196F3',
     borderRadius: '50@s',
+    overflow: 'hidden',
     height: '20@ms',
     justifyContent: 'center',
     marginRight: '15@s',
@@ -434,6 +435,7 @@ const styles = ScaledSheet.create({
     borderColor: '#abcef5',
     borderWidth: 1,
     borderRadius: '10@s',
+    overflow: 'hidden',
     color: '#858585',
     fontSize: '12@ms',
     marginHorizontal: '20@s',
@@ -479,6 +481,7 @@ const styles = ScaledSheet.create({
   topFormContainer: {
     borderRadius: 10,
     paddingVertical: '1@vs',
+    overflow: 'hidden',
   },
 
   //dropdown input field
@@ -516,6 +519,7 @@ const styles = ScaledSheet.create({
     borderRadius: 10,
     width: 200,
     paddingVertical: 11,
+    overflow: 'hidden',
   },
   submitBtnPassword: {
     backgroundColor: '#1E90FF',
@@ -523,6 +527,7 @@ const styles = ScaledSheet.create({
     width: '200@vs',
     paddingVertical: '10@vs',
     alignSelf: 'flex-end',
+    overflow: 'hidden',
   },
   submitText: {
     color: '#FFFFFF',

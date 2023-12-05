@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     borderWidth: 1,
     borderRadius: screenWidth * 0.02,
+    overflow: 'hidden',
   },
   imgContainer: {
     width: '20%',

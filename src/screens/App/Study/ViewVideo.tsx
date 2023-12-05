@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#E1E1E1',
     paddingHorizontal: 8,
   },
@@ -125,6 +126,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     justifyContent: 'center',
   },
   videoIconActive: {

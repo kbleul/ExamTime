@@ -38,6 +38,7 @@ const YoutubeCard: React.FC<YoutubeCardProps> = ({item, loadinga}) => {
               width: '100%',
               height: screenHeight * 0.35,
               borderRadius: 30,
+              overflow: 'hidden',
             }}>
             <YoutubePlayer
               height={screenHeight * 0.35}
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     fontSize: scale(12),
     lineHeight: scale(14),
     borderRadius: scale(25),
+    overflow: 'hidden',
     backgroundColor: 'white',
     color: '#5CADFC',
     padding: scale(10),

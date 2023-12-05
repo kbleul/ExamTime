@@ -192,6 +192,7 @@ const unitCardStyles = StyleSheet.create({
     marginVertical: 5,
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#949090',
   },
   topcontainer: {
@@ -232,6 +233,7 @@ const accordiontyles = StyleSheet.create({
     marginVertical: 5,
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#E1E1E1',
     paddingVertical: 10,
     paddingHorizontal: 15,
@@ -253,6 +255,7 @@ const accordiontyles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     justifyContent: 'center',
   },
   assessmentBtn: {
@@ -264,6 +267,7 @@ const accordiontyles = StyleSheet.create({
     marginVertical: 7,
     backgroundColor: '#EEF1F6',
     borderRadius: 8,
+    overflow: 'hidden',
     width: '15%',
     justifyContent: 'center',
     alignItems: 'center',

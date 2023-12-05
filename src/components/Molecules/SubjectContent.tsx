@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import  Ionicons  from 'react-native-vector-icons/Ionicons';
-import { screenHeight, screenWidth } from '../../utils/Data/data';
-
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 interface SubjectContentProps {
   section: {
@@ -12,11 +11,12 @@ interface SubjectContentProps {
   };
 }
 
-const SubjectContent: React.FC<SubjectContentProps> = ({ section }) => {
+const SubjectContent: React.FC<SubjectContentProps> = ({section}) => {
   return (
     <View style={styles.content}>
       <Text style={styles.contenttext}>
-        Your expected ability for this chapter is between 2.0 - 2.4. Estimate your ability using the following self-assessment.
+        Your expected ability for this chapter is between 2.0 - 2.4. Estimate
+        your ability using the following self-assessment.
       </Text>
       <View style={styles.SelfAssessment}>
         <View style={styles.LeftSide}>
@@ -52,7 +52,9 @@ const SubjectContent: React.FC<SubjectContentProps> = ({ section }) => {
         <View style={styles.vedioLeft}>
           <Text style={styles.vedioNumber}>01</Text>
           <View>
-            <Text style={styles.vedioNumber}>Get to know about cell biology</Text>
+            <Text style={styles.vedioNumber}>
+              Get to know about cell biology
+            </Text>
             <Text style={styles.vedioNumber}>12.05 mins</Text>
           </View>
         </View>
@@ -86,6 +88,7 @@ const styles = StyleSheet.create({
     borderColor: '#E1E1E1',
     borderWidth: 1,
     borderRadius: screenWidth * 0.02,
+    overflow: 'hidden',
     padding: screenWidth * 0.02,
     fontFamily: 'PoppinsRegular',
     color: 'grey',
@@ -95,6 +98,7 @@ const styles = StyleSheet.create({
     borderColor: '#E1E1E1',
     borderWidth: 1,
     borderRadius: screenWidth * 0.02,
+    overflow: 'hidden',
     padding: screenWidth * 0.02,
     marginTop: screenHeight * 0.02,
     flexDirection: 'row',
@@ -113,6 +117,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.091,
     backgroundColor: '#EB66A3',
     borderRadius: screenWidth * 0.01,
+    overflow: 'hidden',
   },
   contentSubText: {
     fontFamily: 'PoppinsRegular',
@@ -125,13 +130,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  rightSide: {
-
-  },
+  rightSide: {},
   VedioListContainer: {
     borderColor: '#E1E1E1',
     borderWidth: 1,
     borderRadius: screenWidth * 0.02,
+    overflow: 'hidden',
     padding: screenWidth * 0.02,
     marginTop: screenHeight * 0.02,
     flexDirection: 'row',
@@ -155,9 +159,10 @@ const styles = StyleSheet.create({
     height: screenWidth * 0.125,
     width: screenWidth * 0.125,
     borderRadius: screenWidth * 0.02,
+    overflow: 'hidden',
     backgroundColor: '#9A85FC',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  });
+});
 export default SubjectContent;

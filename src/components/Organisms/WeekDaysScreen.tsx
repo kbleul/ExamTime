@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import {View, Text, StyleSheet, TouchableNativeFeedback} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { screenHeight, screenWidth } from '../../utils/Data/data';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 import DayBlock from '../Molecules/DayBlock';
 import scale from '../../utils/Functions/Scale';
 interface Day {
@@ -49,8 +49,7 @@ const days: Day[] = [
 ];
 
 const WeekDaysScreen: React.FC = () => {
-  const showToast = () => {
-  };
+  const showToast = () => {};
 
   return (
     <View style={styles.ThisContainer}>
@@ -63,32 +62,31 @@ const WeekDaysScreen: React.FC = () => {
             <Icon name="angle-right" size={15} color="#908F92" />
           </View>
         </TouchableNativeFeedback>
-
       </View>
       <View style={styles.divider} />
       <View style={styles.weekdaysContainer}>
-        {days.map((day) => (
+        {days.map(day => (
           <DayBlock key={day.dayNumber} day={day} />
         ))}
       </View>
     </View>
-  )
+  );
 };
 const styles = StyleSheet.create({
   ThisContainer: {
-    overflow:"hidden",
-    width: screenWidth - (screenWidth * 0.05),
+    overflow: 'hidden',
+    width: screenWidth - screenWidth * 0.05,
     marginHorizontal: screenWidth * 0.026,
     marginBottom: screenHeight * 0.01,
-    marginVertical:screenHeight * 0.016,
+    marginVertical: screenHeight * 0.016,
     padding: screenWidth * 0.02,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     elevation: 0.5,
     borderRadius: 8,
-    borderWidth:1,
-    borderColor:"lightgrey",
+    borderWidth: 1,
+    borderColor: 'lightgrey',
     shadowColor: 'rgba(0, 0, 0.7, 0.7)',
     backgroundColor: '#FAFCFA',
   },
@@ -97,12 +95,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: "100%"
+    width: '100%',
   },
   ThisContainerHeaderWeekText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: scale(12),
-    fontFamily: "PoppinsMedium",
+    fontFamily: 'PoppinsMedium',
     color: '#BBBCC3',
   },
   ViewCalander: {
@@ -112,14 +110,14 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   calandertext: {
-    fontSize:scale(12),
-    textAlign: "center",
+    fontSize: scale(12),
+    textAlign: 'center',
     gap: screenWidth * 0.02,
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
     color: '#BBBCC3',
   },
   divider: {
-    width: "95%",
+    width: '95%',
     marginVertical: screenHeight * 0.01,
     marginHorizontal: screenWidth * 0.25,
     height: 0.5,
@@ -131,7 +129,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: "100%"
+    width: '100%',
   },
 });
 

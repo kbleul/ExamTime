@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#E3E3E3',
   },
@@ -334,6 +335,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#E3E3E3',
   },
@@ -372,6 +374,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 2,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#F5A52D',
   },
   readParagraphText: {
@@ -411,6 +414,7 @@ const styles = StyleSheet.create({
     right: 15,
     backgroundColor: '#1E90FF',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   submitBtnText: {
     color: '#FFFFFF',
@@ -423,6 +427,7 @@ const questionChoiceStyles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#E3E3E3',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -446,6 +451,7 @@ const questionChoiceStyles = StyleSheet.create({
     borderColor: '#757575',
     paddingTop: 3,
     borderRadius: 3,
+    overflow: 'hidden',
   },
   choiceLetterSelected: {
     backgroundColor: '#1E90FF',

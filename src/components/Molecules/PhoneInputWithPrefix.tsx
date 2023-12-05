@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import {View, TextInput, StyleSheet} from 'react-native';
 import TextPrefixForInputfeild from '../Atoms/TextPrefixForInputfeild';
-import { ScaledSheet } from 'react-native-size-matters';
+import {ScaledSheet} from 'react-native-size-matters';
 
 interface TextInputWithPrefixProps {
   prefix: string;
@@ -35,6 +35,7 @@ const styles = ScaledSheet.create({
     borderColor: '#abcef5',
     borderWidth: 1,
     borderRadius: '10@ms',
+    overflow: 'hidden',
     fontFamily: 'PoppinsRegular',
     flexDirection: 'row',
     marginHorizontal: '20@s',
@@ -44,7 +45,7 @@ const styles = ScaledSheet.create({
     color: '#9E9E9E',
     flex: 1,
     fontSize: '14@ms',
-     paddingVertical: '8@vs',
+    paddingVertical: '8@vs',
   },
 });
 

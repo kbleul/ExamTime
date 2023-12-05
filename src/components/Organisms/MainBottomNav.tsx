@@ -195,6 +195,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
+    overflow: 'hidden',
     marginBottom: screenHeight * 0.001,
     width: screenWidth * 0.12,
     height: screenWidth * 0.12,
@@ -208,6 +209,7 @@ const style = StyleSheet.create({
     marginTop: 0,
     paddingTop: 0,
     borderRadius: 12,
+    overflow: 'hidden',
   },
   buttonTextActive: {
     fontSize: screenWidth * 0.02,
@@ -225,6 +227,7 @@ const style = StyleSheet.create({
     width: screenWidth * 0.02,
     height: screenWidth * 0.02,
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#0066B2',
     marginBottom: 3,
   },

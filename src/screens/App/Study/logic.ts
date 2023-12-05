@@ -174,6 +174,8 @@ export const saveStudyToRealm = async (
 };
 
 export const calculateProgress = (studyObj: Study[]) => {
+  if (studyObj.length === 0) return 0;
+
   const prepareProgressArr = studyObj.map(item => item.progress);
   // Perform calculations or further operations with prepareProgressArr if needed
   const singleStudyPrecentage = 100 / studyObj.length;
@@ -184,5 +186,5 @@ export const calculateProgress = (studyObj: Study[]) => {
       totalPreogress += (item * singleStudyPrecentage) / 100;
     }
   });
-  return totalPreogress;
+  return Math.round(totalPreogress);
 };

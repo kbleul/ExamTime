@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -18,36 +18,60 @@ import {AuthContext} from '../../../Realm/model';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
-import {getAllStudies} from './logic';
+import {calculateProgress, getAllStudies} from './logic';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
 import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
 import {SvgXml} from 'react-native-svg';
 import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
+import LoginModal from '../../../components/Organisms/LoginModal';
 
-const CourseItem = ({item}: {item: subjectType}) => {
+const CourseItem = ({
+  item,
+  setLoginModalVisible,
+}: {
+  item: subjectType;
+  setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const navigator: any = useNavigation();
+  const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const {useQuery} = AuthContext;
+
+  const savedStudies = useQuery(Study, studies => {
+    return studies.filtered(
+      `subject.id = "${item.id}" OR subject.subject = "${item.subject.subject}"`,
+    );
+  });
+  const progress = calculateProgress(savedStudies) + '%';
 
   return (
     <TouchableOpacity
       style={styles.lcontainer}
-      onPress={() =>
-        navigator.navigate('StudyDetails', {
-          subject: item.subject,
-        })
-      }>
+      onPress={() => {
+        if (!user || !token) {
+          setLoginModalVisible(true);
+          return;
+        }
+
+        savedStudies.length > 0 &&
+          navigator.navigate('StudyDetails', {
+            subject: item.subject,
+          });
+      }}>
       <View style={styles.imgContainer}>
         <SvgXml style={styles.imagebg} xml={item.icon} onError={onError} />
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={styles.subject}>{item.subject.subject}</Text>
-        <Text style={styles.units}>15 units</Text>
-        <Text style={styles.progressText}>completed {item.progress}% </Text>
+        <Text style={styles.units}>{savedStudies.length} units</Text>
+        <Text style={styles.progressText}>completed {progress}</Text>
 
         <View style={styles.indicatorContainer}>
-          <Text style={[styles.indicator, {width: item.progress + '%'}]} />
+          <Text style={[styles.indicator, {width: progress}]} />
         </View>
       </View>
     </TouchableOpacity>
@@ -66,6 +90,8 @@ const Index = () => {
   const savedStudies = useQuery(Study);
 
   const [getStudy] = useGetStudyMutation();
+
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   useEffect(() => {
     if (!savedStudies || savedStudies.length === 0) {
@@ -102,11 +128,17 @@ const Index = () => {
           savedUserData[0].selectedSubjects || [],
           savedSubjects,
         )}
-        renderItem={({item}) => <CourseItem item={item} />}
+        renderItem={({item}) => (
+          <CourseItem item={item} setLoginModalVisible={setLoginModalVisible} />
+        )}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
       />
       <MainBottomNav />
+      <LoginModal
+        loginModalVisible={loginModalVisible}
+        setLoginModalVisible={setLoginModalVisible}
+      />
 
       <Toast />
     </View>

@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
 import OtherCoursesCard from './OtherCoursesCard';
-import {Subject, UserData} from '../../../Realm';
+import {Study, Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
@@ -19,19 +19,19 @@ interface CourseItemType {
 const DummyCourses = [
   {
     id: 'G0011',
-    grade: 8,
+    grade: 'grade_6',
     subTitle: 'For Reginal Exam Takers',
     subjectsCount: 7,
   },
   {
     id: 'G0012',
-    grade: 12,
+    grade: 'grade_8',
     subTitle: 'For Natural Science Students',
     subjectsCount: 12,
   },
   {
     id: 'G0013',
-    grade: 12,
+    grade: 'grade_12_social',
     subTitle: 'For Social Students',
     subjectsCount: 12,
   },
@@ -49,7 +49,7 @@ const ChosenCourses = () => {
         <ChosenCoursesCard
           title={item.subject.subject}
           lessonsCount={12}
-          progress={item.progress}
+          subjectId={item.id}
           bgImage={{uri: item.icon}}
         />
       </View>

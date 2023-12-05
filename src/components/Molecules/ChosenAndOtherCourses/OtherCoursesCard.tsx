@@ -16,7 +16,7 @@ const OtherCoursesCard: React.FC<{
   const useStyle = isOnboarding ? stylesSecondary : styles;
   return (
     <View style={useStyle.container}>
-      <Text style={useStyle.title}>Grade {grade}</Text>
+      <Text style={useStyle.title}> {grade}</Text>
       {/* {subTitle && <Text style={useStyle.subTitle}>{subTitle} </Text>} */}
       <TouchableOpacity touchSoundDisabled onPress={onPress}>
         <Text
@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: 'black',
-    fontSize: screenWidth * 0.04,
+    fontSize: screenWidth * 0.035,
     fontFamily: 'Montserrat-SemiBold',
     paddingBottom: 3,
     textTransform: 'uppercase',

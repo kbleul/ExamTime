@@ -124,6 +124,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#D3DBF0',
     borderRadius: 80,
+    overflow: 'hidden',
     width: '60%',
     alignSelf: 'center',
     marginTop: '3%',
@@ -136,6 +137,7 @@ const style = StyleSheet.create({
     backgroundColor: '#1E90FF',
     width: '54%',
     borderRadius: 80,
+    overflow: 'hidden',
   },
   buttonText: {
     textAlign: 'center',

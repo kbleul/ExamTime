@@ -273,6 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#AED1F3',
     width: '100%',
     borderRadius: 20,
+    overflow: 'hidden',
     paddingHorizontal: 5,
     paddingBottom: 20,
   },
@@ -313,6 +314,7 @@ const styles = StyleSheet.create({
   button: {
     borderWidth: 1,
     borderRadius: 100,
+    overflow: 'hidden',
     borderColor: 'white',
     marginTop: 10,
     paddingHorizontal: 30,
@@ -350,6 +352,7 @@ const LoginFormstyles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     marginHorizontal: 20,
     marginTop: 20,
   },
@@ -365,6 +368,7 @@ const LoginFormstyles = StyleSheet.create({
   inputPhone: {
     borderWidth: 0,
     borderRadius: 0,
+    overflow: 'hidden',
     color: '#000',
     paddingLeft: 20,
     borderLeftWidth: 1,
