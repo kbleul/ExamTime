@@ -43,6 +43,7 @@ export const HeaderStyle = StyleSheet.create({
     height: 10,
     borderRadius: 20,
     backgroundColor: '#0066B2',
+    overflow: 'hidden',
   },
   leftContainer: {
     marginHorizontal: 2,
@@ -51,6 +52,8 @@ export const HeaderStyle = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: screenHeight * 0.005,
     borderRadius: 10,
+    overflow: 'hidden',
+
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

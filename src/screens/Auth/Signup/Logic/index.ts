@@ -77,7 +77,6 @@ export const handleCreateUser = async (
         grade: userGrade?.value,
       }).unwrap();
 
-      console.log(response);
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
@@ -170,7 +169,6 @@ export const resendOtp = async (
     const response = await resendCode({
       userId: unregisteredUser?.id,
     }).unwrap();
-    console.log(response);
     if (unregisteredUser) {
       const newUser = {
         ...unregisteredUser,

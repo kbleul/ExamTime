@@ -96,7 +96,7 @@ const filterQuestions = (
 };
 
 const ExamReview = ({route}) => {
-  const {userAnswers, examQuestions} = route.params;
+  const {userAnswers, examQuestions, isStudy} = route.params;
 
   const [selectedCategory, setSelectedCategory] = useState(CATAGORIES[0]);
 
@@ -190,6 +190,7 @@ const ExamReview = ({route}) => {
           setCurrentQuestion={setCurrentQuestion}
           totalQuestionsLength={viewQuestionsArray.length}
           isReview={true}
+          isStudy={isStudy}
         />
       )}
 
@@ -256,6 +257,7 @@ const buttonNavStyles = StyleSheet.create({
     marginVertical: 15,
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#E1E1E1',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -267,6 +269,7 @@ const buttonNavStyles = StyleSheet.create({
     backgroundColor: '#FBFDFF',
     width: '30%',
     borderRadius: 10,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#E1E1E1',
   },

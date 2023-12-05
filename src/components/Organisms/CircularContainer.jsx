@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Animated, StyleSheet } from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, Text, Animated, StyleSheet} from 'react-native';
 
-const CircleProgressBar = ({ percentage }) => {
+const CircleProgressBar = ({percentage}) => {
   const [animatedValue] = useState(new Animated.Value(0));
   const currentPercentage = useRef(0);
 
@@ -27,7 +27,7 @@ const CircleProgressBar = ({ percentage }) => {
           style={[
             styles.circle,
             {
-              transform: [{ rotate: interpolatedAnimation }],
+              transform: [{rotate: interpolatedAnimation}],
             },
           ]}
         />
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
+    overflow: 'hidden',
     borderWidth: 2,
     borderColor: 'lightgray',
   },
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     width: 220,
     height: 220,
     borderRadius: 110,
+    overflow: 'hidden',
     borderWidth: 10,
     borderColor: 'white',
     borderStyle: 'solid',
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
+    overflow: 'hidden',
     backgroundColor: 'white',
   },
   centerText: {

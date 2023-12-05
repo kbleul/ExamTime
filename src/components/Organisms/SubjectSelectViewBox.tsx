@@ -1,8 +1,7 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ChosenCoursesCard from '../Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
-import {DummySubjects} from '../Molecules/ChosenAndOtherCourses';
-import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {screenWidth} from '../../utils/Data/data';
 import {Subject} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 
@@ -12,6 +11,7 @@ const SubjectSelectViewBox: React.FC<{
 }> = ({SelectedSubject, setSelectedSubject}) => {
   const {useQuery} = AuthContext;
   const savedSubjects = useQuery(Subject);
+
   const renderItem = ({item}: {item: any}) => (
     <View style={styles.renderStyle}>
       <SubjectsButton
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: 'black',
     borderRadius: 20,
+    overflow: 'hidden',
     marginTop: 5,
   },
   subjectsButtonContaier: {
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
   subjectsButton: {
     backgroundColor: '#D9D9D9',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   subjectsButtonActive: {
     borderWidth: 1,

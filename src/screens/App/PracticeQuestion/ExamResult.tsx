@@ -30,8 +30,14 @@ const ExamResult = ({route}: {route: any}) => {
   const navigationState = useNavigationState(state => state);
   const currentScreen = navigationState.routes[navigationState.index].name;
   const navigator: any = useNavigation();
-  const {userAnswers, total, timeTaken, examQuestions, isPracticeMode} =
-    route.params;
+  const {
+    userAnswers,
+    total,
+    timeTaken,
+    examQuestions,
+    isPracticeMode,
+    isStudy,
+  } = route.params;
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const gradePrercentage = calculateGrade(correctAnswers, total);
 
@@ -39,6 +45,7 @@ const ExamResult = ({route}: {route: any}) => {
     navigator.navigate('Exam-Review', {
       userAnswers,
       examQuestions: examQuestions,
+      isStudy: true,
     });
   };
 
@@ -51,7 +58,9 @@ const ExamResult = ({route}: {route: any}) => {
 
   useEffect(() => {
     const backAction = () => {
-      navigator.navigate('Practice');
+      isStudy
+        ? navigator.navigate('StudySection')
+        : navigator.navigate('Practice');
       return true;
     };
 
@@ -197,6 +206,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
     borderRadius: 200,
+    overflow: 'hidden',
   },
   topSectionFaild: {
     borderColor: 'red',
@@ -207,6 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'yellow',
     position: 'absolute',
     borderRadius: 200,
+    overflow: 'hidden',
     zIndex: 10,
   },
   topTitleSection: {
@@ -234,6 +245,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingVertical: 5,
     borderRadius: 10,
+    overflow: 'hidden',
     borderWidth: 0.4,
     borderColor: '#D9D9D9',
     borderBottomWidth: 3,
@@ -269,6 +281,7 @@ const styles = StyleSheet.create({
     width: '72%',
     marginTop: 30,
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#3FA0FF',
     paddingVertical: 10,
   },
@@ -292,6 +305,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     backgroundColor: '#3FA0FF',
     borderRadius: 6,
+    overflow: 'hidden',
   },
   reviewButtonText: {
     color: 'white',

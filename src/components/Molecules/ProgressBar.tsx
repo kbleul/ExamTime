@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     marginLeft: '3%',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#008E97',
     position: 'relative',
   },
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#008E97',
     height: '100%',
     borderRadius: 6,
+    overflow: 'hidden',
   },
   iconContainer: {
     position: 'absolute',
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#FFF',
     borderRadius: 250,
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#D9D9D9',

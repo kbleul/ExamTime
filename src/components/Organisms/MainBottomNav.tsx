@@ -28,7 +28,7 @@ const MainBottomNav = () => {
             }>
             <FontAwesome
               name="home"
-              size={23}
+              size={screenWidth * 0.055}
               style={currentScreen === 'Home' ? style.iconActive : style.icon}
             />
             <Text
@@ -54,7 +54,7 @@ const MainBottomNav = () => {
             }>
             <Feather
               name="book-open"
-              size={screenWidth * 0.063}
+              size={screenWidth * 0.055}
               style={
                 currentScreen === 'StudySection' ? style.iconActive : style.icon
               }
@@ -84,7 +84,7 @@ const MainBottomNav = () => {
             }>
             <MaterialCommunityIcons
               name="file-document-edit-outline"
-              size={screenWidth * 0.063}
+              size={screenWidth * 0.055}
               color="white"
               style={
                 currentScreen === 'Practice' || currentScreen === 'Exam-View'
@@ -115,7 +115,7 @@ const MainBottomNav = () => {
             }>
             <MaterialCommunityIcons
               name="progress-clock"
-              size={screenWidth * 0.063}
+              size={screenWidth * 0.055}
               style={currentScreen === '' ? style.iconActive : style.icon}
             />
             <Text
@@ -144,7 +144,7 @@ const MainBottomNav = () => {
             }>
             <AntDesign
               name="setting"
-              size={screenWidth * 0.063}
+              size={screenWidth * 0.055}
               style={
                 currentScreen === 'Profile' || currentScreen === 'Profile-Edit'
                   ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
@@ -189,22 +189,27 @@ const style = StyleSheet.create({
   buttonWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
   },
   button: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
-    margin: screenHeight * 0.015,
+    overflow: 'hidden',
     marginBottom: screenHeight * 0.001,
-    width: screenWidth * 0.15,
+    width: screenWidth * 0.12,
     height: screenWidth * 0.12,
     maxWidth: 55,
     maxHeight: 55,
+    paddingTop: 10,
   },
   buttonSelected: {
     backgroundColor: '#0066B2',
     borderColor: 'white',
     marginTop: 0,
+    paddingTop: 0,
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   buttonTextActive: {
     fontSize: screenWidth * 0.02,
@@ -222,6 +227,7 @@ const style = StyleSheet.create({
     width: screenWidth * 0.02,
     height: screenWidth * 0.02,
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#0066B2',
     marginBottom: 3,
   },

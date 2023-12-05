@@ -2,8 +2,11 @@ import Realm from 'realm';
 import {
   examQuestionType,
   gradeType,
+  pdfType,
   singleSubjectType,
+  subjectType,
   userType,
+  videoType,
 } from '../types';
 import {answersType} from '../screens/App/PracticeQuestion';
 
@@ -81,6 +84,7 @@ class User extends Realm.Object {
   gender: 'MALE' | 'FEMALE' = 'MALE';
   email: string | null = null;
   verificationCode: string | null = null;
+  profilePicture: string | null = null;
 
   static schema: Realm.ObjectSchema = {
     name: 'User',
@@ -96,6 +100,7 @@ class User extends Realm.Object {
       gender: 'string',
       email: 'string?',
       verificationCode: 'string?',
+      profilePicture: 'string?',
     },
   };
 }
@@ -120,7 +125,7 @@ class SingleSubject extends Realm.Object {
 class Subject extends Realm.Object {
   id: string = '';
   description: string = '';
-  icon: string = '';
+  icon: string | null = null;
   createdAt: string = '';
   updatedAt: string = '';
   grade: gradeType | null = null;
@@ -132,7 +137,7 @@ class Subject extends Realm.Object {
     properties: {
       id: 'string',
       description: 'string',
-      icon: 'string',
+      icon: 'string?',
       createdAt: 'string',
       updatedAt: 'string',
       subject: 'SingleSubject?',
@@ -189,6 +194,21 @@ class UserExamAnswers extends Realm.Object {
   };
 }
 
+class ExamAnswers extends Realm.Object {
+  examId: string = '';
+  examDate: string = '';
+  userExamAnswers: answersType[] = [];
+
+  static schema = {
+    name: 'ExamAnswers',
+    properties: {
+      examId: 'string',
+      examDate: 'string',
+      userExamAnswers: 'UserExamAnswers[]',
+    },
+  };
+}
+
 class Exam extends Realm.Object {
   id: string = '';
   examName: string = '';
@@ -204,7 +224,6 @@ class Exam extends Realm.Object {
   grade: gradeType | null = null;
   subject: singleSubjectType | null = null;
   year: string = '';
-  userExamAnswers: answersType[] | null = null;
   isExamTaken: boolean = false;
 
   static schema = {
@@ -224,8 +243,74 @@ class Exam extends Realm.Object {
       grade: 'Grade?',
       subject: 'SingleSubject?',
       year: 'string',
-      userExamAnswers: 'UserExamAnswers[]',
       isExamTaken: 'bool',
+    },
+  };
+}
+
+class Pdf extends Realm.Object {
+  id: string = '';
+  pdfDocument: string = '';
+
+  static schema = {
+    name: 'Pdf',
+    properties: {
+      id: 'string',
+      pdfDocument: 'string',
+    },
+  };
+}
+
+class VideoLink extends Realm.Object {
+  id: string = '';
+  videoLink: string = '';
+
+  static schema = {
+    name: 'VideoLink',
+    properties: {
+      id: 'string',
+      videoLink: 'string',
+    },
+  };
+}
+
+class Study extends Realm.Object {
+  id: string = '';
+  title: string = '';
+  objective: string = '';
+  isPublished: boolean = true;
+  createdAt: string = '';
+  updatedAt: string = '';
+  grade: gradeType | null = null;
+  subject: subjectType | null = null;
+  year: string = '';
+  unit: string = '';
+  section: string | null = '';
+  selectedQuestion: examQuestionType[] = [];
+  progress: number = 0;
+  pdf: pdfType[] = [];
+  videoLink: videoType[] = [];
+  userExamAnswers: answersType[] | [] = [];
+
+  static schema = {
+    name: 'Study',
+    properties: {
+      id: 'string',
+      title: 'string',
+      objective: 'string',
+      isPublished: 'bool',
+      createdAt: 'string',
+      updatedAt: 'string',
+      grade: 'Grade?',
+      subject: 'SingleSubject?',
+      year: 'string',
+      unit: 'string',
+      section: 'string',
+      selectedQuestion: 'ExamQuestion[]',
+      progress: 'int',
+      pdf: 'Pdf[]',
+      videoLink: 'VideoLink[]',
+      userExamAnswers: 'UserExamAnswers[]',
     },
   };
 }
@@ -238,6 +323,10 @@ export {
   SingleSubject,
   Subject,
   ExamQuestion,
+  ExamAnswers,
   Exam,
   UserExamAnswers,
+  Study,
+  Pdf,
+  VideoLink,
 };

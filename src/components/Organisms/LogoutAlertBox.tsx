@@ -7,6 +7,7 @@ import {useDispatch} from 'react-redux';
 import {removeRealmUserData} from '../../utils/Functions/Helper';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
+import {screenWidth} from '../../utils/Data/data';
 
 const LogoutAlertBox: React.FC<{
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -67,17 +68,18 @@ const styles = StyleSheet.create({
     bottom: 125,
     zIndex: 100,
     backgroundColor: '#AED1F3',
-    height: 180,
     width: '100%',
     borderRadius: 20,
+    overflow: 'hidden',
     paddingHorizontal: 5,
+    paddingBottom: 20,
   },
   mainText: {
     fontFamily: 'Montserrat-SemiBold',
     textAlign: 'center',
     marginVertical: 30,
     color: 'black',
-    fontSize: 18,
+    fontSize: screenWidth * 0.04,
   },
   checkContainer: {
     flexDirection: 'row',
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
   removeText: {
     marginLeft: 10,
     fontFamily: 'Montserrat-Regular',
-    fontSize: 16,
+    fontSize: screenWidth * 0.035,
     color: 'black',
   },
   buttonsContainer: {
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
   button: {
     borderWidth: 1,
     borderRadius: 100,
+    overflow: 'hidden',
     borderColor: 'gray',
     marginTop: 10,
     paddingHorizontal: 20,
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Montserrat-Regular',
-    fontSize: 16,
+    fontSize: screenWidth * 0.035,
     color: 'black',
   },
 });

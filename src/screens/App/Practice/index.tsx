@@ -34,7 +34,7 @@ const Practice = () => {
         <TrialHeader type="Practice" />
 
         <View style={styles.headerContainer}>
-          <Text style={styles.headerTitle}>Study Section</Text>
+          <Text style={styles.headerTitle}>Practice Section</Text>
           <Text style={styles.headerSubTitle}>Choose your Subject</Text>
         </View>
 

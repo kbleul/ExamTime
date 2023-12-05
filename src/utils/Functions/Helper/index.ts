@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NavigationProp} from '@react-navigation/native';
 import {NativeScrollEvent, NativeSyntheticEvent} from 'react-native';
-import {UserData} from '../../../Realm';
+import {Subject, UserData} from '../../../Realm';
 import {Dispatch} from 'react';
 import {ActionCreatorWithPayload, AnyAction} from '@reduxjs/toolkit';
 import {
@@ -171,5 +171,47 @@ export const DeleteUserAccount = async (
       navigator.navigate('network-error');
     }
     console.log(error);
+  }
+};
+
+export const PushFavorateToFront = (
+  favoritesArray: string[],
+  savedSubjects: ResultsType<Subject>,
+) => {
+  const favorites: Subject[] = [];
+  favoritesArray.map(item => {
+    const favSubject = savedSubjects.find(
+      (subject: any) => subject.id === item,
+    );
+
+    favSubject && favorites.push(favSubject);
+  });
+
+  const notFavorites = savedSubjects.filter(
+    (item: any) => !favoritesArray.includes(item.id),
+  );
+
+  const favoritesFirstArray = [...favorites, ...notFavorites];
+
+  return favoritesFirstArray;
+};
+
+export const isHtml = (input: string) => {
+  const htmlRegex = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
+  return htmlRegex.test(input);
+};
+
+export const isOnline = async () => {
+  try {
+    const state = await NetInfo.fetch();
+
+    if (!state.isConnected || !state.isInternetReachable) {
+      return false;
+    } else if (state.isConnected && state.isInternetReachable) {
+      return true;
+    }
+  } catch (error) {
+    console.log({error});
+    return false; // Assume offline on error
   }
 };

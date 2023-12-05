@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   messageInput: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#0D66D03B',
     borderWidth: 0.5,
     height: 94,

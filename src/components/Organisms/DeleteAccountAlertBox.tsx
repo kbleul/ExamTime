@@ -26,6 +26,7 @@ import {
   useLoginMutation,
 } from '../../reduxToolkit/Services/auth';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {screenWidth} from '../../utils/Data/data';
 
 export type FormDataType = {
   password: string;
@@ -270,10 +271,11 @@ const styles = StyleSheet.create({
     bottom: 125,
     zIndex: 100,
     backgroundColor: '#AED1F3',
-    height: 200,
     width: '100%',
     borderRadius: 20,
+    overflow: 'hidden',
     paddingHorizontal: 5,
+    paddingBottom: 20,
   },
   containerPasswordForm: {
     height: 300,
@@ -284,7 +286,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginBottom: 15,
     color: 'black',
-    fontSize: 18,
+    fontSize: screenWidth * 0.04,
     paddingHorizontal: 5,
   },
   mainSubText: {
@@ -300,7 +302,7 @@ const styles = StyleSheet.create({
   removeText: {
     marginLeft: 10,
     fontFamily: 'Montserrat-Regular',
-    fontSize: 16,
+    fontSize: screenWidth * 0.035,
     color: 'black',
   },
   buttonsContainer: {
@@ -312,12 +314,12 @@ const styles = StyleSheet.create({
   button: {
     borderWidth: 1,
     borderRadius: 100,
+    overflow: 'hidden',
     borderColor: 'white',
     marginTop: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     paddingVertical: 5,
     backgroundColor: 'white',
-    minWidth: 140,
     justifyContent: 'center',
     alignContent: 'center',
   },
@@ -327,13 +329,13 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Montserrat-Regular',
-    fontSize: 16,
+    fontSize: screenWidth * 0.035,
     color: 'black',
     textAlign: 'center',
   },
   buttonTextSecondary: {
     fontFamily: 'Montserrat-Regular',
-    fontSize: 16,
+    fontSize: screenWidth * 0.035,
     color: 'white',
   },
   deleteIcon: {
@@ -350,7 +352,7 @@ const LoginFormstyles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,
-    height: 47,
+    overflow: 'hidden',
     marginHorizontal: 20,
     marginTop: 20,
   },
@@ -358,7 +360,7 @@ const LoginFormstyles = StyleSheet.create({
     width: '20%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 14,
+    fontSize: screenWidth * 0.03,
     textAlign: 'center',
     color: '#000',
     fontFamily: 'PoppinsRegular',
@@ -366,6 +368,7 @@ const LoginFormstyles = StyleSheet.create({
   inputPhone: {
     borderWidth: 0,
     borderRadius: 0,
+    overflow: 'hidden',
     color: '#000',
     paddingLeft: 20,
     borderLeftWidth: 1,
@@ -375,7 +378,7 @@ const LoginFormstyles = StyleSheet.create({
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 14,
+    fontSize: screenWidth * 0.03,
     fontFamily: 'PoppinsRegular',
     color: '#000',
     paddingHorizontal: 20,

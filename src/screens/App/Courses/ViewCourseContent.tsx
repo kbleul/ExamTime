@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginHorizontal: 5,
     borderRadius: 10,
+    overflow: 'hidden',
   },
   title: {
     fontSize: 24,
@@ -174,6 +175,7 @@ const styles = StyleSheet.create({
     width: '45%',
     marginRight: '2%',
     borderRadius: 10,
+    overflow: 'hidden',
     paddingVertical: 8,
     textAlign: 'center',
   },

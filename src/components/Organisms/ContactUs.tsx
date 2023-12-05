@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   textContener: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
+    overflow: 'hidden',
     height: 102,
     borderColor: '#87b0e0',
     borderWidth: 0.5,
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
 
   befamTextContener: {
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#FFFFFF',
     width: '100%',
     height: 94,
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
   },
   befamTextContener2: {
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#FFFFFF',
     width: '100%',
     height: 50,

@@ -1,11 +1,13 @@
 import React from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
 import OtherCoursesCard from './OtherCoursesCard';
-import {Subject, UserData} from '../../../Realm';
+import {Study, Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
+import {PushFavorateToFront} from '../../../utils/Functions/Helper';
+import {screenHeight} from '../../../utils/Data/data';
 
 interface CourseItemType {
   id: string;
@@ -17,19 +19,19 @@ interface CourseItemType {
 const DummyCourses = [
   {
     id: 'G0011',
-    grade: 8,
+    grade: 'grade_6',
     subTitle: 'For Reginal Exam Takers',
     subjectsCount: 7,
   },
   {
     id: 'G0012',
-    grade: 12,
+    grade: 'grade_8',
     subTitle: 'For Natural Science Students',
     subjectsCount: 12,
   },
   {
     id: 'G0013',
-    grade: 12,
+    grade: 'grade_12_social',
     subTitle: 'For Social Students',
     subjectsCount: 12,
   },
@@ -47,28 +49,11 @@ const ChosenCourses = () => {
         <ChosenCoursesCard
           title={item.subject.subject}
           lessonsCount={12}
-          progress={item.progress}
+          subjectId={item.id}
           bgImage={{uri: item.icon}}
         />
       </View>
     );
-  };
-
-  const PushFavorateToFront = (favoritesArray: string[]) => {
-    const favorites: Subject[] = [];
-    favoritesArray.map(item => {
-      const favSubject = savedSubjects.find(subject => subject.id === item);
-
-      favSubject && favorites.push(favSubject);
-    });
-
-    const notFavorites = savedSubjects.filter(
-      item => !favoritesArray.includes(item.id),
-    );
-
-    const favoritesFirstArray = [...favorites, ...notFavorites];
-
-    return favoritesFirstArray;
   };
 
   const renderItemCourse = ({item}: {item: CourseItemType}) => {
@@ -84,18 +69,23 @@ const ChosenCourses = () => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="My learning" subTitle="Your Chosen Courses" seeAll />
 
       <FlatList
         keyExtractor={item => item.id}
-        data={PushFavorateToFront(savedUserData[0].selectedSubjects || [])}
+        data={PushFavorateToFront(
+          savedUserData[0].selectedSubjects || [],
+          savedSubjects,
+        )}
         renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
 
-      <Header title="Other Courses" />
+      <View style={styles.subContainer}>
+        <Header title="Other Courses" />
+      </View>
 
       <FlatList
         keyExtractor={item => item.id}
@@ -107,5 +97,13 @@ const ChosenCourses = () => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    marginTop: screenHeight * 0.01,
+  },
+  subContainer: {
+    marginTop: screenHeight * 0.01,
+  },
+});
 
 export default ChosenCourses;

@@ -86,7 +86,6 @@ const ForgotPasswordForm: React.FC<{
       setStepCounter(prev => ++prev);
     } catch (error: any) {
       setIsLoading(false);
-      console.error('Error submitting form:', error);
       if (
         error instanceof TypeError &&
         (error.message === 'Network request failed' ||
@@ -164,6 +163,7 @@ const styles = StyleSheet.create({
     borderColor: '#81afe6',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
   },
   smallBox: {
     width: '20%',
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
     letterSpacing: 6,
     borderWidth: 0,
     borderRadius: 0,
+    overflow: 'hidden',
     color: '#000',
     paddingLeft: 20,
     borderLeftWidth: 1,
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     width: '100%',
     borderRadius: 10,
+    overflow: 'hidden',
     marginTop: 30,
     backgroundColor: '#1E90FF',
   },

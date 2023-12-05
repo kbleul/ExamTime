@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     height: 10,
     width: 8,
     borderRadius: 20,
+    overflow: 'hidden',
     marginHorizontal: 8,
   },
   indicatorActive: {

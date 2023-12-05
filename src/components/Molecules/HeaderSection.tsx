@@ -68,6 +68,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FFFF',
     borderRadius: 80,
+    overflow: 'hidden',
     width: '90%',
     alignSelf: 'center',
     borderWidth: 1,
@@ -87,6 +88,7 @@ const style = StyleSheet.create({
     backgroundColor: '#1E90FF',
     width: '55%',
     borderRadius: 80,
+    overflow: 'hidden',
   },
   buttonText: {
     textAlign: 'center',

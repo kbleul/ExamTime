@@ -33,6 +33,7 @@ const PageThree: React.FC<PagesCounterType> = ({
     null,
   );
 
+  const [IsLoadingSubjects, setIsLoadingSubjects] = useState(false);
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
 
   useEffect(() => {
@@ -61,7 +62,8 @@ const PageThree: React.FC<PagesCounterType> = ({
         <View style={style.titleContainer}>
           <Text style={style.title}>Hello.</Text>
           <Text style={style.subtitle}>
-          Sign up for a free trial today and experience the Exam Time difference!
+            Sign up for a free trial today and experience the Exam Time
+            difference!
           </Text>
         </View>
 
@@ -86,16 +88,17 @@ const PageThree: React.FC<PagesCounterType> = ({
 
               <View style={style.buttonsSubcontainer}>
                 <GradeButton
-                  text="Get Started"
+                  text={IsLoadingSubjects ? 'Loading ...' : 'Get Started'}
                   index={5}
                   onPress={() =>
                     createRealmUserData(
                       realm,
                       selectedSubjects ? [...selectedSubjects] : [],
                       navigator,
+                      setIsLoadingSubjects,
                     )
                   }
-                  isActive={true}
+                  isActive={!IsLoadingSubjects}
                 />
               </View>
             </>
@@ -121,6 +124,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#D3DBF0',
     borderRadius: 80,
+    overflow: 'hidden',
     width: '60%',
     alignSelf: 'center',
     marginTop: '3%',
@@ -133,6 +137,7 @@ const style = StyleSheet.create({
     backgroundColor: '#1E90FF',
     width: '54%',
     borderRadius: 80,
+    overflow: 'hidden',
   },
   buttonText: {
     textAlign: 'center',

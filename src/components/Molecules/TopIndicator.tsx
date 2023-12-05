@@ -51,6 +51,7 @@ const style = StyleSheet.create({
     padding: 4,
     backgroundColor: '#E2EBFF',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   indicatorActive: {
     backgroundColor: '#1E90FF',

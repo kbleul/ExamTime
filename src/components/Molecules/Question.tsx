@@ -10,6 +10,7 @@ import RenderHtml from 'react-native-render-html';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {examQuestionType} from '../../types';
 import {answersType} from '../../screens/App/PracticeQuestion';
+import {isHtml} from '../../utils/Functions/Helper';
 
 const tagsStylesQuestion = {
   p: {
@@ -93,12 +94,17 @@ const Question: React.FC<{
                   </TouchableOpacity>
                 )}
             </View>
-
-            <RenderHtml
-              contentWidth={screenWidth}
-              source={{html: question.question}}
-              tagsStyles={tagsStylesQuestion}
-            />
+            <Text>
+              {isHtml(question.question) ? (
+                <RenderHtml
+                  contentWidth={screenWidth}
+                  source={{html: question.question}}
+                  tagsStyles={tagsStylesQuestion}
+                />
+              ) : (
+                <Text style={styles.questionText}>{question.question}</Text>
+              )}
+            </Text>
           </View>
 
           <ScrollView
@@ -290,11 +296,21 @@ const QuestionChoice: React.FC<{
         }>
         {choiceLetter}
       </Text>
-      <RenderHtml
+      {/* <RenderHtml
         contentWidth={screenWidth}
         source={{html: choiceText}}
         tagsStyles={tagsStylesChoice}
-      />
+      /> */}
+
+      {isHtml(choiceText) ? (
+        <RenderHtml
+          contentWidth={screenWidth}
+          source={{html: choiceText}}
+          tagsStyles={tagsStylesChoice}
+        />
+      ) : (
+        <Text style={styles.choiceText}>{choiceText}</Text>
+      )}
     </TouchableOpacity>
   );
 };
@@ -310,6 +326,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#E3E3E3',
   },
@@ -318,6 +335,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#E3E3E3',
   },
@@ -336,16 +354,27 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsSemiBold',
   },
   questionText: {
-    fontSize: 16,
+    fontSize: 14.5,
     color: '#000',
     fontFamily: 'PoppinsRegular',
-    lineHeight: 24,
+    lineHeight: 28,
+    textAlign: 'left',
+    width: screenWidth * 0.8,
+  },
+  choiceText: {
+    fontSize: 14.5,
+    color: '#000',
+    fontFamily: 'PoppinsRegular',
+    lineHeight: 28,
+    textAlign: 'left',
+    width: screenWidth * 0.65,
   },
   readParagraphBtn: {
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#F5A52D',
   },
   readParagraphText: {
@@ -385,6 +414,7 @@ const styles = StyleSheet.create({
     right: 15,
     backgroundColor: '#1E90FF',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   submitBtnText: {
     color: '#FFFFFF',
@@ -397,6 +427,7 @@ const questionChoiceStyles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#E3E3E3',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -420,6 +451,7 @@ const questionChoiceStyles = StyleSheet.create({
     borderColor: '#757575',
     paddingTop: 3,
     borderRadius: 3,
+    overflow: 'hidden',
   },
   choiceLetterSelected: {
     backgroundColor: '#1E90FF',
@@ -443,29 +475,29 @@ const questionChoiceStyles = StyleSheet.create({
   },
 });
 
-const paragraphStyle = StyleSheet.create({
-  container: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingBottom: 15,
-  },
-  paragraphContainer: {
-    paddingTop: 8,
-  },
-  title: {
-    fontSize: 18,
-    fontFamily: 'Montserrat-SemiBold',
-    color: 'black',
-  },
-  paraText: {
-    marginBottom: 10,
-    fontSize: 14,
-    fontFamily: 'Montserrat-Regular',
-    color: '#4d4d4d',
-    lineHeight: 23,
-  },
-});
+// const paragraphStyle = StyleSheet.create({
+//   container: {
+//     width: '100%',
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'flex-end',
+//     paddingBottom: 15,
+//   },
+//   paragraphContainer: {
+//     paddingTop: 8,
+//   },
+//   title: {
+//     fontSize: 18,
+//     fontFamily: 'Montserrat-SemiBold',
+//     color: 'black',
+//   },
+//   paraText: {
+//     marginBottom: 10,
+//     fontSize: 14,
+//     fontFamily: 'Montserrat-Regular',
+//     color: '#4d4d4d',
+//     lineHeight: 23,
+//   },
+// });
 
 export default memo(Question);
