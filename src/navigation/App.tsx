@@ -13,7 +13,6 @@ import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
 import ContactUs from '../screens/App/ContactUs/index';
 import FAQ from '../screens/App/FAQ/index';
-
 import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
@@ -196,11 +195,11 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           options={{headerShown: false}}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name="ChallengeScreen"
           component={ChallengeSection}
           options={{headerShown: false}}
-        />
+        /> */}
       </Stack.Navigator>
     </>
   );
