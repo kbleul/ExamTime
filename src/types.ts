@@ -49,6 +49,12 @@ export type OTPDataType = {
   code: string;
   forgotPassword: boolean;
 };
+export type CommentType = {
+  token: string;
+  comment: string
+
+
+};
 
 export type CreatePassworDataType = {
   userId: string;

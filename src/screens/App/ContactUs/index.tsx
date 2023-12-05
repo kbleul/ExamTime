@@ -12,10 +12,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import ShareApp from '../../../components/Organisms/ShareApp';
 import ContactUs from '../../../components/Organisms/ContactUs';
+import { useCreatecommentMutation } from '../../../reduxToolkit/Services/auth';
 
 const Index = () => {
   const navigator = useNavigation<any>();
-  const SendMessage = () => {};
+  const SendMessage = () => {
+
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topHeader}>

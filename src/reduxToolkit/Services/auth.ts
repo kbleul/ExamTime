@@ -10,6 +10,7 @@ import {
   regionItemsType,
   subjectType,
   userType,
+  CommentType
 } from '../../types';
 import Config from 'react-native-config';
 
@@ -128,6 +129,18 @@ export const api = createApi({
         };
       },
     }),
+    Createcomment: build.mutation<{comment: CommentType}, CommentType>({
+      query: data => {
+        return {
+          url: 'comment/create',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          body:{comment:data.comment},
+        };
+      },
+    }),
     deleteAccount: build.mutation<
       {user: userType},
       {password: string; token: string}
@@ -211,6 +224,8 @@ export const {
   useGetExamsMutation,
   useGetSubjectMutation,
   useGetRandomExamMutation,
-  useGetFaqMutation
+  useGetFaqMutation,
+  useCreatecommentMutation
+  
 
 } = api;
