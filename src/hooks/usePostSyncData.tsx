@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../reduxToolkit/Store';
-import {isOnline} from '../utils/Functions/Helper';
+import {checkIsOnline} from '../utils/Functions/Helper';
 import {AuthContext} from '../Realm/model';
 import {Exam, ExamAnswers} from '../Realm';
 import {usePostExamResultsMutation} from '../reduxToolkit/Services/auth';
@@ -104,7 +104,7 @@ const usePostSyncData = (
   useEffect(() => {
     const handleSync = async () => {
       // Check for internet connection (you can use an appropriate library or method)
-      const isConnected = await isOnline();
+      const isConnected = await checkIsOnline();
 
       if (isConnected && savedTakenExams.length > 0) {
         // Perform data sync with the database
