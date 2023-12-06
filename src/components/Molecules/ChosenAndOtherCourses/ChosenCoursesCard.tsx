@@ -1,7 +1,11 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
-import {SvgUri} from 'react-native-svg';
+import {SvgXml} from 'react-native-svg';
+
+export const onError = (e: Error) => {
+  console.log('----------------', e.message);
+};
 
 const ChosenCoursesCard: React.FC<{
   title: string;
@@ -16,32 +20,29 @@ const ChosenCoursesCard: React.FC<{
           ? styles.container
           : [styles.container, styles.containerSecondary]
       }>
-      <SvgUri width="100%" height="100%" style={styles.imageBg} uri={bgImage} />
+      <SvgXml style={styles.imageBg} xml={bgImage.uri} onError={onError} />
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <Text
+          style={
+            progress !== undefined
+              ? styles.lessons
+              : [styles.lessons, styles.lessonsSecondary]
+          }>
+          {lessonsCount} Lessons
+        </Text>
 
-      <ImageBackground style={styles.imageBg} source={bgImage}>
-        {/* <View style={styles.contentContainer}>
-          <Text style={styles.title}>{title}</Text>
-          <Text
-            style={
-              progress !== undefined
-                ? styles.lessons
-                : [styles.lessons, styles.lessonsSecondary]
-            }>
-            {lessonsCount} Lessons
-          </Text>
-
-          {progress !== undefined && (
-            <>
-              <View style={styles.progressBar}>
-                <View
-                  style={[styles.progressBarIndicator, {width: '50%'}]} // calculate progress dynamically
-                />
-              </View>
-              <Text style={styles.progressText}>{progress}% completed</Text>
-            </>
-          )}
-        </View> */}
-      </ImageBackground>
+        {progress !== undefined && (
+          <>
+            <View style={styles.progressBar}>
+              <View
+                style={[styles.progressBarIndicator, {width: progress + '%'}]} // calculate progress dynamically
+              />
+            </View>
+            <Text style={styles.progressText}>{progress}% completed</Text>
+          </>
+        )}
+      </View>
     </View>
   );
 };
@@ -64,11 +65,14 @@ export const styles = StyleSheet.create({
     width: screenWidth * (1 / 2.6),
     justifyContent: 'flex-end',
     borderWidth: 4,
+    position: 'relative',
   },
   contentContainer: {
-    backgroundColor: 'rgba(0,0,0,0.07)',
     width: screenWidth * (1 / 2.5),
     paddingHorizontal: 10,
+    position: 'absolute',
+    bottom: 0,
+    zIndex: 100,
   },
 
   title: {
@@ -82,8 +86,9 @@ export const styles = StyleSheet.create({
     width: '80%',
     paddingVertical: screenHeight * 0.003,
     paddingHorizontal: screenWidth * 0.02,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
     borderRadius: 100,
+    overflow: 'hidden',
     color: 'white',
     fontSize: screenWidth * 0.028,
     fontFamily: 'Montserrat-SemiBold',
@@ -104,6 +109,7 @@ export const styles = StyleSheet.create({
     height: 5,
     backgroundColor: '#fff',
     borderRadiusLeft: 20,
+    overflow: 'hidden',
   },
   progressText: {
     color: 'white',

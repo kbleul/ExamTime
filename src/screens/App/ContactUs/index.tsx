@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {  useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,13 +12,48 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import ShareApp from '../../../components/Organisms/ShareApp';
 import ContactUs from '../../../components/Organisms/ContactUs';
+import { RootState } from '../../../reduxToolkit/Store';
 import { useCreatecommentMutation } from '../../../reduxToolkit/Services/auth';
+import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+
 
 const Index = () => {
   const navigator = useNavigation<any>();
-  const SendMessage = () => {
+  
+  
+  const token = useSelector((state: RootState) => state.auth.token);
+  const [
+    Createcomment,
+    {isLoading: isLoadingChange, isError: isErrorChange, error: errorChange},
+  ] = useCreatecommentMutation();
 
+  const SendMessage = async (text:any) => {
+    try{
+      const result = await Createcomment({ token: token || '', comment:text})
+      if(result?.statusCode==200){
+        Toast.show({
+          type: 'success',
+          text1: 'success',
+          text2: 'Profile updated successfuly',
+          visibilityTime: 4000,
+        });
+      }
+
+      if(result?.statusCode==401){
+        Toast.show({
+          type: 'error',
+          text1: 'Error!',
+          text2: `${result.error}`,
+        });
+      }
+      }
+    
+    catch(error){
+
+    }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topHeader}>

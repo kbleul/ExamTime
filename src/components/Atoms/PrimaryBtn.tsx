@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
 type PrimaryBtnProps = {
   text: String;
-  onPress?: () => void;
+  onPress?: (text:any) => void;
 };
 const PrimaryBtn: React.FC<PrimaryBtnProps> = ({text, onPress}) => {
   return (

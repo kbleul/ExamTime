@@ -44,8 +44,38 @@ export const getSubjectsMutation = async (
 
     setSubjectsArray(subjects);
 
-    createRealmSubjectsData(realm, subjects);
+    const downloadedSubjects = await downloadIcons(subjects);
+
+    createRealmSubjectsData(realm, downloadedSubjects);
   } catch (e) {
     console.log(e);
   }
+};
+
+export const downloadIcons = async (subjects: subjectType[]) => {
+  const downloadPromises = subjects.map(async subject => {
+    if (subject.icon && subject.icon !== '') {
+      try {
+        const response = await fetch(subject.icon);
+        if (!response.ok) {
+          throw new Error(
+            `Error downloading icon: ${response.status} ${response.statusText}`,
+          );
+        }
+
+        const iconData = await response.text(); // Binary data of the downloaded icon
+
+        return {...subject, icon: iconData};
+      } catch (error) {
+        console.log(
+          `Error downloading/saving icon for subject ${subject.id}:`,
+          error,
+        );
+      }
+    }
+    return subject;
+  });
+
+  const newSubjects = await Promise.all(downloadPromises);
+  return newSubjects;
 };

@@ -251,11 +251,13 @@ const buttonStyles = StyleSheet.create({
     alignItems: 'center',
     padding: screenWidth * 0.008,
     borderRadius: 10,
+    overflow: 'hidden',
   },
   button: {
     width: '45%',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#E1E1E1',
   },
   buttonText: {

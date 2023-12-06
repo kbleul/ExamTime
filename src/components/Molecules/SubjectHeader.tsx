@@ -45,7 +45,7 @@ const SubjectHeader: React.FC<SubjectHeaderProps> = ({
       <View style={styles.infoContainer}>
         <View>
           <Text style={styles.subject}>{section.unit}</Text>
-          <Text style={styles.units}>{section.Lesson}</Text>
+          <Text style={styles.units}>{section.lesson}</Text>
         </View>
         <Ionicons
           name={isActive ? 'caret-up' : 'caret-down'}

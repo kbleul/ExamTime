@@ -1,6 +1,6 @@
 import React from 'react';
-import { Image, ImageBackground, Text } from 'react-native';
-import { StyleSheet, View } from 'react-native';
+import {ImageBackground, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileContent from '../../../components/Organisms/ProfileContent';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -14,10 +14,10 @@ const Index = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imageBg}>
-        {user?.image ? (
+        {user && user?.profilePicture ? (
           <ImageBackground
             style={styles.img}
-            source={require('../../../assets/Images/Profile/1.png')} // Replace with the correct path to your image
+            source={{uri: user.profilePicture}} // Replace with the correct path to your image
           >
             <Text>{''}</Text>
         
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1,
     position: 'relative',
-    paddingBottom: 60,
+    paddingBottom: 40,
     backgroundColor: '#F5F5F5',
   },
   imageBg: {

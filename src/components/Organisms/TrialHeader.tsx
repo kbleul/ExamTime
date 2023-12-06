@@ -3,11 +3,7 @@ import {Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import {
-  allowedTrialDays,
-  screenHeight,
-  screenWidth,
-} from '../../utils/Data/data';
+import {allowedTrialDays, screenWidth} from '../../utils/Data/data';
 import {calculateDateDifference} from '../../screens/App/Onboarding/Logic';
 import {HeaderStyle} from '../../styles/Theme/HeaderBox';
 import {AuthContext} from '../../Realm/model';

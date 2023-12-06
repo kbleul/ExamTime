@@ -91,7 +91,6 @@ const ProfileEdit: React.FC = () => {
       try {
         const result = await changeProfile({token, profileData});
 
-        console.log({result: result});
         if (result.data.user) {
           dispatch(
             loginSuccess({
@@ -224,6 +223,7 @@ const ProfileEdit: React.FC = () => {
   const handleGoBack = () => {
     navigation.goBack();
   };
+
   return (
     <>
       <StatusBar hidden={true} />

@@ -20,6 +20,7 @@ export type userType = {
   gender: 'MALE' | 'FEMALE';
   email: string | null;
   verificationCode?: string;
+  profilePicture: string | null;
 };
 
 export type seterProps = {
@@ -126,6 +127,7 @@ export type year =
       updatedAt: string;
     }
   | string;
+
 export type gradeType = {
   id: string;
   grade: string;
@@ -146,11 +148,65 @@ export type subjectType = {
   createdAt: string;
   updatedAt: string;
   grade: gradeType;
-  subject: {
-    id: string;
-    subject: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+  subject: singleSubjectType;
   progress?: number;
+};
+
+export type downloadedSubjectType = {
+  id: string;
+  description: string;
+  icon: Realm.Types.Data | null;
+  createdAt: string;
+  updatedAt: string;
+  grade: gradeType;
+  subject: singleSubjectType;
+  progress?: number;
+};
+
+export type unitType = {
+  id: string;
+  unit: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type sectionType = {
+  id: string;
+  section: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type pdfType = {
+  id: string;
+  pdfDocument: string;
+};
+
+export type videoType = {
+  id: string;
+  videoLink: string;
+};
+
+export type studyType = {
+  id: string;
+  title: string;
+  objective: string;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  grade: gradeType;
+  subject: singleSubjectType;
+  year: year;
+  unit: unitType;
+  section: sectionType;
+  selectedQuestion: examQuestionType[] | [];
+  pdf: pdfType[] | [];
+  videoLink: videoType[] | [];
+};
+
+export type GuideDataType = {
+  id: string;
+  image: any;
+  text: string;
+  videoLink: string;
 };

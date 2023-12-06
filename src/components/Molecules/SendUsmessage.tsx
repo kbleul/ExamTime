@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import PrimaryBtn from '../Atoms/PrimaryBtn';
 
-const SendUsmessage: React.FC<{onPress: () => void}> = ({onPress}) => {
+type SendMessageBtnProps = {
+ 
+  onPress?: (text:any) => void;
+  
+};
+
+const SendUsmessage: React.FC<SendMessageBtnProps> = ({onPress}) => {
+      const [text, setText]=useState()
+
+      const handleTextChange = (newText:any) => {
+        setText(newText);
+      };
+      const SendComment=()=>{
+       onPress && onPress(text)
+      }
   return (
     <View style={styles.sendUsmessage}>
       <Text style={styles.messageText}>messeage</Text>
-      <TextInput multiline numberOfLines={4} style={styles.messageInput} />
-      <PrimaryBtn text="Send" onPress={onPress} />
+      <TextInput onChangeText={handleTextChange} multiline numberOfLines={4} style={styles.messageInput} />
+      <PrimaryBtn text="Send" onPress={SendComment} />
     </View>
   );
 };

@@ -4,7 +4,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import SendUsmessage from '../Molecules/SendUsmessage';
 
-const ContactUs: React.FC<{onPress: () => void}> = ({onPress}) => {
+const ContactUs: React.FC<{onPress: (text:any) => void}> = ({onPress}) => {
 
   const handelPhonecall=()=>{
     Linking.openURL('tel:+251912462133');

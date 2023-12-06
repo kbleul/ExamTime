@@ -1,17 +1,13 @@
 import {NavigationProp} from '@react-navigation/native';
-import {set_to_localStorage} from '../../../../utils/Functions/Set';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   LocalObjectDataKeys,
   LocalStorageDataKeys,
   trialStatus,
 } from '../../../../utils/Data/data';
-import {
-  getObject_from_localStorage,
-  get_from_localStorage,
-} from '../../../../utils/Functions/Get';
+import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
-import {subjectType} from '../../../../types';
+import {downloadedSubjectType, subjectType} from '../../../../types';
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -59,8 +55,10 @@ export const createRealmUserData = async (
   realm: Realm,
   selectedSubjects: string[] | [],
   navigation: NavigationProp<ReactNavigation.RootParamList>,
+  setIsLoadingSubjects: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   try {
+    setIsLoadingSubjects(true);
     const grade = await getObject_from_localStorage(
       LocalStorageDataKeys.userGrade,
     );
@@ -80,6 +78,7 @@ export const createRealmUserData = async (
     });
   } catch (err) {
     console.log(err);
+    setIsLoadingSubjects(false);
   }
 
   navigation.navigate('Home');
@@ -87,7 +86,7 @@ export const createRealmUserData = async (
 
 export const createRealmSubjectsData = async (
   realm: Realm,
-  subjects: subjectType[] | [],
+  subjects: subjectType[],
 ) => {
   try {
     subjects.forEach(subject => {

@@ -77,7 +77,6 @@ const RandomQuestionsView = ({route}: {route: any}) => {
 
         return () => backHandler && backHandler.remove();
       } catch (err: any) {
-        console.log(err?.data?.message, 'aaa');
         backHandler && backHandler.remove();
       }
     };

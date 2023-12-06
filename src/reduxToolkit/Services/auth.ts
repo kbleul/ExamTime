@@ -6,13 +6,14 @@ import {
   OTPDataType,
   ResendCodeDataType,
   SignupDataType,
-  gradeType,
   regionItemsType,
+  studyType,
   subjectType,
   userType,
   CommentType
 } from '../../types';
 import Config from 'react-native-config';
+import {newAnswerType} from '../../hooks/usePostSyncData';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({baseUrl: Config.API_URL}),
@@ -93,7 +94,6 @@ export const api = createApi({
       {token: String; profileData: Partial<userType>}
     >({
       query: data => {
-        console.log({userdata: data.profileData});
         return {
           url: `user/changeprofile/`,
           method: 'PUT',
@@ -199,12 +199,83 @@ export const api = createApi({
             noOfQuestions: credentials.noOfQuestions,
             unit: '',
           },
+          method: 'POST',
+        };
+      },
+    }),
+    getStudy: build.mutation<{styudies: studyType[]}, {token: string}>({
+      query: credentials => {
+        return {
+          url: 'study/user/study',
+          method: 'Get',
           headers: {
             'Content-Type': 'application/json',
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ODY3MWRlYS1jZmQ3LTQ2M2MtOTAzZi01YmQ4NjFkMjMwN2QiLCJpYXQiOjE2OTkyNzI4MTZ9.riBXZdA0Cny8OGybmCyG4xRJZTlVxUmS6taG0t9ADQg',
+            Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
+    getAboutUs: build.mutation<String, {}>({
+      query: () => {
+        return {
+          url: 'about-us/user/aboutus',
+          method: 'GET',
+        };
+      },
+    }),
+    getUserGuide: build.mutation<String, {}>({
+      query: () => {
+        return {
+          url: 'user-guide/user/userguide',
+          method: 'GET',
+        };
+      },
+    }),
+    postExamResults: build.mutation<
+      any,
+      {
+        token: string | null;
+        examId: string;
+        answers: {
+          answers: newAnswerType[];
+          takenDate: string | null;
+        };
+      }
+    >({
+      query: data => {
+        return {
+          url: 'exam-result/create',
+          body: {
+            examId: data.examId,
+            examDate: data.answers.takenDate,
+            userAnswers: [...data.answers.answers],
           },
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
+    getExamResults: build.mutation<
+      any,
+      {
+        token: string;
+        user: userType;
+      }
+    >({
+      query: data => {
+        return {
+          url: 'exam-result/results',
+          body: {
+            id: data.user.id,
+          },
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data.token}`,
+          },
         };
       },
     }),
@@ -224,8 +295,16 @@ export const {
   useGetExamsMutation,
   useGetSubjectMutation,
   useGetRandomExamMutation,
+<<<<<<< HEAD
   useGetFaqMutation,
   useCreatecommentMutation
   
 
+=======
+  useGetAboutUsMutation,
+  useGetUserGuideMutation,
+  useGetStudyMutation,
+  usePostExamResultsMutation,
+  useGetExamResultsMutation,
+>>>>>>> dev
 } = api;
