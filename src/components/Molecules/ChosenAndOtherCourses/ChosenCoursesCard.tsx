@@ -5,45 +5,64 @@ import {SvgXml} from 'react-native-svg';
 import {calculateProgress} from '../../../screens/App/Study/logic';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
+import {useNavigation} from '@react-navigation/native';
 
 export const onError = (e: Error) => {
   console.log('----------------', e.message);
 };
 
 const ChosenCoursesCard: React.FC<{
-  title: string;
-  lessonsCount: number;
+  subject: any;
   subjectId?: string;
   bgImage: any;
-}> = ({title, lessonsCount, subjectId, bgImage}) => {
+  setLoginModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({subject, subjectId, bgImage, setLoginModalVisible}) => {
+  const navigator: any = useNavigation();
+
+  const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
   const {useQuery} = AuthContext;
 
   const savedStudies = useQuery(Study, studies => {
     return studies.filtered(
-      `subject.id = "${
-        subjectId ? subjectId : 0
-      }" OR subject.subject = "${title}"`,
+      `subject.id = "${subjectId ? subjectId : 0}" OR subject.subject = "${
+        subject.subject
+      }"`,
     );
   });
   const calProgress = calculateProgress(savedStudies) + '%';
 
   return (
-    <View
+    <TouchableOpacity
       style={
         subjectId !== undefined
           ? styles.container
           : [styles.container, styles.containerSecondary]
-      }>
+      }
+      onPress={() => {
+        if (!user || !token) {
+          setLoginModalVisible && setLoginModalVisible(true);
+          return;
+        }
+
+        savedStudies.length > 0 &&
+          navigator.navigate('StudyDetails', {
+            subject: subject,
+          });
+      }}>
       <SvgXml style={styles.imageBg} xml={bgImage.uri} onError={onError} />
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{subject.subject}</Text>
         <Text
           style={
             subjectId !== undefined
               ? styles.lessons
               : [styles.lessons, styles.lessonsSecondary]
           }>
-          {lessonsCount} Lessons
+          {savedStudies.length} Lessons
         </Text>
 
         {subjectId !== undefined && (
@@ -57,7 +76,7 @@ const ChosenCoursesCard: React.FC<{
           </>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -73,12 +92,12 @@ export const styles = StyleSheet.create({
   containerSecondary: {
     height: screenHeight * (1 / 4.5),
     width: screenWidth * (1 / 3),
+    overflow: 'hidden',
   },
   imageBg: {
     height: '100%',
     width: screenWidth * (1 / 2.6),
     justifyContent: 'flex-end',
-    borderWidth: 4,
     position: 'relative',
   },
   contentContainer: {

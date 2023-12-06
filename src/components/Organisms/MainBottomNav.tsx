@@ -171,13 +171,14 @@ const MainBottomNav = () => {
 const style = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 0,
+    bottom: -3,
     left: 0,
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: screenHeight * 0.088,
+    height: screenHeight * 0.11,
+    backgroundColor: '#fff',
   },
   btnsContainer: {
     flexDirection: 'row',

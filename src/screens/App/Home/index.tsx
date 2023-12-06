@@ -14,10 +14,12 @@ import ChosenCourses from '../../../components/Molecules/ChosenAndOtherCourses';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import usePostSyncData from '../../../hooks/usePostSyncData';
 import {screenWidth} from '../../../utils/Data/data';
+import LoginModal from '../../../components/Organisms/LoginModal';
 
 const Index = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   usePostSyncData(setIsSyncing);
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={IndexStyle.container}>
@@ -29,9 +31,14 @@ const Index = () => {
 
         <HeaderCarousel />
 
-        <ChosenCourses />
+        <ChosenCourses setLoginModalVisible={setLoginModalVisible} />
       </ScrollView>
       <MainBottomNav />
+
+      <LoginModal
+        loginModalVisible={loginModalVisible}
+        setLoginModalVisible={setLoginModalVisible}
+      />
     </SafeAreaView>
   );
 };

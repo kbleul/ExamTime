@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
 import OtherCoursesCard from './OtherCoursesCard';
-import {Study, Subject, UserData} from '../../../Realm';
+import {Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
@@ -37,7 +37,11 @@ const DummyCourses = [
   },
 ];
 
-const ChosenCourses = () => {
+const ChosenCourses = ({
+  setLoginModalVisible,
+}: {
+  setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const {useQuery} = AuthContext;
 
   const savedSubjects = useQuery(Subject);
@@ -47,22 +51,28 @@ const ChosenCourses = () => {
     return (
       <View>
         <ChosenCoursesCard
-          title={item.subject.subject}
-          lessonsCount={12}
+          subject={item.subject}
           subjectId={item.id}
           bgImage={{uri: item.icon}}
+          setLoginModalVisible={setLoginModalVisible}
         />
       </View>
     );
   };
 
-  const renderItemCourse = ({item}: {item: CourseItemType}) => {
+  const renderItemCourse = ({
+    item,
+    index,
+  }: {
+    item: CourseItemType;
+    index: number;
+  }) => {
     return (
       <View>
         <OtherCoursesCard
           grade={item.grade}
-          subTitle={item.subTitle}
           subjectsCount={item.subjectsCount}
+          index={index}
         />
       </View>
     );
@@ -90,7 +100,10 @@ const ChosenCourses = () => {
       <FlatList
         keyExtractor={item => item.id}
         data={DummyCourses}
-        renderItem={renderItemCourse}
+        // renderItem={({item: any, index: number}) =>
+        //   renderItemCourse({item, index})
+        // }
+        renderItem={({item, index}) => renderItemCourse({item, index})}
         horizontal
         showsHorizontalScrollIndicator={false}
       />

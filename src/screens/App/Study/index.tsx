@@ -5,10 +5,8 @@ import {
   Image,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  ImageBackground,
   FlatList,
 } from 'react-native';
-import BackWithItem from '../../../components/Organisms/BackWithItem';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {ScaledSheet} from 'react-native-size-matters';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
@@ -30,9 +28,11 @@ import LoginModal from '../../../components/Organisms/LoginModal';
 const CourseItem = ({
   item,
   setLoginModalVisible,
+  isLoading,
 }: {
   item: subjectType;
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
 }) => {
   const navigator: any = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
@@ -62,7 +62,11 @@ const CourseItem = ({
           });
       }}>
       <View style={styles.imgContainer}>
-        <SvgXml style={styles.imagebg} xml={item.icon} onError={onError} />
+        {isLoading ? (
+          <View style={[styles.imagebg, styles.imagebgLoading]} />
+        ) : (
+          <SvgXml style={styles.imagebg} xml={item.icon} onError={onError} />
+        )}
       </View>
 
       <View style={styles.infoContainer}>
@@ -79,7 +83,7 @@ const CourseItem = ({
 };
 
 const Index = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
 
   const {useRealm, useQuery} = AuthContext;
@@ -93,11 +97,17 @@ const Index = () => {
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (!savedStudies || savedStudies.length === 0) {
       getAllStudies(getStudy, navigation, token, realm, Toast);
     }
   }, []);
+
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
 
   return (
     <View style={styles.container}>
@@ -129,11 +139,16 @@ const Index = () => {
           savedSubjects,
         )}
         renderItem={({item}) => (
-          <CourseItem item={item} setLoginModalVisible={setLoginModalVisible} />
+          <CourseItem
+            item={item}
+            setLoginModalVisible={setLoginModalVisible}
+            isLoading={isLoading}
+          />
         )}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
       />
+
       <MainBottomNav />
       <LoginModal
         loginModalVisible={loginModalVisible}
@@ -158,6 +173,9 @@ const styles = ScaledSheet.create({
     paddingBottom: 70,
     paddingHorizontal: 10,
     // backgroundColor: 'red',
+  },
+  loading: {
+    paddingTop: screenHeight * 0.1,
   },
   headerContainerTop: {
     paddingHorizontal: screenWidth * 0.02,
@@ -247,6 +265,9 @@ const styles = ScaledSheet.create({
     width: screenWidth * (1 / 2.6),
     borderRadius: 5,
     overflow: 'hidden',
+  },
+  imagebgLoading: {
+    backgroundColor: '#f5f2f2',
   },
   infoContainer: {
     width: '67%',

@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import Config from 'react-native-config';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
 import {userType} from '../../types';
+import {screenWidth} from '../../utils/Data/data';
 
 type FormData = {
   phoneNumber: string;
@@ -164,12 +165,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     overflow: 'hidden',
+    height: 47,
   },
   smallBox: {
     width: '20%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 20,
+    fontSize: screenWidth * 0.045,
     textAlign: 'center',
     color: '#b3b3b3',
   },

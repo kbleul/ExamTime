@@ -7,17 +7,15 @@ const screenWidth = Dimensions.get('window').width;
 
 const OtherCoursesCard: React.FC<{
   grade: string | number;
-  subTitle?: string;
   subjectsCount: number;
   isOnboarding?: boolean;
   onPress?: () => void;
   index?: number;
-}> = ({grade, subTitle, subjectsCount, isOnboarding, onPress, index}) => {
+}> = ({grade, subjectsCount, isOnboarding, onPress, index}) => {
   const useStyle = isOnboarding ? stylesSecondary : styles;
   return (
     <View style={useStyle.container}>
       <Text style={useStyle.title}> {grade}</Text>
-      {/* {subTitle && <Text style={useStyle.subTitle}>{subTitle} </Text>} */}
       <TouchableOpacity touchSoundDisabled onPress={onPress}>
         <Text
           style={
@@ -52,13 +50,7 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginBottom: 10,
   },
-  subTitle: {
-    color: 'black',
-    fontSize: screenWidth * 0.028,
-    fontFamily: 'Montserrat-Regular',
-    marginTop: 2,
-    marginBottom: 20,
-  },
+
   courses: {
     width: '100%',
     borderRadius: 30,
@@ -112,6 +104,8 @@ export const stylesSecondary = StyleSheet.create({
     paddingVertical: 6,
     backgroundColor: '#0F6098',
     textAlign: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
   coursesSecondary: {
     backgroundColor: '#37A9B3',
