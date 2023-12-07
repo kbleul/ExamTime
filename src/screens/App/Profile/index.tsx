@@ -19,7 +19,7 @@ const Index = () => {
             style={styles.img}
             source={{uri: user.profilePicture}} // Replace with the correct path to your image
           >
-            <Text>{''}</Text>
+            <Text>{}</Text>
           </ImageBackground>
         ) : (
           <View style={styles.noiImageContainer}>

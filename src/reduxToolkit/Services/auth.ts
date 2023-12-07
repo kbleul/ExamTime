@@ -258,6 +258,25 @@ export const api = createApi({
         };
       },
     }),
+    changeProfilePicture: build.mutation<{}, {token: String; avatar: string}>({
+      query: data => {
+        const formData = new FormData();
+        formData.append('profilePicture', {
+          uri: data.avatar,
+          type: 'image/jpeg',
+          name: 'avatar.jpg',
+        });
+        return {
+          url: 'user/uploadprofilepicture',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
@@ -279,4 +298,5 @@ export const {
   useGetStudyMutation,
   usePostExamResultsMutation,
   useGetExamResultsMutation,
+  useChangeProfilePictureMutation,
 } = api;
