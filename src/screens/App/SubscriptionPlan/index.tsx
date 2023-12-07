@@ -17,6 +17,7 @@ const {width, height} = Dimensions.get('window');
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
+import {screenHeight} from '../../../utils/Data/data';
 const SPACING = 10;
 const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.5 : width * 0.5;
 
@@ -126,16 +127,15 @@ const Index: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#fff',
   },
   backicon: {
     marginTop: 0,
   },
   HorizontalList: {
     alignItems: 'center',
-    height: 500,
-    justifyContent: 'center',
-    margin: 5,
+    height: screenHeight + 0.8,
+    justifyContent: 'flex-start',
   },
   scrollContainer: {
     flexGrow: 1,
