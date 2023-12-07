@@ -17,7 +17,9 @@ const Index = () => {
         {user && user?.profilePicture ? (
           <ImageBackground
             style={styles.img}
-            source={{uri: user.profilePicture}} // Replace with the correct path to your image
+            source={{
+              uri: user.profilePicture,
+            }} // Replace with the correct path to your image
           >
             <Text>{}</Text>
           </ImageBackground>

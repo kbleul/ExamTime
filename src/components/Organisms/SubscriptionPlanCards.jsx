@@ -60,7 +60,7 @@ const SubscriptionPlanCards = ({ data, pagination }) => {
           );
         })}
       </Animated.ScrollView>
-  
+
       {pagination && <Pagination data={data} x={x} size={SIZE} />}
     </View>
   );

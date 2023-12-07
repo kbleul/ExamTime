@@ -74,7 +74,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const [refetchRegions, setRefetchRegions] = useState(false);
   const [getRegions, {isLoading: isLoadingRegions}] = useGetRegionsMutation();
   type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
-  console.log('++', user);
 
   const handleUpdateProfile = async () => {
     if (token) {
@@ -94,15 +93,12 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             token,
             avatar,
           });
-          console.log('profileUpdateResult', profileUpdateResult);
 
           if (profileUpdateResult?.data && user) {
             const newUser = {
               ...user,
               profilePicture: profileUpdateResult.data.profilePicture,
             };
-
-            console.log('user------', newUser);
 
             dispatch(
               loginSuccess({
@@ -141,11 +137,16 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
 
       try {
         const result = await changeProfile({token, profileData});
-        console.log(result);
+
         if (result.data.user && user) {
           dispatch(
             loginSuccess({
-              user: {...result.data.user, profilePicture: user.profilePicture},
+              user: {
+                ...result.data.user,
+                profilePicture:
+                  'https://dev.think-hubet.com/profile-pictures/' +
+                  result.data.user.profilePicture,
+              },
               token: token,
               isSubscribed: isSubscribed,
               IsDefaultPasswordChanged: IsDefaultPasswordChanged,
@@ -154,7 +155,14 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
 
           updateRealmUserData(
             newUserData,
-            {...result.data.user, profilePicture: user.profilePicture},
+            avatar
+              ? {
+                  ...result.data.user,
+                  profilePicture:
+                    'https://dev.think-hubet.com/profile-pictures/' +
+                    user.profilePicture,
+                }
+              : {...result.data.user},
             token,
             realm,
           );
@@ -166,7 +174,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             text2: `${result.error}`,
           });
         }
-        console.log('============', user.profilePicture);
+
         Toast.show({
           type: 'success',
           text1: 'success',
