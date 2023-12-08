@@ -1,11 +1,18 @@
 import React, {useEffect} from 'react';
+import Toast from 'react-native-toast-message';
+
 import {useSelector} from 'react-redux';
 import {RootState} from '../reduxToolkit/Store';
 import {checkIsOnline} from '../utils/Functions/Helper';
 import {AuthContext} from '../Realm/model';
-import {Exam, ExamAnswers} from '../Realm';
-import {usePostExamResultsMutation} from '../reduxToolkit/Services/auth';
+import {Exam, ExamAnswers, Study} from '../Realm';
+import {
+  useGetStudyMutation,
+  usePostExamResultsMutation,
+} from '../reduxToolkit/Services/auth';
 import {answersType} from '../screens/App/PracticeQuestion';
+import {getAllStudies} from '../screens/App/Study/logic';
+import {useNavigation} from '@react-navigation/native';
 
 export type newAnswerType = {
   [id: string]: {
@@ -89,39 +96,51 @@ export const syncDataToDB = async (
 const usePostSyncData = (
   setIsSyncing: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
+  const navigation: any = useNavigation();
+
   const user = useSelector((state: RootState) => state.auth.user);
+
   const token = useSelector((state: RootState) => state.auth.token);
   const [postExamResults] = usePostExamResultsMutation();
-  const {useQuery} = AuthContext;
+  const [getStudy] = useGetStudyMutation();
+
+  const {useQuery, useRealm} = AuthContext;
+
+  const realm = useRealm();
 
   const savedTakenExams = useQuery(Exam, exam => {
     return exam.filtered('isExamTaken = true');
   });
 
   const savedExamAnswers = useQuery(ExamAnswers);
+  const savedStudies = useQuery(Study);
 
   useEffect(() => {
     const handleSync = async () => {
       // Check for internet connection (you can use an appropriate library or method)
       const isConnected = await checkIsOnline();
 
-      if (isConnected && savedTakenExams.length > 0) {
-        // Perform data sync with the database
-        setIsSyncing(true);
-        await syncDataToDB(
-          postExamResults,
-          token ? token : '',
-          savedTakenExams,
-          savedExamAnswers,
-          setIsSyncing,
-        );
+      if (isConnected) {
+        if (!savedStudies || savedStudies.length === 0) {
+          getAllStudies(getStudy, navigation, token, realm, Toast);
+        }
 
-        // Navigate to the desired screen after syncing
+        if (savedTakenExams.length > 0) {
+          // Perform data sync with the database
+          setIsSyncing(true);
+          await syncDataToDB(
+            postExamResults,
+            token ? token : '',
+            savedTakenExams,
+            savedExamAnswers,
+            setIsSyncing,
+          );
+        }
       }
     };
 
     user && token && handleSync();
-  }, []);
+  }, [user, token]);
 };
 
 export default usePostSyncData;
