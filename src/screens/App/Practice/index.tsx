@@ -69,7 +69,6 @@ const Practice = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 10,
   },
   ScrollView: {
@@ -77,6 +76,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
+    paddingBottom: 80,
   },
   headerContainer: {
     paddingHorizontal: screenWidth * 0.02,
