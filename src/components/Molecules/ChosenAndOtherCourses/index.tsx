@@ -50,7 +50,7 @@ const ChosenCourses = ({
 
   setTimeout(() => {
     setIsLoadingSubjects(false);
-  }, 2000);
+  }, 500);
 
   const renderItem = ({item}: {item: subjectType}) => {
     return (

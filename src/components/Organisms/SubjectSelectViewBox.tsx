@@ -17,7 +17,7 @@ const SubjectSelectViewBox: React.FC<{
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 500);
   }, [SelectedSubject]);
 
   const renderItem = ({item}: {item: any}) => (

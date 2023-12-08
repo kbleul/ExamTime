@@ -96,7 +96,7 @@ const Index = () => {
 
   setTimeout(() => {
     setIsLoading(false);
-  }, 2000);
+  }, 500);
 
   return (
     <View style={styles.container}>
