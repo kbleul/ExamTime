@@ -91,6 +91,7 @@ export const updateRealmUserData = async (
         email,
         verificationCode,
         region,
+        profilePicture,
       } = user;
       let newUser;
 
@@ -122,6 +123,7 @@ export const updateRealmUserData = async (
           gender,
           email,
           verificationCode: verificationCode ? verificationCode : null,
+          profilePicture,
         });
         newUserData.user = newUser;
         newUserData.token = token;

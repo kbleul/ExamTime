@@ -16,22 +16,29 @@ import {RootState} from '../../../reduxToolkit/Store';
 import {useCreatecommentMutation} from '../../../reduxToolkit/Services/auth';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import LoginModal from '../../../components/Organisms/LoginModal';
 
 const Index = () => {
   const navigator = useNavigation<any>();
 
   const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const [Createcomment, {isLoading: isLoadingChange}] =
     useCreatecommentMutation();
 
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
   const SendMessage = async (text: any) => {
+    if (!user || !token) {
+      setShowLoginPrompt(true);
+      return;
+    }
     try {
-      console.log('clicked');
       const result: any = await Createcomment({
         token: token || '',
         comment: text,
       });
-      console.log(result);
 
       if (result?.statusCode == 401) {
         Toast.show({
@@ -73,6 +80,10 @@ const Index = () => {
         <MainBottomNav />
       </View>
 
+      <LoginModal
+        loginModalVisible={showLoginPrompt}
+        setLoginModalVisible={setShowLoginPrompt}
+      />
       <Toast />
     </SafeAreaView>
   );

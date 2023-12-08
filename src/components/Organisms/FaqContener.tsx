@@ -1,44 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, Text, View, TextInput, StyleSheet} from 'react-native';
 import Antdesign from 'react-native-vector-icons/AntDesign';
 import Accordion from '../Molecules/Accordion';
-import { screenHeight} from '../../utils/Data/data';
-import { useGetFaqMutation } from '../../reduxToolkit/Services/auth';
-import { checkIsOnline } from '../../utils/Functions/Helper';
-import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import {screenHeight} from '../../utils/Data/data';
+import {useGetFaqMutation} from '../../reduxToolkit/Services/auth';
+import {checkIsOnline} from '../../utils/Functions/Helper';
+import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const FaqContener = () => {
-  const [faq,setFaq] =useState([])
-  const [
-    getFaq,
-    {isLoading: loading},
-  ] = useGetFaqMutation();
-  const fetchFaq = async()=>{
+  const [faq, setFaq] = useState([]);
+  const [getFaq, {isLoading: loading}] = useGetFaqMutation();
+  const fetchFaq = async () => {
     try {
       const response = await getFaq().unwrap();
-      setFaq(response)
-    } catch (err) {
-      //console.log(err);
-    }
-  }
-  const HandelSearch = (input)=>{
-    //console.log(input)
-    setFaq(faq?.filter((faq)=>faq.question.toUpperCase().includes(input.toUpperCase())))
-  }
+      setFaq(response);
+    } catch (err) {}
+  };
+  const HandelSearch = input => {
+    setFaq(
+      faq?.filter(faq =>
+        faq.question.toUpperCase().includes(input.toUpperCase()),
+      ),
+    );
+  };
   useEffect(() => {
-   fetchFaq()
+    fetchFaq();
   }, []);
-  if(loading){
-    return(
-      <View style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-        <Text style={{color:'black',fontSize:18}}>Loading....</Text>
+  if (loading) {
+    return (
+      <View
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text style={{color: 'black', fontSize: 18}}>Loading....</Text>
       </View>
-    )
+    );
   }
   return (
     <View>
       <Text style={styles.subHeadtext}>Find Answers to Your Questions</Text>
       <View style={styles.faqInput}>
-        <TextInput onChangeText={HandelSearch} placeholder="write your question" style={styles.input} />
+        <TextInput
+          onChangeText={HandelSearch}
+          placeholder="write your question"
+          style={styles.input}
+        />
         <Antdesign name="search1" size={24} color="#d4d4d4" />
       </View>
 
@@ -50,7 +57,11 @@ const FaqContener = () => {
           <Text style={styles.faqText}>Frequently asked questions</Text>
 
           {faq?.map((item, index) => (
-            <Accordion key={index} question={item.question} answer={item.answer} />
+            <Accordion
+              key={index}
+              question={item.question}
+              answer={item.answer}
+            />
           ))}
         </ScrollView>
       </View>

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StatusBar, Text} from 'react-native';
 import {View} from 'react-native';
-import * as yup from 'yup';
 import {Formik} from 'formik';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
@@ -9,6 +8,7 @@ import {
   useChangePasswordMutation,
   useChangeProfileMutation,
   useLoginMutation,
+  useChangeProfilePictureMutation,
 } from '../../reduxToolkit/Services/auth';
 import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 
@@ -31,8 +31,9 @@ import BackButton from '../Atoms/BackButton';
 import DoneButton from '../Atoms/DoneButton';
 import PasswordField from '../Molecules/PasswordField';
 import ChangePasswordButton from '../Atoms/ChangePasswordButton';
+import {userGuideData} from '../../utils/Data/data';
 
-const ProfileEdit: React.FC = () => {
+const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -58,7 +59,8 @@ const ProfileEdit: React.FC = () => {
   const [phone, setPhone] = useState(user?.phoneNumber ?? '');
   const [grade, setGrade] = useState(user?.grade?.grade ?? '');
   const [showPassword, setShowPassword] = useState(true);
-  const [changeProfile, {isLoading}] = useChangeProfileMutation();
+  const [changeProfile] = useChangeProfileMutation();
+  const [changeProfilePicture] = useChangeProfilePictureMutation();
   const [updatePassword] = useChangePasswordMutation();
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
@@ -70,10 +72,7 @@ const ProfileEdit: React.FC = () => {
     regionItemsType[] | []
   >([]);
   const [refetchRegions, setRefetchRegions] = useState(false);
-  const [
-    getRegions,
-    {isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion},
-  ] = useGetRegionsMutation();
+  const [getRegions, {isLoading: isLoadingRegions}] = useGetRegionsMutation();
   type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
 
   const handleUpdateProfile = async () => {
@@ -89,16 +88,83 @@ const ProfileEdit: React.FC = () => {
       };
 
       try {
+        if (avatar) {
+          const profileUpdateResult: any = await changeProfilePicture({
+            token,
+            avatar,
+          });
+
+          if (profileUpdateResult?.data && user) {
+            const newUser = {
+              ...user,
+              profilePicture: profileUpdateResult.data.profilePicture,
+            };
+
+            dispatch(
+              loginSuccess({
+                user: newUser,
+                token: token,
+                isSubscribed: isSubscribed,
+                IsDefaultPasswordChanged: IsDefaultPasswordChanged,
+              }),
+            );
+
+            updateRealmUserData(newUserData, {...newUser}, token, realm);
+          }
+
+          Toast.show({
+            type: 'success',
+            text1: 'success',
+            text2: 'Profile image updated successfuly',
+            visibilityTime: 3000,
+          });
+
+          if (profileUpdateResult.error) {
+            Toast.show({
+              type: 'error',
+              text1: 'Error!',
+              text2: `${profileUpdateResult.error}`,
+            });
+          }
+        }
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error uploading profile picture',
+          text2: `${error}`,
+        });
+      }
+
+      try {
         const result = await changeProfile({token, profileData});
 
-        if (result.data.user) {
+        if (result.data.user && user) {
           dispatch(
             loginSuccess({
-              user: result.data.user,
+              user: {
+                ...result.data.user,
+                profilePicture:
+                  'https://dev.think-hubet.com/profile-pictures/' +
+                  result.data.user.profilePicture,
+              },
               token: token,
               isSubscribed: isSubscribed,
               IsDefaultPasswordChanged: IsDefaultPasswordChanged,
             }),
+          );
+
+          updateRealmUserData(
+            newUserData,
+            avatar
+              ? {
+                  ...result.data.user,
+                  profilePicture:
+                    'https://dev.think-hubet.com/profile-pictures/' +
+                    user.profilePicture,
+                }
+              : {...result.data.user},
+            token,
+            realm,
           );
         }
         if (result.error) {
@@ -107,14 +173,7 @@ const ProfileEdit: React.FC = () => {
             text1: 'Error!',
             text2: `${result.error}`,
           });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Error!',
-            text2: `${result.error}`,
-          });
         }
-        updateRealmUserData(newUserData, result.data.user, token, realm);
 
         Toast.show({
           type: 'success',

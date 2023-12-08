@@ -19,7 +19,14 @@ const ChosenCoursesCard: React.FC<{
   subjectId?: string;
   bgImage: any;
   setLoginModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({subject, subjectId, bgImage, setLoginModalVisible}) => {
+  isLoadingSubjects: boolean;
+}> = ({
+  subject,
+  subjectId,
+  bgImage,
+  setLoginModalVisible,
+  isLoadingSubjects,
+}) => {
   const navigator: any = useNavigation();
 
   const token = useSelector((state: RootState) => state.auth.token);
@@ -36,47 +43,73 @@ const ChosenCoursesCard: React.FC<{
   const calProgress = calculateProgress(savedStudies) + '%';
 
   return (
-    <TouchableOpacity
-      style={
-        subjectId !== undefined
-          ? styles.container
-          : [styles.container, styles.containerSecondary]
-      }
-      onPress={() => {
-        if (!user || !token) {
-          setLoginModalVisible && setLoginModalVisible(true);
-          return;
-        }
-
-        savedStudies.length > 0 &&
-          navigator.navigate('StudyDetails', {
-            subject: subject,
-          });
-      }}>
-      <SvgXml style={styles.imageBg} xml={bgImage.uri} onError={onError} />
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>{subject.subject}</Text>
-        <Text
+    <>
+      {isLoadingSubjects && (
+        <TouchableOpacity
           style={
             subjectId !== undefined
-              ? styles.lessons
-              : [styles.lessons, styles.lessonsSecondary]
-          }>
-          {savedStudies.length} Lessons
-        </Text>
+              ? styles.containerLoading
+              : [styles.containerLoading, styles.containerSecondaryLoading]
+          }
+          onPress={() => {
+            if (!user || !token) {
+              setLoginModalVisible && setLoginModalVisible(true);
+              return;
+            }
 
-        {subjectId !== undefined && (
-          <>
-            <View style={styles.progressBar}>
-              <View
-                style={[styles.progressBarIndicator, {width: calProgress}]} // calculate progress dynamically
-              />
-            </View>
-            <Text style={styles.progressText}>{calProgress} completed</Text>
-          </>
-        )}
-      </View>
-    </TouchableOpacity>
+            savedStudies.length > 0 &&
+              navigator.navigate('StudyDetails', {
+                subject: subject,
+              });
+          }}
+        />
+      )}
+
+      {!isLoadingSubjects && (
+        <TouchableOpacity
+          style={
+            subjectId !== undefined
+              ? styles.container
+              : [styles.container, styles.containerSecondary]
+          }
+          onPress={() => {
+            if (!user || !token) {
+              setLoginModalVisible && setLoginModalVisible(true);
+              return;
+            }
+
+            savedStudies.length > 0 &&
+              navigator.navigate('StudyDetails', {
+                subject: subject,
+              });
+          }}>
+          <SvgXml style={styles.imageBg} xml={bgImage.uri} onError={onError} />
+
+          <View style={styles.contentContainer}>
+            <Text style={styles.title}>{subject.subject}</Text>
+            <Text
+              style={
+                subjectId !== undefined
+                  ? styles.lessons
+                  : [styles.lessons, styles.lessonsSecondary]
+              }>
+              {savedStudies.length} Lessons
+            </Text>
+
+            {subjectId !== undefined && (
+              <>
+                <View style={styles.progressBar}>
+                  <View
+                    style={[styles.progressBarIndicator, {width: calProgress}]} // calculate progress dynamically
+                  />
+                </View>
+                <Text style={styles.progressText}>{calProgress} completed</Text>
+              </>
+            )}
+          </View>
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 
@@ -90,6 +123,20 @@ export const styles = StyleSheet.create({
     maxHeight: 220,
   },
   containerSecondary: {
+    height: screenHeight * (1 / 4.5),
+    width: screenWidth * (1 / 3),
+    overflow: 'hidden',
+  },
+  containerLoading: {
+    backgroundColor: '#f5f2f2',
+    height: screenHeight * (1 / 3.8),
+    width: screenWidth * (1 / 2.6),
+    marginHorizontal: 5,
+    borderRadius: 15,
+    overflow: 'hidden',
+    maxHeight: 220,
+  },
+  containerSecondaryLoading: {
     height: screenHeight * (1 / 4.5),
     width: screenWidth * (1 / 3),
     overflow: 'hidden',

@@ -31,6 +31,8 @@ const StudyDetails = ({route}) => {
     );
   });
 
+  const [showAccordianId, setShowAccordianId] = useState<string | null>(null);
+
   useEffect(() => {
     savedStudies.length === 0 &&
       Toast.show({
@@ -53,7 +55,12 @@ const StudyDetails = ({route}) => {
               progress={calculateProgress(savedStudies)}
             />
             {savedStudies.map((study, index) => (
-              <UnitsCard key={study.id + '--' + index} study={study} />
+              <UnitsCard
+                key={study.id + '--' + index}
+                study={study}
+                showAccordianId={showAccordianId}
+                setShowAccordianId={setShowAccordianId}
+              />
             ))}
           </>
         )}
@@ -63,14 +70,31 @@ const StudyDetails = ({route}) => {
   );
 };
 
-const UnitsCard = ({study}: {study: Study}) => {
+const UnitsCard = ({
+  study,
+  showAccordianId,
+  setShowAccordianId,
+}: {
+  study: Study;
+  showAccordianId: string | null;
+  setShowAccordianId: React.Dispatch<React.SetStateAction<string | null>>;
+}) => {
   const [showContent, setShowContent] = useState(false);
+
   return (
     <View style={unitCardStyles.container}>
       <TouchableOpacity
         touchSoundDisabled
         style={unitCardStyles.topcontainer}
-        onPress={() => setShowContent(prev => !prev)}>
+        onPress={() => {
+          if (showAccordianId !== study.id) {
+            setShowAccordianId(study.id);
+            setShowContent(true);
+          } else {
+            setShowAccordianId(null);
+            setShowContent(false);
+          }
+        }}>
         <View style={unitCardStyles.menuContainer}>
           <AntDesign name="menuunfold" size={40} color="#EEEAFF" />
         </View>
@@ -80,13 +104,19 @@ const UnitsCard = ({study}: {study: Study}) => {
         </View>
         <View style={unitCardStyles.downBtn}>
           <AntDesign
-            name={showContent ? 'caretup' : 'caretdown'}
+            name={
+              showContent && study.id === showAccordianId
+                ? 'caretup'
+                : 'caretdown'
+            }
             size={16}
             color="#4d4d4d"
           />
         </View>
       </TouchableOpacity>
-      {showContent && <Accordion study={study} />}
+      {showContent && study.id === showAccordianId && (
+        <Accordion study={study} />
+      )}
     </View>
   );
 };

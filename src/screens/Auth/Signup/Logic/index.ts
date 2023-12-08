@@ -68,7 +68,6 @@ export const handleCreateUser = async (
     );
 
     try {
-      console.log({userGrade: userGrade.grade});
       const response = await createUser({
         ...data,
         phoneNumber: '+251' + data.phoneNumber,
