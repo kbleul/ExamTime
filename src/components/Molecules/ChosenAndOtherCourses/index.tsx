@@ -19,25 +19,29 @@ interface CourseItemType {
 const DummyCourses = [
   {
     id: 'G0011',
-    grade: 8,
+    grade: 'grade_6',
     subTitle: 'For Reginal Exam Takers',
     subjectsCount: 7,
   },
   {
     id: 'G0012',
-    grade: 12,
+    grade: 'grade_8',
     subTitle: 'For Natural Science Students',
     subjectsCount: 12,
   },
   {
     id: 'G0013',
-    grade: 12,
+    grade: 'grade_12_social',
     subTitle: 'For Social Students',
     subjectsCount: 12,
   },
 ];
 
-const ChosenCourses = () => {
+const ChosenCourses = ({
+  setLoginModalVisible,
+}: {
+  setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const {useQuery} = AuthContext;
 
   const savedSubjects = useQuery(Subject);
@@ -47,22 +51,32 @@ const ChosenCourses = () => {
     return (
       <View>
         <ChosenCoursesCard
-          title={item.subject.subject}
-          lessonsCount={12}
-          progress={item.progress}
+          subject={item.subject}
+          subjectId={item.id}
           bgImage={{uri: item.icon}}
+          setLoginModalVisible={setLoginModalVisible}
         />
       </View>
     );
   };
 
+<<<<<<< HEAD
   const renderItemCourse = ({item}: {item: CourseItemType}) => {
+=======
+  const renderItemCourse = ({
+    item,
+    index,
+  }: {
+    item: CourseItemType;
+    index: number;
+  }) => {
+>>>>>>> dev
     return (
       <View>
         <OtherCoursesCard
           grade={item.grade}
-          subTitle={item.subTitle}
           subjectsCount={item.subjectsCount}
+          index={index}
         />
       </View>
     );
@@ -90,7 +104,10 @@ const ChosenCourses = () => {
       <FlatList
         keyExtractor={item => item.id}
         data={DummyCourses}
-        renderItem={renderItemCourse}
+        // renderItem={({item: any, index: number}) =>
+        //   renderItemCourse({item, index})
+        // }
+        renderItem={({item, index}) => renderItemCourse({item, index})}
         horizontal
         showsHorizontalScrollIndicator={false}
       />

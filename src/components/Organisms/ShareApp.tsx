@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     borderRadius: 10,
+    overflow: 'hidden',
     marginBottom: 10,
     width: '100%',
   },
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     borderRadius: 10,
+    overflow: 'hidden',
     marginBottom: 10,
     paddingBottom: 3,
     marginLeft: '5%',
@@ -81,6 +83,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
   },

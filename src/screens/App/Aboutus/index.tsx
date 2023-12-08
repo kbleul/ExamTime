@@ -1,25 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, ActivityIndicator, Alert} from 'react-native';
-import {ScaledSheet, ms} from 'react-native-size-matters';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, ActivityIndicator, Alert } from 'react-native';
+import { ScaledSheet, ms } from 'react-native-size-matters';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../reduxToolkit/Store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../reduxToolkit/Store';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import ShareApp from '../../../components/Organisms/ShareApp';
-import {useGetAboutUsMutation} from '../../../reduxToolkit/Services/auth';
+import { useGetAboutUsMutation } from '../../../reduxToolkit/Services/auth';
 import Loading from '../../../components/Atoms/Loading';
 
 const Index = () => {
   const [getAboutUs] = useGetAboutUsMutation();
-  const [aboutUs, setAboutUS] = useState(undefined);
+  const [aboutUs, setAboutUS] = useState(undefined)
   const [loading, setLoading] = useState(true);
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
   useEffect(() => {
     const fetchAboutUs = async () => {
       try {
-        const response: any = await getAboutUs({});
+        const response:any = await getAboutUs({});
 
         if (response.error) {
           Alert.alert(response.error);
@@ -28,27 +28,22 @@ const Index = () => {
           setAboutUS(aboutUsData);
           setLoading(false);
         } else {
-          Alert.alert(
-            'Invalid response format - missing or empty array:',
-            response.data[0].aboutUs,
-          );
+          Alert.alert('Invalid response format - missing or empty array:', response.data[0].aboutUs);
         }
-      } catch (error: any) {
+      } catch (error:any) {
         setLoading(false);
         Alert.alert('Error fetching about us data:', error);
       }
     };
 
-    fetchAboutUs();
+    fetchAboutUs(); 
   }, []);
   return (
     <View style={styles.container}>
-      {loading ? (
-        <View style={styles.loadingIndicator}>
-          <Loading />
-        </View>
-      ) : (
-        <ScrollView
+      {loading ? (<View style={styles.loadingIndicator}>
+        <Loading />
+      </View>) :
+        (<ScrollView
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}>
           <View style={styles.backicon}>
@@ -56,7 +51,9 @@ const Index = () => {
           </View>
 
           <View style={styles.textContainer}>
-            <Text style={styles.text}>{aboutUs}</Text>
+            <Text style={styles.text}>
+              {aboutUs}
+            </Text>
           </View>
           <View style={styles.imageBg}>
             <Image
@@ -67,8 +64,7 @@ const Index = () => {
           <View style={styles.share}>
             <ShareApp />
           </View>
-        </ScrollView>
-      )}
+        </ScrollView>)}
       <MainBottomNav />
     </View>
   );
@@ -110,7 +106,7 @@ const styles = ScaledSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: '100@ms',
+    paddingBottom:'100@ms'
   },
   share: {
     justifyContent: 'flex-end',

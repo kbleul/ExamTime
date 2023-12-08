@@ -61,6 +61,7 @@ const styles = ScaledSheet.create({
     borderColor: '#abcef5',
     borderWidth: 1,
     borderRadius: '10@ms',
+    overflow: 'hidden',
     fontFamily: 'PoppinsRegular',
     flexDirection: 'row',
     marginHorizontal: '20@s',

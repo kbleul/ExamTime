@@ -171,13 +171,14 @@ const MainBottomNav = () => {
 const style = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 0,
+    bottom: -3,
     left: 0,
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: screenHeight * 0.088,
+    height: screenHeight * 0.11,
+    backgroundColor: '#fff',
   },
   btnsContainer: {
     flexDirection: 'row',
@@ -195,6 +196,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
+    overflow: 'hidden',
     marginBottom: screenHeight * 0.001,
     width: screenWidth * 0.12,
     height: screenWidth * 0.12,
@@ -208,6 +210,7 @@ const style = StyleSheet.create({
     marginTop: 0,
     paddingTop: 0,
     borderRadius: 12,
+    overflow: 'hidden',
   },
   buttonTextActive: {
     fontSize: screenWidth * 0.02,
@@ -225,6 +228,7 @@ const style = StyleSheet.create({
     width: screenWidth * 0.02,
     height: screenWidth * 0.02,
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#0066B2',
     marginBottom: 3,
   },

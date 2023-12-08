@@ -51,9 +51,7 @@ const PracticeModeModal: React.FC<{
             </TouchableOpacity>
           </ImageBackground>
 
-          <Text style={styles.modalText}>
-          Do you want Exam mode to be on?
-          </Text>
+          <Text style={styles.modalText}>Do you want Exam mode to be on?</Text>
 
           <View style={styles.modalSubTextContainer}>
             <Text style={styles.modalSubText}>
@@ -150,9 +148,11 @@ const styles = StyleSheet.create({
     width: '60%',
     height: '70%',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   button: {
     borderRadius: 20,
+    overflow: 'hidden',
     padding: 10,
     elevation: 2,
   },
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
   modalSubTextContainer: {
     paddingHorizontal: 8,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#e1e1e1',
     width: '92%',
     marginVertical: 10,
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
   optionButton: {
     width: '30%',
     borderRadius: 10,
+    overflow: 'hidden',
     paddingVertical: 8,
     borderWidth: 1,
     borderColor: '#F5A52D',

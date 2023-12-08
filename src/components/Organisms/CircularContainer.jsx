@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
+    overflow: 'hidden',
     borderWidth: 2,
     borderColor: 'lightgray',
   },
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     width: 220,
     height: 220,
     borderRadius: 110,
+    overflow: 'hidden',
     borderWidth: 10,
     borderColor: 'white',
     borderStyle: 'solid',
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
+    overflow: 'hidden',
     backgroundColor: 'white',
   },
   centerText: {

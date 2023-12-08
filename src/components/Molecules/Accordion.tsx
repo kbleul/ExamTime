@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#0D66D03B',
     display: 'flex',
     flexDirection: 'row',

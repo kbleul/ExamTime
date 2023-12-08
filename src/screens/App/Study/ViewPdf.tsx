@@ -120,6 +120,7 @@ const buttonsStyles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 200,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#4CB050',

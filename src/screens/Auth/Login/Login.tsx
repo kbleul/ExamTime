@@ -8,6 +8,7 @@ import {screenHeight} from '../../../utils/Data/data';
 import {calculateDateDifference} from '../../App/Onboarding/Logic';
 import {AuthContext} from '../../../Realm/model';
 import {UserData} from '../../../Realm';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Login() {
   const navigator = useNavigation<any>();
@@ -39,6 +40,14 @@ export default function Login() {
         buttonText="Create one now"
         onPress={() => navigator.navigate('Signup')}
       />
+
+      <View style={styles.homeBtnContainer}>
+        <TouchableOpacity
+          touchSoundDisabled
+          onPress={() => navigator.navigate('Home')}>
+          <Text style={styles.homeBtnText}>Home</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -69,5 +78,19 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderColor: '#E1E1E1',
     borderRadius: 10,
+    overflow: 'hidden',
+  },
+  homeBtnContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    paddingVertical: 10,
+  },
+  homeBtn: {
+    alignSelf: 'center',
+  },
+  homeBtnText: {
+    color: '#1E90FF',
+    fontFamily: 'PoppinsSemiBold',
   },
 });

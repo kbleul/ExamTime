@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#AED1F3',
     width: '100%',
     borderRadius: 20,
+    overflow: 'hidden',
     paddingHorizontal: 5,
     paddingBottom: 20,
   },
@@ -100,6 +101,7 @@ const styles = StyleSheet.create({
   button: {
     borderWidth: 1,
     borderRadius: 100,
+    overflow: 'hidden',
     borderColor: 'gray',
     marginTop: 10,
     paddingHorizontal: 20,

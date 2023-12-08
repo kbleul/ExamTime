@@ -25,6 +25,7 @@ import {FormData} from '../../screens/Auth/Login/Types';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
 import {RootState} from '../../reduxToolkit/Store';
+import {screenWidth} from '../../utils/Data/data';
 
 const schema = yup.object().shape({
   phoneNumber: yup
@@ -240,6 +241,7 @@ const styles = StyleSheet.create({
     borderColor: '#81afe6',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     height: 47,
   },
   inputContainerSecondary: {
@@ -250,14 +252,15 @@ const styles = StyleSheet.create({
     width: '20%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 14,
+    fontSize: screenWidth * 0.04,
     textAlign: 'center',
-    color: '#000',
+    color: '#b3b3b3',
     fontFamily: 'PoppinsRegular',
   },
   inputPhone: {
     borderWidth: 0,
     borderRadius: 0,
+    overflow: 'hidden',
     color: '#000',
     paddingLeft: 20,
     borderLeftWidth: 1,
@@ -305,6 +308,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     width: '100%',
     borderRadius: 10,
+    overflow: 'hidden',
     marginTop: 10,
     backgroundColor: '#1E90FF',
   },

@@ -1,6 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NavigationProp} from '@react-navigation/native';
 import {NativeScrollEvent, NativeSyntheticEvent} from 'react-native';
+import {Platform} from 'react-native';
 import {Subject, UserData} from '../../../Realm';
 import {Dispatch} from 'react';
 import {ActionCreatorWithPayload, AnyAction} from '@reduxjs/toolkit';
@@ -15,26 +16,51 @@ import {logoutSuccess} from '../../../reduxToolkit/Features/auth/authSlice';
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type DeleteAccountMutationFn = ReturnType<typeof useDeleteAccountMutation>[0];
 
-export const checkIsOnline = async (
-  navigator: NavigationProp<ReactNavigation.RootParamList>,
-) => {
-  try {
-    const state = await NetInfo.fetch();
+export const checkIsOnline = async (navigator?: any) => {
+  if (Platform.OS === 'ios') {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => {
+        controller.abort();
+      }, 5000); // Set a timeout of 5 seconds
 
-    console.log(state.isConnected, state.isInternetReachable);
-    if (!state.isConnected || !state.isInternetReachable) {
-      navigator.navigate('network-error');
-      console.log('error');
+      const response = await fetch('https://www.google.com', {
+        method: 'HEAD',
+        signal: controller.signal,
+      });
 
+      clearTimeout(timeout); // Clear the timeout if the request completes within 5 seconds
+
+      if (response.status === 200) {
+        return true;
+      } else {
+        console.log('Failed to reach the internet server');
+        navigator && navigator.navigate('network-error');
+        return false;
+      }
+    } catch (error) {
+      console.log({error});
+      navigator && navigator.navigate('network-error');
       return false;
-    } else if (state.isConnected && state.isInternetReachable) {
-      return true;
     }
-  } catch (error) {
-    console.log({error});
-    // Handle any errors (e.g., request timeout)
-    navigator.navigate('network-error');
-    return false; // Assume offline on error
+  } else if (Platform.OS === 'android') {
+    try {
+      const state = await NetInfo.fetch();
+
+      if (!state.isConnected || !state.isInternetReachable) {
+        navigator && navigator.navigate('network-error');
+        console.log('error');
+
+        return false;
+      } else if (state.isConnected && state.isInternetReachable) {
+        return true;
+      }
+    } catch (error) {
+      console.log({error});
+      // Handle any errors (e.g., request timeout)
+      navigator && navigator.navigate('network-error');
+      return false; // Assume offline on error
+    }
   }
 };
 
@@ -200,19 +226,4 @@ export const PushFavorateToFront = (
 export const isHtml = (input: string) => {
   const htmlRegex = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
   return htmlRegex.test(input);
-};
-
-export const isOnline = async () => {
-  try {
-    const state = await NetInfo.fetch();
-
-    if (!state.isConnected || !state.isInternetReachable) {
-      return false;
-    } else if (state.isConnected && state.isInternetReachable) {
-      return true;
-    }
-  } catch (error) {
-    console.log({error});
-    return false; // Assume offline on error
-  }
 };

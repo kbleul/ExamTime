@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     height: 39,
     marginTop: 3,
     paddingHorizontal: 15,
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
   faq: {
     marginTop: 23,
     borderRadius: 10,
+    overflow: 'hidden',
     paddingHorizontal: 6,
     marginHorizontal: 5,
     paddingVertical: 10,
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#0D66D03B',
     display: 'flex',
     flexDirection: 'row',

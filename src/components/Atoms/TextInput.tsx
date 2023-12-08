@@ -1,6 +1,6 @@
 import React from 'react';
-import { TextInput, StyleSheet } from 'react-native';
-import { ScaledSheet } from 'react-native-size-matters';
+import {TextInput, StyleSheet} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 
 interface TextInputProps {
   placeholder: string;
@@ -29,6 +29,7 @@ const styles = ScaledSheet.create({
     borderColor: '#abcef5',
     borderWidth: 1,
     borderRadius: '10@s',
+    overflow: 'hidden',
     color: '#858585',
     fontSize: '14@ms',
     marginHorizontal: '20@s',

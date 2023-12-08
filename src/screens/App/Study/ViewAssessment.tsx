@@ -133,6 +133,7 @@ const ViewAssessment = ({route}) => {
         timeTaken: null,
         examQuestions: questions,
         isPracticeMode: false,
+        isStudy: true,
       });
     } else {
       navigator.navigate('StudySection');

@@ -27,8 +27,7 @@ const SubjectSelectViewBox: React.FC<{
     <View style={styles.subjectsContainer}>
       <View style={styles.subjectsImgContainer}>
         <ChosenCoursesCard
-          title={SelectedSubject?.subject?.subject || ''}
-          lessonsCount={10}
+          subject={SelectedSubject?.subject}
           bgImage={{uri: SelectedSubject.icon}}
         />
         <Text style={styles.dot} />

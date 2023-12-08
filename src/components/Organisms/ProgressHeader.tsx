@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     paddingVertical: screenHeight * 0.01,
     height: screenHeight / 7,
     borderRadius: screenWidth * 0.03,
+    overflow: 'hidden',
   },
   textContainer: {
     width: '70%',

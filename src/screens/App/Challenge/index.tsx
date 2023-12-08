@@ -20,9 +20,10 @@ import SubjectAccordion from '../../../components/Organisms/SubjectAccordion';
 const {width, height} = Dimensions.get('window');
 const Index = () => {
   const SubjectUnikt = [
-    {unit: 'Unit One', lesson: 'Cell Biology', progress: 0},
-    {unit: 'Unit Two', lesson: 'Metabolis', progress: 0},
-    {unit: 'Unit Three', lesson: 'Bio-technology', progress: 0},
+    { unit: 'Unit One', lesson: "Cell Biology", progress: 0 },
+    { unit: 'Unit Two', lesson: "Metabolis", progress: 0 },
+    { unit: 'Unit Three', lesson: "Bio-technology", progress: 0 },
+
   ];
   return (
     <View style={styles.container}>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    backgroundColor: '#FBFDFF',
+    backgroundColor:"#FBFDFF"
   },
   backicon: {
     marginTop: screenHeight * 0.023,

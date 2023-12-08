@@ -126,6 +126,7 @@ const questionCardStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#F9FCFF',
     borderWidth: 1,
     borderColor: '#bdd8f2',
@@ -163,6 +164,7 @@ const questionCardStyles = StyleSheet.create({
   optionButton: {
     width: '42%',
     borderRadius: 7,
+    overflow: 'hidden',
     paddingVertical: 8,
     borderWidth: 1,
     borderColor: '#008E97',

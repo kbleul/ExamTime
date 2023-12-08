@@ -61,6 +61,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 25,
     marginRight: 10,
     borderRadius: 30,
+    overflow: 'hidden',
   },
 
   buttonSelected: {

@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
+    overflow: 'hidden',
     padding: 10,
     alignItems: 'center',
     shadowColor: '#000',

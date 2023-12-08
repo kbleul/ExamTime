@@ -295,16 +295,11 @@ export const {
   useGetExamsMutation,
   useGetSubjectMutation,
   useGetRandomExamMutation,
-<<<<<<< HEAD
   useGetFaqMutation,
-  useCreatecommentMutation
-  
-
-=======
+  useCreatecommentMutation,
   useGetAboutUsMutation,
   useGetUserGuideMutation,
   useGetStudyMutation,
   usePostExamResultsMutation,
   useGetExamResultsMutation,
->>>>>>> dev
 } = api;

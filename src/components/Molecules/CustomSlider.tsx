@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
   },
   sliderContainer: {
     width: '100%',

@@ -56,27 +56,6 @@ const ExamLeaveModal: React.FC<{
                 ? 'You haven’t completed the exam! are you sure you want to finish?'
                 : ''}
             </Text>
-          )} */}
-
-          <ImageBackground
-            style={styles.modalImageContaner}
-            source={require('../../assets/Images/Practice/running_bg.png')} // Replace with the correct path to your image
-            resizeMode="cover">
-            <Image
-              source={require('../../assets/Images/Practice/bell_bg.png')}
-              style={styles.modalImg}
-            />
-          </ImageBackground>
-
-          <Text style={styles.infoTextYellow}>
-            {examStatusData.total - examStatusData.answered}{' '}
-            <Text style={styles.infoTextYellowSubtext}>Questions left</Text>
-          </Text>
-
-          {!isTimeOver && (
-            <Text style={styles.modalText}>
-              You haven’t completed the exam! are you sure you want to finish?
-            </Text>
           )}
 
           {timeLeft && (
@@ -179,10 +158,12 @@ const styles = StyleSheet.create({
     width: '45%',
     height: '55%',
     borderRadius: 10,
+    overflow: 'hidden',
   },
 
   button: {
     borderRadius: 20,
+    overflow: 'hidden',
     padding: 10,
     elevation: 2,
   },
@@ -261,6 +242,7 @@ const styles = StyleSheet.create({
   optionButton: {
     width: '35%',
     borderRadius: 7,
+    overflow: 'hidden',
     paddingVertical: 12,
     borderWidth: 1,
     borderColor: '#F5A52D',

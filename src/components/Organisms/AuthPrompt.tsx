@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     width: '43%',
     paddingVertical: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#6A5ACD',
   },
   adsBtns_secondary: {

@@ -287,6 +287,7 @@ const styles = StyleSheet.create({
     borderColor: '#81afe6',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     paddingVertical: 4,
   },
   bigBox: {
@@ -298,6 +299,7 @@ const styles = StyleSheet.create({
     color: '#4D4D4D',
     paddingHorizontal: 20,
     borderRadius: 0,
+    overflow: 'hidden',
     borderWidth: 0,
     borderRightWidth: 1,
   },

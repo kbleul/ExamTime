@@ -9,6 +9,7 @@ const ExamNavigateButtons: React.FC<{
   setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
   totalQuestionsLength: number;
   isReview?: boolean;
+  isStudy?: boolean;
 }> = ({
   setExitExamModalVisible,
   showFullPage,
@@ -16,6 +17,7 @@ const ExamNavigateButtons: React.FC<{
   setCurrentQuestion,
   totalQuestionsLength,
   isReview,
+  isStudy,
 }) => {
   return (
     <View style={ButtonStyles.contaienr}>
@@ -34,6 +36,7 @@ const ExamNavigateButtons: React.FC<{
         isEndBtn={true}
         isReview={isReview}
         setCurrentQuestion={setCurrentQuestion}
+        isStudy={isStudy}
       />
       {!showFullPage && currentQuestion !== totalQuestionsLength - 1 && (
         <Buttons
@@ -53,11 +56,22 @@ const Buttons: React.FC<{
   setExitExamModalVisible: (value: boolean | null) => void;
   isEndBtn: boolean;
   isReview?: boolean;
-}> = ({text, bgColor, setExitExamModalVisible, isEndBtn, isReview}) => {
-  const navigator = useNavigation();
+  isStudy?: boolean;
+}> = ({
+  text,
+  bgColor,
+  setExitExamModalVisible,
+  isEndBtn,
+  isReview,
+  isStudy,
+}) => {
+  const navigator: any = useNavigation();
   const handleAction = () => {
-    if (isReview) navigator.navigate('Practice');
-    else {
+    if (isReview) {
+      isStudy
+        ? navigator.navigate('StudySection')
+        : navigator.navigate('Practice');
+    } else {
     }
     setExitExamModalVisible(true);
   };
@@ -85,6 +99,7 @@ const ButtonStyles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 200,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
   },

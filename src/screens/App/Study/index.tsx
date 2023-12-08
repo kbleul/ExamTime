@@ -1,14 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   Image,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  ImageBackground,
   FlatList,
 } from 'react-native';
-import BackWithItem from '../../../components/Organisms/BackWithItem';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {ScaledSheet} from 'react-native-size-matters';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
@@ -18,36 +16,66 @@ import {AuthContext} from '../../../Realm/model';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
-import {getAllStudies} from './logic';
+import {calculateProgress, getAllStudies} from './logic';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
 import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
 import {SvgXml} from 'react-native-svg';
 import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
+import LoginModal from '../../../components/Organisms/LoginModal';
 
-const CourseItem = ({item}: {item: subjectType}) => {
+const CourseItem = ({
+  item,
+  setLoginModalVisible,
+  isLoading,
+}: {
+  item: subjectType;
+  setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
+}) => {
   const navigator: any = useNavigation();
+  const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const {useQuery} = AuthContext;
+
+  const savedStudies = useQuery(Study, studies => {
+    return studies.filtered(
+      `subject.id = "${item.id}" OR subject.subject = "${item.subject.subject}"`,
+    );
+  });
+  const progress = calculateProgress(savedStudies) + '%';
 
   return (
     <TouchableOpacity
       style={styles.lcontainer}
-      onPress={() =>
-        navigator.navigate('StudyDetails', {
-          subject: item.subject,
-        })
-      }>
+      onPress={() => {
+        if (!user || !token) {
+          setLoginModalVisible(true);
+          return;
+        }
+
+        savedStudies.length > 0 &&
+          navigator.navigate('StudyDetails', {
+            subject: item.subject,
+          });
+      }}>
       <View style={styles.imgContainer}>
-        <SvgXml style={styles.imagebg} xml={item.icon} onError={onError} />
+        {isLoading ? (
+          <View style={[styles.imagebg, styles.imagebgLoading]} />
+        ) : (
+          <SvgXml style={styles.imagebg} xml={item.icon} onError={onError} />
+        )}
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={styles.subject}>{item.subject.subject}</Text>
-        <Text style={styles.units}>15 units</Text>
-        <Text style={styles.progressText}>completed {item.progress}% </Text>
+        <Text style={styles.units}>{savedStudies.length} units</Text>
+        <Text style={styles.progressText}>completed {progress}</Text>
 
         <View style={styles.indicatorContainer}>
-          <Text style={[styles.indicator, {width: item.progress + '%'}]} />
+          <Text style={[styles.indicator, {width: progress}]} />
         </View>
       </View>
     </TouchableOpacity>
@@ -55,7 +83,7 @@ const CourseItem = ({item}: {item: subjectType}) => {
 };
 
 const Index = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
 
   const {useRealm, useQuery} = AuthContext;
@@ -67,11 +95,19 @@ const Index = () => {
 
   const [getStudy] = useGetStudyMutation();
 
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (!savedStudies || savedStudies.length === 0) {
       getAllStudies(getStudy, navigation, token, realm, Toast);
     }
   }, []);
+
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
 
   return (
     <View style={styles.container}>
@@ -102,11 +138,22 @@ const Index = () => {
           savedUserData[0].selectedSubjects || [],
           savedSubjects,
         )}
-        renderItem={({item}) => <CourseItem item={item} />}
+        renderItem={({item}) => (
+          <CourseItem
+            item={item}
+            setLoginModalVisible={setLoginModalVisible}
+            isLoading={isLoading}
+          />
+        )}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
       />
+
       <MainBottomNav />
+      <LoginModal
+        loginModalVisible={loginModalVisible}
+        setLoginModalVisible={setLoginModalVisible}
+      />
 
       <Toast />
     </View>
@@ -126,6 +173,9 @@ const styles = ScaledSheet.create({
     paddingBottom: 70,
     paddingHorizontal: 10,
     // backgroundColor: 'red',
+  },
+  loading: {
+    paddingTop: screenHeight * 0.1,
   },
   headerContainerTop: {
     paddingHorizontal: screenWidth * 0.02,
@@ -215,6 +265,9 @@ const styles = ScaledSheet.create({
     width: screenWidth * (1 / 2.6),
     borderRadius: 5,
     overflow: 'hidden',
+  },
+  imagebgLoading: {
+    backgroundColor: '#f5f2f2',
   },
   infoContainer: {
     width: '67%',
