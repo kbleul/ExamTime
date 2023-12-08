@@ -1,14 +1,27 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
 type PrimaryBtnProps = {
   text: String;
-  onPress?: (text:any) => void;
+  onPress?: (text: any) => void;
+  isLoading: boolean;
 };
-const PrimaryBtn: React.FC<PrimaryBtnProps> = ({text, onPress}) => {
+const PrimaryBtn: React.FC<PrimaryBtnProps> = ({text, onPress, isLoading}) => {
   return (
-    <TouchableOpacity style={styles.Sendbtn} onPress={onPress}>
-      <Text style={styles.sendbtnText}>{text}</Text>
+    <TouchableOpacity
+      style={styles.Sendbtn}
+      onPress={() => !isLoading && onPress && onPress(text)}>
+      {isLoading ? (
+        <ActivityIndicator color="#fff" />
+      ) : (
+        <Text style={styles.sendbtnText}>{text}</Text>
+      )}
     </TouchableOpacity>
   );
 };

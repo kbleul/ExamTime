@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,46 +12,43 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import ShareApp from '../../../components/Organisms/ShareApp';
 import ContactUs from '../../../components/Organisms/ContactUs';
-import { RootState } from '../../../reduxToolkit/Store';
-import { useCreatecommentMutation } from '../../../reduxToolkit/Services/auth';
+import {RootState} from '../../../reduxToolkit/Store';
+import {useCreatecommentMutation} from '../../../reduxToolkit/Services/auth';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 
-
 const Index = () => {
   const navigator = useNavigation<any>();
-  
-  
+
   const token = useSelector((state: RootState) => state.auth.token);
-  const [
-    Createcomment,
-    {isLoading: isLoadingChange, isError: isErrorChange, error: errorChange},
-  ] = useCreatecommentMutation();
+  const [Createcomment, {isLoading: isLoadingChange}] =
+    useCreatecommentMutation();
 
-  const SendMessage = async (text:any) => {
-    try{
-      const result = await Createcomment({ token: token || '', comment:text})
-      if(result?.statusCode==200){
-        Toast.show({
-          type: 'success',
-          text1: 'success',
-          text2: 'Profile updated successfuly',
-          visibilityTime: 4000,
-        });
-      }
+  const SendMessage = async (text: any) => {
+    try {
+      console.log('clicked');
+      const result: any = await Createcomment({
+        token: token || '',
+        comment: text,
+      });
+      console.log(result);
 
-      if(result?.statusCode==401){
+      if (result?.statusCode == 401) {
         Toast.show({
           type: 'error',
           text1: 'Error!',
-          text2: `${result.error}`,
+          text2: `Post comment unsuccessfull. Please try again`,
         });
+        return;
       }
-      }
-    
-    catch(error){
 
-    }
+      Toast.show({
+        type: 'success',
+        text1: 'success',
+        text2: 'Message sent successfully',
+        visibilityTime: 4000,
+      });
+    } catch (error) {}
   };
 
   return (
@@ -67,7 +64,7 @@ const Index = () => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
         <View style={styles.AboutusContener}>
-          <ContactUs onPress={SendMessage} />
+          <ContactUs onPress={SendMessage} isLoading={isLoadingChange} />
           <ShareApp />
         </View>
       </ScrollView>
@@ -75,6 +72,8 @@ const Index = () => {
       <View>
         <MainBottomNav />
       </View>
+
+      <Toast />
     </SafeAreaView>
   );
 };

@@ -10,7 +10,7 @@ import {
   studyType,
   subjectType,
   userType,
-  CommentType
+  CommentType,
 } from '../../types';
 import Config from 'react-native-config';
 import {newAnswerType} from '../../hooks/usePostSyncData';
@@ -137,7 +137,7 @@ export const api = createApi({
           headers: {
             Authorization: `Bearer ${data.token}`,
           },
-          body:{comment:data.comment},
+          body: {comment: data.comment},
         };
       },
     }),

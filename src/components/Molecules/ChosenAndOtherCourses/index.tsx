@@ -60,9 +60,6 @@ const ChosenCourses = ({
     );
   };
 
-<<<<<<< HEAD
-  const renderItemCourse = ({item}: {item: CourseItemType}) => {
-=======
   const renderItemCourse = ({
     item,
     index,
@@ -70,7 +67,6 @@ const ChosenCourses = ({
     item: CourseItemType;
     index: number;
   }) => {
->>>>>>> dev
     return (
       <View>
         <OtherCoursesCard

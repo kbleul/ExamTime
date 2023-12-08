@@ -4,14 +4,16 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import SendUsmessage from '../Molecules/SendUsmessage';
 
-const ContactUs: React.FC<{onPress: (text:any) => void}> = ({onPress}) => {
-
-  const handelPhonecall=()=>{
+const ContactUs: React.FC<{
+  onPress: (text: any) => void;
+  isLoading: boolean;
+}> = ({onPress, isLoading}) => {
+  const handelPhonecall = () => {
     Linking.openURL('tel:+251912462133');
-  }
-  const handelTelegram=()=>{
+  };
+  const handelTelegram = () => {
     Linking.openURL('https://t.me/thinkhub');
-  }
+  };
   return (
     <View style={styles.AboutusContener}>
       <View style={styles.textContener}>
@@ -22,7 +24,7 @@ const ContactUs: React.FC<{onPress: (text:any) => void}> = ({onPress}) => {
           we get back to you as soon as possible{' '}
         </Text>
       </View>
-      <SendUsmessage onPress={onPress} />
+      <SendUsmessage onPress={onPress} isLoading={isLoading} />
       <View style={styles.befamTextContener}>
         <Text style={styles.befamText}>
           be a part of our famliy by joining our telegram Channale
@@ -33,7 +35,9 @@ const ContactUs: React.FC<{onPress: (text:any) => void}> = ({onPress}) => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.befamTextContener2} onPress={handelPhonecall}>
+      <TouchableOpacity
+        style={styles.befamTextContener2}
+        onPress={handelPhonecall}>
         <SimpleLineIcons name="earphones-alt" size={22} />
         <Text style={styles.callText}>Call custommer service</Text>
       </TouchableOpacity>
