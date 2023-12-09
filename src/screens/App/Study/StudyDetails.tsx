@@ -54,6 +54,7 @@ const StudyDetails = ({route}) => {
               subjectName={subject.subject}
               progress={calculateProgress(savedStudies)}
             />
+
             {savedStudies.map((study, index) => (
               <UnitsCard
                 key={study.id + '--' + index}
@@ -126,6 +127,10 @@ const Accordion = ({study}: {study: Study}) => {
 
   return (
     <View>
+      {study.objective && (
+        <Text style={accordiontyles.objectiveText}>{study.objective}</Text>
+      )}
+
       {study.selectedQuestion && study.selectedQuestion.length > 0 && (
         <View style={accordiontyles.container}>
           <TouchableOpacity
@@ -172,30 +177,30 @@ const Accordion = ({study}: {study: Study}) => {
         </View>
       )}
 
-      {study.videoLink &&
-        study.videoLink.length > 0 &&
-        study.videoLink.map((link, index) => (
-          <View
-            style={accordiontyles.container}
-            key={link.videoLink + '' + index + 'links'}>
-            <TouchableOpacity
-              touchSoundDisabled
-              style={accordiontyles.videoContainer}
-              onPress={() =>
-                navigator.navigate('ViewVideo', {
-                  videos: study.videoLink,
-                  selectedVideoIndex: index,
-                })
-              }>
-              <Text style={accordiontyles.videoText}>
-                0{index + 1}. Study video
-              </Text>
-              <View style={accordiontyles.videoIcon}>
-                <Entypo name="controller-play" size={30} color="#fff" />
-              </View>
-            </TouchableOpacity>
-          </View>
-        ))}
+      {study.videoLink && study.videoLink.length > 0 && (
+        <View style={accordiontyles.container}>
+          {study.videoLink.map((link, index) => (
+            <View style={{}} key={link.videoLink + '' + index + 'links'}>
+              <TouchableOpacity
+                touchSoundDisabled
+                style={accordiontyles.videoContainer}
+                onPress={() =>
+                  navigator.navigate('ViewVideo', {
+                    videos: study.videoLink,
+                    selectedVideoIndex: index,
+                  })
+                }>
+                <Text style={accordiontyles.videoText}>
+                  0{index + 1}. Study video
+                </Text>
+                <View style={accordiontyles.videoIcon}>
+                  <Entypo name="controller-play" size={30} color="#fff" />
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -232,7 +237,7 @@ const unitCardStyles = StyleSheet.create({
   },
   menuContainer: {
     width: '20%',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   textContainer: {
@@ -240,14 +245,15 @@ const unitCardStyles = StyleSheet.create({
     position: 'relative',
   },
   textTitle: {
-    color: '#1E90FF',
+    color: '#1e90ff',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.045,
+    fontSize: screenWidth * 0.042,
+    textTransform: 'capitalize',
   },
   textSubTitle: {
     color: '#000',
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.033,
+    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.04,
     position: 'absolute',
     bottom: -10,
   },
@@ -267,6 +273,22 @@ const accordiontyles = StyleSheet.create({
     borderColor: '#E1E1E1',
     paddingVertical: 10,
     paddingHorizontal: 15,
+  },
+  objectiveText: {
+    borderWidth: 1,
+    borderColor: '#E1E1E1',
+    overflow: 'hidden',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    marginHorizontal: 10,
+    marginTop: 8,
+    marginBottom: 5,
+    fontFamily: 'PoppinsMedium',
+    textTransform: 'capitalize',
+    fontSize: screenWidth * 0.036,
+    color: '#000',
+    lineHeight: 24,
   },
   videoContainer: {
     flexDirection: 'row',
