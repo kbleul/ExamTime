@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,7 +16,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useNavigation} from '@react-navigation/native';
-import {calculateProgress} from './logic';
+import {calculateProgress, filterStudies, getSections} from './logic';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import Toast from 'react-native-toast-message';
 
@@ -31,15 +31,29 @@ const StudyDetails = ({route}) => {
     );
   });
 
+  const [viewStudies, setViewStudies] = useState([...savedStudies]);
   const [showAccordianId, setShowAccordianId] = useState<string | null>(null);
+  const [selectedSection, setSelectedSection] = useState(
+    savedStudies[0].section,
+  );
 
   useEffect(() => {
-    savedStudies.length === 0 &&
+    if (savedStudies.length === 0) {
       Toast.show({
         type: 'error',
         text1: 'No study items found',
         text2: 'Try a different subject',
       });
+      return;
+    }
+
+    selectedSection &&
+      filterStudies(
+        savedStudies,
+        selectedSection,
+        setViewStudies,
+        setSelectedSection,
+      );
   }, []);
 
   return (
@@ -55,7 +69,14 @@ const StudyDetails = ({route}) => {
               progress={calculateProgress(savedStudies)}
             />
 
-            {savedStudies.map((study, index) => (
+            <SectionMenu
+              studies={savedStudies}
+              setViewStudies={setViewStudies}
+              setSelectedSection={setSelectedSection}
+              selectedSection={selectedSection}
+            />
+
+            {viewStudies.map((study, index) => (
               <UnitsCard
                 key={study.id + '--' + index}
                 study={study}
@@ -70,6 +91,51 @@ const StudyDetails = ({route}) => {
     </SafeAreaView>
   );
 };
+
+const SectionMenu = memo(function SectionMenu({
+  studies,
+  setViewStudies,
+  setSelectedSection,
+  selectedSection,
+}: {
+  studies: ResultsType<Study>;
+  setViewStudies: React.Dispatch<React.SetStateAction<Study[]>>;
+  setSelectedSection: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedSection: string | null;
+}) {
+  const sectionItems = getSections(studies);
+
+  return (
+    <View style={menuStyle.container}>
+      <ScrollView
+        style={menuStyle.srollContainer}
+        contentContainerStyle={menuStyle.contentContainer}
+        horizontal
+        showsHorizontalScrollIndicator={false}>
+        {sectionItems.map((section, index) => (
+          <TouchableOpacity
+            touchSoundDisabled
+            key={section + '--' + index}
+            style={
+              selectedSection === section
+                ? [menuStyle.button, menuStyle.buttonSelected]
+                : menuStyle.button
+            }
+            onPress={() =>
+              filterStudies(
+                studies,
+                section,
+                setViewStudies,
+                setSelectedSection,
+              )
+            }>
+            <Text style={menuStyle.buttonText}>{section}</Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
+  );
+});
 
 const UnitsCard = ({
   study,
@@ -221,6 +287,37 @@ const style = StyleSheet.create({
   },
 });
 
+const menuStyle = StyleSheet.create({
+  container: {
+    height: 60,
+  },
+  srollContainer: {
+    width: screenWidth,
+    marginBottom: 1,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingRight: 30,
+    marginLeft: screenWidth * 0.07,
+  },
+  button: {
+    paddingVertical: 2,
+    paddingHorizontal: screenWidth / 6,
+  },
+  buttonSelected: {
+    borderBottomWidth: 3,
+    borderColor: '#399BE2',
+  },
+  buttonText: {
+    fontSize: screenWidth * 0.04,
+    color: '#000',
+    fontFamily: 'PoppinsMedium',
+    textTransform: 'capitalize',
+  },
+});
+
 const unitCardStyles = StyleSheet.create({
   container: {
     marginHorizontal: 10,
@@ -330,7 +427,7 @@ const accordiontyles = StyleSheet.create({
     height: 45,
   },
   assessmentTitle: {
-    fontFamily: 'PoppinsBold',
+    fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.04,
     marginLeft: screenWidth * 0.03,
     color: '#000',

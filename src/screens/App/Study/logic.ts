@@ -188,3 +188,30 @@ export const calculateProgress = (studyObj: Study[]) => {
   });
   return Math.round(totalPreogress);
 };
+
+export const getSections = (studies: ResultsType<Study>) => {
+  const sections: string[] = [];
+
+  studies.forEach(
+    (savedStudy: Study) =>
+      savedStudy.section &&
+      !sections.includes(savedStudy.section) &&
+      sections.push(savedStudy.section),
+  );
+
+  return sections;
+};
+
+export const filterStudies = (
+  studies: ResultsType<Study>,
+  selectedSection: string,
+  setViewStudies: React.Dispatch<React.SetStateAction<Study[]>>,
+  setSelectedSection: React.Dispatch<React.SetStateAction<string | null>>,
+) => {
+  const filteredStudies = studies.filter(
+    (study: Study) => study.section === selectedSection,
+  );
+
+  setViewStudies([...filteredStudies]);
+  setSelectedSection(selectedSection);
+};
