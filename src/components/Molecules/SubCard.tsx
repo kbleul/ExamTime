@@ -4,18 +4,19 @@ import Animated, { useAnimatedStyle, withSpring, Extrapolate, interpolate } from
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { screenHeight, screenWidth } from '../../utils/Data/data';
+import { scale } from 'react-native-size-matters';
 
 interface SubCardProps {
-  item: any; 
+  item: any;
   x: any;
-  index: number; 
-  size: number; 
-  spacer: number; 
+  index: number;
+  size: number;
+  spacer: number;
 }
 
 const SubCard: React.FC<SubCardProps> = ({ item, x, index, size, spacer }) => {
-  const activeColor = 'white'; // Color when card is active
-  const inactiveColor = '#f4f0ec';
+  const activeColor = '#FAFAFA'; // Color when card is active
+  const inactiveColor = 'white';
   const activeColorBorder = '#ED7218'; // Color when card is active
   const inactiveColorBorder = 'grey';
 
@@ -57,26 +58,22 @@ const SubCard: React.FC<SubCardProps> = ({ item, x, index, size, spacer }) => {
             <Text style={styles.PriceDate} >/6 Month</Text>
           </View>
         </View>
+        <View style={styles.cdivider}>
+          <View style={styles.divider} />
+        </View>
+
         <View style={styles.PackgeListsConatiner}>
           {item.packages.map((packageItem, index) => {
             const { available, packagesname } = packageItem;
             return (
-              <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {available ? (
+              <View key={index} style={{ flexDirection: 'row', gap:5, alignItems: 'center' ,    justifyContent: 'flex-start'}}>
+                <View style={styles.cIcon}>
                   <AntDesign
                     name="check"
-                    size={20}
-                    color="green"
-                    style={{ marginRight: 5 }}
+                    size={15}
+                    color="white"
                   />
-                ) : (
-                  <AntDesign
-                    name="close"
-                    size={20}
-                    color="red"
-                    style={{ marginRight: 5 }}
-                  />
-                )}
+                </View>
                 <Text style={styles.listofPackagesText}>{packagesname}</Text>
               </View>
 
@@ -87,7 +84,7 @@ const SubCard: React.FC<SubCardProps> = ({ item, x, index, size, spacer }) => {
         </View>
         <View
           style={[
-            styles.Button,
+            styles.Button
           ]}>
           <TouchableOpacity style={[
             styles.listofPackagesBottom,
@@ -165,7 +162,7 @@ const styles = StyleSheet.create({
   CardHeaderText: {
     padding: screenWidth * 0.01,
     marginHorizontal: screenWidth * 0.04,
-    marginVertical: screenWidth * 0.05,
+    marginVertical: screenWidth * 0.04,
   },
   PackgeListsConatiner: {
     padding: screenWidth * 0.01,
@@ -193,7 +190,30 @@ const styles = StyleSheet.create({
     fontSize: screenWidth * 0.05,
     textAlign: 'left',
   },
+  cdivider: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: "100%",
+
+  },
+  divider: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: "80%",
+    marginVertical: screenHeight * 0.011,
+    marginHorizontal: screenWidth * 0.01,
+    height: 2,
+    backgroundColor: '#F3F3F4',
+  },
+  cIcon:{
+    width:scale(15),
+    height:scale(15),
+    // padding:1,
+    borderRadius:100,
+    alignItems:"center",
+    justifyContent:"center",
+    backgroundColor:"#B9B8C5"
+  }
 });
 export default SubCard;
-
 

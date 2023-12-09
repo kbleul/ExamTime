@@ -1,15 +1,18 @@
 import React from 'react';
-import {ScrollView, Text, View, TextInput, StyleSheet} from 'react-native';
+import { ScrollView, Text, View, TextInput, StyleSheet } from 'react-native';
 import Antdesign from 'react-native-vector-icons/AntDesign';
 import Accordion from '../Molecules/Accordion';
-import {FAQ, screenHeight} from '../../utils/Data/data';
+import { FAQ, screenHeight } from '../../utils/Data/data';
+import AccordionComponet from '../Molecules/Accordion';
+import scale from '../../utils/Functions/Scale';
 const FaqContener = () => {
   return (
     <View>
-      <Text style={styles.subHeadtext}>Find Answers to Your Questions</Text>
+
       <View style={styles.faqInput}>
-        <TextInput placeholder="write your question" style={styles.input} />
         <Antdesign name="search1" size={24} color="#d4d4d4" />
+        <TextInput placeholder="Search Using Keywords" style={styles.input} />
+
       </View>
 
       <View style={styles.faq}>
@@ -17,11 +20,8 @@ const FaqContener = () => {
           style={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}>
-          <Text style={styles.faqText}>Frequently asked questions</Text>
-
-          {FAQ.map((item, index) => (
-            <Accordion key={index} question={item.ques} answer={item.ans} />
-          ))}
+          <Text style={styles.faqText}>About Exam Time</Text>
+          <AccordionComponet/>
         </ScrollView>
       </View>
     </View>
@@ -37,28 +37,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   scrollContainer: {
-    paddingBottom: 40,
+    // paddingBottom: 40,
   },
   faqInput: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 2,
     alignItems: 'center',
-    gap: 1,
+    gap: 10,
     borderColor: '#0D66D03B',
     backgroundColor: '#FFFFFF',
-    borderWidth: 1,
     borderRadius: 10,
-    height: 39,
+    height: scale(45),
     marginTop: 3,
+    elevation: 5,
     paddingHorizontal: 15,
-    marginHorizontal: 15,
+
   },
   input: {
-    width: 280,
-    height: 39,
-    color: '#d4d4d4',
+    flex: 1,
+    fontSize: scale(15),
+    color: '#9A9A9A',
+    fontFamily: 'PoppinsRegular',
   },
   faq: {
     marginTop: 23,
@@ -67,14 +67,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     paddingVertical: 10,
     backgroundColor: '#FFFFFF',
-    height: screenHeight - 380,
+    height: screenHeight - 200,
   },
   faqText: {
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 18,
+    fontFamily: 'PoppinsMedium',
+    fontSize: scale(20),
     fontWeight: '500',
-    lineHeight: 22,
-    color: '#4D4D4D',
+    color: '#3C3D6E',
     marginBottom: 10,
   },
   faqBtn: {
