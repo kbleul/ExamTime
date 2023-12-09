@@ -36,7 +36,6 @@ const ProfileEditIndex = () => {
   };
   return (
     <View style={styles.container}>
-
       <View style={styles.imageBg}>
         <ImageBackground
           style={styles.img}
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   imageBg: {
-    backgroundColor: 'blue',
+    backgroundColor: '#f0efed',
     height: '25%',
     width: '100%',
     resizeMode: 'cover',

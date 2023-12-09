@@ -31,7 +31,6 @@ import BackButton from '../Atoms/BackButton';
 import DoneButton from '../Atoms/DoneButton';
 import PasswordField from '../Molecules/PasswordField';
 import ChangePasswordButton from '../Atoms/ChangePasswordButton';
-import {userGuideData} from '../../utils/Data/data';
 
 const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const dispatch = useDispatch();
@@ -78,13 +77,14 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const handleUpdateProfile = async () => {
     if (token) {
       const [firstName, lastName] = fullName.split(' ');
+
       const profileData = {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phone,
         grade: grade,
         gender: user?.gender ?? '',
-        region: region?.toLocaleLowerCase(),
+        region: region,
       };
 
       try {
@@ -122,7 +122,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
           if (profileUpdateResult.error) {
             Toast.show({
               type: 'error',
-              text1: 'Error!',
+              text1: 'Error uploading profile picture!',
               text2: `${profileUpdateResult.error}`,
             });
           }
@@ -138,7 +138,15 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
       try {
         const result = await changeProfile({token, profileData});
 
-        if (result.data.user && user) {
+        if (result.error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Error updating profile data!',
+            text2: `${result.error.data.message}`,
+          });
+        }
+
+        if (result?.data && result.data.user && user) {
           dispatch(
             loginSuccess({
               user: {
@@ -166,21 +174,14 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             token,
             realm,
           );
-        }
-        if (result.error) {
+
           Toast.show({
-            type: 'error',
-            text1: 'Error!',
-            text2: `${result.error}`,
+            type: 'success',
+            text1: 'success',
+            text2: 'Profile updated successfuly',
+            visibilityTime: 4000,
           });
         }
-
-        Toast.show({
-          type: 'success',
-          text1: 'success',
-          text2: 'Profile updated successfuly',
-          visibilityTime: 4000,
-        });
 
         setTimeout(() => navigation.navigate('Profile'), 1000);
         setFullName('');
@@ -189,7 +190,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
       } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Error!',
+          text1: 'Error updating profile data!',
           text2: `${error}`,
         });
       }
@@ -248,8 +249,8 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
 
       response.map((region: {region: string}) => {
         tempRegionsList.push({
-          label: region.region.toUpperCase(),
-          value: region.region.toUpperCase(),
+          label: region.region,
+          value: region.region,
         });
       });
 
@@ -308,7 +309,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             <DropdownForRegionField
               regionsListItems={regionsListItems}
               isFocusRegion={isFocusRegion}
-              region={region}
+              region={region ? region : ''}
               setIsFocusRegion={setIsFocusRegion}
               setRegion={setRegion}
               isLoadingRegions={isLoadingRegions}
@@ -404,7 +405,6 @@ const styles = ScaledSheet.create({
     marginHorizontal: '15@s',
     marginTop: '10@vs',
     flex: 1,
-  
   },
   changePassword: {
     backgroundColor: '#1E90FF',
