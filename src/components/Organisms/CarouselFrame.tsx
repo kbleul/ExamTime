@@ -100,6 +100,7 @@ export const FrameOne: React.FC<{
   img: any;
   text: string;
 }> = ({name, img, text}) => {
+  const user = useSelector((state: RootState) => state.auth.user);
   return (
     <View style={styles.container}>
       <View style={frameOnestyles.leftBoxContainer}>
@@ -114,7 +115,10 @@ export const FrameOne: React.FC<{
         </View>
         <Text style={frameOnestyles.subText}>{text}</Text>
       </View>
-      <Image source={img} style={frameOnestyles.rightBoxContainer} />
+      <Image
+        source={user && user.profilePicture ? {uri: user.profilePicture} : img}
+        style={frameOnestyles.rightBoxContainer}
+      />
     </View>
   );
 };

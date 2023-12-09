@@ -50,6 +50,12 @@ export type OTPDataType = {
   code: string;
   forgotPassword: boolean;
 };
+export type CommentType = {
+  token: string;
+  comment: string
+
+
+};
 
 export type CreatePassworDataType = {
   userId: string;
@@ -74,6 +80,10 @@ export type ChangePasswordFormDataType = {
 export type regionItemsType = {
   label: string;
   value: string;
+};
+export type faqItemsType = {
+  question: string;
+  answer: string;
 };
 
 export type examQuestionType = {

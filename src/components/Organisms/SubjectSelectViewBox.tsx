@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ChosenCoursesCard from '../Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 import {screenWidth} from '../../utils/Data/data';
@@ -12,11 +12,22 @@ const SubjectSelectViewBox: React.FC<{
   const {useQuery} = AuthContext;
   const savedSubjects = useQuery(Subject);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, [SelectedSubject]);
+
   const renderItem = ({item}: {item: any}) => (
     <View style={styles.renderStyle}>
       <SubjectsButton
         title={item.subject.subject}
-        updateSelectedSubject={() => setSelectedSubject(item)}
+        updateSelectedSubject={() => {
+          setIsLoading(true);
+          setSelectedSubject(item);
+        }}
         SelectedSubject={SelectedSubject.id}
         itemId={item.id}
       />
@@ -29,6 +40,7 @@ const SubjectSelectViewBox: React.FC<{
         <ChosenCoursesCard
           subject={SelectedSubject?.subject}
           bgImage={{uri: SelectedSubject.icon}}
+          isLoadingSubjects={isLoading}
         />
         <Text style={styles.dot} />
       </View>

@@ -18,7 +18,7 @@ const SubscriptionPlanCards = ({data, pagination}) => {
   ]);
   const {width} = useWindowDimensions();
   const SIZE = width * 0.7;
-  const SPACER = (width - SIZE) / 3;
+  const SPACER = (width - SIZE) / 2;
   const x = useSharedValue(0);
   const offSet = useSharedValue(0);
 
@@ -66,7 +66,7 @@ const SubscriptionPlanCards = ({data, pagination}) => {
 
 const styles = StyleSheet.create({
   Cards: {
-    height: screenHeight * 0.6,
+    height: screenHeight * 0.62,
   },
 });
 export default SubscriptionPlanCards;

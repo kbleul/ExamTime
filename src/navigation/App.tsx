@@ -83,6 +83,13 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           component={PracticeQuestion}
           options={{headerShown: false}}
         />
+     
+     
+        <Stack.Screen
+          name="Random-Exam"
+          component={RandomQuestionsView}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Exam-Review"
           component={ExamReview}
@@ -93,11 +100,7 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           component={ExamResult}
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          name="Random-Exam"
-          component={RandomQuestionsView}
-          options={{headerShown: false}}
-        />
+    
         <Stack.Screen
           name="Profile"
           component={Profile}

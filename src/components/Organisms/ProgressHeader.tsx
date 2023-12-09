@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {screenWidth, screenHeight} from '../../utils/Data/data';
-
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
 import scale from '../../utils/Functions/Scale';
 

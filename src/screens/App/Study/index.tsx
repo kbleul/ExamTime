@@ -84,30 +84,19 @@ const CourseItem = ({
 
 const Index = () => {
   const navigation: any = useNavigation();
-  const token = useSelector((state: RootState) => state.auth.token);
 
-  const {useRealm, useQuery} = AuthContext;
-  const realm = useRealm();
+  const {useQuery} = AuthContext;
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
-  const savedStudies = useQuery(Study);
-
-  const [getStudy] = useGetStudyMutation();
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (!savedStudies || savedStudies.length === 0) {
-      getAllStudies(getStudy, navigation, token, realm, Toast);
-    }
-  }, []);
-
   setTimeout(() => {
     setIsLoading(false);
-  }, 2000);
+  }, 500);
 
   return (
     <View style={styles.container}>

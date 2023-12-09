@@ -17,10 +17,10 @@ const Index = () => {
         {user && user?.profilePicture ? (
           <ImageBackground
             style={styles.img}
-            source={{uri: user.profilePicture}} // Replace with the correct path to your image
-          >
-            <Text>{''}</Text>
-          </ImageBackground>
+            source={{
+              uri: user.profilePicture,
+            }} // Replace with the correct path to your image
+          />
         ) : (
           <View style={styles.noiImageContainer}>
             <Text style={styles.noiImageText}>

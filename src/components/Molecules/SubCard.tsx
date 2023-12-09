@@ -1,11 +1,6 @@
-import {StyleSheet, Text, Image, View} from 'react-native';
-import React, {useEffect, useState, useWindowDimensions} from 'react';
-import Animated, {
-  useAnimatedStyle,
-  withSpring,
-  Extrapolate,
-  interpolate,
-} from 'react-native-reanimated';
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import Animated, {useAnimatedStyle, withSpring} from 'react-native-reanimated';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
@@ -28,12 +23,6 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
     const currentIndex = Math.round(x.value / size);
     const isActive = currentIndex === index - 1;
     const scale = withSpring(isActive ? 1 : 0.8, {damping: 6, stiffness: 80});
-    // const scale = interpolate(
-    //   x.value,
-    //   [(index - 2) * size, (index - 1) * size, index * size],
-    //  withSpring(isActive ? 1 : 0.8, { damping: 6, stiffness: 80 });
-    //   Extrapolate.CLAMP
-    // );
 
     return {
       transform: [{scale}],
@@ -68,22 +57,17 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
             return (
               <View
                 key={index}
-                style={{flexDirection: 'row', alignItems: 'center'}}>
-                {available ? (
-                  <AntDesign
-                    name="check"
-                    size={20}
-                    color="green"
-                    style={{marginRight: 5}}
-                  />
-                ) : (
-                  <AntDesign
-                    name="close"
-                    size={20}
-                    color="red"
-                    style={{marginRight: 5}}
-                  />
-                )}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                }}>
+                <AntDesign
+                  name="checkcircle"
+                  size={18}
+                  color="#cccccc"
+                  style={{marginRight: 5}}
+                />
                 <Text style={styles.listofPackagesText}>{packagesname}</Text>
               </View>
             );
@@ -91,9 +75,7 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
         </View>
         <View style={[styles.Button]}>
           <TouchableOpacity style={[styles.listofPackagesBottom]}>
-            <Text style={styles.listofPackagesBottomtext}>
-              {item.current ? 'Current Plan' : 'Upgrade Now'}
-            </Text>
+            <Text style={styles.listofPackagesBottomtext}>Buy Now</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -102,33 +84,35 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
 };
 const styles = StyleSheet.create({
   card: {
-    width: screenWidth * 0.6,
-    height: screenHeight * 0.5,
+    width: screenWidth * 0.65,
+    height: screenHeight * 0.56,
     borderRadius: 5,
     overflow: 'hidden',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#ED7218',
+    position: 'relative',
   },
   popularContainer: {
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    top: 0,
-    right: 0,
+    top: -2,
+    right: -2,
     backgroundColor: '#ED7218',
-    padding: screenWidth * 0.01,
-    borderBottomLeftRadius: 5,
+    paddingHorizontal: screenWidth * 0.015,
+    borderBottomLeftRadius: 10,
   },
   popularText: {
     color: 'white',
     fontSize: screenWidth * 0.03,
-    fontWeight: 'bold',
+    fontFamily: 'PoppinsSemiBold',
   },
   listofPackagesText: {
-    color: 'black',
-    fontFamily: 'PoppinsRegular',
-    fontSize: 15,
+    color: '#656565',
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: screenWidth * 0.032,
     textAlign: 'left',
+    marginLeft: 4,
   },
   listofPackagesBottomtext: {
     color: 'white',

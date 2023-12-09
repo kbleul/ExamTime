@@ -10,6 +10,7 @@ import {
   studyType,
   subjectType,
   userType,
+  CommentType,
 } from '../../types';
 import Config from 'react-native-config';
 import {newAnswerType} from '../../hooks/usePostSyncData';
@@ -117,6 +118,26 @@ export const api = createApi({
         return {
           url: 'grade/grade',
           method: 'GET',
+        };
+      },
+    }),
+    getFaq: build.mutation({
+      query: () => {
+        return {
+          url: 'frequently-asked-question/user/faq',
+          method: 'GET',
+        };
+      },
+    }),
+    Createcomment: build.mutation<{comment: CommentType}, CommentType>({
+      query: data => {
+        return {
+          url: 'comment/create',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          body: {comment: data.comment},
         };
       },
     }),
@@ -258,6 +279,25 @@ export const api = createApi({
         };
       },
     }),
+    changeProfilePicture: build.mutation<{}, {token: String; avatar: string}>({
+      query: data => {
+        const formData = new FormData();
+        formData.append('profilePicture', {
+          uri: data.avatar,
+          type: 'image/jpeg',
+          name: 'avatar.jpg',
+        });
+        return {
+          url: 'user/uploadprofilepicture',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
@@ -274,9 +314,12 @@ export const {
   useGetExamsMutation,
   useGetSubjectMutation,
   useGetRandomExamMutation,
+  useGetFaqMutation,
+  useCreatecommentMutation,
   useGetAboutUsMutation,
   useGetUserGuideMutation,
   useGetStudyMutation,
   usePostExamResultsMutation,
   useGetExamResultsMutation,
+  useChangeProfilePictureMutation,
 } = api;

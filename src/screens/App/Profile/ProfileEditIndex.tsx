@@ -11,7 +11,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 
 const ProfileEditIndex = () => {
-  const [avatar, setAvatar] = useState('');
+  const [avatar, setAvatar] = useState<string | null>(null);
   const user = useSelector((state: RootState) => state.auth.user);
 
   const uploadImage = async () => {
@@ -34,9 +34,9 @@ const ProfileEditIndex = () => {
       })
       .catch(e => console.error);
   };
-
   return (
     <View style={styles.container}>
+
       <View style={styles.imageBg}>
         <ImageBackground
           style={styles.img}
@@ -59,7 +59,7 @@ const ProfileEditIndex = () => {
         </ImageBackground>
       </View>
 
-      <ProfileEdit />
+      <ProfileEdit avatar={avatar} />
 
       <MainBottomNav />
     </View>

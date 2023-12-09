@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
@@ -46,6 +46,11 @@ const ChosenCourses = ({
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
+  const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
+
+  setTimeout(() => {
+    setIsLoadingSubjects(false);
+  }, 500);
 
   const renderItem = ({item}: {item: subjectType}) => {
     return (
@@ -55,6 +60,7 @@ const ChosenCourses = ({
           subjectId={item.id}
           bgImage={{uri: item.icon}}
           setLoginModalVisible={setLoginModalVisible}
+          isLoadingSubjects={isLoadingSubjects}
         />
       </View>
     );
@@ -100,9 +106,6 @@ const ChosenCourses = ({
       <FlatList
         keyExtractor={item => item.id}
         data={DummyCourses}
-        // renderItem={({item: any, index: number}) =>
-        //   renderItemCourse({item, index})
-        // }
         renderItem={({item, index}) => renderItemCourse({item, index})}
         horizontal
         showsHorizontalScrollIndicator={false}
