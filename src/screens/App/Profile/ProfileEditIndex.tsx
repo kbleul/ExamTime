@@ -43,10 +43,12 @@ const ProfileEditIndex = () => {
             uri: avatar
               ? avatar
               : user && user?.profilePicture
-              ? user?.profilePicture
+              ? user?.profilePicture.includes('https://')
+                ? user.profilePicture
+                : 'https://dev.think-hubet.com/profile-pictures/' +
+                  user.profilePicture
               : 'https://th.bing.com/th/id/OIP.fmwdQXSSqKuRzNiYrbcNFgHaHa?rs=1&pid=ImgDetMain',
           }}>
-          <Text>{''}</Text>
           <TouchableOpacity
             style={styles.editIconContainer}
             onPress={uploadImage}>

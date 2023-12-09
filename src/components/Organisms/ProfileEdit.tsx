@@ -31,10 +31,11 @@ import BackButton from '../Atoms/BackButton';
 import DoneButton from '../Atoms/DoneButton';
 import PasswordField from '../Molecules/PasswordField';
 import ChangePasswordButton from '../Atoms/ChangePasswordButton';
+import {screenWidth} from '../../utils/Data/data';
 
 const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
 
   const {useRealm, useQuery, useObject} = AuthContext;
 
@@ -60,7 +61,8 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const [showPassword, setShowPassword] = useState(true);
   const [changeProfile] = useChangeProfileMutation();
   const [changeProfilePicture] = useChangeProfilePictureMutation();
-  const [updatePassword] = useChangePasswordMutation();
+  const [updatePassword, {isLoading: isLoaingChangePassword}] =
+    useChangePasswordMutation();
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
   const [region, setRegion] = useState<string | null>(
@@ -205,34 +207,39 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
     confirmPassword: string;
     password: string;
   }) => {
-    if (values.newPassword === values.confirmPassword) {
-      try {
-        const response = await updatePassword({
-          currentPassword: values.password,
-          newPassword: values.newPassword,
-          token,
-        });
-        if (!response.error) {
-          await Toast.show({
-            type: 'success',
-            text1: 'success',
-            text2: 'Password updated successfuly',
-            visibilityTime: 4000,
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Error!',
-            text2: 'Something went wrong',
-          });
-        }
-      } catch (error) {
+    try {
+      const userToken = token ? token : '';
+      const response = await updatePassword({
+        currentPassword: values.password,
+        newPassword: values.newPassword,
+        token: userToken,
+      });
+      console.log(response);
+      if (response.error) {
         Toast.show({
           type: 'error',
-          text1: 'Error!',
-          text2: `${error}`,
+          text1: 'Error updating password! Please try again.',
+          text2: response.error.data.message,
+          visibilityTime: 4000,
         });
+
+        return;
       }
+
+      Toast.show({
+        type: 'success',
+        text1: 'success',
+        text2: 'Password updated successfuly',
+        visibilityTime: 4000,
+      });
+      setTimeout(() => navigation.navigate('Profile'), 4000);
+    } catch (error) {
+      console.log('object', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error!',
+        text2: `${error}`,
+      });
     }
   };
 
@@ -259,6 +266,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
       console.log(err);
     }
   };
+
   useEffect(() => {
     fetchRegions(getRegions, setRegionsListItems, navigation);
   }, [getRegions, refetchRegions, navigation]);
@@ -352,7 +360,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
                 {errors.password && touched.password && (
-                  <Text style={styles.errorText}>{errors.password}</Text>
+                  <Text style={styles.errorText}>* {errors.password}</Text>
                 )}
 
                 <PasswordField
@@ -365,7 +373,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
                 {errors.newPassword && touched.newPassword && (
-                  <Text style={styles.errorText}>{errors.newPassword}</Text>
+                  <Text style={styles.errorText}>* {errors.newPassword}</Text>
                 )}
 
                 <PasswordField
@@ -378,10 +386,15 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
                 {errors.confirmPassword && touched.confirmPassword && (
-                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+                  <Text style={styles.errorText}>
+                    * {errors.confirmPassword}
+                  </Text>
                 )}
 
-                <ChangePasswordButton onPress={handleSubmit} />
+                <ChangePasswordButton
+                  onPress={handleSubmit}
+                  isLoading={isLoaingChangePassword}
+                />
               </View>
             )}
           </Formik>
@@ -467,9 +480,11 @@ const styles = ScaledSheet.create({
     fontSize: '20@ms',
   },
   errorText: {
-    color: 'red',
     flex: 1,
-    fontSize: '15@ms',
+    fontSize: screenWidth * 0.033,
+    color: '#f08273',
+    paddingLeft: 30,
+    paddingRight: 20,
   },
   iconContainer: {
     color: 'black',

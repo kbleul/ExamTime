@@ -13,6 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const navigator = useNavigation<any>();
+
+  console.log(user?.profilePicture);
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
