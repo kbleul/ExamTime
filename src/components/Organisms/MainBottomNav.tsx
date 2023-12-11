@@ -7,6 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {downloadAndSavePDF} from '../../screens/App/Study/logic';
 
 const MainBottomNav = () => {
   const navigationState = useNavigationState(state => state);
@@ -103,7 +104,11 @@ const MainBottomNav = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('')}
+          onPress={() =>
+            downloadAndSavePDF(
+              'https://s2.q4cdn.com/175719177/files/doc_presentations/Placeholder-PDF.pdf',
+            )
+          }
           style={style.buttonWrapper}>
           {currentScreen === '' && <View style={style.dot} />}
 

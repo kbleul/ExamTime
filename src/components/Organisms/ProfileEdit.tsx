@@ -214,7 +214,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
         newPassword: values.newPassword,
         token: userToken,
       });
-      console.log(response);
       if (response.error) {
         Toast.show({
           type: 'error',

@@ -1,4 +1,5 @@
 import {NavigationProp} from '@react-navigation/native';
+import RNFetchBlob from 'rn-fetch-blob';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
@@ -67,7 +68,7 @@ export const saveStudyToRealm = async (
       const unitString = unit.unit;
       const sectionString = section.section;
 
-      realm.write(() => {
+      realm.write(async () => {
         const subjectObject = realm.create(LocalObjectDataKeys.SingleSubject, {
           id: subject.id,
           subject: subject.subject,
@@ -123,16 +124,11 @@ export const saveStudyToRealm = async (
           examQuestionArr.push(questiontObject);
         });
 
-        pdf.forEach(pdfItem => {
-          const {id: pdfId, pdfDocument} = pdfItem;
-          const pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
-            id: pdfId,
-            pdfDocument,
-            isViewed: false,
-          });
+        // pdf.forEach(async pdfItem => {
+        //   const pdfObject = await downloadAndSavePDF(pdfItem, realm);
 
-          pdfObjArr.push(pdfObject);
-        });
+        //   pdfObject && pdfObjArr.push(pdfObject);
+        // });
 
         videoLink.forEach(videoItem => {
           const {id: videoId, videoLink} = videoItem;
@@ -146,23 +142,31 @@ export const saveStudyToRealm = async (
           videoObjArr.push(videoObject);
         });
 
-        realm.create(LocalObjectDataKeys.Study, {
-          id,
-          title,
-          objective,
-          isPublished,
-          createdAt,
-          updatedAt,
-          grade: gradeObject,
-          subject: subjectObject,
-          year: yearString,
-          unit: unitString,
-          section: sectionString,
-          selectedQuestion: examQuestionArr,
-          progress: 0,
-          pdf: pdfObjArr,
-          videoLink: videoObjArr,
-          userExamAnswers: [],
+        await savePdfs(pdf, pdfObjArr, realm).then(() => {
+          realm.write(() => {
+            try {
+              realm.create(LocalObjectDataKeys.Study, {
+                id,
+                title,
+                objective,
+                isPublished,
+                createdAt,
+                updatedAt,
+                grade: gradeObject,
+                subject: subjectObject,
+                year: yearString,
+                unit: unitString,
+                section: sectionString,
+                selectedQuestion: examQuestionArr,
+                progress: 0,
+                pdf: pdfObjArr,
+                videoLink: videoObjArr,
+                userExamAnswers: [],
+              });
+            } catch (e) {
+              console.log('Error saving study to realm DB', e);
+            }
+          });
         });
       });
     });
@@ -172,6 +176,50 @@ export const saveStudyToRealm = async (
       type: 'error',
       text1: 'Error saving studies for offline use',
     });
+  }
+};
+
+const savePdfs = async (
+  pdf: [] | pdfType[],
+  pdfObjArr: pdfType[],
+  realm: Realm,
+) => {
+  for (const pdfItem of pdf) {
+    const pdfObject = await downloadAndCreatePDF(pdfItem, realm);
+    pdfObject && pdfObjArr.push(pdfObject);
+  }
+};
+
+export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
+  try {
+    const response = await RNFetchBlob.config({
+      fileCache: true,
+      appendExt: 'pdf',
+      path: `${RNFetchBlob.fs.dirs.DocumentDir}/pdfs/${Date.now()}`,
+    }).fetch('GET', pdfItem.pdfDocument);
+
+    console.log('PDF file downloaded and saved:', response.path());
+
+    const filePath = response.path();
+
+    let pdfObject = null;
+
+    realm.write(() => {
+      try {
+        pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
+          id: pdfItem.id,
+          pdfDocument: filePath,
+          isViewed: false,
+        });
+      } catch (e) {
+        console.log('Error saving pdf file ', e);
+      }
+    });
+
+    return pdfObject;
+  } catch (error) {
+    console.error('Error downloading PDF file:', error);
+    return null;
   }
 };
 
@@ -234,12 +282,10 @@ export const calculate_and_Assign_UnitProgress = (
   const assessmentValue = study.selectedQuestion.length === 0 ? 0 : 1;
   const percentageValue =
     100 / (assessmentValue + study.pdf.length + study.videoLink.length);
-  console.log('percentageValue', percentageValue);
 
   try {
     realm.write(() => {
       study.progress = study.progress + percentageValue;
-      console.log('progress', study.progress);
     });
   } catch (e) {
     console.log('Error updating progress,  ', e);
