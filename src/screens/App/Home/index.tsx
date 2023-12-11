@@ -27,7 +27,7 @@ const Index = () => {
       <ScrollView
         contentContainerStyle={IndexStyle.ScrollView}
         showsVerticalScrollIndicator={false}>
-        {isSyncing && <SyncingData title="Syncing data..." />}
+        {isSyncing && <SyncingData title="Syncing data for offline use..." />}
         <TrialHeader type="Dashboard" />
 
         <HeaderCarousel />

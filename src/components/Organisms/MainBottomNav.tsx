@@ -104,11 +104,7 @@ const MainBottomNav = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() =>
-            downloadAndSavePDF(
-              'https://s2.q4cdn.com/175719177/files/doc_presentations/Placeholder-PDF.pdf',
-            )
-          }
+          onPress={() => navigation.navigate('History')}
           style={style.buttonWrapper}>
           {currentScreen === '' && <View style={style.dot} />}
 

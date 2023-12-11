@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {AppState, AppStateStatus} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 import {useSelector} from 'react-redux';
@@ -7,12 +8,14 @@ import {checkIsOnline} from '../utils/Functions/Helper';
 import {AuthContext} from '../Realm/model';
 import {Exam, ExamAnswers, Study} from '../Realm';
 import {
+  useGetExamAnswersMutation,
   useGetStudyMutation,
   usePostExamResultsMutation,
 } from '../reduxToolkit/Services/auth';
 import {answersType} from '../screens/App/PracticeQuestion';
 import {getAllStudies} from '../screens/App/Study/logic';
 import {useNavigation} from '@react-navigation/native';
+import {getExamAnswersFromDB} from './logic';
 
 export type newAnswerType = {
   [id: string]: {
@@ -102,6 +105,8 @@ const usePostSyncData = (
 
   const token = useSelector((state: RootState) => state.auth.token);
   const [postExamResults] = usePostExamResultsMutation();
+  const [getExamAnswers] = useGetExamAnswersMutation();
+
   const [getStudy] = useGetStudyMutation();
 
   const {useQuery, useRealm} = AuthContext;
@@ -116,31 +121,50 @@ const usePostSyncData = (
   const savedStudies = useQuery(Study);
 
   useEffect(() => {
-    const handleSync = async () => {
-      // Check for internet connection (you can use an appropriate library or method)
-      const isConnected = await checkIsOnline();
+    const handleSync = async (nextAppState: AppStateStatus) => {
+      // App is going to background or about to be terminated
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
+        const isConnected = await checkIsOnline();
+        console.log('app out');
+        if (isConnected) {
+          if (!savedStudies || savedStudies.length === 0) {
+            getAllStudies(getStudy, navigation, token, realm, Toast);
+          }
 
-      if (isConnected) {
-        if (!savedStudies || savedStudies.length === 0) {
-          getAllStudies(getStudy, navigation, token, realm, Toast);
-        }
-
-        if (savedTakenExams.length > 0) {
-          // Perform data sync with the database
-          setIsSyncing(true);
-          await syncDataToDB(
-            postExamResults,
-            token ? token : '',
-            savedTakenExams,
-            savedExamAnswers,
-            setIsSyncing,
-          );
+          if (savedTakenExams.length > 0) {
+            // Perform data sync with the database
+            setIsSyncing(true);
+            await syncDataToDB(
+              postExamResults,
+              token ? token : '',
+              savedTakenExams,
+              savedExamAnswers,
+              setIsSyncing,
+            );
+          }
         }
       }
     };
 
-    user && token && handleSync();
+    user && token && AppState.addEventListener('change', handleSync);
   }, [user, token]);
+
+  useEffect(() => {
+    const getSyncedData = async () => {
+      if (user && token) {
+        const isConnected = await checkIsOnline();
+        console.log('--object', isConnected);
+
+        if (isConnected) {
+          console.log('--==object');
+
+          getExamAnswersFromDB(getExamAnswers, token, realm);
+        }
+      }
+    };
+
+    getSyncedData();
+  }, []);
 };
 
 export default usePostSyncData;

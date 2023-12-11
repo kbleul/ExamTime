@@ -31,6 +31,7 @@ import StudyDetails from '../screens/App/Study/StudyDetails';
 import ViewPdf from '../screens/App/Study/ViewPdf';
 import ViewVideo from '../screens/App/Study/ViewVideo';
 import ViewAssessment from '../screens/App/Study/ViewAssessment';
+import History from '../screens/App/History';
 const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
   Stack,
   showOnboarding,
@@ -83,8 +84,7 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           component={PracticeQuestion}
           options={{headerShown: false}}
         />
-     
-     
+
         <Stack.Screen
           name="Random-Exam"
           component={RandomQuestionsView}
@@ -100,7 +100,44 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           component={ExamResult}
           options={{headerShown: false}}
         />
-    
+
+        <Stack.Screen
+          name="StudySection"
+          component={StudySection}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="StudyDetails"
+          component={StudyDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewPdf"
+          component={ViewPdf}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewVideo"
+          component={ViewVideo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewAssessment"
+          component={ViewAssessment}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChallengeScreen"
+          component={ChallengeSection}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="History"
+          component={History}
+          options={{headerShown: false}}
+        />
+
         <Stack.Screen
           name="Profile"
           component={Profile}
@@ -165,37 +202,6 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
         <Stack.Screen
           name="Password-Reset"
           component={SetNewPasswordPage}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="StudySection"
-          component={StudySection}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="StudyDetails"
-          component={StudyDetails}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewPdf"
-          component={ViewPdf}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewVideo"
-          component={ViewVideo}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewAssessment"
-          component={ViewAssessment}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="ChallengeScreen"
-          component={ChallengeSection}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

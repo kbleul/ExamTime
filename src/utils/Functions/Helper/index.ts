@@ -40,6 +40,8 @@ export const checkIsOnline = async (navigator?: any) => {
       }
     } catch (error) {
       console.log({error});
+      console.log('Failed to reach the internet server');
+
       navigator && navigator.navigate('network-error');
       return false;
     }
@@ -49,7 +51,7 @@ export const checkIsOnline = async (navigator?: any) => {
 
       if (!state.isConnected || !state.isInternetReachable) {
         navigator && navigator.navigate('network-error');
-        console.log('error');
+        console.log('Failed to reach the internet server');
 
         return false;
       } else if (state.isConnected && state.isInternetReachable) {
@@ -57,6 +59,8 @@ export const checkIsOnline = async (navigator?: any) => {
       }
     } catch (error) {
       console.log({error});
+      console.log('Failed to reach the internet server');
+
       // Handle any errors (e.g., request timeout)
       navigator && navigator.navigate('network-error');
       return false; // Assume offline on error
