@@ -16,9 +16,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useNavigation} from '@react-navigation/native';
-import {calculateProgress, filterStudies, getSections} from './logic';
+import {calculateStudyProgress, filterStudies, getSections} from './logic';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import Toast from 'react-native-toast-message';
+import {accordiontyles, menuStyle, style, unitCardStyles} from './styles';
 
 const StudyDetails = ({route}) => {
   const {subject} = route.params;
@@ -66,7 +67,7 @@ const StudyDetails = ({route}) => {
           <>
             <StudyDetalsHeader
               subjectName={subject.subject}
-              progress={calculateProgress(savedStudies)}
+              progress={calculateStudyProgress(savedStudies)}
             />
 
             <SectionMenu
@@ -230,7 +231,9 @@ const Accordion = ({study}: {study: Study}) => {
           <TouchableOpacity
             touchSoundDisabled
             style={accordiontyles.assessmentBtn}
-            onPress={() => navigator.navigate('ViewPdf', {pdf: study.pdf})}>
+            onPress={() =>
+              navigator.navigate('ViewPdf', {pdf: study.pdf, studyId: study.id})
+            }>
             <View
               style={[
                 accordiontyles.assessmentIcon,
@@ -246,7 +249,7 @@ const Accordion = ({study}: {study: Study}) => {
       {study.videoLink && study.videoLink.length > 0 && (
         <View style={accordiontyles.container}>
           {study.videoLink.map((link, index) => (
-            <View style={{}} key={link.videoLink + '' + index + 'links'}>
+            <View key={link.videoLink + '' + index + 'links'}>
               <TouchableOpacity
                 touchSoundDisabled
                 style={accordiontyles.videoContainer}
@@ -254,6 +257,7 @@ const Accordion = ({study}: {study: Study}) => {
                   navigator.navigate('ViewVideo', {
                     videos: study.videoLink,
                     selectedVideoIndex: index,
+                    studyId: study.id,
                   })
                 }>
                 <Text style={accordiontyles.videoText}>
@@ -270,173 +274,5 @@ const Accordion = ({study}: {study: Study}) => {
     </View>
   );
 };
-
-const style = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-    paddingTop: 30,
-    width: '100%',
-    backgroundColor: '#F9FCFF',
-    flex: screenHeight,
-  },
-  ScrollView: {
-    flex: 1,
-  },
-  contentContainer: {
-    flexGrow: 1,
-  },
-});
-
-const menuStyle = StyleSheet.create({
-  container: {
-    height: 60,
-  },
-  srollContainer: {
-    width: screenWidth,
-    marginBottom: 1,
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingRight: 30,
-    marginLeft: screenWidth * 0.07,
-  },
-  button: {
-    paddingVertical: 2,
-    paddingHorizontal: screenWidth / 6,
-  },
-  buttonSelected: {
-    borderBottomWidth: 3,
-    borderColor: '#399BE2',
-  },
-  buttonText: {
-    fontSize: screenWidth * 0.04,
-    color: '#000',
-    fontFamily: 'PoppinsMedium',
-    textTransform: 'capitalize',
-  },
-});
-
-const unitCardStyles = StyleSheet.create({
-  container: {
-    marginHorizontal: 10,
-    marginVertical: 5,
-    borderWidth: 1,
-    borderRadius: 10,
-    overflow: 'hidden',
-    borderColor: '#949090',
-  },
-  topcontainer: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    paddingHorizontal: 4,
-  },
-  menuContainer: {
-    width: '20%',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  textContainer: {
-    width: '70%',
-    position: 'relative',
-  },
-  textTitle: {
-    color: '#1e90ff',
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.042,
-    textTransform: 'capitalize',
-  },
-  textSubTitle: {
-    color: '#000',
-    fontFamily: 'PoppinsMedium',
-    fontSize: screenWidth * 0.04,
-    position: 'absolute',
-    bottom: -10,
-  },
-  downBtn: {
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-  },
-});
-
-const accordiontyles = StyleSheet.create({
-  container: {
-    marginHorizontal: 10,
-    marginVertical: 5,
-    borderWidth: 1,
-    borderRadius: 10,
-    overflow: 'hidden',
-    borderColor: '#E1E1E1',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
-  objectiveText: {
-    borderWidth: 1,
-    borderColor: '#E1E1E1',
-    overflow: 'hidden',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    marginHorizontal: 10,
-    marginTop: 8,
-    marginBottom: 5,
-    fontFamily: 'PoppinsMedium',
-    textTransform: 'capitalize',
-    fontSize: screenWidth * 0.036,
-    color: '#000',
-    lineHeight: 24,
-  },
-  videoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: 10,
-    marginVertical: 10,
-  },
-  videoText: {
-    color: '#A4A4AE',
-    fontSize: screenWidth * 0.04,
-    fontFamily: 'PoppinsSemiBold',
-  },
-  videoIcon: {
-    backgroundColor: '#9A85FC',
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    overflow: 'hidden',
-    justifyContent: 'center',
-  },
-  assessmentBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  assessmentIcon: {
-    marginHorizontal: 5,
-    marginVertical: 7,
-    backgroundColor: '#EEF1F6',
-    borderRadius: 8,
-    overflow: 'hidden',
-    width: '15%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 13,
-  },
-  assessmentIconBg: {
-    backgroundColor: '#399BE2',
-    height: 45,
-  },
-  assessmentTitle: {
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.04,
-    marginLeft: screenWidth * 0.03,
-    color: '#000',
-    width: '72%',
-  },
-  square: {
-    color: '#000',
-    alignSelf: 'flex-start',
-  },
-});
 
 export default StudyDetails;

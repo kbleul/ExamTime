@@ -16,7 +16,7 @@ import {AuthContext} from '../../../Realm/model';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
-import {calculateProgress, getAllStudies} from './logic';
+import {calculateStudyProgress, getAllStudies} from './logic';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
@@ -45,7 +45,7 @@ const CourseItem = ({
       `subject.id = "${item.id}" OR subject.subject = "${item.subject.subject}"`,
     );
   });
-  const progress = calculateProgress(savedStudies) + '%';
+  const progress = calculateStudyProgress(savedStudies);
 
   return (
     <TouchableOpacity
@@ -72,10 +72,17 @@ const CourseItem = ({
       <View style={styles.infoContainer}>
         <Text style={styles.subject}>{item.subject.subject}</Text>
         <Text style={styles.units}>{savedStudies.length} units</Text>
-        <Text style={styles.progressText}>completed {progress}</Text>
+        <Text style={styles.progressText}>
+          completed {progress > 100 ? 100 : progress + '%'}
+        </Text>
 
         <View style={styles.indicatorContainer}>
-          <Text style={[styles.indicator, {width: progress}]} />
+          <Text
+            style={[
+              styles.indicator,
+              {width: progress > 100 ? 100 : progress + '%'},
+            ]}
+          />
         </View>
       </View>
     </TouchableOpacity>

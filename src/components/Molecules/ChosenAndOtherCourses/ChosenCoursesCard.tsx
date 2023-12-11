@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {SvgXml} from 'react-native-svg';
-import {calculateProgress} from '../../../screens/App/Study/logic';
+import {calculateStudyProgress} from '../../../screens/App/Study/logic';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -40,7 +40,7 @@ const ChosenCoursesCard: React.FC<{
       }"`,
     );
   });
-  const calProgress = calculateProgress(savedStudies) + '%';
+  const calProgress = calculateStudyProgress(savedStudies);
 
   return (
     <>
@@ -100,10 +100,18 @@ const ChosenCoursesCard: React.FC<{
               <>
                 <View style={styles.progressBar}>
                   <View
-                    style={[styles.progressBarIndicator, {width: calProgress}]} // calculate progress dynamically
+                    style={[
+                      styles.progressBarIndicator,
+                      {
+                        width:
+                          calProgress > 100 ? 100 + '%' : calProgress + '%',
+                      },
+                    ]} // calculate progress dynamically
                   />
                 </View>
-                <Text style={styles.progressText}>{calProgress} completed</Text>
+                <Text style={styles.progressText}>
+                  {calProgress > 100 ? 100 + '%' : calProgress + '%'} completed
+                </Text>
               </>
             )}
           </View>

@@ -1,13 +1,22 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Pdf from 'react-native-pdf';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import {AuthContext} from '../../../Realm/model';
+import {Study} from '../../../Realm';
+import {calculate_and_Assign_UnitProgress} from './logic';
 
 const ViewPdf = ({route}) => {
-  const {pdf} = route.params;
+  const {pdf, studyId} = route.params;
   const navigator: any = useNavigation();
+
+  const {useRealm, useQuery} = AuthContext;
+  const realm = useRealm();
+  const savedStudy = useQuery(Study, studyItem => {
+    return studyItem.filtered(`id == "${studyId}"`);
+  });
 
   const [pdfCounter, setPdfCounter] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +25,19 @@ const ViewPdf = ({route}) => {
     uri: pdf[pdfCounter].pdfDocument,
     cache: true,
   };
+
+  const saveProgress = useCallback((page: number, numberOfPages: number) => {
+    if (
+      page > numberOfPages / 2 &&
+      savedStudy[0].pdf[pdfCounter].isViewed === false
+    ) {
+      calculate_and_Assign_UnitProgress(savedStudy[0], realm);
+
+      realm.write(() => {
+        savedStudy[0].pdf[pdfCounter].isViewed = true;
+      });
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -28,7 +50,10 @@ const ViewPdf = ({route}) => {
       <Pdf
         trustAllCerts={false}
         source={source}
-        onLoadComplete={(numberOfPages, filePath) => setIsLoading(false)}
+        onLoadComplete={() => setIsLoading(false)}
+        onPageChanged={(page, numberOfPages) =>
+          saveProgress(page, numberOfPages)
+        }
         onError={error => {
           console.log(error);
         }}

@@ -128,6 +128,7 @@ export const saveStudyToRealm = async (
           const pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
             id: pdfId,
             pdfDocument,
+            isViewed: false,
           });
 
           pdfObjArr.push(pdfObject);
@@ -139,6 +140,7 @@ export const saveStudyToRealm = async (
           const videoObject = realm.create(LocalObjectDataKeys.VideoLink, {
             id: videoId,
             videoLink,
+            isViewed: false,
           });
 
           videoObjArr.push(videoObject);
@@ -173,22 +175,6 @@ export const saveStudyToRealm = async (
   }
 };
 
-export const calculateProgress = (studyObj: Study[]) => {
-  if (studyObj.length === 0) return 0;
-
-  const prepareProgressArr = studyObj.map(item => item.progress);
-  // Perform calculations or further operations with prepareProgressArr if needed
-  const singleStudyPrecentage = 100 / studyObj.length;
-
-  let totalPreogress = 0;
-  prepareProgressArr.forEach(item => {
-    if (item !== 0) {
-      totalPreogress += (item * singleStudyPrecentage) / 100;
-    }
-  });
-  return Math.round(totalPreogress);
-};
-
 export const getSections = (studies: ResultsType<Study>) => {
   const sections: string[] = [];
 
@@ -214,4 +200,48 @@ export const filterStudies = (
 
   setViewStudies([...filteredStudies]);
   setSelectedSection(selectedSection);
+};
+
+export const calculateStudyProgress = (studyUnits: Study[]) => {
+  if (studyUnits.length === 0) return 0;
+
+  const prepareProgressArr = studyUnits.map(item => {
+    if (
+      item.selectedQuestion.length === 0 &&
+      item.pdf.length === 0 &&
+      item.videoLink.length === 0
+    ) {
+      return 100;
+    }
+    return item.progress;
+  });
+  // Perform calculations or further operations with prepareProgressArr if needed
+  const singleStudyPrecentage = 100 / studyUnits.length;
+
+  let totalPreogress = 0;
+  prepareProgressArr.forEach(item => {
+    if (item !== 0) {
+      totalPreogress += (item * singleStudyPrecentage) / 100;
+    }
+  });
+  return Math.round(totalPreogress);
+};
+
+export const calculate_and_Assign_UnitProgress = (
+  study: Study,
+  realm: Realm,
+) => {
+  const assessmentValue = study.selectedQuestion.length === 0 ? 0 : 1;
+  const percentageValue =
+    100 / (assessmentValue + study.pdf.length + study.videoLink.length);
+  console.log('percentageValue', percentageValue);
+
+  try {
+    realm.write(() => {
+      study.progress = study.progress + percentageValue;
+      console.log('progress', study.progress);
+    });
+  } catch (e) {
+    console.log('Error updating progress,  ', e);
+  }
 };
