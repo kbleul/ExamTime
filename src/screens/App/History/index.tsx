@@ -48,7 +48,6 @@ const History = () => {
     [selectedSubject],
   );
 
-  console.log('savedExams', savedExams);
 
   const renderSubjects = ({item}: {item: subjectType}) => {
     return (
@@ -120,7 +119,6 @@ const HistoryCard = ({
     },
     [selectedSubject],
   );
-  console.log('here nen');
   return (
     <>
       {examAnswers.map(examAnswer => (

@@ -36,7 +36,6 @@ const Tips: React.FC<{
 
   useEffect(() => {
     if (savedTips.length === 0) {
-      console.log('here');
       if (user && token) {
         fetchTips(getTips, realm, token, setTips);
       }

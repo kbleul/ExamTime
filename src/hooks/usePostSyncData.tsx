@@ -125,7 +125,6 @@ const usePostSyncData = (
       // App is going to background or about to be terminated
       // if (nextAppState === 'background' || nextAppState === 'inactive') {
       const isConnected = await checkIsOnline();
-      console.log('app out');
       if (isConnected) {
         if (!savedStudies || savedStudies.length === 0) {
           getAllStudies(getStudy, navigation, token, realm, Toast);
@@ -142,7 +141,6 @@ const usePostSyncData = (
             setIsSyncing,
           )
             .then(() => {
-              console.log('objec////////t');
               getExamAnswersFromDB(getExamAnswers, token, realm);
             })
             .catch(err => {
@@ -159,22 +157,7 @@ const usePostSyncData = (
     // AppState.addEventListener('change', handleSync);
   }, [user, token]);
 
-  // useEffect(() => {
-  //   const getSyncedData = async () => {
-  //     if (user && token) {
-  //       const isConnected = await checkIsOnline();
-  //       console.log('--object', isConnected);
 
-  //       if (isConnected) {
-  //         console.log('--==object');
-
-  //         getExamAnswersFromDB(getExamAnswers, token, realm);
-  //       }
-  //     }
-  //   };
-
-  //   getSyncedData();
-  // }, []);
 };
 
 export default usePostSyncData;

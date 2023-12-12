@@ -29,7 +29,6 @@ const AllTipsModal = ({
   });
 
   const renderItem = ({item}: {item: StudyTips}) => {
-    console.log(item);
     return (
       <View style={styles.container}>
         <Text style={styles.typeText}>{item.tipType}</Text>

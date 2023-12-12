@@ -34,7 +34,6 @@ export const getExamAnswersFromDB = async (
 
 const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
   // Use the retrieved data
-  console.log('========================', 'gate opend', ansersFromDB.length);
 
   for (const exam of ansersFromDB) {
     const savedExamObject = realm
@@ -45,13 +44,7 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
     const savedExam = Array.from(savedExamObject);
 
     const userAnswersObject: UserExamAnswers[] = [];
-    console.log(
-      '========================',
-      'up and running',
-      savedExam.length > 0,
-      savedExam[0].isExamTaken === false,
-      savedExam[0].isExamTaken,
-    );
+ 
 
     //check if sync is unnecessary
     if (
@@ -60,7 +53,6 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
       savedExam[0].examQuestion &&
       savedExam[0].examQuestion.length > 0
     ) {
-      console.log('========================', 'made it');
 
       for (const [useAnserIndex, userAnswer] of exam.userAnswers.entries()) {
         const userAnswerKey = Object.keys(userAnswer)[0];
@@ -80,8 +72,6 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
                   correctAnswer: foundQuestion.answer,
                 },
               );
-              console.log('========================', 'hell yaa');
-              console.log(newUserAnswer);
               userAnswersObject.push(newUserAnswer);
             });
           } catch (err) {
@@ -95,9 +85,7 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
     }
 
     if (userAnswersObject.length > 0) {
-      console.log('========================', 'God did');
 
-      console.log(userAnswersObject);
       try {
         realm.write(() => {
           const newExamAnswer = realm.create(LocalObjectDataKeys.ExamAnswers, {
@@ -107,7 +95,6 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
           });
 
           savedExamObject[0].isExamTaken = true;
-          console.log('newExamAnswer', newExamAnswer);
         });
       } catch (err) {}
     }

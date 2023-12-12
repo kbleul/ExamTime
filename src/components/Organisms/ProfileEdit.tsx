@@ -233,7 +233,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
       });
       setTimeout(() => navigation.navigate('Profile'), 4000);
     } catch (error) {
-      console.log('object', error);
       Toast.show({
         type: 'error',
         text1: 'Error!',
