@@ -417,6 +417,7 @@ const styles = ScaledSheet.create({
     marginHorizontal: '15@s',
     marginTop: '10@vs',
     flex: 1,
+  
   },
   changePassword: {
     backgroundColor: '#1E90FF',

@@ -84,7 +84,6 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           component={PracticeQuestion}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="Random-Exam"
           component={RandomQuestionsView}
