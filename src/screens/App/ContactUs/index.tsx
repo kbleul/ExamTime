@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    paddingBottom: 80,
+    paddingBottom: 81,
   },
   topHeader: {
     flexDirection: 'row',
