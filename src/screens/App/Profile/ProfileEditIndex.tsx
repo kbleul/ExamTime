@@ -36,7 +36,6 @@ const ProfileEditIndex = () => {
   };
   return (
     <View style={styles.container}>
-
       <View style={styles.imageBg}>
         <ImageBackground
           style={styles.img}

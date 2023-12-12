@@ -1,6 +1,5 @@
 import React from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
-import {Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, Platform} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -52,8 +51,8 @@ export const styles = StyleSheet.create({
   },
 
   courses: {
-    width: '100%',
-    borderRadius: 30,
+    width: Platform.OS === 'ios' ? '95%' : '100%',
+    borderRadius: Platform.OS === 'ios' ? 10 : 30,
     overflow: 'hidden',
     color: 'white',
     fontSize: screenWidth * 0.028,

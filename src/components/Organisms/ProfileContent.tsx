@@ -1,13 +1,20 @@
 import React from 'react';
-import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {ScaledSheet, ms, mvs, s, vs} from 'react-native-size-matters';
 import MenuItemsProfile from '../Molecules/MenuItemsProfile';
 import badgeImg from '../../assets/Images/Profile/badge.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../reduxToolkit/Store';
-import { useNavigation } from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
+import {useNavigation} from '@react-navigation/native';
 //import badgeImg from '../../assets/Images/Profile/1.png';
 
 const ProfileContent = () => {
@@ -125,7 +132,7 @@ const styles = ScaledSheet.create({
     position: 'absolute',
     top: '-50@ms',
     right: '2%',
-    transform: [{ translateX: 12.5 }],
+    transform: [{translateX: 12.5}],
     width: '140@s',
     height: '180@vs',
     objectFit: 'contain',
@@ -193,6 +200,5 @@ const styles = ScaledSheet.create({
     fontSize: '28@ms',
     fontWeight: 'bold',
   },
-
 });
 export default ProfileContent;

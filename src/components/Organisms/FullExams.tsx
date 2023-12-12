@@ -233,6 +233,7 @@ const Buttons: React.FC<{
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 4,
     marginHorizontal: 5,
   },
   title: {

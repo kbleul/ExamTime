@@ -16,7 +16,7 @@ import {AuthContext} from '../../../Realm/model';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
-import {calculateStudyProgress, getAllStudies} from './logic';
+import {calculateStudyProgress} from './logic';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';

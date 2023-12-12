@@ -17,7 +17,6 @@ import ProgressHeader from '../../../components/Organisms/ProgressHeader';
 import WeeksScreen from '../../../components/Organisms/WeeksScreem';
 import WeekDaysScreen from '../../../components/Organisms/WeekDaysScreen';
 import SubjectAccordion from '../../../components/Organisms/SubjectAccordion';
-
 const Index = () => {
   const SubjectUnikt = [
     {unit: 'Unit One', lesson: 'Cell Biology', progress: 0},
