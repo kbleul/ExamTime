@@ -310,15 +310,11 @@ export const api = createApi({
         };
       },
     }),
-    getTips: build.mutation<{examAnswers: any}, {token: string}>({
+    getTips: build.mutation<{}, {}>({
       query: credentials => {
         return {
           url: 'tips/tipsbyparameter',
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${credentials.token}`,
-          },
         };
       },
     }),

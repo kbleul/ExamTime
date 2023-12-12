@@ -53,13 +53,12 @@ export const fetchTips = async (
 ) => {
   const isConnected = await checkIsOnline();
 
-  if (isConnected && token) {
+  if (isConnected) {
     try {
       const response: any = await getTips({
         token,
       }).unwrap();
 
-      console.log(response);
       if (response.tips && response.tips.length > 0) {
         saveTipsToRealm(response.tips, realm);
         setTips([...(response.tips.subject.id === selectedSubject.id)]);

@@ -23,11 +23,15 @@ const AllTipsModal = ({
   selectedSubject: Subject;
 }) => {
   const {useQuery} = AuthContext;
-
   const savedTips = useQuery(StudyTips, tips => {
-    return tips.filtered(`subject.id = "${selectedSubject.subject.id}"`);
+    return tips.filtered(
+      `subject.subject = "${selectedSubject.subject?.subject}"`,
+    );
   });
 
+  savedTips.forEach(tip =>
+    console.log(tip.subject?.subject, selectedSubject.subject?.subject),
+  );
   const renderItem = ({item}: {item: StudyTips}) => {
     return (
       <View style={styles.container}>
