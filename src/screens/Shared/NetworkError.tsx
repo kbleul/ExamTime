@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     width: '100%',
     borderRadius: 10,
+    overflow: 'hidden',
     marginTop: 30,
     backgroundColor: '#1E90FF',
   },

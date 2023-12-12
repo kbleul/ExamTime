@@ -17,103 +17,90 @@ const {width, height} = Dimensions.get('window');
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
+import {screenHeight} from '../../../utils/Data/data';
 const SPACING = 10;
 const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.5 : width * 0.5;
 
 const Index: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [data, setPackge] = React.useState([
     {
       key: '1',
-      planname: 'Basic Plan',
-      image: require('./frame_blue.png'),
-      price: 200,
+      planname: 'Pro',
+      price: 199,
       current: true,
       color: '#F5A52D',
       packages: [
         {
-          available: true,
-          packagesname: 'Activated',
-        },
-        {
-          available: true,
-          packagesname: 'Full Access',
-        },
-        {
-          available: true,
-          packagesname: '3 month',
+          available: false,
+          packagesname: 'Only One challenge phase',
         },
         {
           available: false,
-          packagesname: 'Dimond Badge',
+          packagesname: 'Bronze Badge',
+        },
+        {
+          available: false,
+          packagesname: 'updated Insured ',
+        },
+        {
+          available: false,
+          packagesname: 'Full Features including Video',
         },
       ],
     },
     {
       key: '2',
-      planname: 'Intermediate Plan',
-      price: 200,
-      image: require('./frame_blue.png'),
+      planname: 'BUSINESS',
+      price: 299.99,
       current: false,
       color: '#4F8FCB',
       packages: [
         {
           available: true,
-          packagesname: 'Activated',
+          packagesname: 'Full Time Challenge',
         },
         {
           available: true,
-          packagesname: 'Full Access',
+          packagesname: 'Silver Badge',
         },
         {
           available: true,
-          packagesname: '3 month',
+          packagesname: 'updated Insured',
         },
         {
           available: false,
-          packagesname: 'Dimond Badge',
+          packagesname: 'Full Features including Video',
         },
       ],
     },
     {
       key: '3',
-      image: require('./frame_blue.png'),
       planname: 'Pro Plan',
-      price: 200,
+      price: 499.99,
       current: false,
       color: '#8075CB',
       packages: [
         {
           available: true,
-          packagesname: 'Activated',
+          packagesname: 'Full Time Challenge feature one',
         },
         {
           available: true,
-          packagesname: 'Full Access',
+          packagesname: 'Gold Badge',
         },
         {
           available: true,
-          packagesname: '3 month',
+          packagesname: 'updated Insured ',
         },
         {
           available: false,
-          packagesname: 'Dimond Badge',
+          packagesname: 'Full Features including Video',
         },
       ],
     },
   ]);
-  const data1 = [
-    {
-      image: require('./frame_blue.png'),
-    },
-    {
-      image: require('./frame_blue.png'),
-    },
-    {
-      image: require('./frame_blue.png'),
-    },
-  ];
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -131,7 +118,6 @@ const Index: React.FC = () => {
 
         <View style={styles.HorizontalList}>
           <SubscriptionPlanCards data={data} pagination={true} />
-          {/* <CustomImageCarousal data={data} pagination={true} /> */}
         </View>
       </ScrollView>
       <MainBottomNav />
@@ -141,16 +127,15 @@ const Index: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#fff',
   },
   backicon: {
     marginTop: 0,
   },
   HorizontalList: {
     alignItems: 'center',
-    height: 500,
-    justifyContent: 'center',
-    margin: 5,
+    height: screenHeight + 0.8,
+    justifyContent: 'flex-start',
   },
   scrollContainer: {
     flexGrow: 1,

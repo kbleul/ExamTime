@@ -1,4 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {checkIsOnline} from '../Helper';
+import {LocalObjectDataKeys} from '../../Data/data';
+import {TipType} from '../../../types';
+
+type TipMutationFn = ReturnType<typeof useGetTipsMutation>[0];
 
 export const get_from_localStorage = async (key: string) => {
   try {
@@ -37,5 +42,51 @@ export const getObject_from_localStorage = async (key: string) => {
     return {
       status: false,
     };
+  }
+};
+
+export const fetchTips = async (
+  getTips: TipMutationFn,
+  realm: Realm,
+  token: string | null,
+  setTips: React.Dispatch<React.SetStateAction<TipType[] | null>>,
+) => {
+  const isConnected = await checkIsOnline();
+
+  if (isConnected && token) {
+    try {
+      const response: any = await getTips({
+        token,
+      }).unwrap();
+
+      console.log(response);
+      if (response.tips && response.tips.length > 0) {
+        saveTipsToRealm(response.tips, realm);
+        setTips([...(response.tips.subject.id === selectedSubject.id)]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
+
+export const saveTipsToRealm = (tips: any, realm: Realm) => {
+  for (const tipObj of tips) {
+    const {id, tipType, tip, subject} = tipObj;
+
+    realm.write(() => {
+      const newSubject = realm.create(LocalObjectDataKeys.SingleSubject, {
+        id: subject.id,
+        subject: subject.subject,
+        createdAt: subject.createdAt,
+        updatedAt: subject.updatedAt,
+      });
+      realm.create(LocalObjectDataKeys.Tip, {
+        id,
+        tipType,
+        tip,
+        subject: newSubject,
+      });
+    });
   }
 };

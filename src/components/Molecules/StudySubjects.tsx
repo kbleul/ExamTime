@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
     marginVertical: 4,
     borderRadius: 10,
+    overflow: 'hidden',
   },
   imgContainer: {
     width: '30%',
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 6,
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#e8e6e6',
   },
   progressText: {

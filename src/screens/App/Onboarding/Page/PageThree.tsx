@@ -1,43 +1,55 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {PagesCounterType} from './types';
-import {
-  DummyDataScience,
-  DummyDataSocial,
-  screenHeight,
-  screenWidth,
-} from '../../../../utils/Data/data';
-import {ScrollView} from 'react-native-gesture-handler';
+import {screenHeight, screenWidth} from '../../../../utils/Data/data';
 import {createRealmUserData} from '../Logic';
 import SubjectButton from '../../../../components/Atoms/SubjectButtonsOnboarding';
 import GradeButton from '../../../../components/Atoms/GradeButtonOnBoarding';
 import TopIndicator from '../../../../components/Molecules/TopIndicator';
 import {AuthContext} from '../../../../Realm/model';
 
-const Grade12Catagories = ['Natural', 'Social'];
+import {subjectType} from '../../../../types';
+import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
+import {getSubjectsMutation} from './logic';
+import Loading from '../../../../components/Atoms/Loading';
+import Toast from 'react-native-toast-message';
+import {Subject} from '../../../../Realm';
 
-type PageThreeProps = PagesCounterType & {
-  selectedGrade: number;
-};
-
-const PageThree: React.FC<PageThreeProps> = ({
+const PageThree: React.FC<PagesCounterType> = ({
   pageCounter,
-  selectedGrade,
   setPageCounter,
 }) => {
-  const {useRealm} = AuthContext;
+  const {useRealm, useQuery} = AuthContext;
 
   const realm = useRealm();
-  const navigation = useNavigation();
-  const [selectedGrades, setSelectedGrades] = useState<string[] | undefined>(
-    [],
+  const savedSubjects = useQuery(Subject);
+  const navigator = useNavigation();
+  const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
+    null,
+  );
+  const [selectedSubjects, setSelectedSubjects] = useState<string[] | null>(
+    null,
   );
 
-  const [selectedCatagory, setSelectedCatagory] = useState(
-    Grade12Catagories[0],
-  );
+  const [IsLoadingSubjects, setIsLoadingSubjects] = useState(false);
+  const [getSubject, {isLoading, error}] = useGetSubjectMutation();
+
+  useEffect(() => {
+    savedSubjects && savedSubjects.length > 0
+      ? setSubjectsArray([...savedSubjects])
+      : getSubjectsMutation(getSubject, navigator, setSubjectsArray, realm);
+  }, []);
+
+  useEffect(() => {
+    error &&
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to get availble grades.',
+        text2: error?.data ? `${error?.data.message}` : 'Please try again',
+      });
+  }, [error]);
 
   return (
     <View style={style.container}>
@@ -50,47 +62,51 @@ const PageThree: React.FC<PageThreeProps> = ({
         <View style={style.titleContainer}>
           <Text style={style.title}>Hello.</Text>
           <Text style={style.subtitle}>
-            Pick your favorite topics to set up your feeds
+            Sign up for a free trial today and experience the Exam Time
+            difference!
           </Text>
         </View>
 
         <View style={style.secondBox}>
-          <View
-            style={[style.buttonsSubcontainer, style.buttonsSubcontainerTop]}>
-            {selectedCatagory === Grade12Catagories[0]
-              ? DummyDataScience.map((subject, index) => (
+          {!isLoading && !error && subjectsArray && (
+            <>
+              <View
+                style={[
+                  style.buttonsSubcontainer,
+                  style.buttonsSubcontainerTop,
+                ]}>
+                {subjectsArray.map((subject, index) => (
                   <SubjectButton
-                    key={subject.subjName + index}
-                    text={subject.subjName}
-                    selectedGrades={selectedGrades}
-                    setSelectedGrades={setSelectedGrades}
-                  />
-                ))
-              : DummyDataSocial.map((subject, index) => (
-                  <SubjectButton
-                    key={subject.subjName + index}
-                    text={subject.subjName}
-                    selectedGrades={selectedGrades}
-                    setSelectedGrades={setSelectedGrades}
+                    key={subject.id}
+                    text={subject.subject.subject}
+                    subjectId={subject.id}
+                    selectedSubjects={selectedSubjects}
+                    setSelectedSubjects={setSelectedSubjects}
                   />
                 ))}
-          </View>
+              </View>
 
-          <View style={style.buttonsSubcontainer}>
-            <GradeButton
-              text="Get Started"
-              index={5}
-              onPress={() =>
-                createRealmUserData(
-                  realm,
-                  selectedGrades ? [...selectedGrades] : [],
-                  navigation,
-                )
-              }
-              isActive={true}
-            />
-          </View>
+              <View style={style.buttonsSubcontainer}>
+                <GradeButton
+                  text={IsLoadingSubjects ? 'Loading ...' : 'Get Started'}
+                  index={5}
+                  onPress={() =>
+                    createRealmUserData(
+                      realm,
+                      selectedSubjects ? [...selectedSubjects] : [],
+                      navigator,
+                      setIsLoadingSubjects,
+                    )
+                  }
+                  isActive={!IsLoadingSubjects}
+                />
+              </View>
+            </>
+          )}
+
+          {isLoading && <Loading />}
         </View>
+        <Toast />
       </View>
     </View>
   );
@@ -108,6 +124,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#D3DBF0',
     borderRadius: 80,
+    overflow: 'hidden',
     width: '60%',
     alignSelf: 'center',
     marginTop: '3%',
@@ -120,11 +137,12 @@ const style = StyleSheet.create({
     backgroundColor: '#1E90FF',
     width: '54%',
     borderRadius: 80,
+    overflow: 'hidden',
   },
   buttonText: {
     textAlign: 'center',
     color: '#FFFFFF',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Montserrat-SemiBold',
     textTransform: 'uppercase',
   },
   activeButtonText: {
@@ -135,7 +153,7 @@ const style = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   title: {
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: screenWidth * 0.07,
     color: '#2D466A',
     textAlign: 'left',

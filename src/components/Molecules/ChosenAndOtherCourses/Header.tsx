@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {screenHeight} from '../../../utils/Data/data';
 
 const Header: React.FC<{
   title: string;
@@ -10,22 +11,26 @@ const Header: React.FC<{
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      {seeAll && (
-        <View style={styles.bottomBox}>
-          <Text style={styles.subtext}>{subTitle}</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>See all</Text>
-            <MaterialIcons name="navigate-next" color="#99BCE0" />
-          </TouchableOpacity>
-        </View>
-      )}
+
+      {seeAll ||
+        (subTitle && (
+          <View style={styles.bottomBox}>
+            {subTitle && <Text style={styles.subtext}>{subTitle}</Text>}
+            {seeAll && (
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>See all</Text>
+                <MaterialIcons name="navigate-next" color="#99BCE0" />
+              </TouchableOpacity>
+            )}
+          </View>
+        ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
+    paddingVertical: screenHeight * 0.015,
     paddingHorizontal: 10,
   },
   title: {

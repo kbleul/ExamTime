@@ -3,11 +3,7 @@ import {Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import {
-  allowedTrialDays,
-  screenHeight,
-  screenWidth,
-} from '../../utils/Data/data';
+import {allowedTrialDays, screenWidth} from '../../utils/Data/data';
 import {calculateDateDifference} from '../../screens/App/Onboarding/Logic';
 import {HeaderStyle} from '../../styles/Theme/HeaderBox';
 import {AuthContext} from '../../Realm/model';
@@ -60,7 +56,11 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
           style={HeaderStyle.notificationBtn}
           touchSoundDisabled>
           <Text style={HeaderStyle.dot} />
-          <MaterialIcons name="notifications-none" size={screenWidth * 0.075} />
+          <MaterialIcons
+            name="notifications-none"
+            size={screenWidth * 0.075}
+            color="#000"
+          />
         </TouchableOpacity>
       </View>
     </View>

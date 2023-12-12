@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -6,16 +6,68 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import {screenHeight} from '../../utils/Data/data';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import RenderHtml from 'react-native-render-html';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {examQuestionType} from '../../types';
+import {answersType} from '../../screens/App/PracticeQuestion';
+import {isHtml} from '../../utils/Functions/Helper';
 
-const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
+const tagsStylesQuestion = {
+  p: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.8,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+    lineHeight: 25,
+  },
+  img: {
+    width: screenWidth * 0.8,
+    marginTop: 5,
+  },
+};
+const tagsStylesChoice = {
+  p: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.65,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+  },
+  img: {
+    width: screenWidth * 0.65,
+  },
+};
+
+const Choice = ['A', 'B', 'C', 'D'];
+const Question: React.FC<{
+  showFullPage: boolean;
+  question: examQuestionType;
+  questionCounter: number;
+  total: number;
+  isPracticeMode: boolean;
+  setUserAnswers?: React.Dispatch<React.SetStateAction<answersType[] | null>>;
+  setDirection: React.Dispatch<React.SetStateAction<string | null>>;
+  isReview?: boolean;
+  userAnswers: answersType[] | null;
+}> = ({
+  showFullPage,
+  question,
+  questionCounter,
+  total,
+  isPracticeMode,
+  setUserAnswers,
+  setDirection,
+  isReview,
+  userAnswers,
+}) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [showParagraph, setShowParagraph] = useState(false);
 
   return (
     <>
-      {!showParagraph && (
+      {question && (
         <View
           style={
             showFullPage
@@ -29,17 +81,29 @@ const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
                 : styles.questionContainer
             }>
             <View style={styles.counterContainer}>
-              <Text style={styles.counterTitle}>Question 3/65</Text>
-              <TouchableOpacity
-                touchSoundDisabled
-                style={styles.readParagraphBtn}
-                onPress={() => setShowParagraph(true)}>
-                <Text style={styles.readParagraphText}>Directions</Text>
-              </TouchableOpacity>
+              <Text style={styles.counterTitle}>
+                Question {questionCounter}/{total}
+              </Text>
+              {question.description &&
+                question.description !== 'no-description' && (
+                  <TouchableOpacity
+                    touchSoundDisabled
+                    style={styles.readParagraphBtn}
+                    onPress={() => setDirection(question.description)}>
+                    <Text style={styles.readParagraphText}>Directions</Text>
+                  </TouchableOpacity>
+                )}
             </View>
-            <Text style={styles.questionText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <Text>
+              {isHtml(question.question) ? (
+                <RenderHtml
+                  contentWidth={screenWidth}
+                  source={{html: question.question}}
+                  tagsStyles={tagsStylesQuestion}
+                />
+              ) : (
+                <Text style={styles.questionText}>{question.question}</Text>
+              )}
             </Text>
           </View>
 
@@ -54,85 +118,31 @@ const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
                 resizeMode="cover"
               />
             </View> */}
-
-            <QuestionChoice
-              choice="A"
-              selectedAnswer={selectedAnswer}
-              setSelectedAnswer={setSelectedAnswer}
-              showFullPage={showFullPage}
-            />
-            <QuestionChoice
-              choice="B"
-              selectedAnswer={selectedAnswer}
-              setSelectedAnswer={setSelectedAnswer}
-              showFullPage={showFullPage}
-            />
-            <QuestionChoice
-              choice="C"
-              selectedAnswer={selectedAnswer}
-              setSelectedAnswer={setSelectedAnswer}
-              showFullPage={showFullPage}
-            />
-            <QuestionChoice
-              choice="D"
-              selectedAnswer={selectedAnswer}
-              setSelectedAnswer={setSelectedAnswer}
-              showFullPage={showFullPage}
-            />
-          </ScrollView>
-        </View>
-      )}
-
-      {showParagraph && (
-        <View style={styles.container}>
-          <View style={paragraphStyle.container}>
-            <Text style={paragraphStyle.title}>Title</Text>
-            <TouchableOpacity
-              touchSoundDisabled
-              onPress={() => setShowParagraph(false)}>
-              <AntDesign name="close" size={28} color="gray" />
-            </TouchableOpacity>
-          </View>
-          <ScrollView
-            style={[styles.choiceContainer, paragraphStyle.paragraphContainer]}
-            contentContainerStyle={styles.choiceContainerContent}
-            showsVerticalScrollIndicator={false}>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text style={paragraphStyle.paraText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
+            {Choice.map((letter: string, index: number) => (
+              <QuestionChoice
+                key={letter + 'letter' + index}
+                choiceLetter={letter}
+                choiceText={question[letter]}
+                selectedAnswer={selectedAnswer}
+                setSelectedAnswer={setSelectedAnswer}
+                showFullPage={showFullPage}
+                answer={question.answer}
+                isPracticeMode={isPracticeMode}
+                setUserAnswers={setUserAnswers ? setUserAnswers : null}
+                questionData={
+                  isReview
+                    ? {
+                        id: question.id,
+                        index: --questionCounter,
+                        selectedAnswer: question.selectedAnswer,
+                        correctAnswer: question.correctAnswer,
+                      }
+                    : {id: question.id, index: --questionCounter}
+                }
+                isReview={isReview}
+                userAnswers={userAnswers}
+              />
+            ))}
           </ScrollView>
         </View>
       )}
@@ -141,16 +151,94 @@ const Question: React.FC<{showFullPage: boolean}> = ({showFullPage}) => {
 };
 
 const QuestionChoice: React.FC<{
-  choice: string;
+  choiceLetter: string;
+  choiceText: string;
   selectedAnswer: string | null;
   setSelectedAnswer: React.Dispatch<React.SetStateAction<string | null>>;
   showFullPage: boolean;
-}> = ({choice, selectedAnswer, setSelectedAnswer, showFullPage}) => {
-  const handleSelect = () => {
-    selectedAnswer === choice
-      ? setSelectedAnswer(null)
-      : setSelectedAnswer(choice);
+  answer: string;
+  isPracticeMode: boolean;
+  setUserAnswers: React.Dispatch<
+    React.SetStateAction<answersType[] | null>
+  > | null;
+  questionData: {
+    id: string;
+    index: number;
+    selectedAnswer?: string;
+    correctAnswer?: string;
   };
+  isReview?: boolean;
+  userAnswers: answersType[] | null;
+}> = ({
+  choiceLetter,
+  choiceText,
+  selectedAnswer,
+  setSelectedAnswer,
+  showFullPage,
+  answer,
+  isPracticeMode,
+  setUserAnswers,
+  questionData,
+  isReview,
+  userAnswers,
+}) => {
+  const checkIsAnswer = () => {
+    if (userAnswers && userAnswers.length > 0) {
+      const answer = userAnswers.find(
+        answerItem => answerItem.id === questionData.id,
+      );
+      answer && setSelectedAnswer(answer.userAnswer);
+    }
+  };
+
+  useEffect(() => {
+    checkIsAnswer();
+  }, []);
+
+  const handleSelect = () => {
+    if (!isReview && setUserAnswers) {
+      if (isPracticeMode && selectedAnswer) return;
+
+      if (selectedAnswer === choiceLetter) {
+        setSelectedAnswer(null);
+
+        setUserAnswers(prev => {
+          if (prev) {
+            return prev.filter(item => item.id !== questionData.id);
+          } else {
+            return null;
+          }
+        });
+
+        return;
+      }
+
+      setSelectedAnswer(choiceLetter);
+      setUserAnswers(prev => {
+        if (prev) {
+          return [
+            ...prev.filter(item => item.id !== questionData.id),
+            {
+              id: questionData.id,
+              index: questionData.index,
+              userAnswer: choiceLetter,
+              correctAnswer: answer,
+            },
+          ];
+        } else {
+          return [
+            {
+              id: questionData.id,
+              index: questionData.index,
+              userAnswer: choiceLetter,
+              correctAnswer: answer,
+            },
+          ];
+        }
+      });
+    }
+  };
+
   return (
     <TouchableOpacity
       touchSoundDisabled
@@ -165,18 +253,64 @@ const QuestionChoice: React.FC<{
       onPress={handleSelect}>
       <Text
         style={
-          choice === selectedAnswer
+          isPracticeMode
+            ? choiceLetter === selectedAnswer
+              ? selectedAnswer === answer
+                ? [
+                    questionChoiceStyles.choiceLetter,
+                    questionChoiceStyles.choiceLetterSelected,
+                    questionChoiceStyles.choiceLetterSelectedCorrect,
+                  ]
+                : [
+                    questionChoiceStyles.choiceLetter,
+                    questionChoiceStyles.choiceLetterSelected,
+                    questionChoiceStyles.choiceLetterSelectedError,
+                  ]
+              : selectedAnswer && answer === choiceLetter
+              ? [
+                  questionChoiceStyles.choiceLetter,
+                  questionChoiceStyles.choiceLetterSelected,
+                  questionChoiceStyles.choiceLetterSelectedCorrect,
+                ]
+              : questionChoiceStyles.choiceLetter
+            : isReview
+            ? choiceLetter === answer
+              ? [
+                  questionChoiceStyles.choiceLetter,
+                  questionChoiceStyles.choiceLetterSelected,
+                  questionChoiceStyles.choiceLetterSelectedCorrect,
+                ]
+              : choiceLetter === questionData.selectedAnswer
+              ? [
+                  questionChoiceStyles.choiceLetter,
+                  questionChoiceStyles.choiceLetterSelected,
+                  questionChoiceStyles.choiceLetterSelectedError,
+                ]
+              : questionChoiceStyles.choiceLetter
+            : choiceLetter === selectedAnswer
             ? [
                 questionChoiceStyles.choiceLetter,
                 questionChoiceStyles.choiceLetterSelected,
               ]
             : questionChoiceStyles.choiceLetter
         }>
-        {choice}
+        {choiceLetter}
       </Text>
-      <Text style={questionChoiceStyles.choiceText}>
-        Lorem ipsum dolor sit amet lorem.
-      </Text>
+      {/* <RenderHtml
+        contentWidth={screenWidth}
+        source={{html: choiceText}}
+        tagsStyles={tagsStylesChoice}
+      /> */}
+
+      {isHtml(choiceText) ? (
+        <RenderHtml
+          contentWidth={screenWidth}
+          source={{html: choiceText}}
+          tagsStyles={tagsStylesChoice}
+        />
+      ) : (
+        <Text style={styles.choiceText}>{choiceText}</Text>
+      )}
     </TouchableOpacity>
   );
 };
@@ -192,6 +326,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#E3E3E3',
   },
@@ -200,6 +335,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#E3E3E3',
   },
@@ -218,16 +354,27 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsSemiBold',
   },
   questionText: {
-    fontSize: 16,
+    fontSize: 14.5,
     color: '#000',
     fontFamily: 'PoppinsRegular',
-    lineHeight: 24,
+    lineHeight: 28,
+    textAlign: 'left',
+    width: screenWidth * 0.8,
+  },
+  choiceText: {
+    fontSize: 14.5,
+    color: '#000',
+    fontFamily: 'PoppinsRegular',
+    lineHeight: 28,
+    textAlign: 'left',
+    width: screenWidth * 0.65,
   },
   readParagraphBtn: {
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#F5A52D',
   },
   readParagraphText: {
@@ -267,6 +414,7 @@ const styles = StyleSheet.create({
     right: 15,
     backgroundColor: '#1E90FF',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   submitBtnText: {
     color: '#FFFFFF',
@@ -279,6 +427,7 @@ const questionChoiceStyles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#E3E3E3',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -301,12 +450,20 @@ const questionChoiceStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#757575',
     paddingTop: 3,
+    borderRadius: 3,
+    overflow: 'hidden',
   },
   choiceLetterSelected: {
     backgroundColor: '#1E90FF',
     fontFamily: 'PoppinsSemiBold',
     color: '#fff',
     borderWidth: 0,
+  },
+  choiceLetterSelectedCorrect: {
+    backgroundColor: '#028A0F',
+  },
+  choiceLetterSelectedError: {
+    backgroundColor: '#D03120',
   },
   choiceText: {
     width: '85%',
@@ -318,29 +475,29 @@ const questionChoiceStyles = StyleSheet.create({
   },
 });
 
-const paragraphStyle = StyleSheet.create({
-  container: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingBottom: 15,
-  },
-  paragraphContainer: {
-    paddingTop: 8,
-  },
-  title: {
-    fontSize: 18,
-    fontFamily: 'Montserrat-SemiBold',
-    color: 'black',
-  },
-  paraText: {
-    marginBottom: 10,
-    fontSize: 14,
-    fontFamily: 'Montserrat-Regular',
-    color: '#4d4d4d',
-    lineHeight: 23,
-  },
-});
+// const paragraphStyle = StyleSheet.create({
+//   container: {
+//     width: '100%',
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'flex-end',
+//     paddingBottom: 15,
+//   },
+//   paragraphContainer: {
+//     paddingTop: 8,
+//   },
+//   title: {
+//     fontSize: 18,
+//     fontFamily: 'Montserrat-SemiBold',
+//     color: 'black',
+//   },
+//   paraText: {
+//     marginBottom: 10,
+//     fontSize: 14,
+//     fontFamily: 'Montserrat-Regular',
+//     color: '#4d4d4d',
+//     lineHeight: 23,
+//   },
+// });
 
-export default Question;
+export default memo(Question);

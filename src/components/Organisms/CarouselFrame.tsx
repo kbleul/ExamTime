@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import {RootState} from '../../reduxToolkit/Store';
+
 import {useSelector} from 'react-redux';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -99,6 +100,7 @@ export const FrameOne: React.FC<{
   img: any;
   text: string;
 }> = ({name, img, text}) => {
+  const user = useSelector((state: RootState) => state.auth.user);
   return (
     <View style={styles.container}>
       <View style={frameOnestyles.leftBoxContainer}>
@@ -113,7 +115,19 @@ export const FrameOne: React.FC<{
         </View>
         <Text style={frameOnestyles.subText}>{text}</Text>
       </View>
-      <Image source={img} style={frameOnestyles.rightBoxContainer} />
+      <Image
+        source={
+          user && user.profilePicture
+            ? {
+                uri: user.profilePicture.includes('https://')
+                  ? user.profilePicture
+                  : 'https://dev.think-hubet.com/profile-pictures/' +
+                    user.profilePicture,
+              }
+            : img
+        }
+        style={frameOnestyles.rightBoxContainer}
+      />
     </View>
   );
 };
@@ -135,10 +149,6 @@ export const FrameTwo: React.FC<{
             <Text style={frameTwostyles.firstText}>{title}</Text>
             <Text style={frameTwostyles.secondText}>{text}</Text>
           </View>
-        </View>
-
-        <View style={frameTwostyles.rightBoxContainer}>
-          <Text style={frameTwostyles.progressText}>{progrss}</Text>
         </View>
       </ImageBackground>
     </View>

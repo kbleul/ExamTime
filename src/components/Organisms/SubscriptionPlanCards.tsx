@@ -1,30 +1,29 @@
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import {StyleSheet, View, useWindowDimensions} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
   useAnimatedRef,
 } from 'react-native-reanimated';
-import { screenHeight } from '../../utils/Data/data';
+import {screenHeight} from '../../utils/Data/data';
 import SubCard from '../Molecules/SubCard';
 import Pagination from '../Atoms/Pagination';
 
-
-const SubscriptionPlanCards = ({ data, pagination }) => {
+const SubscriptionPlanCards = ({data, pagination}) => {
   const scrollViewRef = useAnimatedRef(null);
   const [newData, setNewData] = useState([
-    { key: 'spacer-left' },
+    {key: 'spacer-left'},
     ...data,
-    { key: 'spacer-right' },
+    {key: 'spacer-right'},
   ]);
-  const { width } = useWindowDimensions();
+  const {width} = useWindowDimensions();
   const SIZE = width * 0.7;
-  const SPACER = (width - SIZE) / 3;
+  const SPACER = (width - SIZE) / 2;
   const x = useSharedValue(0);
   const offSet = useSharedValue(0);
 
   useEffect(() => {
-    setNewData([{ key: 'spacer-left' }, ...data, { key: 'spacer-right' }]);
+    setNewData([{key: 'spacer-left'}, ...data, {key: 'spacer-right'}]);
   }, [data]);
 
   const onScroll = useAnimatedScrollHandler({
@@ -56,11 +55,10 @@ const SubscriptionPlanCards = ({ data, pagination }) => {
               size={SIZE}
               spacer={SPACER}
             />
-
           );
         })}
       </Animated.ScrollView>
-  
+
       {pagination && <Pagination data={data} x={x} size={SIZE} />}
     </View>
   );
@@ -68,7 +66,7 @@ const SubscriptionPlanCards = ({ data, pagination }) => {
 
 const styles = StyleSheet.create({
   Cards: {
-    height: screenHeight * 0.6,
+    height: screenHeight * 0.62,
   },
-})
+});
 export default SubscriptionPlanCards;

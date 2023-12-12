@@ -1,7 +1,14 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NavigationProp} from '@react-navigation/native';
 import {NativeScrollEvent, NativeSyntheticEvent} from 'react-native';
-import {UserData} from '../../../Realm';
+import {Platform} from 'react-native';
+import {
+  Exam,
+  ExamAnswers,
+  Subject,
+  UserData,
+  UserExamAnswers,
+} from '../../../Realm';
 import {Dispatch} from 'react';
 import {ActionCreatorWithPayload, AnyAction} from '@reduxjs/toolkit';
 import {
@@ -11,25 +18,59 @@ import {
 import {FormData} from '../../../screens/Auth/Login/Types';
 import {userType} from '../../../types';
 import {logoutSuccess} from '../../../reduxToolkit/Features/auth/authSlice';
-import Toast, {ToastProps} from 'react-native-toast-message';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type DeleteAccountMutationFn = ReturnType<typeof useDeleteAccountMutation>[0];
 
-export const checkIsOnline = async (
-  navigator: NavigationProp<ReactNavigation.RootParamList>,
-) => {
-  try {
-    const state = await NetInfo.fetch();
+export const checkIsOnline = async (navigator?: any) => {
+  if (Platform.OS === 'ios') {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => {
+        controller.abort();
+      }, 5000); // Set a timeout of 5 seconds
 
-    if (!state.isConnected || !state.isInternetReachable) {
-      navigator.navigate('network-error');
+      const response = await fetch('https://www.google.com', {
+        method: 'HEAD',
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout); // Clear the timeout if the request completes within 5 seconds
+
+      if (response.status === 200) {
+        return true;
+      } else {
+        console.log('Failed to reach the internet server');
+        navigator && navigator.navigate('network-error');
+        return false;
+      }
+    } catch (error) {
+      console.log({error});
+      console.log('Failed to reach the internet server');
+
+      navigator && navigator.navigate('network-error');
+      return false;
     }
-    return;
-  } catch (error) {
-    // Handle any errors (e.g., request timeout)
-    navigator.navigate('network-error');
-    return; // Assume offline on error
+  } else if (Platform.OS === 'android') {
+    try {
+      const state = await NetInfo.fetch();
+
+      if (!state.isConnected || !state.isInternetReachable) {
+        navigator && navigator.navigate('network-error');
+        console.log('Failed to reach the internet server');
+
+        return false;
+      } else if (state.isConnected && state.isInternetReachable) {
+        return true;
+      }
+    } catch (error) {
+      console.log({error});
+      console.log('Failed to reach the internet server');
+
+      // Handle any errors (e.g., request timeout)
+      navigator && navigator.navigate('network-error');
+      return false; // Assume offline on error
+    }
   }
 };
 
@@ -63,16 +104,29 @@ export const removeRealmUserData = async (
   realm: Realm,
   savedUserData: ResultsType<UserData>,
 ) => {
-  if (savedUserData && savedUserData.length > 0) {
-    let newUser = savedUserData[0];
+  const savedExamsAnswers = realm.objects(ExamAnswers);
+  const savedUserExamAnswers = realm.objects(UserExamAnswers);
 
+  const savedExam = realm.objects(Exam);
+
+  if (savedUserData && savedUserData.length > 0) {
     // const {_id, initialDate, isSubscribed, selectedSubjects, grade} =
     //   savedUserData[0];
 
     try {
       realm.write(() => {
-        newUser.user = null;
-        newUser.token = null;
+        realm.delete(savedExamsAnswers);
+        realm.delete(savedUserExamAnswers);
+
+        for (const exam of savedExam) {
+          console.log(exam.isExamTaken);
+          exam.isExamTaken = false;
+        }
+
+        savedUserData[0].token = null;
+        savedUserData[0].isSubscribed = false;
+        savedUserData[0].user = null;
+        savedUserData[0].selectedSubjects = [];
       });
     } catch (e) {
       console.log('err', e);
@@ -118,14 +172,6 @@ export const verifyPassword = async (
     setShowLastPrompt(true);
     setShowPasswordForm(false);
     setUserPassword(data.password);
-
-    Toast.show({
-      type: 'success',
-      text1: 'success',
-      text2:
-        'Account deleted successfully. You can create a new accound using your old phone number.',
-      visibilityTime: 10000,
-    });
   } catch (error) {
     if (
       error instanceof TypeError &&
@@ -146,17 +192,25 @@ export const DeleteUserAccount = async (
   setShowLDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>,
   realm: Realm,
   savedUserData: ResultsType<UserData>,
+  Toast: any,
 ) => {
   checkIsOnline(navigator);
 
   try {
-    const response = await deleteAccount({
+    await deleteAccount({
       password,
       token,
     }).unwrap();
     dispatch(logoutSuccess());
     setShowLastPrompt(false);
     setShowLDeleteDialog(false);
+
+    await Toast.show({
+      type: 'success',
+      text1: 'success',
+      text2: 'Account deleted successfully',
+      visibilityTime: 4000,
+    });
 
     removeRealmUserData(realm, savedUserData);
   } catch (error) {
@@ -166,6 +220,37 @@ export const DeleteUserAccount = async (
     ) {
       navigator.navigate('network-error');
     }
-    console.log(error, token);
+    console.log(error);
   }
+};
+
+export const PushFavorateToFront = (
+  favoritesArray: string[] | null | undefined,
+  savedSubjects: ResultsType<Subject>,
+) => {
+  if (!favoritesArray) {
+    return savedSubjects;
+  }
+
+  const favorites: Subject[] = [];
+  favoritesArray.map(item => {
+    const favSubject = savedSubjects.find(
+      (subject: any) => subject.id === item,
+    );
+
+    favSubject && favorites.push(favSubject);
+  });
+
+  const notFavorites = savedSubjects.filter(
+    (item: any) => !favoritesArray.includes(item.id),
+  );
+
+  const favoritesFirstArray = [...favorites, ...notFavorites];
+
+  return favoritesFirstArray;
+};
+
+export const isHtml = (input: string) => {
+  const htmlRegex = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
+  return htmlRegex.test(input);
 };

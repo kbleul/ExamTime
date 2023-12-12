@@ -1,14 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import PrimaryBtn from '../Atoms/PrimaryBtn';
 
-const SendUsmessage: React.FC<{onPress: () => void}> = ({onPress}) => {
+type SendMessageBtnProps = {
+  onPress?: (text: any) => void;
+  isLoading: boolean;
+};
+
+const SendUsmessage: React.FC<SendMessageBtnProps> = ({onPress, isLoading}) => {
+  const [text, setText] = useState();
+
+  const handleTextChange = (newText: any) => {
+    setText(newText);
+  };
+  const SendComment = () => {
+    onPress && onPress(text);
+  };
   return (
     <View style={styles.sendUsmessage}>
       <Text style={styles.messageText}>messeage</Text>
-      <TextInput multiline numberOfLines={4} style={styles.messageInput} />
-      <PrimaryBtn text="Send" onPress={onPress} />
+      <TextInput
+        onChangeText={handleTextChange}
+        multiline
+        numberOfLines={4}
+        style={styles.messageInput}
+      />
+      <PrimaryBtn text="Send" onPress={SendComment} isLoading={isLoading} />
     </View>
   );
 };
@@ -28,6 +46,7 @@ const styles = StyleSheet.create({
   messageInput: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#0D66D03B',
     borderWidth: 0.5,
     height: 94,

@@ -4,7 +4,8 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createRealmUserData} from '../../screens/App/Onboarding/Logic';
 import {AuthContext} from '../../Realm/model';
-import {screenHeight} from '../../utils/Data/data';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {PagesCounterType} from '../../screens/App/Onboarding/Page/types';
 const TopIndicator: React.FC<PagesCounterType> = ({
   pageCounter,
   setPageCounter,
@@ -17,17 +18,6 @@ const TopIndicator: React.FC<PagesCounterType> = ({
       <TouchableOpacity onPress={() => setPageCounter(prev => --prev)}>
         <Ionicons name="chevron-back-outline" style={style.icon} />
       </TouchableOpacity>
-      <View style={style.indicatorContainer}>
-        <View style={[style.indicator, style.indicatorActive]}>{''}</View>
-        <View
-          style={
-            pageCounter === 3
-              ? [style.indicator, style.indicatorActive]
-              : style.indicator
-          }>
-          {''}
-        </View>
-      </View>
 
       {pageCounter === 3 ? (
         <TouchableOpacity
@@ -47,8 +37,8 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingHorizontal: '7%',
-    height: screenHeight * (1 / 10),
+    paddingHorizontal: screenWidth * 0.05,
+    paddingVertical: 2,
   },
   indicatorContainer: {
     flexDirection: 'row',
@@ -61,6 +51,7 @@ const style = StyleSheet.create({
     padding: 4,
     backgroundColor: '#E2EBFF',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   indicatorActive: {
     backgroundColor: '#1E90FF',

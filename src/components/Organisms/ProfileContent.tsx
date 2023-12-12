@@ -1,24 +1,19 @@
 import React from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { ScaledSheet, ms ,mvs, s,vs} from 'react-native-size-matters';
+import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {ScaledSheet, ms, mvs, s, vs} from 'react-native-size-matters';
 import MenuItemsProfile from '../Molecules/MenuItemsProfile';
 import badgeImg from '../../assets/Images/Profile/badge.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../reduxToolkit/Store';
-import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reduxToolkit/Store';
+import { useNavigation } from '@react-navigation/native';
+//import badgeImg from '../../assets/Images/Profile/1.png';
 
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const navigator = useNavigation<any>();
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -50,8 +45,8 @@ const ProfileContent = () => {
             <View style={styles.activityContainer}>
               <Text style={styles.name}>Activities</Text>
               <Text style={styles.activity}>
-                You are now in the position of gold to upgrade you have to spent
-                time.
+                Level up your Exam Time App badge and unlock new features and
+                resources to help you achieve academic excellence!
               </Text>
             </View>
             {/* <Text style={styles.name}>
@@ -90,7 +85,7 @@ const styles = ScaledSheet.create({
     top: '26%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius:'30@vs',
+    borderTopLeftRadius: '30@vs',
     borderTopRightRadius: '30@vs',
     height: '70%',
     width: '100%',
@@ -105,9 +100,9 @@ const styles = ScaledSheet.create({
     marginVertical: '10@vs',
     paddingVertical: '10@vs',
     paddingHorizontal: '30@s',
-    borderRadius:5,
+    borderRadius: 5,
     overflow: 'visible',
-    position: 'relative', 
+    position: 'relative',
   },
   activityContainer: {
     width: '70%',
@@ -127,12 +122,12 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor:"red",
-    position: 'absolute', 
-    top: '-50@ms', 
-    right: '2%', 
-    transform: [{translateX: 12.5}], 
+    position: 'absolute',
+    top: '-50@ms',
+    right: '2%',
+    transform: [{ translateX: 12.5 }],
     width: '140@s',
-    height:'180@vs',
+    height: '180@vs',
     objectFit: 'contain',
   },
   adsBtnContainer: {
@@ -148,6 +143,7 @@ const styles = ScaledSheet.create({
     width: '43%',
     paddingVertical: 10,
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#6A5ACD',
   },
   adsBtns_secondary: {
@@ -186,14 +182,17 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
     fontSize: '15@ms',
     fontFamily: 'PoppinsSemiBold',
+    color: 'black',
   },
   editIcon: {
     backgroundColor: 'white',
     padding: '5@msr',
     borderRadius: '50@ms',
+    overflow: 'hidden',
     color: 'black',
     fontSize: '28@ms',
     fontWeight: 'bold',
   },
+
 });
 export default ProfileContent;

@@ -4,7 +4,7 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 export const styles = StyleSheet.create({
   container: {
     width: screenWidth - 20,
-    height: screenHeight / 5,
+    height: screenHeight / 6,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -33,6 +33,8 @@ export const frameOnestyles = StyleSheet.create({
     borderRadius: 30,
     marginRight: 20,
     borderWidth: 2,
+    overflow: 'hidden',
+    backgroundColor: '#f5f2f2',
   },
   helloText: {
     fontSize: screenWidth * 0.07,
@@ -145,6 +147,7 @@ export const frameThreestyles = StyleSheet.create({
     paddingVertical: 9,
     borderRadius: 10,
     backgroundColor: '#6A5ACD',
+    overflow: 'hidden',
   },
   adsBtns_secondary: {
     backgroundColor: '#0A6EC7',
@@ -175,6 +178,7 @@ export const frameFourstyles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     left: 10,
+    overflow: 'hidden',
   },
   text: {
     color: '#7fbbf5',

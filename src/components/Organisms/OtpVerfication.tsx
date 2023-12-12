@@ -23,11 +23,9 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   isReset,
 }) => {
   const navigator = useNavigation();
-  const [verifyCode, {isLoading, isError, error}] = useVerifyCodeMutation();
-  const [
-    resendCode,
-    {isLoading: isLoadingResend, isError: isErrorResend, error: errorResend},
-  ] = useResendCodeMutation();
+  const [verifyCode, {isLoading, error}] = useVerifyCodeMutation();
+  const [resendCode, {isLoading: isLoadingResend, error: errorResend}] =
+    useResendCodeMutation();
 
   const [OtpValues, setOtpValues] = useState(['', '', '', '', '']);
   const inputRefs = useRef<Array<TextInput | null>>([

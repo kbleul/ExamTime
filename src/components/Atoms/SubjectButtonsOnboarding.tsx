@@ -4,40 +4,43 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 type SubjectButtonProps = {
   text: string;
-  selectedGrades?: string[] | undefined;
-  setSelectedGrades?: React.Dispatch<
-    React.SetStateAction<string[] | undefined>
-  >;
+  subjectId: string;
+  selectedSubjects: string[] | null;
+  setSelectedSubjects: React.Dispatch<React.SetStateAction<string[] | null>>;
 };
 
 const SubjectButton: React.FC<SubjectButtonProps> = ({
   text,
-  selectedGrades,
-  setSelectedGrades,
+  subjectId,
+  selectedSubjects,
+  setSelectedSubjects,
 }) => {
-  const onPress = (grade: string) => {
-    if (selectedGrades && setSelectedGrades) {
-      if (selectedGrades.includes(grade)) {
-        setSelectedGrades(selectedGrades.filter(item => item !== grade));
-      } else {
-        !selectedGrades.includes(grade) &&
-          setSelectedGrades(prev => {
-            return prev ? [...prev, grade] : [];
-          });
-      }
+  const onPress = () => {
+    if (selectedSubjects === null) {
+      setSelectedSubjects([subjectId]);
+      return;
+    }
+
+    if (selectedSubjects.includes(subjectId)) {
+      setSelectedSubjects(selectedSubjects.filter(item => item !== subjectId));
+    } else {
+      setSelectedSubjects(prev => {
+        return prev && [...prev, subjectId];
+      });
     }
   };
+
   return (
     <TouchableOpacity
-      onPress={() => onPress(text)}
+      onPress={onPress}
       style={
-        selectedGrades?.includes(text)
+        selectedSubjects?.includes(subjectId)
           ? [style.buttons, style.buttonSelected]
           : style.buttons
       }>
       <Text
         style={
-          selectedGrades?.includes(text)
+          selectedSubjects?.includes(subjectId)
             ? [style.buttonText, style.buttonTextSelected]
             : style.buttonText
         }>
@@ -58,6 +61,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 25,
     marginRight: 10,
     borderRadius: 30,
+    overflow: 'hidden',
   },
 
   buttonSelected: {
@@ -67,7 +71,7 @@ const style = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: '#D3D3D3',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: screenWidth * 0.035,
   },
   buttonTextSelected: {

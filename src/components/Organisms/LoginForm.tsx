@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   TextInput,
@@ -25,6 +25,7 @@ import {FormData} from '../../screens/Auth/Login/Types';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
 import {RootState} from '../../reduxToolkit/Store';
+import {screenWidth} from '../../utils/Data/data';
 
 const schema = yup.object().shape({
   phoneNumber: yup
@@ -61,6 +62,7 @@ const LoginForm = () => {
     control,
     handleSubmit,
     formState: {errors},
+    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -73,6 +75,11 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [rememberMe, setRememberMe] = useState(false);
 
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [changed, setChanged] = useState(false);
+
   const dispatch = useDispatch();
   const [login, {isLoading, isError, error}] = useLoginMutation();
 
@@ -80,6 +87,12 @@ const LoginForm = () => {
   const realm = useRealm();
   const savedUserData = useQuery(UserData);
   const newUserData = useObject(UserData, savedUserData[0]?._id);
+
+  useEffect(() => {
+    // Reset the form fields when the component mounts
+    setPhoneNumber('');
+    setPassword('');
+  }, [changed]);
 
   return (
     <View style={styles.formContainer}>
@@ -94,13 +107,18 @@ const LoginForm = () => {
               <TextInput
                 keyboardType="numeric"
                 style={[styles.bigBox, styles.inputPhone]}
-                onChangeText={onChange}
+                onChangeText={e => {
+                  onChange(e);
+                  setPhoneNumber(e);
+                }}
                 placeholder="Enter Mobile Number"
                 placeholderTextColor={'#d4d4d4'}
+                value={phoneNumber}
               />
             </View>
           )}
           name="phoneNumber"
+          defaultValue=""
         />
         {errors.phoneNumber ? (
           <Text style={formStyles.error}>{errors.phoneNumber.message} *</Text>
@@ -113,10 +131,14 @@ const LoginForm = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.bigBox}
-                onChangeText={onChange}
+                onChangeText={e => {
+                  onChange(e);
+                  setPassword(e);
+                }}
                 placeholder="*********"
                 placeholderTextColor={'#d4d4d4'}
                 secureTextEntry={showPassword}
+                value={password}
               />
               {showPassword ? (
                 <TouchableOpacity
@@ -136,6 +158,7 @@ const LoginForm = () => {
             </View>
           )}
           name="password"
+          defaultValue=""
         />
         {errors.password ? (
           <Text style={formStyles.error}>{errors.password.message} *</Text>
@@ -151,7 +174,7 @@ const LoginForm = () => {
         ) : (
           <Text
             style={styles.submitBtnText}
-            onPress={handleSubmit(data =>
+            onPress={handleSubmit((data, e) =>
               handleLogin(
                 data,
                 dispatch,
@@ -161,6 +184,7 @@ const LoginForm = () => {
                 newUserData,
                 realm,
                 IsDefaultPasswordChanged,
+                setChanged,
               ),
             )}>
             Login
@@ -191,6 +215,7 @@ const LoginForm = () => {
         <TouchableOpacity
           touchSoundDisabled
           onPress={() => {
+            setChanged(prev => !prev);
             navigator.navigate('forgot-password');
           }}>
           <Text style={styles.forgorPasswordText}>Forgot password?</Text>
@@ -216,6 +241,7 @@ const styles = StyleSheet.create({
     borderColor: '#81afe6',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     height: 47,
   },
   inputContainerSecondary: {
@@ -226,14 +252,15 @@ const styles = StyleSheet.create({
     width: '20%',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 14,
+    fontSize: screenWidth * 0.04,
     textAlign: 'center',
-    color: '#000',
+    color: '#b3b3b3',
     fontFamily: 'PoppinsRegular',
   },
   inputPhone: {
     borderWidth: 0,
     borderRadius: 0,
+    overflow: 'hidden',
     color: '#000',
     paddingLeft: 20,
     borderLeftWidth: 1,
@@ -281,6 +308,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     width: '100%',
     borderRadius: 10,
+    overflow: 'hidden',
     marginTop: 10,
     backgroundColor: '#1E90FF',
   },

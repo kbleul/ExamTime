@@ -27,6 +27,9 @@ const IconContainer: React.FC<{
       return;
     }
 
+    setShowLogoutDialog(false);
+    setShowLDeleteDialog(false);
+
     if (item === ProfileMenuItemsAuth.Profile.name) {
       navigator.navigate('Profile-Edit');
       return;
@@ -55,10 +58,12 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     backgroundColor: 'white',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   iconContainer: {
     padding: 5,
     borderRadius: 5,
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -1,6 +1,36 @@
 import {createRealmContext} from '@realm/react';
-import {UserData, User, Region} from './index';
+import {
+  UserData,
+  User,
+  Region,
+  Grade,
+  SingleSubject,
+  Subject,
+  ExamQuestion,
+  ExamAnswers,
+  Exam,
+  UserExamAnswers,
+  Study,
+  Pdf,
+  VideoLink,
+  StudyTips,
+} from './index';
 export const AuthContext = createRealmContext({
-  schema: [UserData, User, Region],
+  schema: [
+    UserData,
+    User,
+    Grade,
+    Region,
+    SingleSubject,
+    Subject,
+    ExamQuestion,
+    ExamAnswers,
+    Exam,
+    UserExamAnswers,
+    Study,
+    Pdf,
+    VideoLink,
+    StudyTips,
+  ],
   deleteRealmIfMigrationNeeded: true,
 });

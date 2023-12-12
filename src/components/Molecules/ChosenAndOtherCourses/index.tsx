@@ -1,21 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
-import img1 from '../../../assets/Images/home/s1.png';
-import img2 from '../../../assets/Images/home/s2.png';
-import img3 from '../../../assets/Images/home/s3.png';
-import img4 from '../../../assets/Images/home/s4.png';
-import img5 from '../../../assets/Images/home/s5.png';
 import OtherCoursesCard from './OtherCoursesCard';
-
-interface SubjectItemType {
-  id: string;
-  title: string;
-  lessonsCount: number;
-  progress?: number;
-  bgImage: any;
-}
+import {Subject, UserData} from '../../../Realm';
+import {AuthContext} from '../../../Realm/model';
+import {subjectType} from '../../../types';
+import {PushFavorateToFront} from '../../../utils/Functions/Helper';
+import {screenHeight} from '../../../utils/Data/data';
 
 interface CourseItemType {
   id: string;
@@ -24,87 +16,51 @@ interface CourseItemType {
   subjectsCount: number;
 }
 
-export const DummySubjects = [
-  {
-    id: '0011',
-    title: 'SAT',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img1,
-  },
-  {
-    id: '0012',
-    title: 'Physics',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img2,
-  },
-  {
-    id: '0013',
-    title: 'Civics',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img3,
-  },
-  {
-    id: '0014',
-    title: 'Biology',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img4,
-  },
-  {
-    id: '0015',
-    title: 'MAth',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img5,
-  },
-  {
-    id: '0016',
-    title: 'Chemistry',
-    lessonsCount: 12,
-    progress: 80,
-    bgImage: img5,
-  },
-];
-
 const DummyCourses = [
   {
     id: 'G0011',
-    grade: 8,
+    grade: 'grade_6',
     subTitle: 'For Reginal Exam Takers',
     subjectsCount: 7,
   },
   {
     id: 'G0012',
-    grade: 12,
+    grade: 'grade_8',
     subTitle: 'For Natural Science Students',
     subjectsCount: 12,
   },
   {
     id: 'G0013',
-    grade: 12,
+    grade: 'grade_12_social',
     subTitle: 'For Social Students',
     subjectsCount: 12,
   },
 ];
 
-const ChosenCourses = () => {
-  const renderItem = ({
-    item,
-    index,
-  }: {
-    item: SubjectItemType;
-    index: number;
-  }) => {
+const ChosenCourses = ({
+  setLoginModalVisible,
+}: {
+  setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const {useQuery} = AuthContext;
+
+  const savedSubjects = useQuery(Subject);
+  const savedUserData = useQuery(UserData);
+  const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
+
+  setTimeout(() => {
+    setIsLoadingSubjects(false);
+  }, 500);
+
+  const renderItem = ({item}: {item: subjectType}) => {
     return (
       <View>
         <ChosenCoursesCard
-          title={item.title}
-          lessonsCount={item.lessonsCount}
-          progress={item.progress}
-          bgImage={item.bgImage}
+          subject={item.subject}
+          subjectId={item.id}
+          bgImage={{uri: item.icon}}
+          setLoginModalVisible={setLoginModalVisible}
+          isLoadingSubjects={isLoadingSubjects}
         />
       </View>
     );
@@ -121,41 +77,50 @@ const ChosenCourses = () => {
       <View>
         <OtherCoursesCard
           grade={item.grade}
-          subTitle={item.subTitle}
           subjectsCount={item.subjectsCount}
+          index={index}
         />
       </View>
     );
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="My learning" subTitle="Your Chosen Courses" seeAll />
 
       <FlatList
         keyExtractor={item => item.id}
-        data={DummySubjects}
+        data={PushFavorateToFront(
+          savedUserData && savedUserData.length > 0
+            ? savedUserData[0].selectedSubjects
+            : null,
+          savedSubjects,
+        )}
         renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
 
-      <Header title="Other Courses" />
+      <View style={styles.subContainer}>
+        <Header title="Other Courses" />
+      </View>
 
       <FlatList
         keyExtractor={item => item.id}
         data={DummyCourses}
-        renderItem={renderItemCourse}
+        renderItem={({item, index}) => renderItemCourse({item, index})}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
     </View>
   );
 };
-
 const styles = StyleSheet.create({
-  scrollContaier: {
-    width: '100%',
+  container: {
+    marginTop: screenHeight * 0.01,
+  },
+  subContainer: {
+    marginTop: screenHeight * 0.01,
   },
 });
 

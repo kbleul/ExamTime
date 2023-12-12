@@ -1,19 +1,51 @@
-import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 const ExamNavigateButtons: React.FC<{
   setExitExamModalVisible?: (value: boolean) => void;
   showFullPage: boolean;
-}> = ({setExitExamModalVisible, showFullPage}) => {
+  currentQuestion: number;
+  setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
+  totalQuestionsLength: number;
+  isReview?: boolean;
+  isStudy?: boolean;
+}> = ({
+  setExitExamModalVisible,
+  showFullPage,
+  currentQuestion,
+  setCurrentQuestion,
+  totalQuestionsLength,
+  isReview,
+  isStudy,
+}) => {
   return (
     <View style={ButtonStyles.contaienr}>
-      {!showFullPage && <Buttons text="Prev." bgColor="#0081BA" />}
+      {!showFullPage && currentQuestion !== 0 && (
+        <Buttons
+          text="Prev."
+          bgColor="#0081BA"
+          setExitExamModalVisible={() => setCurrentQuestion(prev => --prev)}
+          isEndBtn={false}
+        />
+      )}
       <Buttons
         text="End"
         bgColor="#4CB050"
         setExitExamModalVisible={setExitExamModalVisible}
+        isEndBtn={true}
+        isReview={isReview}
+        setCurrentQuestion={setCurrentQuestion}
+        isStudy={isStudy}
       />
-      {!showFullPage && <Buttons text="Next." bgColor="#0081BA" />}
+      {!showFullPage && currentQuestion !== totalQuestionsLength - 1 && (
+        <Buttons
+          text="Next."
+          bgColor="#0081BA"
+          setExitExamModalVisible={() => setCurrentQuestion(prev => ++prev)}
+          isEndBtn={false}
+        />
+      )}
     </View>
   );
 };
@@ -21,13 +53,35 @@ const ExamNavigateButtons: React.FC<{
 const Buttons: React.FC<{
   text: string;
   bgColor: string;
-  setExitExamModalVisible?: (value: boolean) => void;
-}> = ({text, bgColor, setExitExamModalVisible}) => {
+  setExitExamModalVisible: (value: boolean | null) => void;
+  isEndBtn: boolean;
+  isReview?: boolean;
+  isStudy?: boolean;
+}> = ({
+  text,
+  bgColor,
+  setExitExamModalVisible,
+  isEndBtn,
+  isReview,
+  isStudy,
+}) => {
+  const navigator: any = useNavigation();
+  const handleAction = () => {
+    if (isReview) {
+      isStudy
+        ? navigator.navigate('StudySection')
+        : navigator.navigate('Practice');
+    } else {
+    }
+    setExitExamModalVisible(true);
+  };
   return (
     <TouchableOpacity
       touchSoundDisabled
       style={[ButtonStyles.button, {backgroundColor: bgColor}]}
-      onPress={() => setExitExamModalVisible && setExitExamModalVisible(true)}>
+      onPress={() => {
+        isEndBtn ? handleAction() : setExitExamModalVisible(null);
+      }}>
       <Text style={ButtonStyles.text}>{text}</Text>
     </TouchableOpacity>
   );
@@ -45,6 +99,7 @@ const ButtonStyles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 200,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
   },

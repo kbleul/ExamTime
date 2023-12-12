@@ -21,6 +21,7 @@ export const formStyles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#9CC0EC',
     paddingHorizontal: 20,
     paddingVertical: 6,
@@ -34,6 +35,7 @@ export const formStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#8dbaf0',
   },
   phoneSmallBox: {
@@ -47,6 +49,7 @@ export const formStyles = StyleSheet.create({
     borderWidth: 0,
     borderLeftWidth: 1,
     borderRadius: 0,
+    overflow: 'hidden',
     width: '100%',
     color: '#000',
   },
@@ -62,6 +65,7 @@ export const formStyles = StyleSheet.create({
     borderColor: '#8dbaf0',
     borderWidth: 0.5,
     borderRadius: 10,
+    overflow: 'hidden',
     paddingHorizontal: 8,
     textTransform: 'uppercase',
     color: '#d4d4d4',
@@ -98,12 +102,14 @@ export const formStyles = StyleSheet.create({
   submitBtn: {
     backgroundColor: '#1E90FF',
     borderRadius: 10,
+    overflow: 'hidden',
     width: 200,
     paddingVertical: 11,
   },
   submitBtnPassword: {
     backgroundColor: '#1E90FF',
     borderRadius: 10,
+    overflow: 'hidden',
     width: 200,
     paddingVertical: 11,
     alignSelf: 'flex-end',
@@ -159,6 +165,7 @@ export const OPTStyles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     borderColor: '#1E90FF',
     width: '18%',
     fontFamily: 'Montserrat-Regular',

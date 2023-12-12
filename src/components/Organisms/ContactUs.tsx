@@ -1,10 +1,19 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Linking} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import SendUsmessage from '../Molecules/SendUsmessage';
 
-const ContactUs: React.FC<{onPress: () => void}> = ({onPress}) => {
+const ContactUs: React.FC<{
+  onPress: (text: any) => void;
+  isLoading: boolean;
+}> = ({onPress, isLoading}) => {
+  const handelPhonecall = () => {
+    Linking.openURL('tel:+251912462133');
+  };
+  const handelTelegram = () => {
+    Linking.openURL('https://t.me/thinkhub');
+  };
   return (
     <View style={styles.AboutusContener}>
       <View style={styles.textContener}>
@@ -15,18 +24,20 @@ const ContactUs: React.FC<{onPress: () => void}> = ({onPress}) => {
           we get back to you as soon as possible{' '}
         </Text>
       </View>
-      <SendUsmessage onPress={onPress} />
+      <SendUsmessage onPress={onPress} isLoading={isLoading} />
       <View style={styles.befamTextContener}>
         <Text style={styles.befamText}>
           be a part of our famliy by joining our telegram Channale
         </Text>
-        <View style={styles.telegramlink}>
+        <TouchableOpacity style={styles.telegramlink} onPress={handelTelegram}>
           <Text style={styles.linkText}> https://t.me/thinkhub</Text>
           <Feather name="external-link" color="#1E90FF" size={16} />
-        </View>
+        </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.befamTextContener2}>
+      <TouchableOpacity
+        style={styles.befamTextContener2}
+        onPress={handelPhonecall}>
         <SimpleLineIcons name="earphones-alt" size={22} />
         <Text style={styles.callText}>Call custommer service</Text>
       </TouchableOpacity>
@@ -40,6 +51,7 @@ const styles = StyleSheet.create({
   textContener: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
+    overflow: 'hidden',
     height: 102,
     borderColor: '#87b0e0',
     borderWidth: 0.5,
@@ -68,6 +80,7 @@ const styles = StyleSheet.create({
 
   befamTextContener: {
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#FFFFFF',
     width: '100%',
     height: 94,
@@ -76,6 +89,7 @@ const styles = StyleSheet.create({
   },
   befamTextContener2: {
     borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#FFFFFF',
     width: '100%',
     height: 50,

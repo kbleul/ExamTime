@@ -1,72 +1,106 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-} from 'react-native';
-import { ScaledSheet, ms } from 'react-native-size-matters';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, ActivityIndicator, Alert} from 'react-native';
+import {ScaledSheet, ms} from 'react-native-size-matters';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import {ScrollView} from 'react-native-gesture-handler';
 import ShareApp from '../../../components/Organisms/ShareApp';
+import {useGetAboutUsMutation} from '../../../reduxToolkit/Services/auth';
+import Loading from '../../../components/Atoms/Loading';
 
 const Index = () => {
+  const [getAboutUs] = useGetAboutUsMutation();
+  const [aboutUs, setAboutUS] = useState(undefined);
+  const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.auth.user);
+  useEffect(() => {
+    const fetchAboutUs = async () => {
+      try {
+        const response: any = await getAboutUs({});
 
+        if (response.error) {
+          Alert.alert(response.error);
+        } else if (response.data[0].aboutUs) {
+          const aboutUsData = response.data[0].aboutUs;
+          setAboutUS(aboutUsData);
+          setLoading(false);
+        } else {
+          Alert.alert(
+            'Invalid response format - missing or empty array:',
+            response.data[0].aboutUs,
+          );
+        }
+      } catch (error: any) {
+        setLoading(false);
+        Alert.alert('Error fetching about us data:', error);
+      }
+    };
+
+    fetchAboutUs();
+  }, []);
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.backicon}>
-          <BackWithItem type="About Us" isTrial={user ? false : true} />
+      {loading ? (
+        <View style={styles.loadingIndicator}>
+          <Loading />
         </View>
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.backicon}>
+            <BackWithItem type="About Us" isTrial={user ? false : true} />
+          </View>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            Think Hub ET is an innovation company founded with the purpose of
-            developing a high-quality E-learning platform for current
-            generation. Our dynamic staff provides training, and flexible
-            support services to the Exam taker community. We promote an
-            atmosphere for growth in teaching and learning via creative problem
-            solving, collaboration, and reflection in order to best assist our
-            students, teachers, and staff.
-          </Text>
-        </View>
-        <View style={styles.imageBg}>
-          <Image
-            source={require('../../../assets/Logo/ThinkHubIcon.png')}
-            style={styles.img}
-          />
-        </View>
-        <View style={styles.share}>
-          <ShareApp />
-        </View>
-      </ScrollView>
+          {aboutUs && (
+            <View style={styles.textContainer}>
+              <Text style={styles.text}>{aboutUs}</Text>
+            </View>
+          )}
+          <View style={styles.imageBg}>
+            <Image
+              source={require('../../../assets/Logo/ThinkHubIcon.png')}
+              style={styles.img}
+            />
+          </View>
+          <View style={styles.share}>
+            <ShareApp />
+          </View>
+        </ScrollView>
+      )}
       <MainBottomNav />
     </View>
   );
 };
 
 const styles = ScaledSheet.create({
-  backicon: {
-    marginTop: '25@ms',
-  },
   container: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     flex: 1,
     width: '100%',
     backgroundColor: '#F9FCFF',
+    marginTop: 10,
+  },
+  backicon: {
+    marginTop: '20@ms',
+  },
+  loadingIndicator: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    width: '100%',
+    backgroundColor: '#F9FCFF',
   },
   imageBg: {
     height: '25%',
-    width: '100%',
-    padding: '10@ms',
+    width: '70%',
+    marginLeft: '15%',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: '15@ms',
   },
   img: {
     height: '100%',
@@ -78,6 +112,7 @@ const styles = ScaledSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom: '100@ms',
   },
   share: {
     justifyContent: 'flex-end',
@@ -87,13 +122,14 @@ const styles = ScaledSheet.create({
   },
   text: {
     padding: '10@ms',
-    fontSize: '15@ms',
+    fontSize: '12@ms',
     textAlign: 'center',
-    color: '#222E50',
-    fontFamily: 'Montserrat-Regular',
+    color: 'black',
+    fontFamily: 'PoppinsRegular',
+    lineHeight: '24@ms',
   },
   textContainer: {
-    marginTop: '20@vs',
+    marginTop: '10@vs',
     padding: '5@ms',
     width: '100%',
     overflow: 'hidden',

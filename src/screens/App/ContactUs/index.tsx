@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,10 +12,52 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import ShareApp from '../../../components/Organisms/ShareApp';
 import ContactUs from '../../../components/Organisms/ContactUs';
+import {RootState} from '../../../reduxToolkit/Store';
+import {useCreatecommentMutation} from '../../../reduxToolkit/Services/auth';
+import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+import LoginModal from '../../../components/Organisms/LoginModal';
 
 const Index = () => {
   const navigator = useNavigation<any>();
-  const SendMessage = () => {};
+
+  const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const [Createcomment, {isLoading: isLoadingChange}] =
+    useCreatecommentMutation();
+
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
+  const SendMessage = async (text: any) => {
+    if (!user || !token) {
+      setShowLoginPrompt(true);
+      return;
+    }
+    try {
+      const result: any = await Createcomment({
+        token: token || '',
+        comment: text,
+      });
+
+      if (result?.statusCode == 401) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error!',
+          text2: `Post comment unsuccessfull. Please try again`,
+        });
+        return;
+      }
+
+      Toast.show({
+        type: 'success',
+        text1: 'success',
+        text2: 'Message sent successfully',
+        visibilityTime: 4000,
+      });
+    } catch (error) {}
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topHeader}>
@@ -29,7 +71,7 @@ const Index = () => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
         <View style={styles.AboutusContener}>
-          <ContactUs onPress={SendMessage} />
+          <ContactUs onPress={SendMessage} isLoading={isLoadingChange} />
           <ShareApp />
         </View>
       </ScrollView>
@@ -37,6 +79,12 @@ const Index = () => {
       <View>
         <MainBottomNav />
       </View>
+
+      <LoginModal
+        loginModalVisible={showLoginPrompt}
+        setLoginModalVisible={setShowLoginPrompt}
+      />
+      <Toast />
     </SafeAreaView>
   );
 };

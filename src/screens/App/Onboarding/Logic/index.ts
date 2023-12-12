@@ -1,13 +1,13 @@
 import {NavigationProp} from '@react-navigation/native';
-import {set_to_localStorage} from '../../../../utils/Functions/Set';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   LocalObjectDataKeys,
   LocalStorageDataKeys,
   trialStatus,
 } from '../../../../utils/Data/data';
-import {get_from_localStorage} from '../../../../utils/Functions/Get';
+import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
+import {downloadedSubjectType, subjectType} from '../../../../types';
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -55,22 +55,72 @@ export const createRealmUserData = async (
   realm: Realm,
   selectedSubjects: string[] | [],
   navigation: NavigationProp<ReactNavigation.RootParamList>,
+  setIsLoadingSubjects: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
-  const grade = await get_from_localStorage(LocalStorageDataKeys.userGrade);
+  try {
+    setIsLoadingSubjects(true);
+    const grade = await getObject_from_localStorage(
+      LocalStorageDataKeys.userGrade,
+    );
 
-  const currentDate = new Date().toString();
+    const currentDate = new Date().toString();
 
-  realm.write(() => {
-    realm.create(LocalObjectDataKeys.UserData, {
-      _id: new Realm.BSON.ObjectId(),
-      token: null,
-      grade: grade.value,
-      initialDate: currentDate,
-      isSubscribed: false,
-      user: null,
-      selectedSubjects: [...selectedSubjects],
+    realm.write(() => {
+      realm.create(LocalObjectDataKeys.UserData, {
+        _id: new Realm.BSON.ObjectId(),
+        token: null,
+        grade: grade.value,
+        initialDate: currentDate,
+        isSubscribed: false,
+        user: null,
+        selectedSubjects: [...selectedSubjects],
+      });
     });
-  });
+  } catch (err) {
+    console.log(err);
+    setIsLoadingSubjects(false);
+  }
 
   navigation.navigate('Home');
+};
+
+export const createRealmSubjectsData = async (
+  realm: Realm,
+  subjects: subjectType[],
+) => {
+  try {
+    subjects.forEach(subject => {
+      const {
+        id,
+        description,
+        icon,
+        createdAt,
+        updatedAt,
+        grade,
+        subject: SingleSubject,
+      } = subject;
+
+      realm.write(() => {
+        const subjectObject = realm.create(LocalObjectDataKeys.SingleSubject, {
+          id: SingleSubject.id,
+          subject: SingleSubject.subject,
+          createdAt: SingleSubject.createdAt,
+          updatedAt: SingleSubject.updatedAt,
+        });
+
+        realm.create(LocalObjectDataKeys.Subject, {
+          id,
+          description,
+          icon,
+          createdAt,
+          updatedAt,
+          grade,
+          subject: subjectObject,
+          progress: 0,
+        });
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };

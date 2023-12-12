@@ -1,4 +1,8 @@
 import {Dimensions} from 'react-native';
+import {GuideDataType} from '../../types';
+
+export const screenWidth = Dimensions.get('window').width;
+export const screenHeight = Dimensions.get('window').height;
 
 type ProfileMenuItems = {
   [key: string]: {
@@ -9,24 +13,6 @@ type ProfileMenuItems = {
 };
 
 type TopCatagoriesType = string[];
-
-export const DummyDataScience = [
-  {subjName: 'Mathematics'},
-  {subjName: 'English'},
-  {subjName: 'Biology'},
-  {subjName: 'Physics'},
-  {subjName: 'SAT'},
-  {subjName: 'Chemistry'},
-];
-
-export const DummyDataSocial = [
-  {subjName: 'History'},
-  {subjName: 'English'},
-  {subjName: 'Geography'},
-  {subjName: 'Civics'},
-  {subjName: 'Math'},
-  {subjName: 'Economics'},
-];
 
 export const CourseCatagories: TopCatagoriesType = ['Study', 'Challenge'];
 export const TestQustionsCatagories: TopCatagoriesType = [
@@ -43,7 +29,7 @@ export const ProfileMenuItems: ProfileMenuItems = {
   },
   'About Us': {
     name: 'About Us',
-    color: '#B5C3E5',
+    color: '#f5c02f',
     navigate: 'Aboutus',
   },
   'Contact Us': {
@@ -82,6 +68,7 @@ export const ProfileMenuItemsAuth: ProfileMenuItems = {
     navigate: 'Delete Account',
   },
 };
+
 export const FAQ = [
   {
     id: 1,
@@ -143,6 +130,7 @@ export const trialStatus = {
   trial: 'trial',
 };
 
+//for realm db
 export const LocalStorageDataKeys = {
   token: 'token',
   userData: 'userData',
@@ -151,10 +139,22 @@ export const LocalStorageDataKeys = {
   userGrade: 'userGrade',
 };
 
+//for async storage
 export const LocalObjectDataKeys = {
   User: 'User',
   UserData: 'UserData',
   Region: 'Region',
+  Subject: 'Subject',
+  SingleSubject: 'SingleSubject',
+  Grade: 'Grade',
+  ExamQuestion: 'ExamQuestion',
+  Exam: 'Exam',
+  UserExamAnswers: 'UserExamAnswers',
+  Study: 'Study',
+  Pdf: 'Pdf',
+  VideoLink: 'VideoLink',
+  ExamAnswers: 'ExamAnswers',
+  Tip: 'StudyTips',
 };
 
 export const CarouselData_guest = [
@@ -172,5 +172,24 @@ export const CarouselData_guest = [
   },
 ];
 
-export const screenWidth = Dimensions.get('window').width;
-export const screenHeight = Dimensions.get('window').height;
+export const userGuideData: GuideDataType[] = [
+  {
+    id: '01',
+    image: require('../../assets/Images/card.png'),
+    text: 'how to subscribe',
+    videoLink: 'https://www.youtube.com/watch?v=B53L62DqOXg',
+  },
+  {
+    id: '02',
+    image: require('../../assets/Images/pay.png'),
+    text: 'how to pay',
+    videoLink: 'https://www.youtube.com/watch?v=6l1K-bHPWbU',
+  },
+
+  {
+    id: '03',
+    image: require('../../assets/Images/How.png'),
+    text: 'how to take exams',
+    videoLink: 'https://www.youtube.com/watch?v=fD4uGhNa5ec',
+  },
+];
