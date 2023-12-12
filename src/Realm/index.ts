@@ -267,6 +267,7 @@ class VideoLink extends Realm.Object {
   id: string = '';
   videoLink: string = '';
   isViewed: boolean = false;
+  subject: Subject;
 
   static schema = {
     name: 'VideoLink',
@@ -319,6 +320,23 @@ class Study extends Realm.Object {
   };
 }
 
+class StudyTips extends Realm.Object {
+  id: string = '';
+  tipType: string = '';
+  tip: string = '';
+  subject: singleSubjectType | null = null;
+
+  static schema = {
+    name: 'StudyTips',
+    properties: {
+      id: 'string',
+      tipType: 'string',
+      tip: 'string',
+      subject: 'SingleSubject?',
+    },
+  };
+}
+
 export {
   UserData,
   User,
@@ -333,4 +351,5 @@ export {
   Study,
   Pdf,
   VideoLink,
+  StudyTips,
 };

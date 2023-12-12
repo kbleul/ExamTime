@@ -154,6 +154,7 @@ export const LocalObjectDataKeys = {
   Pdf: 'Pdf',
   VideoLink: 'VideoLink',
   ExamAnswers: 'ExamAnswers',
+  Tip: 'StudyTips',
 };
 
 export const CarouselData_guest = [

@@ -210,3 +210,10 @@ export type GuideDataType = {
   text: string;
   videoLink: string;
 };
+
+export type TipType = {
+  id: string;
+  tipType: string;
+  tip: string;
+  subject: singleSubjectType | null;
+};

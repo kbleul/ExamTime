@@ -13,6 +13,7 @@ import {
   Study,
   Pdf,
   VideoLink,
+  StudyTips,
 } from './index';
 export const AuthContext = createRealmContext({
   schema: [
@@ -29,6 +30,7 @@ export const AuthContext = createRealmContext({
     Study,
     Pdf,
     VideoLink,
+    StudyTips,
   ],
   deleteRealmIfMigrationNeeded: true,
 });

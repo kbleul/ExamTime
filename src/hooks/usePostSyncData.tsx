@@ -121,50 +121,60 @@ const usePostSyncData = (
   const savedStudies = useQuery(Study);
 
   useEffect(() => {
-    const handleSync = async (nextAppState: AppStateStatus) => {
+    const handleSync = async () => {
       // App is going to background or about to be terminated
-      if (nextAppState === 'background' || nextAppState === 'inactive') {
-        const isConnected = await checkIsOnline();
-        console.log('app out');
-        if (isConnected) {
-          if (!savedStudies || savedStudies.length === 0) {
-            getAllStudies(getStudy, navigation, token, realm, Toast);
-          }
-
-          if (savedTakenExams.length > 0) {
-            // Perform data sync with the database
-            setIsSyncing(true);
-            await syncDataToDB(
-              postExamResults,
-              token ? token : '',
-              savedTakenExams,
-              savedExamAnswers,
-              setIsSyncing,
-            );
-          }
+      // if (nextAppState === 'background' || nextAppState === 'inactive') {
+      const isConnected = await checkIsOnline();
+      console.log('app out');
+      if (isConnected) {
+        if (!savedStudies || savedStudies.length === 0) {
+          getAllStudies(getStudy, navigation, token, realm, Toast);
         }
-      }
-    };
 
-    user && token && AppState.addEventListener('change', handleSync);
-  }, [user, token]);
-
-  useEffect(() => {
-    const getSyncedData = async () => {
-      if (user && token) {
-        const isConnected = await checkIsOnline();
-        console.log('--object', isConnected);
-
-        if (isConnected) {
-          console.log('--==object');
-
+        if (savedTakenExams.length > 0) {
+          // Perform data sync with the database
+          setIsSyncing(true);
+          await syncDataToDB(
+            postExamResults,
+            token ? token : '',
+            savedTakenExams,
+            savedExamAnswers,
+            setIsSyncing,
+          )
+            .then(() => {
+              console.log('objec////////t');
+              getExamAnswersFromDB(getExamAnswers, token, realm);
+            })
+            .catch(err => {
+              console.log('errr', err);
+            });
+        } else {
           getExamAnswersFromDB(getExamAnswers, token, realm);
         }
       }
     };
+    // };
 
-    getSyncedData();
-  }, []);
+    user && token && handleSync();
+    // AppState.addEventListener('change', handleSync);
+  }, [user, token]);
+
+  // useEffect(() => {
+  //   const getSyncedData = async () => {
+  //     if (user && token) {
+  //       const isConnected = await checkIsOnline();
+  //       console.log('--object', isConnected);
+
+  //       if (isConnected) {
+  //         console.log('--==object');
+
+  //         getExamAnswersFromDB(getExamAnswers, token, realm);
+  //       }
+  //     }
+  //   };
+
+  //   getSyncedData();
+  // }, []);
 };
 
 export default usePostSyncData;

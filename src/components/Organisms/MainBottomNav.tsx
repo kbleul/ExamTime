@@ -106,22 +106,26 @@ const MainBottomNav = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('History')}
           style={style.buttonWrapper}>
-          {currentScreen === '' && <View style={style.dot} />}
+          {currentScreen === 'History' && <View style={style.dot} />}
 
           <View
             style={
-              currentScreen === ''
+              currentScreen === 'History'
                 ? [style.button, style.buttonSelected]
                 : style.button
             }>
             <MaterialCommunityIcons
               name="progress-clock"
               size={screenWidth * 0.055}
-              style={currentScreen === '' ? style.iconActive : style.icon}
+              style={
+                currentScreen === 'History' ? style.iconActive : style.icon
+              }
             />
             <Text
               style={
-                currentScreen === '' ? style.buttonTextActive : style.buttonText
+                currentScreen === 'History'
+                  ? style.buttonTextActive
+                  : style.buttonText
               }>
               History
             </Text>

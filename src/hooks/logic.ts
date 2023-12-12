@@ -34,10 +34,9 @@ export const getExamAnswersFromDB = async (
 
 const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
   // Use the retrieved data
-  console.log('========================', 'gate opend');
+  console.log('========================', 'gate opend', ansersFromDB.length);
 
   for (const exam of ansersFromDB) {
-    console.log(exam);
     const savedExamObject = realm
       .objects(Exam)
       .filtered(`id = "${exam.examId.id}"`);
@@ -46,45 +45,43 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
     const savedExam = Array.from(savedExamObject);
 
     const userAnswersObject: UserExamAnswers[] = [];
-    console.log('========================', 'up and running', savedExam);
+    console.log(
+      '========================',
+      'up and running',
+      savedExam.length > 0,
+      savedExam[0].isExamTaken === false,
+      savedExam[0].isExamTaken,
+    );
 
     //check if sync is unnecessary
     if (
       savedExam.length > 0 &&
       savedExam[0].isExamTaken === false &&
-      savedExam[0].examQuestion
+      savedExam[0].examQuestion &&
+      savedExam[0].examQuestion.length > 0
     ) {
       console.log('========================', 'made it');
 
-      for (const [
-        questionIndex,
-        question,
-      ] of savedExam[0].examQuestion.entries()) {
-        console.log('========================', 'omg');
-
-        const userAnswer = exam.userAnswers.find(
-          answer => answer.id === question.id,
+      for (const [useAnserIndex, userAnswer] of exam.userAnswers.entries()) {
+        const userAnswerKey = Object.keys(userAnswer)[0];
+        const foundQuestion = savedExam[0].examQuestion.find(
+          question => question.id === userAnswerKey,
         );
-        const userAnswerKey = userAnswer ? Object.keys(userAnswer)[0] : null;
 
-        const correctAnswer = question.answer;
-
-        if (userAnswer && userAnswerKey) {
-          console.log('========================', 'almost there');
-
+        if (foundQuestion) {
           try {
             realm.write(() => {
               const newUserAnswer: UserExamAnswers = realm.create(
                 LocalObjectDataKeys.UserExamAnswers,
                 {
-                  id: question.id,
-                  index: questionIndex,
+                  id: foundQuestion.id,
+                  index: useAnserIndex,
                   userAnswer: userAnswer[userAnswerKey],
-                  correctAnswer,
+                  correctAnswer: foundQuestion.answer,
                 },
               );
               console.log('========================', 'hell yaa');
-
+              console.log(newUserAnswer);
               userAnswersObject.push(newUserAnswer);
             });
           } catch (err) {
@@ -98,14 +95,15 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
     }
 
     if (userAnswersObject.length > 0) {
+      console.log('========================', 'God did');
+
+      console.log(userAnswersObject);
       try {
         realm.write(() => {
-          console.log('========================', 'God did');
-
           const newExamAnswer = realm.create(LocalObjectDataKeys.ExamAnswers, {
-            examId: exam.id,
+            examId: savedExamObject[0].id,
             examDate: exam.examDate,
-            userAnswer: userAnswersObject,
+            userExamAnswers: userAnswersObject,
           });
 
           savedExamObject[0].isExamTaken = true;

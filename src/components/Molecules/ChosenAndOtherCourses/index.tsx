@@ -91,7 +91,9 @@ const ChosenCourses = ({
       <FlatList
         keyExtractor={item => item.id}
         data={PushFavorateToFront(
-          savedUserData[0].selectedSubjects || [],
+          savedUserData && savedUserData.length > 0
+            ? savedUserData[0].selectedSubjects
+            : null,
           savedSubjects,
         )}
         renderItem={renderItem}

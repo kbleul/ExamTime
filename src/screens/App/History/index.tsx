@@ -26,7 +26,9 @@ const History = () => {
   const savedUserData = useQuery(UserData);
 
   const formatedSubjectSArr: subjectType[] = PushFavorateToFront(
-    savedUserData[0].selectedSubjects || [],
+    savedUserData && savedUserData.length > 0
+      ? savedUserData[0].selectedSubjects
+      : null,
     savedSubjects,
   );
 
@@ -45,6 +47,8 @@ const History = () => {
     },
     [selectedSubject],
   );
+
+  console.log('savedExams', savedExams);
 
   const renderSubjects = ({item}: {item: subjectType}) => {
     return (
@@ -84,7 +88,7 @@ const History = () => {
         />
       </View>
 
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {savedExams.length > 0 &&
           savedExams.map((exam, index) => (
             <HistoryCard
@@ -116,7 +120,7 @@ const HistoryCard = ({
     },
     [selectedSubject],
   );
-
+  console.log('here nen');
   return (
     <>
       {examAnswers.map(examAnswer => (
