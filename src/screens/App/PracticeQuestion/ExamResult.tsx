@@ -85,25 +85,6 @@ const ExamResult = ({route}: {route: any}) => {
 
   return (
     <View style={styles.container}>
-      {/* <View
-        style={
-          gradePrercentage.status === gradeStatus.Passed
-            ? styles.topSection
-            : [styles.topSection, styles.topSectionFaild]
-        }>
-        <Text style={styles.topTitleSection}>
-          {correctAnswers}/ {total}
-        </Text>
-        <Text
-          style={
-            gradePrercentage.status === gradeStatus.Passed
-              ? styles.topSubtitleSection
-              : [styles.topSubtitleSection, styles.topSubtitleSectionFailed]
-          }>
-          {gradePrercentage.status}
-        </Text>
-      </View> */}
-
       <CircularProgress
         value={correctAnswers}
         radius={screenWidth * 0.25}

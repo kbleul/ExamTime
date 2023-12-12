@@ -24,9 +24,16 @@ const StudyDetalsHeader = ({
 
       <View style={styles.progressContainer}>
         <View style={styles.progress}>
-          <View style={[styles.progressBar, {width: `${progress}%`}]} />
+          <View
+            style={[
+              styles.progressBar,
+              {width: `${progress > 100 ? 100 : progress}%`},
+            ]}
+          />
         </View>
-        <Text style={styles.progressText}>{progress}%</Text>
+        <Text style={styles.progressText}>
+          {progress > 100 ? 100 : progress}%
+        </Text>
       </View>
     </View>
   );

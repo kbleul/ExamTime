@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { ScaledSheet, ms, mvs, s, vs } from 'react-native-size-matters';
+import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {ScaledSheet, ms, mvs, s, vs} from 'react-native-size-matters';
 import MenuItemsProfile from '../Molecules/MenuItemsProfile';
 import badgeImg from '../../assets/Images/Profile/badge.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -20,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const navigator = useNavigation<any>();
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>

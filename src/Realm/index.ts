@@ -251,12 +251,14 @@ class Exam extends Realm.Object {
 class Pdf extends Realm.Object {
   id: string = '';
   pdfDocument: string = '';
+  isViewed: boolean = false;
 
   static schema = {
     name: 'Pdf',
     properties: {
       id: 'string',
       pdfDocument: 'string',
+      isViewed: 'bool',
     },
   };
 }
@@ -264,12 +266,15 @@ class Pdf extends Realm.Object {
 class VideoLink extends Realm.Object {
   id: string = '';
   videoLink: string = '';
+  isViewed: boolean = false;
+  subject: Subject;
 
   static schema = {
     name: 'VideoLink',
     properties: {
       id: 'string',
       videoLink: 'string',
+      isViewed: 'bool',
     },
   };
 }
@@ -307,10 +312,27 @@ class Study extends Realm.Object {
       unit: 'string',
       section: 'string',
       selectedQuestion: 'ExamQuestion[]',
-      progress: 'int',
+      progress: 'double',
       pdf: 'Pdf[]',
       videoLink: 'VideoLink[]',
       userExamAnswers: 'UserExamAnswers[]',
+    },
+  };
+}
+
+class StudyTips extends Realm.Object {
+  id: string = '';
+  tipType: string = '';
+  tip: string = '';
+  subject: singleSubjectType | null = null;
+
+  static schema = {
+    name: 'StudyTips',
+    properties: {
+      id: 'string',
+      tipType: 'string',
+      tip: 'string',
+      subject: 'SingleSubject?',
     },
   };
 }
@@ -329,4 +351,5 @@ export {
   Study,
   Pdf,
   VideoLink,
+  StudyTips,
 };

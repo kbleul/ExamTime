@@ -27,6 +27,9 @@ const IconContainer: React.FC<{
       return;
     }
 
+    setShowLogoutDialog(false);
+    setShowLDeleteDialog(false);
+
     if (item === ProfileMenuItemsAuth.Profile.name) {
       navigator.navigate('Profile-Edit');
       return;

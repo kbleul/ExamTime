@@ -2,7 +2,13 @@ import NetInfo from '@react-native-community/netinfo';
 import {NavigationProp} from '@react-navigation/native';
 import {NativeScrollEvent, NativeSyntheticEvent} from 'react-native';
 import {Platform} from 'react-native';
-import {Subject, UserData} from '../../../Realm';
+import {
+  Exam,
+  ExamAnswers,
+  Subject,
+  UserData,
+  UserExamAnswers,
+} from '../../../Realm';
 import {Dispatch} from 'react';
 import {ActionCreatorWithPayload, AnyAction} from '@reduxjs/toolkit';
 import {
@@ -40,6 +46,8 @@ export const checkIsOnline = async (navigator?: any) => {
       }
     } catch (error) {
       console.log({error});
+      console.log('Failed to reach the internet server');
+
       navigator && navigator.navigate('network-error');
       return false;
     }
@@ -49,7 +57,7 @@ export const checkIsOnline = async (navigator?: any) => {
 
       if (!state.isConnected || !state.isInternetReachable) {
         navigator && navigator.navigate('network-error');
-        console.log('error');
+        console.log('Failed to reach the internet server');
 
         return false;
       } else if (state.isConnected && state.isInternetReachable) {
@@ -57,6 +65,8 @@ export const checkIsOnline = async (navigator?: any) => {
       }
     } catch (error) {
       console.log({error});
+      console.log('Failed to reach the internet server');
+
       // Handle any errors (e.g., request timeout)
       navigator && navigator.navigate('network-error');
       return false; // Assume offline on error
@@ -94,16 +104,29 @@ export const removeRealmUserData = async (
   realm: Realm,
   savedUserData: ResultsType<UserData>,
 ) => {
-  if (savedUserData && savedUserData.length > 0) {
-    let newUser = savedUserData[0];
+  const savedExamsAnswers = realm.objects(ExamAnswers);
+  const savedUserExamAnswers = realm.objects(UserExamAnswers);
 
+  const savedExam = realm.objects(Exam);
+
+  if (savedUserData && savedUserData.length > 0) {
     // const {_id, initialDate, isSubscribed, selectedSubjects, grade} =
     //   savedUserData[0];
 
     try {
       realm.write(() => {
-        newUser.user = null;
-        newUser.token = null;
+        realm.delete(savedExamsAnswers);
+        realm.delete(savedUserExamAnswers);
+
+        for (const exam of savedExam) {
+          console.log(exam.isExamTaken);
+          exam.isExamTaken = false;
+        }
+
+        savedUserData[0].token = null;
+        savedUserData[0].isSubscribed = false;
+        savedUserData[0].user = null;
+        savedUserData[0].selectedSubjects = [];
       });
     } catch (e) {
       console.log('err', e);
@@ -202,9 +225,13 @@ export const DeleteUserAccount = async (
 };
 
 export const PushFavorateToFront = (
-  favoritesArray: string[],
+  favoritesArray: string[] | null | undefined,
   savedSubjects: ResultsType<Subject>,
 ) => {
+  if (!favoritesArray) {
+    return savedSubjects;
+  }
+
   const favorites: Subject[] = [];
   favoritesArray.map(item => {
     const favSubject = savedSubjects.find(

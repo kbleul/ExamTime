@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import {Text, View, Image, StyleSheet} from 'react-native';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { screenHeight, screenWidth } from '../../utils/Data/data';
-import { scale } from 'react-native-size-matters';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {scale} from 'react-native-size-matters';
 
 const CircleProgressIndicator = () => {
-  const progress = 43
+  const progress = 0;
   return (
     <AnimatedCircularProgress
       size={scale(90)}
@@ -15,19 +15,26 @@ const CircleProgressIndicator = () => {
       fill={progress}
       tintColor="white"
       backgroundColor="#FFE48F"
-      rotation={0}
-    >
-      {(fill) => (
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
-
-          <Text style={{ fontSize: scale(24),fontFamily: "PoppinsMedium", color: "white" }}>
+      rotation={0}>
+      {fill => (
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Text
+            style={{
+              fontSize: scale(24),
+              fontFamily: 'PoppinsMedium',
+              color: 'white',
+            }}>
             {Math.round(fill)}%
           </Text>
-          <Text style={{ fontSize: scale(7),fontFamily: "PoppinsRegular", color: "white" }}>
+          <Text
+            style={{
+              fontSize: scale(7),
+              fontFamily: 'PoppinsRegular',
+              color: 'white',
+            }}>
             Complated
           </Text>
         </View>
-
       )}
     </AnimatedCircularProgress>
   );
@@ -42,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   centerText: {
-    fontFamily: "PoppinsRegular",
+    fontFamily: 'PoppinsRegular',
     fontSize: screenHeight * 0.018,
     fontWeight: 'bold',
     color: 'black',

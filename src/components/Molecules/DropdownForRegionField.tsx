@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {ScaledSheet} from 'react-native-size-matters';
 import LoadingRegions from '../Atoms/LoadingRegions';

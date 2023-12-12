@@ -116,7 +116,16 @@ export const FrameOne: React.FC<{
         <Text style={frameOnestyles.subText}>{text}</Text>
       </View>
       <Image
-        source={user && user.profilePicture ? {uri: user.profilePicture} : img}
+        source={
+          user && user.profilePicture
+            ? {
+                uri: user.profilePicture.includes('https://')
+                  ? user.profilePicture
+                  : 'https://dev.think-hubet.com/profile-pictures/' +
+                    user.profilePicture,
+              }
+            : img
+        }
         style={frameOnestyles.rightBoxContainer}
       />
     </View>

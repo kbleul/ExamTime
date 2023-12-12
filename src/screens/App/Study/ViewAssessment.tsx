@@ -22,6 +22,7 @@ import {examQuestionType} from '../../../types';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
+import {calculate_and_Assign_UnitProgress} from './logic';
 
 const ViewAssessment = ({route}) => {
   const {questions, selectedSubject, subjectId} = route.params;
@@ -107,6 +108,10 @@ const ViewAssessment = ({route}) => {
     if (questions && userAnswers && savedStudy && savedStudy[0]) {
       const answersArray: any[] = [];
 
+      //save
+      savedStudy[0].userExamAnswers.length === 0 &&
+        calculate_and_Assign_UnitProgress(savedStudy[0], realm);
+
       try {
         realm.write(() => {
           userAnswers.forEach(answerItem => {
@@ -121,7 +126,6 @@ const ViewAssessment = ({route}) => {
           });
 
           savedStudy[0].userExamAnswers = answersArray;
-          savedStudy[0].progress = 10;
         });
       } catch (e) {
         console.log('error', e);

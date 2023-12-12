@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {AppState, AppStateStatus} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 import {useSelector} from 'react-redux';
@@ -7,12 +8,14 @@ import {checkIsOnline} from '../utils/Functions/Helper';
 import {AuthContext} from '../Realm/model';
 import {Exam, ExamAnswers, Study} from '../Realm';
 import {
+  useGetExamAnswersMutation,
   useGetStudyMutation,
   usePostExamResultsMutation,
 } from '../reduxToolkit/Services/auth';
 import {answersType} from '../screens/App/PracticeQuestion';
 import {getAllStudies} from '../screens/App/Study/logic';
 import {useNavigation} from '@react-navigation/native';
+import {getExamAnswersFromDB} from './logic';
 
 export type newAnswerType = {
   [id: string]: {
@@ -102,6 +105,8 @@ const usePostSyncData = (
 
   const token = useSelector((state: RootState) => state.auth.token);
   const [postExamResults] = usePostExamResultsMutation();
+  const [getExamAnswers] = useGetExamAnswersMutation();
+
   const [getStudy] = useGetStudyMutation();
 
   const {useQuery, useRealm} = AuthContext;
@@ -117,9 +122,9 @@ const usePostSyncData = (
 
   useEffect(() => {
     const handleSync = async () => {
-      // Check for internet connection (you can use an appropriate library or method)
+      // App is going to background or about to be terminated
+      // if (nextAppState === 'background' || nextAppState === 'inactive') {
       const isConnected = await checkIsOnline();
-
       if (isConnected) {
         if (!savedStudies || savedStudies.length === 0) {
           getAllStudies(getStudy, navigation, token, realm, Toast);
@@ -134,13 +139,25 @@ const usePostSyncData = (
             savedTakenExams,
             savedExamAnswers,
             setIsSyncing,
-          );
+          )
+            .then(() => {
+              getExamAnswersFromDB(getExamAnswers, token, realm);
+            })
+            .catch(err => {
+              console.log('errr', err);
+            });
+        } else {
+          getExamAnswersFromDB(getExamAnswers, token, realm);
         }
       }
     };
+    // };
 
     user && token && handleSync();
+    // AppState.addEventListener('change', handleSync);
   }, [user, token]);
+
+
 };
 
 export default usePostSyncData;

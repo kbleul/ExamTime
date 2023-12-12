@@ -18,7 +18,10 @@ const Index = () => {
           <ImageBackground
             style={styles.img}
             source={{
-              uri: user.profilePicture,
+              uri: user.profilePicture.includes('https://')
+                ? user.profilePicture
+                : 'https://dev.think-hubet.com/profile-pictures/' +
+                  user.profilePicture,
             }} // Replace with the correct path to your image
           />
         ) : (

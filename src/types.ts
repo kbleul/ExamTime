@@ -52,9 +52,7 @@ export type OTPDataType = {
 };
 export type CommentType = {
   token: string;
-  comment: string
-
-
+  comment: string;
 };
 
 export type CreatePassworDataType = {
@@ -180,11 +178,13 @@ export type sectionType = {
 export type pdfType = {
   id: string;
   pdfDocument: string;
+  isViewed: boolean;
 };
 
 export type videoType = {
   id: string;
   videoLink: string;
+  isViewed: boolean;
 };
 
 export type studyType = {
@@ -209,4 +209,11 @@ export type GuideDataType = {
   image: any;
   text: string;
   videoLink: string;
+};
+
+export type TipType = {
+  id: string;
+  tipType: string;
+  tip: string;
+  subject: singleSubjectType | null;
 };

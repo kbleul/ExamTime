@@ -34,6 +34,7 @@ export const frameOnestyles = StyleSheet.create({
     marginRight: 20,
     borderWidth: 2,
     overflow: 'hidden',
+    backgroundColor: '#f5f2f2',
   },
   helloText: {
     fontSize: screenWidth * 0.07,

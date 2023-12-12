@@ -298,6 +298,30 @@ export const api = createApi({
         };
       },
     }),
+    getExamAnswers: build.mutation<{examAnswers: any}, {token: string}>({
+      query: credentials => {
+        return {
+          url: 'exam-result/results',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
+    getTips: build.mutation<{examAnswers: any}, {token: string}>({
+      query: credentials => {
+        return {
+          url: 'tips/tipsbyparameter',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -322,4 +346,6 @@ export const {
   usePostExamResultsMutation,
   useGetExamResultsMutation,
   useChangeProfilePictureMutation,
+  useGetExamAnswersMutation,
+  useGetTipsMutation,
 } = api;
