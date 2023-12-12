@@ -5,6 +5,7 @@ import Accordion from '../Molecules/Accordion';
 import {FAQ, screenHeight} from '../../utils/Data/data';
 import AccordionComponet from '../Molecules/Accordion';
 import scale from '../../utils/Functions/Scale';
+import {useGetFaqMutation} from '../../reduxToolkit/Services/auth';
 const FaqContener = () => {
   const [faq, setFaq] = useState([]);
   const [getFaq, {isLoading: loading}] = useGetFaqMutation();
