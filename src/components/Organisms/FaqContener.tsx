@@ -1,19 +1,17 @@
 import React from 'react';
-import { ScrollView, Text, View, TextInput, StyleSheet } from 'react-native';
+import {ScrollView, Text, View, TextInput, StyleSheet} from 'react-native';
 import Antdesign from 'react-native-vector-icons/AntDesign';
 import Accordion from '../Molecules/Accordion';
-import { FAQ, screenHeight } from '../../utils/Data/data';
+import {FAQ, screenHeight} from '../../utils/Data/data';
 import AccordionComponet from '../Molecules/Accordion';
 import scale from '../../utils/Functions/Scale';
 const FaqContener = () => {
   return (
     <View>
-
-      <View style={styles.faqInput}>
+      {/* <View style={styles.faqInput}>
         <Antdesign name="search1" size={24} color="#d4d4d4" />
         <TextInput placeholder="Search Using Keywords" style={styles.input} />
-
-      </View>
+      </View> */}
 
       <View style={styles.faq}>
         <ScrollView
@@ -21,7 +19,7 @@ const FaqContener = () => {
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}>
           <Text style={styles.faqText}>About Exam Time</Text>
-          <AccordionComponet/>
+          <AccordionComponet />
         </ScrollView>
       </View>
     </View>
@@ -52,7 +50,6 @@ const styles = StyleSheet.create({
     marginTop: 3,
     elevation: 5,
     paddingHorizontal: 15,
-
   },
   input: {
     flex: 1,
@@ -61,11 +58,9 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsRegular',
   },
   faq: {
-    marginTop: 23,
     borderRadius: 10,
     paddingHorizontal: 6,
     marginHorizontal: 5,
-    paddingVertical: 10,
     backgroundColor: '#FFFFFF',
     height: screenHeight - 200,
   },
@@ -74,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: scale(20),
     fontWeight: '500',
     color: '#3C3D6E',
-    marginBottom: 10,
+    paddingLeft: 4,
   },
   faqBtn: {
     height: 44,

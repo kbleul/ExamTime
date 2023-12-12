@@ -1,25 +1,17 @@
 import React, {useState} from 'react';
-import {
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { FAQ, screenHeight, screenWidth } from '../../utils/Data/data';
+import {StyleSheet} from 'react-native';
+import {FAQ, screenHeight, screenWidth} from '../../utils/Data/data';
 
 import Accordion from 'react-native-collapsible/Accordion';
 import FaqHeader from '../Atoms/FaqHeader';
 import FaqContent from '../Atoms/FaqContent';
 
-
-  const AccordionComponet = () => {
-
+const AccordionComponet = () => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
   const toggleSection = (index: number) => {
-    setActiveSections((prevSections) => {
+    setActiveSections(prevSections => {
       if (prevSections.includes(index)) {
-        return prevSections.filter((sectionIndex) => sectionIndex !== index);
+        return prevSections.filter(sectionIndex => sectionIndex !== index);
       } else {
         return [...prevSections, index];
       }
@@ -28,7 +20,7 @@ import FaqContent from '../Atoms/FaqContent';
   const renderHeader = (faqQuestion, index: number, isActive: boolean) => {
     return (
       <FaqHeader
-      faqQuestion={faqQuestion}
+        faqQuestion={faqQuestion}
         index={index}
         isActive={isActive}
         onPress={toggleSection}
@@ -36,7 +28,7 @@ import FaqContent from '../Atoms/FaqContent';
     );
   };
 
-  const renderContent = (faqContent) => {
+  const renderContent = faqContent => {
     return <FaqContent faqContent={faqContent} />;
   };
 
@@ -48,32 +40,27 @@ import FaqContent from '../Atoms/FaqContent';
       renderContent={renderContent}
       onChange={setActiveSections}
       containerStyle={styles.accordion}
-      
     />
   );
 };
 
 const styles = StyleSheet.create({
   accordion: {
-    backgroundColor:"white",
-    marginBottom: 10, // Adjust the margin bottom value as needed
+    backgroundColor: 'white',
   },
-    SubjectList: {
-      alignItems: 'stretch',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#FAFCFA',
-        paddingVertical: '2%',
-        paddingHorizontal:"2%",
-        marginBottom: screenHeight * 0.006,
-        width: screenWidth - 20,
-        borderColor: "lightgrey",
-        // borderWidth: 1,
-        // borderRadius: screenWidth * 0.03,
-        marginHorizontal: screenWidth * 0.03,
-
-        
-    },
+  SubjectList: {
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#FAFCFA',
+    paddingHorizontal: '2%',
+    marginBottom: screenHeight * 0.006,
+    width: screenWidth - 20,
+    borderColor: 'lightgrey',
+    // borderWidth: 1,
+    // borderRadius: screenWidth * 0.03,
+    marginHorizontal: 4,
+  },
   faqBtn: {
     height: 44,
     borderWidth: 1,
