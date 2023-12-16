@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {screenHeight, screenWidth} from '../../utils/Data/data';
 import scale from '../../utils/Functions/Scale';
 
 interface CircleProps {
@@ -41,13 +40,13 @@ const styles = StyleSheet.create({
   idInactiveText: {
     fontSize: scale(18),
     textAlign: 'center',
-    fontFamily: 'PoppinsMedium',
+    fontFamily: 'PoppinsBold',
     color: '#494949',
   },
   idActiveText: {
     textAlign: 'center',
     fontSize: scale(18),
-    fontFamily: 'PoppinsMedium',
+    fontFamily: 'PoppinsBold',
     color: 'white',
   },
 });

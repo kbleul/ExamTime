@@ -1,41 +1,50 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import DayCircle from '../Atoms/DayCircle';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
-// import DayCircle from './DayCircle';
+import {ChallangeDayType} from '../../types';
+import {parseDate} from '../../screens/App/Challenge/logic';
 
-interface Day {
-  dayNumber: number;
-  dayName: string;
-  isActive: boolean;
-}
+const DayBlock: React.FC<{day: ChallangeDayType}> = ({day}) => {
+  const parsedDate = useMemo(() => {
+    return parseDate(day.scheduledDate);
+  }, [day.scheduledDate]);
 
-interface DayBlockProps {
-  day: Day;
-}
-
-const DayBlock: React.FC<DayBlockProps> = ({day}) => {
   return (
-    <View
-      style={[
-        day.isActive
-          ? styles.ActiveweekDaysContainer
-          : styles.inActiveweekDaysContainer,
-      ]}>
-      <Text
-        style={day.isActive ? styles.ActiveweekText : styles.inActiveweekText}>
-        {day.dayName}
-      </Text>
-      <DayCircle dayNumber={day.dayNumber} isActive={day.isActive} />
-      <View style={day.isActive ? styles.dotActive : styles.dotInactive} />
-    </View>
+    <>
+      {parsedDate && (
+        <View
+          style={
+            parsedDate.isActive
+              ? styles.ActiveweekDaysContainer
+              : styles.inActiveweekDaysContainer
+          }>
+          <Text
+            style={
+              parsedDate.isActive
+                ? styles.ActiveweekText
+                : styles.inActiveweekText
+            }>
+            {parsedDate.day}
+          </Text>
+          <DayCircle
+            dayNumber={parsedDate.date}
+            isActive={parsedDate.isActive}
+          />
+          <View
+            style={parsedDate.isActive ? styles.dotActive : styles.dotInactive}
+          />
+        </View>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   ActiveweekDaysContainer: {
     paddingHorizontal: screenWidth * 0.01,
-    paddingVertical: screenHeight * 0.012,
+    paddingTop: screenHeight * 0.012,
+    paddingBottom: screenHeight * 0.014,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#1E90FF',
@@ -43,23 +52,23 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   inActiveweekDaysContainer: {
-    paddingHorizontal: screenWidth * 0.01,
-    paddingVertical: screenHeight * 0.02,
+    paddingTop: screenHeight * 0.012,
+    paddingBottom: screenHeight * 0.014,
     alignItems: 'center',
     justifyContent: 'center',
   },
   ActiveweekText: {
     textAlign: 'center',
-    fontSize: screenHeight * 0.018,
-    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.033,
+    fontFamily: 'PoppinsBold',
     color: 'white',
-    paddingBottom: screenHeight * 0.03,
+    paddingBottom: screenHeight * 0.025,
   },
   inActiveweekText: {
-    paddingBottom: screenHeight * 0.03,
+    paddingBottom: screenHeight * 0.025,
     textAlign: 'center',
-    fontSize: screenHeight * 0.018,
-    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.033,
+    fontFamily: 'PoppinsBold',
     color: '#828484',
   },
   dotActive: {

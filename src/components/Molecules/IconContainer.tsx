@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MenuItemDispatch from '../Organisms/MenuItemDispatch';
 import {useNavigation} from '@react-navigation/native';
-import {ProfileMenuItems, ProfileMenuItemsAuth} from '../../utils/Data/data';
+import {ProfileMenuItemsAuth} from '../../utils/Data/data';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 

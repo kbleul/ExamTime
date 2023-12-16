@@ -1,8 +1,10 @@
 import Realm from 'realm';
 import {
+  ChallangeDayType,
   examQuestionType,
   gradeType,
   pdfType,
+  singleChallenge,
   singleSubjectType,
   subjectType,
   userType,
@@ -267,7 +269,6 @@ class VideoLink extends Realm.Object {
   id: string = '';
   videoLink: string = '';
   isViewed: boolean = false;
-  subject: Subject;
 
   static schema = {
     name: 'VideoLink',
@@ -337,6 +338,63 @@ class StudyTips extends Realm.Object {
   };
 }
 
+class SingleChallenge extends Realm.Object {
+  id: string = '';
+  subject: singleSubjectType | null = null;
+  unit: string | null = '';
+  section: string | null = '';
+
+  static schema = {
+    name: 'SingleChallenge',
+    properties: {
+      id: 'string',
+      subject: 'SingleSubject?',
+      unit: 'string?',
+      section: 'string?',
+    },
+  };
+}
+
+class ChallangeDay extends Realm.Object {
+  id: string = '';
+  day: number = 0;
+  rest: boolean = true;
+  singleChallenge: singleChallenge[] | [] = [];
+  scheduledDate: string | null = null;
+
+  static schema = {
+    name: 'ChallangeDay',
+    properties: {
+      id: 'string',
+      day: 'int',
+      rest: 'bool',
+      singleChallenge: 'SingleChallenge[]',
+      scheduledDate: 'string?',
+    },
+  };
+}
+
+class Challange extends Realm.Object {
+  id: string = '';
+  title: string = '';
+  isPublished: boolean = true;
+  createdAt: string = '';
+  updatedAt: string = '';
+  challengeDay: ChallangeDayType[] | [] = [];
+
+  static schema = {
+    name: 'Challange',
+    properties: {
+      id: 'string',
+      title: 'string',
+      isPublished: 'bool',
+      createdAt: 'string',
+      updatedAt: 'string',
+      challengeDay: 'ChallangeDay[]',
+    },
+  };
+}
+
 export {
   UserData,
   User,
@@ -352,4 +410,7 @@ export {
   Pdf,
   VideoLink,
   StudyTips,
+  SingleChallenge,
+  ChallangeDay,
+  Challange,
 };

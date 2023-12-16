@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {SvgXml} from 'react-native-svg';
@@ -11,7 +11,7 @@ import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
 
 export const onError = (e: Error) => {
-  console.log('----------------', e.message);
+  console.log('Render svg failed', e.message);
 };
 
 const ChosenCoursesCard: React.FC<{
@@ -41,7 +41,6 @@ const ChosenCoursesCard: React.FC<{
     );
   });
   const calProgress = calculateStudyProgress(savedStudies);
-
   return (
     <>
       {isLoadingSubjects && (
@@ -208,4 +207,4 @@ export const styles = StyleSheet.create({
   },
 });
 
-export default ChosenCoursesCard;
+export default memo(ChosenCoursesCard);

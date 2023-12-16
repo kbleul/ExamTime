@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {AuthContext} from '../../../Realm/model';
 import {Exam, ExamAnswers, Subject, UserData} from '../../../Realm';
@@ -8,19 +8,28 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {screenWidth} from '../../../utils/Data/data';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {answersType} from '../PracticeQuestion';
+import {useIsFocused} from '@react-navigation/native';
+import MessageBox from '../../../components/Atoms/MessageBox';
 
 function convertDateFormat(dateString: string) {
   const date = new Date(dateString);
-  const options = {month: 'short', day: 'numeric', year: 'numeric'};
 
-  // Convert the date to the desired format
-  const formattedDate = date.toLocaleDateString('en-US', options);
+  const month = date.toLocaleString('en-US', {month: 'short'});
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const amOrPm = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 || 12;
 
+  const formattedDate = `${month} ${day} ${formattedHours}:${minutes
+    .toString()
+    .padStart(2, '0')} ${amOrPm}`;
   return formattedDate;
 }
 
 const History = () => {
   const {useQuery} = AuthContext;
+  const isFocused = useIsFocused();
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
@@ -41,13 +50,13 @@ const History = () => {
     exams => {
       return exams.filtered(
         `isExamTaken = true AND subject.subject = "${
-          selectedSubject ? selectedSubject.subject.subject : ''
+          selectedSubject ? selectedSubject.subject.subject : 'unknown'
         }"`,
       );
     },
     [selectedSubject],
   );
-
+  const [savedExamsArr, setSavedExamsArr] = useState([...savedExams]);
 
   const renderSubjects = ({item}: {item: subjectType}) => {
     return (
@@ -73,13 +82,22 @@ const History = () => {
     );
   };
 
+  useEffect(() => {
+    if (isFocused) {
+      setSavedExamsArr([...savedExams]);
+    } else {
+      setSelectedSubject(null);
+      setSavedExamsArr([]);
+    }
+  }, [savedExams, isFocused]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>History</Text>
 
       <View style={styles.buttonsContainer}>
         <FlatList
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) => item.id + 'histry_study' + index}
           data={formatedSubjectSArr}
           renderItem={renderSubjects}
           horizontal
@@ -87,16 +105,25 @@ const History = () => {
         />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {savedExams.length > 0 &&
-          savedExams.map((exam, index) => (
-            <HistoryCard
-              key={exam.id + '==' + index}
-              selectedSubject={selectedSubject}
-              exam={exam}
-            />
-          ))}
-      </ScrollView>
+      {savedExamsArr && savedExamsArr.length > 0 ? (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {savedExamsArr.length > 0 &&
+            savedExamsArr
+              .reverse()
+              .map((exam, index) => (
+                <HistoryCard
+                  key={exam.id + '==' + index}
+                  selectedSubject={selectedSubject}
+                  exam={exam}
+                />
+              ))}
+        </ScrollView>
+      ) : (
+        <MessageBox
+          title="No history found for this subject!"
+          subTitle="Try taking some more exams."
+        />
+      )}
 
       <MainBottomNav />
     </View>
@@ -110,6 +137,7 @@ const HistoryCard = ({
   selectedSubject: subjectType | null;
   exam: Exam;
 }) => {
+  const isFocused = useIsFocused();
   const {useQuery} = AuthContext;
 
   const examAnswers = useQuery(
@@ -117,17 +145,31 @@ const HistoryCard = ({
     examsanswers => {
       return examsanswers.filtered(`examId = "${exam?.id}"`);
     },
-    [selectedSubject],
+    [selectedSubject, isFocused],
   );
+
+  const examAnsersArr = useMemo(() => {
+    return [...examAnswers];
+  }, [examAnswers]);
+
   return (
-    <>
-      {examAnswers.map(examAnswer => (
-        <View style={cardStyle.container}>
-          <Text style={cardStyle.title}>{exam.examName}</Text>
-          <CardData exam={exam} examAnswers={examAnswer} />
-        </View>
-      ))}
-    </>
+    <View style={cardStyle.container}>
+      <Text style={cardStyle.title}>{exam.examName}</Text>
+
+      {examAnsersArr &&
+        examAnsersArr.length > 0 &&
+        examAnsersArr.reverse().map((examAnswer, index) => (
+          <View
+            style={
+              examAnsersArr.length > 1 && index !== examAnsersArr.length - 1
+                ? [cardStyle.testContainer, cardStyle.testContainerBorder]
+                : cardStyle.testContainer
+            }
+            key={examAnswer.examId + 'history' + index}>
+            <CardData exam={exam} examAnswers={examAnswer} />
+          </View>
+        ))}
+    </View>
   );
 };
 
@@ -244,6 +286,14 @@ const cardStyle = StyleSheet.create({
     fontSize: screenWidth * 0.045,
     paddingBottom: 5,
     color: '#3c3d6e',
+  },
+  testContainer: {
+    borderBottomColor: '#c5c5c5',
+    marginVertical: 10,
+    paddingVertical: 6,
+  },
+  testContainerBorder: {
+    borderBottomWidth: 1,
   },
   flexed: {
     flexDirection: 'row',

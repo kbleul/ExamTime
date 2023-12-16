@@ -17,7 +17,6 @@ import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
 import {calculateStudyProgress} from './logic';
-import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
 import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
@@ -29,14 +28,18 @@ const CourseItem = ({
   item,
   setLoginModalVisible,
   isLoading,
+  timerValue,
 }: {
   item: subjectType;
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
+  timerValue: int;
 }) => {
   const navigator: any = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const [isLoadingSVG, setIsLoadingSVG] = useState(true);
 
   const {useQuery} = AuthContext;
 
@@ -46,51 +49,65 @@ const CourseItem = ({
     );
   });
   const progress = calculateStudyProgress(savedStudies);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoadingSVG(false);
+    }, timerValue);
+  }, []);
 
   return (
-    <TouchableOpacity
-      style={styles.lcontainer}
-      onPress={() => {
-        if (!user || !token) {
-          setLoginModalVisible(true);
-          return;
-        }
+    <>
+      {!isLoadingSVG && (
+        <TouchableOpacity
+          style={styles.lcontainer}
+          onPress={() => {
+            if (!user || !token) {
+              setLoginModalVisible(true);
+              return;
+            }
 
-        savedStudies.length > 0 &&
-          navigator.navigate('StudyDetails', {
-            subject: item.subject,
-          });
-      }}>
-      <View style={styles.imgContainer}>
-        {isLoading ? (
-          <View style={[styles.imagebg, styles.imagebgLoading]} />
-        ) : (
-          <SvgXml style={styles.imagebg} xml={item.icon} onError={onError} />
-        )}
-      </View>
+            savedStudies.length > 0 &&
+              navigator.navigate('StudyDetails', {
+                subject: item.subject,
+              });
+          }}>
+          <View style={styles.imgContainer}>
+            {isLoading && isLoadingSVG ? (
+              <View style={[styles.imagebg, styles.imagebgLoading]} />
+            ) : (
+              <SvgXml
+                style={styles.imagebg}
+                xml={item.icon}
+                onError={onError}
+              />
+            )}
+          </View>
 
-      <View style={styles.infoContainer}>
-        <Text style={styles.subject}>{item.subject.subject}</Text>
-        <Text style={styles.units}>{savedStudies.length} units</Text>
-        <Text style={styles.progressText}>
-          completed {progress > 100 ? 100 : progress + '%'}
-        </Text>
+          <View style={styles.infoContainer}>
+            <Text style={styles.subject}>{item.subject.subject}</Text>
+            <Text style={styles.units}>{savedStudies.length} units</Text>
+            <Text style={styles.progressText}>
+              completed {progress > 100 ? 100 : progress + '%'}
+            </Text>
 
-        <View style={styles.indicatorContainer}>
-          <Text
-            style={[
-              styles.indicator,
-              {width: progress > 100 ? 100 : progress + '%'},
-            ]}
-          />
-        </View>
-      </View>
-    </TouchableOpacity>
+            <View style={styles.indicatorContainer}>
+              <Text
+                style={[
+                  styles.indicator,
+                  {width: progress > 100 ? 100 : progress + '%'},
+                ]}
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 
 const Index = () => {
   const navigation: any = useNavigation();
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const {useQuery} = AuthContext;
 
@@ -118,13 +135,20 @@ const Index = () => {
             help you achieve your study goals!
           </Text>
           <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('ChallengeScreen')}>
+            onPress={() =>
+              token
+                ? navigation.navigate('ChallengeScreen')
+                : setLoginModalVisible(true)
+            }>
             <View style={styles.button}>
               <Text style={styles.buttonText}>Start Challenge</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <Image source={require('./course.png')} style={styles.image} />
+        <Image
+          source={require('../../../assets/Images/course.png')}
+          style={styles.image}
+        />
       </View>
 
       <Header title="My learning" subTitle="Your Chosen Courses" />
@@ -134,11 +158,12 @@ const Index = () => {
           savedUserData[0].selectedSubjects || [],
           savedSubjects,
         )}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <CourseItem
             item={item}
             setLoginModalVisible={setLoginModalVisible}
             isLoading={isLoading}
+            timerValue={(index + 1) * 250}
           />
         )}
         keyExtractor={(item, index) => index.toString()}
@@ -195,7 +220,7 @@ const styles = ScaledSheet.create({
     height: screenHeight / 6,
     minHeight: 150,
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: 'visible',
     position: 'relative',
   },
   textContainer: {
@@ -207,7 +232,7 @@ const styles = ScaledSheet.create({
   text: {
     fontFamily: 'PoppinsRegular',
     color: '#FFFFFF',
-    fontSize: screenWidth * 0.035,
+    fontSize: screenWidth * 0.037,
   },
   button: {
     backgroundColor: 'white',
@@ -243,7 +268,7 @@ const styles = ScaledSheet.create({
     marginHorizontal: 2,
     padding: 2,
     marginBottom: 10,
-    borderRadius: 10,
+    borderRadius: 15,
     borderColor: '#E1E1E1',
     borderWidth: 1,
     backgroundColor: 'white',

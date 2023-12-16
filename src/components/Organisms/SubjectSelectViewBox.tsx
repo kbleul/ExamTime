@@ -22,40 +22,46 @@ const SubjectSelectViewBox: React.FC<{
 
   const renderItem = ({item}: {item: any}) => (
     <View style={styles.renderStyle}>
-      <SubjectsButton
-        title={item.subject.subject}
-        updateSelectedSubject={() => {
-          setIsLoading(true);
-          setSelectedSubject(item);
-        }}
-        SelectedSubject={SelectedSubject.id}
-        itemId={item.id}
-      />
+      {SelectedSubject && (
+        <SubjectsButton
+          title={item.subject.subject}
+          updateSelectedSubject={() => {
+            setIsLoading(true);
+            setSelectedSubject(item);
+          }}
+          SelectedSubject={SelectedSubject.id}
+          itemId={item.id}
+        />
+      )}
     </View>
   );
 
   return (
     <View style={styles.subjectsContainer}>
       <View style={styles.subjectsImgContainer}>
-        <ChosenCoursesCard
-          subject={SelectedSubject?.subject}
-          bgImage={{uri: SelectedSubject.icon}}
-          isLoadingSubjects={isLoading}
-        />
+        {SelectedSubject && SelectedSubject.icon && (
+          <ChosenCoursesCard
+            subject={SelectedSubject?.subject}
+            bgImage={{uri: SelectedSubject.icon}}
+            isLoadingSubjects={isLoading}
+          />
+        )}
         <Text style={styles.dot} />
       </View>
 
       <View style={styles.subjectsButtonContaier}>
-        <FlatList
-          data={savedSubjects.filter(
-            subject => subject.id !== SelectedSubject.id,
-          )}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.listContaier}
-          style={styles.listContaier}
-          numColumns={2} // Set the number of columns to 2 for a 2-column layout
-        />
+        {SelectedSubject && (
+          <FlatList
+            data={savedSubjects.filter(
+              subject => subject.id !== SelectedSubject.id,
+            )}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.listContaier}
+            style={styles.listContaier}
+            numColumns={2} // Set the number of columns to 2 for a 2-column layout
+          />
+        )}
       </View>
     </View>
   );

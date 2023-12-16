@@ -318,6 +318,18 @@ export const api = createApi({
         };
       },
     }),
+    getChallenges: build.mutation<{challenges: any}, {token: string}>({
+      query: credentials => {
+        return {
+          url: 'challange/publishedchallenges',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -344,4 +356,5 @@ export const {
   useChangeProfilePictureMutation,
   useGetExamAnswersMutation,
   useGetTipsMutation,
+  useGetChallengesMutation,
 } = api;

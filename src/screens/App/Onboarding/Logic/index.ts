@@ -7,7 +7,7 @@ import {
 } from '../../../../utils/Data/data';
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
-import {downloadedSubjectType, subjectType} from '../../../../types';
+import {subjectType} from '../../../../types';
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -87,6 +87,10 @@ export const createRealmUserData = async (
 export const createRealmSubjectsData = async (
   realm: Realm,
   subjects: subjectType[],
+  setIsLoadingSubjectsRealm?:
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | null
+    | undefined,
 ) => {
   try {
     subjects.forEach(subject => {
@@ -120,6 +124,7 @@ export const createRealmSubjectsData = async (
         });
       });
     });
+    setIsLoadingSubjectsRealm && setIsLoadingSubjectsRealm(false);
   } catch (err) {
     console.log(err);
   }

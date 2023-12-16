@@ -9,30 +9,20 @@ import {
   View,
 } from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
-import {AuthContext} from '../../Realm/model';
-import {StudyTips, Subject} from '../../Realm';
+import {StudyTips} from '../../Realm';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {TipType} from '../../types';
 
 const AllTipsModal = ({
   showTipsModal,
   setShowTipsModal,
-  selectedSubject,
+  tips,
 }: {
   showTipsModal: boolean;
   setShowTipsModal: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedSubject: Subject;
+  tips: TipType[];
 }) => {
-  const {useQuery} = AuthContext;
-  const savedTips = useQuery(StudyTips, tips => {
-    return tips.filtered(
-      `subject.subject = "${selectedSubject.subject?.subject}"`,
-    );
-  });
-
-  savedTips.forEach(tip =>
-    console.log(tip.subject?.subject, selectedSubject.subject?.subject),
-  );
-  const renderItem = ({item}: {item: StudyTips}) => {
+  const renderItem = ({item}: {item: TipType}) => {
     return (
       <View style={styles.container}>
         <Text style={styles.typeText}>{item.tipType}</Text>
@@ -62,8 +52,8 @@ const AllTipsModal = ({
             <AntDesign name="close" size={25} color="#000" />
           </TouchableOpacity>
           <FlatList
-            keyExtractor={(item, index) => item.subject?.id + 'tip' + index}
-            data={[...savedTips]}
+            keyExtractor={(item, index) => item.id + 'tip' + index}
+            data={[...tips]}
             renderItem={renderItem}
             showsHorizontalScrollIndicator={false}
           />
@@ -108,6 +98,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 18,
     top: 18,
+    padding: 5,
   },
   typeText: {
     fontFamily: 'PoppinsBold',

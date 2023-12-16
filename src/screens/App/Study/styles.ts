@@ -6,7 +6,7 @@ export const style = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 30,
     width: '100%',
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#fff',
     flex: screenHeight,
   },
   ScrollView: {
@@ -50,12 +50,12 @@ export const menuStyle = StyleSheet.create({
 
 export const unitCardStyles = StyleSheet.create({
   container: {
-    marginHorizontal: 10,
     marginVertical: 5,
     borderWidth: 1,
     borderRadius: 10,
     overflow: 'hidden',
-    borderColor: '#949090',
+    borderColor: '#c2c0c0',
+    backgroundColor: '#fff',
   },
   topcontainer: {
     flexDirection: 'row',
@@ -122,7 +122,8 @@ export const accordiontyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingLeft: 10,
-    marginVertical: 10,
+    width: '78%',
+    marginBottom: 15,
   },
   videoText: {
     color: '#A4A4AE',
@@ -166,5 +167,8 @@ export const accordiontyles = StyleSheet.create({
   square: {
     color: '#000',
     alignSelf: 'flex-start',
+    position: 'absolute',
+    right: 4,
+    top: 4,
   },
 });

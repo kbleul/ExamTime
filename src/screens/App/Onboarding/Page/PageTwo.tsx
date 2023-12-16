@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
-import {PagesCounterType, PagesGradesProps} from './types';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import {PagesCounterType} from './types';
 import img from '../../../../assets/Images/onboarding/2a.png';
 import {setObject_to_localStorage} from '../../../../utils/Functions/Set';
 import {

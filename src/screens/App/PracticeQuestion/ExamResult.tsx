@@ -45,7 +45,7 @@ const ExamResult = ({route}: {route: any}) => {
     navigator.navigate('Exam-Review', {
       userAnswers,
       examQuestions: examQuestions,
-      isStudy: true,
+      isStudy: isStudy ? true : false,
     });
   };
 

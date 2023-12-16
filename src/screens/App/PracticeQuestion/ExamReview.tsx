@@ -97,7 +97,6 @@ const filterQuestions = (
 
 const ExamReview = ({route}) => {
   const {userAnswers, examQuestions, isStudy} = route.params;
-
   const [selectedCategory, setSelectedCategory] = useState(CATAGORIES[0]);
 
   const [viewQuestionsArray, setViewQuestionsArray] = useState<
@@ -190,7 +189,7 @@ const ExamReview = ({route}) => {
           setCurrentQuestion={setCurrentQuestion}
           totalQuestionsLength={viewQuestionsArray.length}
           isReview={true}
-          isStudy={isStudy}
+          isStudy={isStudy ? isStudy : false}
         />
       )}
 

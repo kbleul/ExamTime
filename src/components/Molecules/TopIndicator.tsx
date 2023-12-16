@@ -4,12 +4,13 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createRealmUserData} from '../../screens/App/Onboarding/Logic';
 import {AuthContext} from '../../Realm/model';
-import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {screenWidth} from '../../utils/Data/data';
 import {PagesCounterType} from '../../screens/App/Onboarding/Page/types';
-const TopIndicator: React.FC<PagesCounterType> = ({
-  pageCounter,
-  setPageCounter,
-}) => {
+const TopIndicator: React.FC<
+  PagesCounterType & {
+    IsLoadingSubjectsRealm?: boolean;
+  }
+> = ({pageCounter, setPageCounter, IsLoadingSubjectsRealm}) => {
   const navigation = useNavigation();
   const {useRealm} = AuthContext;
   const realm = useRealm();
@@ -19,7 +20,7 @@ const TopIndicator: React.FC<PagesCounterType> = ({
         <Ionicons name="chevron-back-outline" style={style.icon} />
       </TouchableOpacity>
 
-      {pageCounter === 3 ? (
+      {pageCounter === 3 && !IsLoadingSubjectsRealm ? (
         <TouchableOpacity
           onPress={() => createRealmUserData(realm, [], navigation)}>
           <Text style={style.text}>Skip</Text>

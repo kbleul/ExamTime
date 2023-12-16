@@ -1,3 +1,5 @@
+import {SingleSubject} from './Realm';
+
 declare module 'react-native-config' {
   export interface NativeConfig {
     API_URL?: string;
@@ -216,4 +218,28 @@ export type TipType = {
   tipType: string;
   tip: string;
   subject: singleSubjectType | null;
+};
+
+export type singleChallenge = {
+  id: string;
+  subject: singleSubjectType | null;
+  unit: string | null;
+  section: string | null;
+};
+
+export type ChallangeDayType = {
+  id: string;
+  day: number;
+  rest: boolean;
+  singleChallenge: singleChallenge[] | [];
+  scheduledDate: string | null;
+};
+
+export type ChallangeType = {
+  id: string;
+  title: string;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  challengeDay: ChallangeDayType[] | [];
 };

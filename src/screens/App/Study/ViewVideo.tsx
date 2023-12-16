@@ -30,8 +30,8 @@ const createPlaylist = (videos: videoType[]) => {
 
 const saveProgress = (study: Study, videoId: string, realm: Realm) => {
   if (study?.videoLink.length > 0) {
-    study.videoLink.forEach(video => console.log(video.id, videoId));
     const videoIndex = study.videoLink.findIndex(v => v.id === videoId);
+
     if (study.videoLink[videoIndex].isViewed === false) {
       calculate_and_Assign_UnitProgress(study, realm);
 

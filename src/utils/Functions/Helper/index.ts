@@ -16,7 +16,7 @@ import {
   useLoginMutation,
 } from '../../../reduxToolkit/Services/auth';
 import {FormData} from '../../../screens/Auth/Login/Types';
-import {userType} from '../../../types';
+import {subjectType, userType} from '../../../types';
 import {logoutSuccess} from '../../../reduxToolkit/Features/auth/authSlice';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
@@ -119,7 +119,6 @@ export const removeRealmUserData = async (
         realm.delete(savedUserExamAnswers);
 
         for (const exam of savedExam) {
-          console.log(exam.isExamTaken);
           exam.isExamTaken = false;
         }
 
@@ -226,18 +225,20 @@ export const DeleteUserAccount = async (
 
 export const PushFavorateToFront = (
   favoritesArray: string[] | null | undefined,
-  savedSubjects: ResultsType<Subject>,
+  savedSubjects: ResultsType<Subject> | subjectType[],
 ) => {
   if (!favoritesArray) {
     return savedSubjects;
   }
 
+  if (!savedSubjects) return null;
+
   const favorites: Subject[] = [];
+
   favoritesArray.map(item => {
     const favSubject = savedSubjects.find(
       (subject: any) => subject.id === item,
     );
-
     favSubject && favorites.push(favSubject);
   });
 

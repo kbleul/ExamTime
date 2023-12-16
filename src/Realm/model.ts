@@ -14,6 +14,9 @@ import {
   Pdf,
   VideoLink,
   StudyTips,
+  SingleChallenge,
+  ChallangeDay,
+  Challange,
 } from './index';
 export const AuthContext = createRealmContext({
   schema: [
@@ -31,6 +34,9 @@ export const AuthContext = createRealmContext({
     Pdf,
     VideoLink,
     StudyTips,
+    SingleChallenge,
+    ChallangeDay,
+    Challange,
   ],
   deleteRealmIfMigrationNeeded: true,
 });

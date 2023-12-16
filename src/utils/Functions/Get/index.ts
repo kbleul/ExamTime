@@ -50,22 +50,30 @@ export const fetchTips = async (
   realm: Realm,
   token: string | null,
   setTips: React.Dispatch<React.SetStateAction<TipType[] | null>>,
+  setUseSaved: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   const isConnected = await checkIsOnline();
 
-  if (isConnected) {
+  if (isConnected && token) {
     try {
       const response: any = await getTips({
         token,
       }).unwrap();
 
       if (response.tips && response.tips.length > 0) {
+        console.log('new tips');
         saveTipsToRealm(response.tips, realm);
         setTips([...(response.tips.subject.id === selectedSubject.id)]);
+        setUseSaved(false);
+
+        return;
       }
     } catch (error) {
       console.error(error);
+      setUseSaved(true);
     }
+  } else {
+    setUseSaved(true);
   }
 };
 

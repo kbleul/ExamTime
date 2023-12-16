@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
@@ -8,6 +8,9 @@ import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {screenHeight} from '../../../utils/Data/data';
+import {useNavigation} from '@react-navigation/native';
+import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
+import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
 
 interface CourseItemType {
   id: string;
@@ -19,19 +22,19 @@ interface CourseItemType {
 const DummyCourses = [
   {
     id: 'G0011',
-    grade: 'grade_6',
+    grade: 'Grade 6',
     subTitle: 'For Reginal Exam Takers',
     subjectsCount: 7,
   },
   {
     id: 'G0012',
-    grade: 'grade_8',
+    grade: 'Grade 8',
     subTitle: 'For Natural Science Students',
     subjectsCount: 12,
   },
   {
     id: 'G0013',
-    grade: 'grade_12_social',
+    grade: 'Grade 12 Social',
     subTitle: 'For Social Students',
     subjectsCount: 12,
   },
@@ -42,11 +45,25 @@ const ChosenCourses = ({
 }: {
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const {useQuery} = AuthContext;
+  const {useQuery, useRealm} = AuthContext;
+  const realm = useRealm();
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
   const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
+
+  const navigator = useNavigation();
+  const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
+    null,
+  );
+
+  const [getSubject] = useGetSubjectMutation();
+
+  useEffect(() => {
+    savedSubjects && savedSubjects.length > 0
+      ? setSubjectsArray([...savedSubjects])
+      : getSubjectsMutation(getSubject, navigator, setSubjectsArray, realm);
+  }, []);
 
   setTimeout(() => {
     setIsLoadingSubjects(false);
@@ -55,13 +72,15 @@ const ChosenCourses = ({
   const renderItem = ({item}: {item: subjectType}) => {
     return (
       <View>
-        <ChosenCoursesCard
-          subject={item.subject}
-          subjectId={item.id}
-          bgImage={{uri: item.icon}}
-          setLoginModalVisible={setLoginModalVisible}
-          isLoadingSubjects={isLoadingSubjects}
-        />
+        {item && item.icon && (
+          <ChosenCoursesCard
+            subject={item.subject}
+            subjectId={item.id}
+            bgImage={{uri: item.icon}}
+            setLoginModalVisible={setLoginModalVisible}
+            isLoadingSubjects={isLoadingSubjects}
+          />
+        )}
       </View>
     );
   };
@@ -88,18 +107,20 @@ const ChosenCourses = ({
     <View style={styles.container}>
       <Header title="My learning" subTitle="Your Chosen Courses" seeAll />
 
-      <FlatList
-        keyExtractor={item => item.id}
-        data={PushFavorateToFront(
-          savedUserData && savedUserData.length > 0
-            ? savedUserData[0].selectedSubjects
-            : null,
-          savedSubjects,
-        )}
-        renderItem={renderItem}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      />
+      {subjectsArray && subjectsArray.length > 0 && (
+        <FlatList
+          keyExtractor={(item, index) => item.id + 'my-course' + index}
+          data={PushFavorateToFront(
+            savedUserData && savedUserData.length > 0
+              ? savedUserData[0].selectedSubjects
+              : null,
+            subjectsArray,
+          )}
+          renderItem={renderItem}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
 
       <View style={styles.subContainer}>
         <Header title="Other Courses" />

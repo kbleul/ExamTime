@@ -156,8 +156,6 @@ const usePostSyncData = (
     user && token && handleSync();
     // AppState.addEventListener('change', handleSync);
   }, [user, token]);
-
-
 };
 
 export default usePostSyncData;

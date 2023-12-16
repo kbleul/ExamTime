@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ImageBackground,
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {AuthContext} from '../../Realm/model';
 import {StudyTips, Subject} from '../../Realm';
@@ -20,7 +13,6 @@ import AllTipsModal from './AllTipsModal';
 const Tips: React.FC<{
   selectedSubject: Subject;
 }> = ({selectedSubject}) => {
-  const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
 
   const {useQuery, useRealm} = AuthContext;
@@ -30,13 +22,14 @@ const Tips: React.FC<{
   //
   const [tips, setTips] = useState<TipType[] | null>(null);
 
+  const [useSaved, setUseSaved] = useState(false);
+
   const [showTipsModal, setShowTipsModal] = useState(false);
 
   const [getTips] = useGetTipsMutation();
-
   useEffect(() => {
-    if (savedTips.length === 0) {
-      fetchTips(getTips, realm, token, setTips);
+    if (savedTips.length === 0 || !useSaved) {
+      fetchTips(getTips, realm, token, setTips, setUseSaved);
     }
   }, []);
 
@@ -44,11 +37,11 @@ const Tips: React.FC<{
     if (savedTips) {
       setTips([
         ...savedTips.filter(
-          tip => tip.subject.id === selectedSubject.subject.id,
+          tip => tip?.subject?.id === selectedSubject?.subject?.id,
         ),
       ]);
     }
-  }, [selectedSubject]);
+  }, [selectedSubject, `savedTips`]);
 
   return (
     <View style={styles.container}>
@@ -72,14 +65,14 @@ const Tips: React.FC<{
               <Text style={[styles.readmore, styles.readmore]}>Read more</Text>
             </TouchableOpacity>
           )}
+
+          <AllTipsModal
+            showTipsModal={showTipsModal}
+            setShowTipsModal={setShowTipsModal}
+            tips={tips}
+          />
         </>
       )}
-
-      <AllTipsModal
-        showTipsModal={showTipsModal}
-        setShowTipsModal={setShowTipsModal}
-        selectedSubject={selectedSubject}
-      />
     </View>
   );
 };
