@@ -94,6 +94,7 @@ const styles = ScaledSheet.create({
     width: '100%',
     backgroundColor: '#F9FCFF',
   },
+ 
   imageBg: {
     height: '25%',
     width: '70%',

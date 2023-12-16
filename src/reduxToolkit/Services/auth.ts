@@ -311,10 +311,31 @@ export const api = createApi({
       },
     }),
     getTips: build.mutation<{}, {}>({
-      query: credentials => {
+      query: () => {
         return {
           url: 'tips/tipsbyparameter',
           method: 'GET',
+        };
+      },
+    }),
+    getContact: build.mutation<{}, {}>({
+      query: () => {
+        return {
+          url: '/contact-us/user/contactus',
+          method: 'GET',
+        };
+      },
+    }),
+    getFeedBack: build.mutation<any, {token: String; feedback: string}>({
+      query: data => {
+        console.log('data................', data);
+        return {
+          url: '/feedback/create/',
+          body: {feedback: data.feedback},
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
         };
       },
     }),
@@ -356,5 +377,7 @@ export const {
   useChangeProfilePictureMutation,
   useGetExamAnswersMutation,
   useGetTipsMutation,
+  useGetContactMutation,
+  useGetFeedBackMutation,
   useGetChallengesMutation,
 } = api;
