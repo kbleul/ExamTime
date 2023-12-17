@@ -29,7 +29,7 @@ const Tips: React.FC<{
   const [getTips] = useGetTipsMutation();
   useEffect(() => {
     if (savedTips.length === 0 || !useSaved) {
-      fetchTips(getTips, realm, token, setTips, setUseSaved);
+      fetchTips(getTips, realm, token, setTips, setUseSaved, selectedSubject);
     }
   }, []);
 
@@ -41,12 +41,12 @@ const Tips: React.FC<{
         ),
       ]);
     }
-  }, [selectedSubject, `savedTips`]);
+  }, [selectedSubject, savedTips]);
 
   return (
-    <View style={styles.container}>
-      {tips && (
-        <>
+    <>
+      {tips && tips.length > 0 && (
+        <View style={styles.container}>
           <View style={styles.imgContainer}>
             <Image
               style={styles.image}
@@ -55,25 +55,23 @@ const Tips: React.FC<{
             />
           </View>
 
-          {tips && tips.length > 0 && (
-            <TouchableOpacity
-              touchSoundDisabled
-              style={styles.textContainer}
-              onPress={() => setShowTipsModal(true)}>
-              <Text style={styles.tipTitle}>{tips[0].tipType}</Text>
-              <Text style={styles.tipText}>{tips[0].tip}</Text>
-              <Text style={[styles.readmore, styles.readmore]}>Read more</Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            touchSoundDisabled
+            style={styles.textContainer}
+            onPress={() => setShowTipsModal(true)}>
+            <Text style={styles.tipTitle}>{tips[0].tipType}</Text>
+            <Text style={styles.tipText}>{tips[0].tip}</Text>
+            <Text style={[styles.readmore, styles.readmore]}>Read more</Text>
+          </TouchableOpacity>
 
           <AllTipsModal
             showTipsModal={showTipsModal}
             setShowTipsModal={setShowTipsModal}
             tips={tips}
           />
-        </>
+        </View>
       )}
-    </View>
+    </>
   );
 };
 

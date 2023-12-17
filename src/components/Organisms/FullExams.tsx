@@ -154,7 +154,7 @@ const Exams: React.FC<{
         exams.length > 0 &&
         exams.map((exam, index) => (
           <TouchableOpacity
-            key={exam.id}
+            key={exam.id + 'full-exam' + index}
             touchSoundDisabled
             style={examsStyle.imgContainer}
             onPress={() => {

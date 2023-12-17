@@ -44,7 +44,6 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
     const savedExam = Array.from(savedExamObject);
 
     const userAnswersObject: UserExamAnswers[] = [];
- 
 
     //check if sync is unnecessary
     if (
@@ -53,7 +52,6 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
       savedExam[0].examQuestion &&
       savedExam[0].examQuestion.length > 0
     ) {
-
       for (const [useAnserIndex, userAnswer] of exam.userAnswers.entries()) {
         const userAnswerKey = Object.keys(userAnswer)[0];
         const foundQuestion = savedExam[0].examQuestion.find(
@@ -85,10 +83,9 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
     }
 
     if (userAnswersObject.length > 0) {
-
       try {
         realm.write(() => {
-          const newExamAnswer = realm.create(LocalObjectDataKeys.ExamAnswers, {
+          realm.create(LocalObjectDataKeys.ExamAnswers, {
             examId: savedExamObject[0].id,
             examDate: exam.examDate,
             userExamAnswers: userAnswersObject,

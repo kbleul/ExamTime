@@ -2,14 +2,12 @@ import React from 'react';
 import {
   FlatList,
   Modal,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
-import {StudyTips} from '../../Realm';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TipType} from '../../types';
 
