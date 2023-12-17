@@ -23,7 +23,6 @@ export const fetchChallenges = async (
       checkIsOnline(navigator);
 
       const response: any = await getChallenges({token}).unwrap();
-      console.log(response);
       const challnges = response.challenges ? response.challenges : null;
 
       if (challnges) {

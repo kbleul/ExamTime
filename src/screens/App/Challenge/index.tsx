@@ -24,7 +24,6 @@ const Index = () => {
   const [getChallenges, {isLoading}] = useGetChallengesMutation();
   const {useRealm, useQuery} = AuthContext;
   const savedChallenges = useQuery(Challange);
-  console.log(savedChallenges.length);
 
   const realm = useRealm();
 
