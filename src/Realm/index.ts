@@ -200,6 +200,7 @@ class ExamAnswers extends Realm.Object {
   examId: string = '';
   examDate: string = '';
   userExamAnswers: answersType[] = [];
+  timeStamp: Date | null = null;
 
   static schema = {
     name: 'ExamAnswers',
@@ -207,6 +208,7 @@ class ExamAnswers extends Realm.Object {
       examId: 'string',
       examDate: 'string',
       userExamAnswers: 'UserExamAnswers[]',
+      timeStamp: 'date?',
     },
   };
 }
@@ -227,6 +229,7 @@ class Exam extends Realm.Object {
   subject: singleSubjectType | null = null;
   year: string = '';
   isExamTaken: boolean = false;
+  lastTaken: Date | null = null;
 
   static schema = {
     name: 'Exam',
@@ -246,6 +249,7 @@ class Exam extends Realm.Object {
       subject: 'SingleSubject?',
       year: 'string',
       isExamTaken: 'bool',
+      lastTaken: 'date?',
     },
   };
 }

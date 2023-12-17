@@ -48,15 +48,26 @@ const History = () => {
   const savedExams = useQuery(
     Exam,
     exams => {
-      return exams.filtered(
-        `isExamTaken = true AND subject.subject = "${
-          selectedSubject ? selectedSubject.subject.subject : 'unknown'
-        }"`,
-      );
+      return exams
+        .filtered(
+          `isExamTaken = true AND subject.subject = "${
+            selectedSubject ? selectedSubject.subject.subject : 'unknown'
+          }"`,
+        )
+        .sorted('lastTaken', true);
     },
     [selectedSubject],
   );
   const [savedExamsArr, setSavedExamsArr] = useState([...savedExams]);
+
+  useEffect(() => {
+    if (isFocused) {
+      setSavedExamsArr([...savedExams]);
+    } else {
+      setSelectedSubject(null);
+      setSavedExamsArr([]);
+    }
+  }, [savedExams, isFocused]);
 
   const renderSubjects = ({item}: {item: subjectType}) => {
     return (
@@ -82,15 +93,6 @@ const History = () => {
     );
   };
 
-  useEffect(() => {
-    if (isFocused) {
-      setSavedExamsArr([...savedExams]);
-    } else {
-      setSelectedSubject(null);
-      setSavedExamsArr([]);
-    }
-  }, [savedExams, isFocused]);
-
   return (
     <View style={styles.container}>
       <Text style={styles.header}>History</Text>
@@ -105,18 +107,15 @@ const History = () => {
         />
       </View>
 
-      {savedExamsArr && savedExamsArr.length > 0 ? (
+      {savedExams && savedExams.length > 0 ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          {savedExamsArr.length > 0 &&
-            savedExamsArr
-              .reverse()
-              .map((exam, index) => (
-                <HistoryCard
-                  key={exam.id + '==' + index}
-                  selectedSubject={selectedSubject}
-                  exam={exam}
-                />
-              ))}
+          {savedExams.map((exam, index) => (
+            <HistoryCard
+              key={exam.id + '==' + index}
+              selectedSubject={selectedSubject}
+              exam={exam}
+            />
+          ))}
         </ScrollView>
       ) : (
         <MessageBox
@@ -143,25 +142,23 @@ const HistoryCard = ({
   const examAnswers = useQuery(
     ExamAnswers,
     examsanswers => {
-      return examsanswers.filtered(`examId = "${exam?.id}"`);
+      return examsanswers
+        .filtered(`examId = "${exam?.id}"`)
+        .sorted('timeStamp', true);
     },
     [selectedSubject, isFocused],
   );
-
-  const examAnsersArr = useMemo(() => {
-    return [...examAnswers];
-  }, [examAnswers]);
 
   return (
     <View style={cardStyle.container}>
       <Text style={cardStyle.title}>{exam.examName}</Text>
 
-      {examAnsersArr &&
-        examAnsersArr.length > 0 &&
-        examAnsersArr.reverse().map((examAnswer, index) => (
+      {examAnswers &&
+        examAnswers.length > 0 &&
+        examAnswers.map((examAnswer, index) => (
           <View
             style={
-              examAnsersArr.length > 1 && index !== examAnsersArr.length - 1
+              examAnswers.length > 1 && index !== examAnswers.length - 1
                 ? [cardStyle.testContainer, cardStyle.testContainerBorder]
                 : cardStyle.testContainer
             }

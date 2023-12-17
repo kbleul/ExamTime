@@ -89,9 +89,11 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
             examId: savedExamObject[0].id,
             examDate: exam.examDate,
             userExamAnswers: userAnswersObject,
+            timeStamp: new Date(),
           });
 
           savedExamObject[0].isExamTaken = true;
+          savedExam[0].lastTaken = new Date();
         });
       } catch (err) {}
     }

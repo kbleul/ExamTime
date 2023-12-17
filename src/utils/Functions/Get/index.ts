@@ -55,7 +55,6 @@ export const fetchTips = async (
   selectedSubject: Subject,
 ) => {
   const isConnected = await checkIsOnline();
-  console.log('tip fetch');
   if (isConnected && token) {
     try {
       const response: any = await getTips({
@@ -63,7 +62,6 @@ export const fetchTips = async (
       }).unwrap();
 
       if (response.tips && response.tips.length > 0) {
-        console.log('new tips');
         saveTipsToRealm(response.tips, realm);
         setTips([
           ...response.tips.filter(
@@ -110,14 +108,12 @@ export const saveTipsToRealm = (tips: any, realm: Realm) => {
         tipSubject = savedSubject[0];
       }
 
-      const nt = realm.create(LocalObjectDataKeys.Tip, {
+      realm.create(LocalObjectDataKeys.Tip, {
         id,
         tipType,
         tip,
         subject: tipSubject,
       });
-
-      console.log(nt);
     });
   }
 };

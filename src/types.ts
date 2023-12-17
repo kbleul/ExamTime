@@ -1,5 +1,3 @@
-import {SingleSubject} from './Realm';
-
 declare module 'react-native-config' {
   export interface NativeConfig {
     API_URL?: string;
@@ -117,6 +115,7 @@ export type examType = {
   subject: singleSubjectType;
   year: year;
   isExamTaken: boolean;
+  lastTaken: Date | null;
 };
 
 export type year =

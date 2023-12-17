@@ -45,6 +45,23 @@ const Tips: React.FC<{
 
   return (
     <>
+      {(!tips || tips.length === 0) && !token && (
+        <View style={styles.container}>
+          <View style={styles.imgContainer}>
+            <Image
+              style={styles.image}
+              source={require('../../assets/Images//Practice/tip.png')}
+              resizeMode="cover"
+            />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.tipTitle}>Login to get tips</Text>
+            <Text style={styles.tipText}>
+              Get tips on how to manage time, optimize your results and more
+            </Text>
+          </View>
+        </View>
+      )}
       {tips && tips.length > 0 && (
         <View style={styles.container}>
           <View style={styles.imgContainer}>

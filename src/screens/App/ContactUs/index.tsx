@@ -56,8 +56,6 @@ const Index = () => {
       return;
     }
 
-    const isonLine = await checkIsOnline();
-    console.log('isOnline', isonLine);
     try {
       const response: any = await getFeedBack({token, feedback: feedback});
 
@@ -88,12 +86,9 @@ const Index = () => {
   useEffect(() => {
     const fetchContactUs = async () => {
       const isonLine = await checkIsOnline();
-      console.log('isOnline', isonLine);
-
       if (isonLine) {
         try {
           const response: any = await getContact({});
-          console.log(response);
           if (response.data) {
             const contactUsData = response.data;
             setConatctUs(contactUsData);
@@ -370,6 +365,7 @@ const styles = StyleSheet.create({
     fontSize: Scale(14),
     textAlignVertical: 'top',
     minHeight: screenHeight / 5.5,
+    color: '#000',
   },
   buttonText: {
     color: '#fff', // Example text color
