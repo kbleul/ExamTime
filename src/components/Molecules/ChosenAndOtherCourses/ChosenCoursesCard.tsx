@@ -1,7 +1,7 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
-import {SvgXml} from 'react-native-svg';
+import {SvgCss} from 'react-native-svg';
 import {calculateStudyProgress} from '../../../screens/App/Study/logic';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
@@ -20,12 +20,14 @@ const ChosenCoursesCard: React.FC<{
   bgImage: any;
   setLoginModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
   isLoadingSubjects: boolean;
+  timerValue?: number;
 }> = ({
   subject,
   subjectId,
   bgImage,
   setLoginModalVisible,
   isLoadingSubjects,
+  timerValue,
 }) => {
   const navigator: any = useNavigation();
 
@@ -41,30 +43,42 @@ const ChosenCoursesCard: React.FC<{
     );
   });
   const calProgress = calculateStudyProgress(savedStudies);
+
+  const [isLoadingSVG, setIsLoadingSVG] = useState(timerValue ? true : false);
+
+  useEffect(() => {
+    if (timerValue) {
+      setTimeout(() => {
+        setIsLoadingSVG(false);
+      }, timerValue);
+    }
+  }, []);
+
   return (
     <>
-      {isLoadingSubjects && (
-        <TouchableOpacity
-          style={
-            subjectId !== undefined
-              ? styles.containerLoading
-              : [styles.containerLoading, styles.containerSecondaryLoading]
-          }
-          onPress={() => {
-            if (!user || !token) {
-              setLoginModalVisible && setLoginModalVisible(true);
-              return;
+      {isLoadingSVG ||
+        (isLoadingSubjects && (
+          <TouchableOpacity
+            style={
+              subjectId !== undefined
+                ? styles.containerLoading
+                : [styles.containerLoading, styles.containerSecondaryLoading]
             }
+            onPress={() => {
+              if (!user || !token) {
+                setLoginModalVisible && setLoginModalVisible(true);
+                return;
+              }
 
-            savedStudies.length > 0 &&
-              navigator.navigate('StudyDetails', {
-                subject: subject,
-              });
-          }}
-        />
-      )}
+              savedStudies.length > 0 &&
+                navigator.navigate('StudyDetails', {
+                  subject: subject,
+                });
+            }}
+          />
+        ))}
 
-      {!isLoadingSubjects && (
+      {!isLoadingSVG && !isLoadingSubjects && (
         <TouchableOpacity
           style={
             subjectId !== undefined
@@ -82,7 +96,7 @@ const ChosenCoursesCard: React.FC<{
                 subject: subject,
               });
           }}>
-          <SvgXml style={styles.imageBg} xml={bgImage.uri} onError={onError} />
+          <SvgCss style={styles.imageBg} xml={bgImage.uri} onError={onError} />
 
           <View style={styles.contentContainer}>
             <Text style={styles.title}>{subject.subject}</Text>

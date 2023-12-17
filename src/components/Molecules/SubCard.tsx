@@ -48,8 +48,8 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
         <View style={styles.CardHeaderText}>
           <Text style={styles.cardName}>{item.planname}</Text>
           <View style={styles.PriceContainer}>
-            <Text style={styles.PriceName}>200 Birr</Text>
-            <Text style={styles.PriceDate}>/6 Month</Text>
+            <Text style={styles.PriceName}>{item.price}</Text>
+            <Text style={styles.PriceDate}>{item.duration}</Text>
           </View>
         </View>
         <View style={styles.cdivider}>

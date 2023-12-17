@@ -9,7 +9,13 @@ import {screenHeight} from '../../utils/Data/data';
 import SubCard from '../Molecules/SubCard';
 import Pagination from '../Atoms/Pagination';
 
-const SubscriptionPlanCards = ({data, pagination}) => {
+const SubscriptionPlanCards = ({
+  data,
+  pagination,
+}: {
+  data: any;
+  pagination: boolean;
+}) => {
   const scrollViewRef = useAnimatedRef(null);
   const [newData, setNewData] = useState([
     {key: 'spacer-left'},

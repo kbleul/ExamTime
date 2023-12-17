@@ -31,12 +31,14 @@ import ViewPdf from '../screens/App/Study/ViewPdf';
 import ViewVideo from '../screens/App/Study/ViewVideo';
 import ViewAssessment from '../screens/App/Study/ViewAssessment';
 import History from '../screens/App/History';
+import Notification from '../screens/App/Notification';
+import NotificationProvider from '../context/notification';
 const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
   Stack,
   showOnboarding,
 }) => {
   return (
-    <>
+    <NotificationProvider>
       <StatusBar
         barStyle="dark-content"
         hidden={false}
@@ -202,8 +204,14 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           component={SetNewPasswordPage}
           options={{headerShown: false}}
         />
+
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
-    </>
+    </NotificationProvider>
   );
 };
 

@@ -1,25 +1,12 @@
-import React, {useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  Animated,
-  Platform,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import React from 'react';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
 
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
-const {width, height} = Dimensions.get('window');
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
 import {screenHeight} from '../../../utils/Data/data';
-const SPACING = 10;
-const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.5 : width * 0.5;
 
 const Index: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -30,6 +17,7 @@ const Index: React.FC = () => {
       price: 199,
       current: true,
       color: '#F5A52D',
+      duration: '/3 Month',
       packages: [
         {
           available: false,
@@ -55,6 +43,7 @@ const Index: React.FC = () => {
       price: 299.99,
       current: false,
       color: '#4F8FCB',
+      duration: '/6 Month',
       packages: [
         {
           available: true,
@@ -80,6 +69,7 @@ const Index: React.FC = () => {
       price: 499.99,
       current: false,
       color: '#8075CB',
+      duration: '/Year',
       packages: [
         {
           available: true,

@@ -76,13 +76,20 @@ const Index = () => {
         visibilityTime: 3000,
       });
       setLoading(false);
+      setFeedback('');
     } catch (error: any) {
       setLoading(false);
-      Alert.alert('Error fetching about us data:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Send message failed!',
+        text2: 'Error sending mesage. Please try again',
+        visibilityTime: 3000,
+      });
     }
 
     setFeedback('');
   };
+
   useEffect(() => {
     const fetchContactUs = async () => {
       const isonLine = await checkIsOnline();

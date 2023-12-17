@@ -12,14 +12,14 @@ import TrialHeader from '../../../components/Organisms/TrialHeader';
 import HeaderCarousel from '../../../components/Organisms/HeaderCarousel';
 import ChosenCourses from '../../../components/Molecules/ChosenAndOtherCourses';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
-import usePostSyncData from '../../../hooks/usePostSyncData';
+import useHandleInitialRequests from '../../../hooks/useHandleInitialRequests';
 import {screenWidth} from '../../../utils/Data/data';
 import LoginModal from '../../../components/Organisms/LoginModal';
 import Toast from 'react-native-toast-message';
 
 const Index = () => {
   const [isSyncing, setIsSyncing] = useState(false);
-  usePostSyncData(setIsSyncing);
+  useHandleInitialRequests(setIsSyncing);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   return (

@@ -20,7 +20,7 @@ import {calculateStudyProgress} from './logic';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
 import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
-import {SvgXml} from 'react-native-svg';
+import {SvgCss} from 'react-native-svg';
 import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 import LoginModal from '../../../components/Organisms/LoginModal';
 
@@ -33,7 +33,7 @@ const CourseItem = ({
   item: subjectType;
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
-  timerValue: int;
+  timerValue: number;
 }) => {
   const navigator: any = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
@@ -75,9 +75,9 @@ const CourseItem = ({
             {isLoading && isLoadingSVG ? (
               <View style={[styles.imagebg, styles.imagebgLoading]} />
             ) : (
-              <SvgXml
-                style={styles.imagebg}
+              <SvgCss
                 xml={item.icon}
+                style={styles.imagebg}
                 onError={onError}
               />
             )}
@@ -163,7 +163,7 @@ const Index = () => {
             item={item}
             setLoginModalVisible={setLoginModalVisible}
             isLoading={isLoading}
-            timerValue={(index + 1) * 250}
+            timerValue={(index + 1) * 200}
           />
         )}
         keyExtractor={(item, index) => index.toString()}

@@ -69,7 +69,7 @@ const ChosenCourses = ({
     setIsLoadingSubjects(false);
   }, 500);
 
-  const renderItem = ({item}: {item: subjectType}) => {
+  const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
       <View>
         {item && item.icon && (
@@ -79,6 +79,7 @@ const ChosenCourses = ({
             bgImage={{uri: item.icon}}
             setLoginModalVisible={setLoginModalVisible}
             isLoadingSubjects={isLoadingSubjects}
+            timerValue={(index + 1) * 200}
           />
         )}
       </View>
@@ -116,7 +117,7 @@ const ChosenCourses = ({
               : null,
             subjectsArray,
           )}
-          renderItem={renderItem}
+          renderItem={index => renderItem(index)}
           horizontal
           showsHorizontalScrollIndicator={false}
         />

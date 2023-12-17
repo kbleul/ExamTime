@@ -13,7 +13,7 @@ import {
   CommentType,
 } from '../../types';
 import Config from 'react-native-config';
-import {newAnswerType} from '../../hooks/usePostSyncData';
+import {newAnswerType} from '../../hooks/useHandleInitialRequests';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({baseUrl: Config.API_URL}),
@@ -328,7 +328,6 @@ export const api = createApi({
     }),
     getFeedBack: build.mutation<any, {token: String; feedback: string}>({
       query: data => {
-        console.log('data................', data);
         return {
           url: '/feedback/create/',
           body: {feedback: data.feedback},
@@ -347,6 +346,48 @@ export const api = createApi({
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
+    getNotifications: build.mutation<{userNotifications: any}, {token: string}>(
+      {
+        query: credentials => {
+          return {
+            url: 'notification/user/notifications',
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${credentials.token}`,
+            },
+          };
+        },
+      },
+    ),
+    postNotificationStatus: build.mutation<
+      {userNotifications: any},
+      {token: string; notificationId: string}
+    >({
+      query: data => {
+        return {
+          url: 'notification/user/notification/' + data.notificationId,
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
+    deleteNotificationStatus: build.mutation<
+      {userNotifications: any},
+      {token: string; notificationId: string}
+    >({
+      query: data => {
+        return {
+          url: '/notification/user/delete/' + data.notificationId,
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
           },
         };
       },
@@ -380,4 +421,7 @@ export const {
   useGetContactMutation,
   useGetFeedBackMutation,
   useGetChallengesMutation,
+  useGetNotificationsMutation,
+  usePostNotificationStatusMutation,
+  useDeleteNotificationStatusMutation,
 } = api;
