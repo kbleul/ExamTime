@@ -20,6 +20,7 @@ export const getGradesMutation = async (
 
   try {
     const response = await getGrades({}).unwrap();
+    console.log(response);
     setGradesArray(response);
   } catch (e) {
     console.log(e);

@@ -38,7 +38,7 @@ export const fetchRegions = async (
     response.map((region: {region: string}) => {
       tempRegionsList.push({
         label: region.region.toUpperCase(),
-        value: region.region.toUpperCase(),
+        value: region.region,
       });
     });
 
@@ -71,11 +71,10 @@ export const handleCreateUser = async (
       const response = await createUser({
         ...data,
         phoneNumber: '+251' + data.phoneNumber,
-        region: region?.toLowerCase(),
+        region: region,
         gender: gender?.toUpperCase(),
         grade: userGrade?.value,
       }).unwrap();
-
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 
