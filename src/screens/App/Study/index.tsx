@@ -254,7 +254,7 @@ const styles = ScaledSheet.create({
   },
   image: {
     width: '40%',
-    height: screenHeight / 6 + 45,
+    height: screenHeight / 6 + 40,
     resizeMode: 'contain',
     position: 'absolute',
     right: 0,

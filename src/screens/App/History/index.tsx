@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     width: screenWidth,
     backgroundColor: '#F9FCFF',
     paddingTop: 40,
-    paddingBottom: 70,
+    paddingBottom: 80,
     paddingHorizontal: 20,
     // backgroundColor: 'red',
   },

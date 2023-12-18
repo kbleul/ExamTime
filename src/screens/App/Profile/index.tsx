@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1,
     position: 'relative',
-    paddingBottom: 40,
+    paddingBottom: 50,
     backgroundColor: '#F5F5F5',
   },
   imageBg: {

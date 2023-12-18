@@ -65,9 +65,9 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
           style={HeaderStyle.notificationBtn}
           touchSoundDisabled
           onPress={() =>
-            token && (!notifications || notifications.length === 0)
-              ? navigator.navigate('Notification')
-              : setShowLoginPrompt(true)
+            !token && (!notifications || notifications.length === 0)
+              ? setShowLoginPrompt(true)
+              : navigator.navigate('Notification')
           }>
           {notifications && hasNewNotification && (
             <Text style={HeaderStyle.dot} />
