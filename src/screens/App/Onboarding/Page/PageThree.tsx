@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 
 import {PagesCounterType} from './types';
 import {screenHeight, screenWidth} from '../../../../utils/Data/data';
@@ -39,16 +39,20 @@ const PageThree: React.FC<PagesCounterType> = ({
   const [IsLoadingSubjectsRealm, setIsLoadingSubjectsRealm] = useState(true);
 
   useEffect(() => {
-    savedSubjects && savedSubjects.length > 0
-      ? setSubjectsArray([...savedSubjects])
-      : getSubjectsMutation(
-          getSubject,
-          navigator,
-          setSubjectsArray,
-          realm,
-          null,
-          setIsLoadingSubjectsRealm,
-        );
+    if (savedSubjects && savedSubjects.length > 0) {
+      realm.write(() => {
+        realm.delete(savedSubjects);
+      });
+    }
+
+    getSubjectsMutation(
+      getSubject,
+      navigator,
+      setSubjectsArray,
+      realm,
+      null,
+      setIsLoadingSubjectsRealm,
+    );
   }, []);
 
   useEffect(() => {
@@ -86,7 +90,7 @@ const PageThree: React.FC<PagesCounterType> = ({
                   style.buttonsSubcontainer,
                   style.buttonsSubcontainerTop,
                 ]}>
-                {subjectsArray.map((subject, index) => (
+                {subjectsArray.map(subject => (
                   <SubjectButton
                     key={subject.id}
                     text={subject.subject.subject}

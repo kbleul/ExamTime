@@ -16,14 +16,20 @@ import {getGradesMutation} from './logic';
 import {gradeType} from '../../../../types';
 import Loading from '../../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
+import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
+import {AuthContext} from '../../../../Realm/model';
 
 const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
   const navigator = useNavigation();
   const [getGrades, {isLoading, error}] = useGetGradeMutation();
   const [gradesArray, setGradesArray] = useState<gradeType[] | null>(null);
 
+  const {useRealm} = AuthContext;
+
+  const realm = useRealm();
+
   useEffect(() => {
-    getGradesMutation(getGrades, navigator, setGradesArray);
+    getGradesMutation(getGrades, navigator, setGradesArray, realm);
   }, []);
 
   useEffect(() => {
@@ -35,9 +41,15 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
       });
   }, [error]);
 
-  const saveGrade = (grade: gradeType) => {
+  const saveGrade = async (grade: gradeType) => {
     setObject_to_localStorage(LocalStorageDataKeys.userGrade, grade);
     setPageCounter(3);
+
+    await getObject_from_localStorage(LocalStorageDataKeys.userData).then(
+      res => {
+        console.log('grade', res);
+      },
+    );
   };
   return (
     <View style={style.container}>
