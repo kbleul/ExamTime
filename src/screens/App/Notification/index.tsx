@@ -20,7 +20,6 @@ const Notification = () => {
   const navigator: any = useNavigation();
 
   const {notifications} = useNotification();
-  console.log(notifications);
   const [notification, setNotification] = useState<string | null>(null);
 
   return (

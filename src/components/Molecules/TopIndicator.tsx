@@ -9,9 +9,15 @@ import {PagesCounterType} from '../../screens/App/Onboarding/Page/types';
 const TopIndicator: React.FC<
   PagesCounterType & {
     IsLoadingSubjectsRealm?: boolean;
+    setIsLoadingSubjects?: React.Dispatch<React.SetStateAction<boolean>>;
   }
-> = ({pageCounter, setPageCounter, IsLoadingSubjectsRealm}) => {
-  const navigation = useNavigation();
+> = ({
+  pageCounter,
+  setPageCounter,
+  IsLoadingSubjectsRealm,
+  setIsLoadingSubjects,
+}) => {
+  const navigator = useNavigation();
   const {useRealm} = AuthContext;
   const realm = useRealm();
   return (
@@ -22,7 +28,10 @@ const TopIndicator: React.FC<
 
       {pageCounter === 3 && !IsLoadingSubjectsRealm ? (
         <TouchableOpacity
-          onPress={() => createRealmUserData(realm, [], navigation)}>
+          onPress={() =>
+            setIsLoadingSubjects &&
+            createRealmUserData(realm, [], navigator, setIsLoadingSubjects)
+          }>
           <Text style={style.text}>Skip</Text>
         </TouchableOpacity>
       ) : (

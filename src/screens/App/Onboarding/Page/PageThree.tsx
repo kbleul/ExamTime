@@ -67,6 +67,7 @@ const PageThree: React.FC<PagesCounterType> = ({
           setPageCounter={setPageCounter}
           pageCounter={pageCounter}
           IsLoadingSubjectsRealm={IsLoadingSubjectsRealm}
+          setIsLoadingSubjects={setIsLoadingSubjects}
         />
 
         <View style={style.titleContainer}>

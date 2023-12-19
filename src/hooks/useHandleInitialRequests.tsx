@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {AppState, AppStateStatus} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 import {useSelector} from 'react-redux';
@@ -104,9 +103,9 @@ const useHandleInitialRequests = (
   const user = useSelector((state: RootState) => state.auth.user);
 
   const token = useSelector((state: RootState) => state.auth.token);
+
   const [postExamResults] = usePostExamResultsMutation();
   const [getExamAnswers] = useGetExamAnswersMutation();
-
   const [getStudy] = useGetStudyMutation();
 
   const {useQuery, useRealm} = AuthContext;
@@ -116,7 +115,6 @@ const useHandleInitialRequests = (
   const savedTakenExams = useQuery(Exam, exam => {
     return exam.filtered('isExamTaken = true');
   });
-
   const savedExamAnswers = useQuery(ExamAnswers);
   const savedStudies = useQuery(Study);
 

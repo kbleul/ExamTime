@@ -45,67 +45,54 @@ export const saveStudyToRealm = async (
   studies: studyType[] | [],
   Toast: any,
 ) => {
-  try {
-    studies.forEach(study => {
-      const {
-        id,
-        title,
-        objective,
-        isPublished,
-        createdAt,
-        updatedAt,
-        grade,
-        subject,
-        year,
-        unit,
-        section,
-        selectedQuestion,
-        pdf,
-        videoLink,
-      } = study;
+  if (studies && studies.length > 0) {
+    try {
+      studies.forEach(study => {
+        const {
+          id,
+          title,
+          objective,
+          isPublished,
+          createdAt,
+          updatedAt,
+          grade,
+          subject,
+          year,
+          unit,
+          section,
+          selectedQuestion,
+          pdf,
+          videoLink,
+        } = study;
 
-      const yearString = year.year;
-      const unitString = unit.unit;
-      const sectionString = section.section;
+        const yearString = year.year;
+        const unitString = unit.unit;
+        const sectionString = section.section;
 
-      realm.write(async () => {
-        const subjectObject = realm.create(LocalObjectDataKeys.SingleSubject, {
-          id: subject.id,
-          subject: subject.subject,
-          createdAt: subject.createdAt,
-          updatedAt: subject.updatedAt,
-        });
-
-        const gradeObject = realm.create(LocalObjectDataKeys.Grade, {
-          id: grade.id,
-          grade: grade.grade,
-          createdAt: grade.createdAt,
-          updatedAt: grade.updatedAt,
-        });
-
-        const examQuestionArr: examQuestionType[] = [];
-        const pdfObjArr: pdfType[] = [];
-        const videoObjArr: videoType[] = [];
-
-        selectedQuestion.forEach(question => {
-          let {
-            id: qId,
-            number,
-            questionType,
-            question: questionText,
-            A,
-            B,
-            C,
-            D,
-            answer,
-            description,
-            createdAt: qCreatedAt,
-            updatedAt: qUpdatedAt,
-          } = question;
-
-          const questiontObject = realm.create(
-            LocalObjectDataKeys.ExamQuestion,
+        realm.write(async () => {
+          const subjectObject = realm.create(
+            LocalObjectDataKeys.SingleSubject,
             {
+              id: subject.id,
+              subject: subject.subject,
+              createdAt: subject.createdAt,
+              updatedAt: subject.updatedAt,
+            },
+          );
+
+          const gradeObject = realm.create(LocalObjectDataKeys.Grade, {
+            id: grade.id,
+            grade: grade.grade,
+            createdAt: grade.createdAt,
+            updatedAt: grade.updatedAt,
+          });
+
+          const examQuestionArr: examQuestionType[] = [];
+          const pdfObjArr: pdfType[] = [];
+          const videoObjArr: videoType[] = [];
+
+          selectedQuestion.forEach(question => {
+            let {
               id: qId,
               number,
               questionType,
@@ -118,64 +105,76 @@ export const saveStudyToRealm = async (
               description,
               createdAt: qCreatedAt,
               updatedAt: qUpdatedAt,
-            },
-          );
+            } = question;
 
-          examQuestionArr.push(questiontObject);
-        });
+            const questiontObject = realm.create(
+              LocalObjectDataKeys.ExamQuestion,
+              {
+                id: qId,
+                number,
+                questionType,
+                question: questionText,
+                A,
+                B,
+                C,
+                D,
+                answer,
+                description,
+                createdAt: qCreatedAt,
+                updatedAt: qUpdatedAt,
+              },
+            );
 
-        // pdf.forEach(async pdfItem => {
-        //   const pdfObject = await downloadAndSavePDF(pdfItem, realm);
-
-        //   pdfObject && pdfObjArr.push(pdfObject);
-        // });
-
-        videoLink.forEach(videoItem => {
-          const {id: videoId, videoLink} = videoItem;
-
-          const videoObject = realm.create(LocalObjectDataKeys.VideoLink, {
-            id: videoId,
-            videoLink,
-            isViewed: false,
+            examQuestionArr.push(questiontObject);
           });
 
-          videoObjArr.push(videoObject);
-        });
+          videoLink.forEach(videoItem => {
+            const {id: videoId, videoLink} = videoItem;
 
-        await savePdfs(pdf, pdfObjArr, realm).then(() => {
-          realm.write(() => {
-            try {
-              realm.create(LocalObjectDataKeys.Study, {
-                id,
-                title,
-                objective,
-                isPublished,
-                createdAt,
-                updatedAt,
-                grade: gradeObject,
-                subject: subjectObject,
-                year: yearString,
-                unit: unitString,
-                section: sectionString,
-                selectedQuestion: examQuestionArr,
-                progress: 0,
-                pdf: pdfObjArr,
-                videoLink: videoObjArr,
-                userExamAnswers: [],
-              });
-            } catch (e) {
-              console.log('Error saving study to realm DB', e);
-            }
+            const videoObject = realm.create(LocalObjectDataKeys.VideoLink, {
+              id: videoId,
+              videoLink,
+              isViewed: false,
+            });
+
+            videoObjArr.push(videoObject);
+          });
+
+          await savePdfs(pdf, pdfObjArr, realm).then(() => {
+            realm.write(() => {
+              try {
+                realm.create(LocalObjectDataKeys.Study, {
+                  id,
+                  title,
+                  objective,
+                  isPublished,
+                  createdAt,
+                  updatedAt,
+                  grade: gradeObject,
+                  subject: subjectObject,
+                  year: yearString,
+                  unit: unitString,
+                  section: sectionString,
+                  selectedQuestion: examQuestionArr,
+                  progress: 0,
+                  pdf: pdfObjArr,
+                  videoLink: videoObjArr,
+                  userExamAnswers: [],
+                });
+              } catch (e) {
+                console.log('Error saving study to realm DB', e);
+              }
+            });
           });
         });
       });
-    });
-  } catch (err) {
-    console.log(err);
-    Toast.show({
-      type: 'error',
-      text1: 'Error saving studies for offline use',
-    });
+    } catch (err) {
+      console.log(err);
+      Toast.show({
+        type: 'error',
+        text1: 'Error saving studies for offline use',
+      });
+    }
   }
 };
 

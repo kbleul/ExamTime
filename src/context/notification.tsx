@@ -46,7 +46,6 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
   const fetchNotification = useCallback(async () => {
     const isOnline = await checkIsOnline();
     if (token && isOnline) {
-      console.log('fetching data sir');
       try {
         const response = await getNotifications({token}).unwrap();
         console.log('yyy', response);
