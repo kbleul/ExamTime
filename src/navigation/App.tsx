@@ -13,7 +13,6 @@ import Signup from '../screens/Auth/Signup/Signup';
 import NetworkError from '../screens/Shared/NetworkError';
 import ContactUs from '../screens/App/ContactUs/index';
 import FAQ from '../screens/App/FAQ/index';
-import {StatusBar} from 'react-native';
 import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
 import SignupCompleted from '../components/Organisms/SignupCompleted';
 import ViewSubjectDetails from '../screens/App/Courses/ViewSubjectDetails';
@@ -39,12 +38,6 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
 }) => {
   return (
     <NotificationProvider>
-      <StatusBar
-        barStyle="dark-content"
-        hidden={false}
-        backgroundColor="#F9FCFF"
-        translucent={true}
-      />
       <Stack.Navigator>
         {showOnboarding && (
           <Stack.Screen

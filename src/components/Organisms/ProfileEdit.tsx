@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StatusBar, Text} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import {View} from 'react-native';
 import {Formik} from 'formik';
 import {useSelector, useDispatch} from 'react-redux';
@@ -292,7 +292,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
 
   return (
     <>
-      <StatusBar hidden={true} />
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* back Icon and DoneTExt Container */}

@@ -65,8 +65,8 @@ const style = StyleSheet.create({
   },
 
   buttonSelected: {
-    backgroundColor: '#1E90FF',
-    borderColor: '#1E90FF',
+    backgroundColor: '#00509D',
+    borderColor: '#00509D',
   },
   buttonText: {
     textAlign: 'center',
@@ -75,6 +75,7 @@ const style = StyleSheet.create({
     fontSize: screenWidth * 0.035,
   },
   buttonTextSelected: {
+    fontFamily: 'Montserrat-Regular',
     color: '#fff',
   },
 });

@@ -4,7 +4,6 @@ import AuthRoutes from './Auth';
 import AppRoutes from './App';
 import {UserData} from '../Realm';
 import {AuthContext} from '../Realm/model';
-import {StatusBar} from 'react-native';
 import SplashScreen from '../screens/Shared/SplashScreen';
 import {checkUserStatus} from './logic';
 import {useDispatch, useSelector} from 'react-redux';
@@ -27,17 +26,7 @@ const Routes = ({Stack}: any) => {
   //used as loading check
   if (isAuthRoute === null) {
     // Render a loading state or fallback UI while waiting for the checkOnBoarding value
-    return (
-      <>
-        <StatusBar
-          barStyle="light-content"
-          hidden={false}
-          backgroundColor="#F9FCFF"
-          translucent={true}
-        />
-        <SplashScreen />
-      </>
-    );
+    return <SplashScreen />;
   }
 
   return isAuthRoute === true && !user ? (

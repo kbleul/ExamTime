@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {PagesCounterType} from './types';
-import img from '../../../../assets/Images/onboarding/2a.png';
 import {setObject_to_localStorage} from '../../../../utils/Functions/Set';
 import {
   LocalStorageDataKeys,
@@ -16,7 +15,6 @@ import {getGradesMutation} from './logic';
 import {gradeType} from '../../../../types';
 import Loading from '../../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
-import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import {AuthContext} from '../../../../Realm/model';
 
 const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
@@ -50,30 +48,30 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
     <View style={style.container}>
       <TopIndicator setPageCounter={setPageCounter} pageCounter={pageCounter} />
 
-      <View style={style.imgContainer}>
-        <Image source={img} style={style.img} />
+      <View style={style.titleContainer}>
+        <Text style={style.title}>Hello.</Text>
+        <Text style={style.subtitle}>What Grade are you in?</Text>
       </View>
 
-      <View style={style.secondContainer}>
-        <View style={style.titleContainer}>
-          <Text style={style.title}>What Grade are you in ?</Text>
-        </View>
-        {!isLoading && !error && gradesArray && (
-          <View style={style.gradesContainer}>
-            {gradesArray.map((grade, index) => (
-              <OtherCoursesCard
-                key={grade.id}
-                grade={grade.grade}
-                subjectsCount={6}
-                isOnboarding
-                onPress={() => saveGrade(grade)}
-                index={index}
-              />
-            ))}
-          </View>
-        )}
-        {isLoading && <Loading />}
-      </View>
+      {!isLoading && !error && gradesArray && (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={style.gradesContainerScroll}
+          contentContainerStyle={style.gradesContainer}>
+          {gradesArray.map((grade, index) => (
+            <OtherCoursesCard
+              key={grade.id}
+              grade={grade.grade}
+              subjectsCount={6}
+              isOnboarding
+              onPress={() => saveGrade(grade)}
+              index={index}
+            />
+          ))}
+        </ScrollView>
+      )}
+
+      {isLoading && <Loading />}
       <Toast />
     </View>
   );
@@ -81,43 +79,41 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
 
 const style = StyleSheet.create({
   container: {
-    paddingTop: 30,
+    paddingTop: 40,
+    paddingHorizontal: 20,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: screenHeight,
   },
-
-  imgContainer: {
-    width: '100%',
-    height: screenHeight * (3.5 / 10),
-    marginTop: '5%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  img: {
-    width: '100%',
-    height: '100%',
-  },
-  secondContainer: {
-    height: screenHeight * (4.5 / 10),
-  },
   titleContainer: {
-    marginTop: '5%',
-    marginBottom: '5%',
+    marginTop: screenHeight * 0.05,
+    justifyContent: 'flex-start',
+    width: '100%',
+    paddingHorizontal: 10,
   },
   title: {
-    fontFamily: 'Montserrat-Bold',
-    fontSize: screenWidth * 0.06,
+    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.075,
     color: '#2D466A',
-    textAlign: 'center',
-    paddingHorizontal: 10,
+    textAlign: 'left',
     lineHeight: 40,
   },
+  subtitle: {
+    fontFamily: 'PoppinsRegular',
+    fontSize: screenWidth * 0.05,
+    color: '#2D466A',
+    textAlign: 'left',
+    lineHeight: 40,
+  },
+  gradesContainerScroll: {
+    width: '100%',
+    paddingTop: 10,
+  },
   gradesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 70,
   },
 });
 

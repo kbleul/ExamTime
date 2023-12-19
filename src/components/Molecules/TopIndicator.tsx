@@ -47,7 +47,6 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingHorizontal: screenWidth * 0.05,
     paddingVertical: 2,
   },
   indicatorContainer: {
@@ -57,8 +56,7 @@ const style = StyleSheet.create({
     width: '50%',
   },
   indicator: {
-    width: '48%',
-    padding: 4,
+    paddingVertical: 4,
     backgroundColor: '#E2EBFF',
     borderRadius: 10,
     overflow: 'hidden',
@@ -67,8 +65,9 @@ const style = StyleSheet.create({
     backgroundColor: '#1E90FF',
   },
   icon: {
-    fontSize: 20,
+    fontSize: screenWidth * 0.065,
     color: '#000',
+    backgroundColor: '#fff',
   },
   text: {
     fontSize: 16,

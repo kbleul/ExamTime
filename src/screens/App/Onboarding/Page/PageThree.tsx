@@ -15,7 +15,7 @@ import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from './logic';
 import Loading from '../../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
-import {Grade, Subject} from '../../../../Realm';
+import {Subject} from '../../../../Realm';
 
 const PageThree: React.FC<PagesCounterType> = ({
   pageCounter,
@@ -25,7 +25,6 @@ const PageThree: React.FC<PagesCounterType> = ({
 
   const realm = useRealm();
   const savedSubjects = useQuery(Subject);
-  const savedGrades = useQuery(Grade);
 
   const navigator = useNavigation();
   const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
@@ -76,10 +75,8 @@ const PageThree: React.FC<PagesCounterType> = ({
         />
 
         <View style={style.titleContainer}>
-          <Text style={style.title}>Hello.</Text>
           <Text style={style.subtitle}>
-            Sign up for a free trial today and experience the Exam Time
-            difference!
+            Pick your favorite topics to set up your feeds
           </Text>
         </View>
 
@@ -105,11 +102,8 @@ const PageThree: React.FC<PagesCounterType> = ({
               <View
                 style={
                   IsLoadingSubjectsRealm
-                    ? [
-                        style.buttonsSubcontainer,
-                        style.buttonsSubcontainerLoading,
-                      ]
-                    : style.buttonsSubcontainer
+                    ? [style.submitcontainer, style.buttonsSubcontainerLoading]
+                    : style.submitcontainer
                 }>
                 {!IsLoadingSubjectsRealm ? (
                   <GradeButton
@@ -142,7 +136,8 @@ const PageThree: React.FC<PagesCounterType> = ({
 
 const style = StyleSheet.create({
   container: {
-    paddingTop: 30,
+    paddingTop: 40,
+    paddingHorizontal: 20,
     flex: 1,
   },
   scrollContainer: {
@@ -177,27 +172,18 @@ const style = StyleSheet.create({
     color: '#858585',
   },
   titleContainer: {
-    height: screenHeight * (3 / 10),
+    height: screenHeight * (2.5 / 10),
     justifyContent: 'flex-end',
   },
-  title: {
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: screenWidth * 0.07,
-    color: '#2D466A',
-    textAlign: 'left',
-    paddingHorizontal: 30,
-    lineHeight: 40,
-  },
   subtitle: {
-    fontFamily: 'Montserrat-Regular',
-    fontSize: screenWidth * 0.045,
+    fontFamily: 'PoppinsRegular',
+    fontSize: screenWidth * 0.05,
     color: '#2D466A',
     textAlign: 'left',
-    paddingHorizontal: 30,
     lineHeight: 40,
   },
   secondBox: {
-    height: screenHeight * (5 / 10),
+    height: screenHeight * (5.6 / 10),
     justifyContent: 'space-between',
   },
   subjectButtonsContainer: {},
@@ -209,6 +195,13 @@ const style = StyleSheet.create({
     marginTop: '7%',
     width: '90%',
     marginLeft: '5%',
+  },
+  submitcontainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    marginTop: '7%',
   },
   buttonsSubcontainerLoading: {
     justifyContent: 'center',
