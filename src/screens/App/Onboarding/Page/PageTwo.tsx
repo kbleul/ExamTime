@@ -44,13 +44,8 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
   const saveGrade = async (grade: gradeType) => {
     setObject_to_localStorage(LocalStorageDataKeys.userGrade, grade);
     setPageCounter(3);
-
-    await getObject_from_localStorage(LocalStorageDataKeys.userData).then(
-      res => {
-        console.log('grade', res);
-      },
-    );
   };
+
   return (
     <View style={style.container}>
       <TopIndicator setPageCounter={setPageCounter} pageCounter={pageCounter} />

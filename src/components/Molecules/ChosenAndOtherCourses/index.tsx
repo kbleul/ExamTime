@@ -3,11 +3,11 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
 import OtherCoursesCard from './OtherCoursesCard';
-import {Subject, UserData} from '../../../Realm';
+import {Grade, Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
-import {screenHeight} from '../../../utils/Data/data';
+import {LocalStorageDataKeys, screenHeight} from '../../../utils/Data/data';
 import {useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
@@ -24,19 +24,19 @@ const DummyCourses = [
     id: 'G0011',
     grade: 'Grade 6',
     subTitle: 'For Reginal Exam Takers',
-    subjectsCount: 7,
+    subjectsCount: 6,
   },
   {
     id: 'G0012',
     grade: 'Grade 8',
     subTitle: 'For Natural Science Students',
-    subjectsCount: 12,
+    subjectsCount: 6,
   },
   {
     id: 'G0013',
     grade: 'Grade 12 Social',
     subTitle: 'For Social Students',
-    subjectsCount: 12,
+    subjectsCount: 6,
   },
 ];
 
@@ -50,6 +50,10 @@ const ChosenCourses = ({
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
+  const savedGrades = useQuery(Grade, savedgrade => {
+    return savedgrade.filtered(`id != "${savedUserData[0].grade.id}"`);
+  });
+
   const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
 
   const navigator = useNavigation();
@@ -69,6 +73,8 @@ const ChosenCourses = ({
     setIsLoadingSubjects(false);
   }, 500);
 
+  console.log('savedGrades length', savedGrades.length, savedUserData[0].grade);
+
   const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
       <View>
@@ -86,20 +92,10 @@ const ChosenCourses = ({
     );
   };
 
-  const renderItemCourse = ({
-    item,
-    index,
-  }: {
-    item: CourseItemType;
-    index: number;
-  }) => {
+  const renderGreadeItem = ({item, index}: {item: Grade; index: number}) => {
     return (
       <View>
-        <OtherCoursesCard
-          grade={item.grade}
-          subjectsCount={item.subjectsCount}
-          index={index}
-        />
+        <OtherCoursesCard grade={item.grade} subjectsCount={6} index={index} />
       </View>
     );
   };
@@ -123,17 +119,21 @@ const ChosenCourses = ({
         />
       )}
 
-      <View style={styles.subContainer}>
-        <Header title="Other Courses" />
-      </View>
+      {savedGrades && savedGrades.length > 0 && (
+        <>
+          <View style={styles.subContainer}>
+            <Header title="Other Courses" />
+          </View>
 
-      <FlatList
-        keyExtractor={item => item.id}
-        data={DummyCourses}
-        renderItem={({item, index}) => renderItemCourse({item, index})}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      />
+          <FlatList
+            keyExtractor={item => item.id}
+            data={savedGrades}
+            renderItem={({item, index}) => renderGreadeItem({item, index})}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        </>
+      )}
     </View>
   );
 };

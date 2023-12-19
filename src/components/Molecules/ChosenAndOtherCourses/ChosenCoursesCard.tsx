@@ -1,7 +1,7 @@
 import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
-import {SvgCss} from 'react-native-svg';
+import {SvgXml} from 'react-native-svg';
 import {calculateStudyProgress} from '../../../screens/App/Study/logic';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
@@ -96,7 +96,13 @@ const ChosenCoursesCard: React.FC<{
                 subject: subject,
               });
           }}>
-          <SvgCss style={styles.imageBg} xml={bgImage.uri} onError={onError} />
+          {bgImage && (
+            <SvgXml
+              style={styles.imageBg}
+              xml={bgImage.uri}
+              onError={onError}
+            />
+          )}
 
           <View style={styles.contentContainer}>
             <Text style={styles.title}>{subject.subject}</Text>

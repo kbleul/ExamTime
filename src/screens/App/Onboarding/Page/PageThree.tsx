@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 import {PagesCounterType} from './types';
 import {screenHeight, screenWidth} from '../../../../utils/Data/data';
@@ -15,7 +15,7 @@ import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from './logic';
 import Loading from '../../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
-import {Subject} from '../../../../Realm';
+import {Grade, Subject} from '../../../../Realm';
 
 const PageThree: React.FC<PagesCounterType> = ({
   pageCounter,
@@ -25,6 +25,8 @@ const PageThree: React.FC<PagesCounterType> = ({
 
   const realm = useRealm();
   const savedSubjects = useQuery(Subject);
+  const savedGrades = useQuery(Grade);
+
   const navigator = useNavigation();
   const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
     null,
@@ -37,7 +39,6 @@ const PageThree: React.FC<PagesCounterType> = ({
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
 
   const [IsLoadingSubjectsRealm, setIsLoadingSubjectsRealm] = useState(true);
-
   useEffect(() => {
     if (savedSubjects && savedSubjects.length > 0) {
       realm.write(() => {

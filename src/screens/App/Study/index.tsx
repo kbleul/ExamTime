@@ -75,11 +75,13 @@ const CourseItem = ({
             {isLoading && isLoadingSVG ? (
               <View style={[styles.imagebg, styles.imagebgLoading]} />
             ) : (
-              <SvgCss
-                xml={item.icon}
-                style={styles.imagebg}
-                onError={onError}
-              />
+              item.icon && (
+                <SvgCss
+                  xml={item.icon}
+                  style={styles.imagebg}
+                  onError={onError}
+                />
+              )
             )}
           </View>
 
