@@ -4,50 +4,28 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 export const styles = StyleSheet.create({
   container: {
     width: screenWidth - 20,
-    height: screenHeight / 6,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    paddingVertical: 10,
-    marginLeft: screenHeight * 0.004,
+    height: screenHeight / 5.1,
+    borderRadius: 10,
+    overflow: 'hidden',
+    position: 'relative',
+    marginLeft: screenHeight * 0.006,
   },
 });
 
 export const frameOnestyles = StyleSheet.create({
   leftBoxContainer: {
-    width: screenWidth * (6 / 10),
+    width: '75%',
+    height: '100%',
     paddingLeft: screenWidth * 0.04,
-  },
-  leftSubcontainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-  },
-  helloIcon: {
-    transform: [{rotate: '-80deg'}],
-  },
-  rightBoxContainer: {
-    width: screenWidth * 0.28,
-    height: screenWidth * 0.28,
-    maxWidth: 120,
-    maxHeight: 120,
-    borderRadius: 30,
-    marginRight: 20,
-    borderWidth: 2,
-    overflow: 'hidden',
-    backgroundColor: '#f5f2f2',
-  },
-  helloText: {
-    fontSize: screenWidth * 0.07,
-    fontFamily: 'PoppinsSemiBold',
-    color: 'black',
-    marginRight: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   subText: {
-    color: '#C1C2C6',
-    fontSize: screenWidth * 0.043,
+    color: '#484A51',
+    fontSize: screenWidth * 0.04,
     lineHeight: 25,
     marginTop: 8,
-    fontFamily: 'PoppinsRegular',
+    fontFamily: 'PoppinsMedium',
   },
 });
 
@@ -55,7 +33,7 @@ export const frameTwostyles = StyleSheet.create({
   mainContainer: {
     width: screenWidth - 23,
     height: screenHeight / 5,
-    marginLeft: screenWidth * 0.05,
+    marginLeft: screenWidth * 0.055,
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -86,14 +64,15 @@ export const frameTwostyles = StyleSheet.create({
   },
   firstText: {
     fontSize: screenWidth * 0.05,
-    fontFamily: 'PoppinsSemiBold',
+    fontFamily: 'PoppinsMedium',
     marginBottom: 5,
     color: 'white',
   },
   secondText: {
-    fontSize: screenWidth * 0.035,
-    fontFamily: 'PoppinsRegular',
+    fontSize: screenWidth * 0.036,
+    fontFamily: 'PoppinsLight',
     color: 'white',
+    lineHeight: 22,
   },
   progressText: {
     fontSize: screenWidth * 0.08,
@@ -105,18 +84,17 @@ export const frameTwostyles = StyleSheet.create({
 export const frameThreestyles = StyleSheet.create({
   adsContainer: {
     width: screenWidth - 23,
-    height: screenHeight / 5,
+    height: screenHeight / 4.8,
     borderRadius: 10,
     overflow: 'hidden',
-    marginLeft: screenWidth * 0.048,
-    marginRight: 9,
+    marginLeft: screenWidth * 0.055,
+    marginRight: 7,
   },
   adsTile1: {
     color: 'black',
     fontFamily: 'PoppinsSemiBold',
     paddingHorizontal: '6%',
     marginTop: '1%',
-    marginBottom: '2%',
     fontSize: screenWidth * 0.048,
   },
   adsTile2: {
@@ -126,18 +104,18 @@ export const frameThreestyles = StyleSheet.create({
     fontSize: screenWidth * 0.06,
   },
   adsText: {
-    color: '#b5b5b5',
-    fontFamily: 'Montserrate-Regular',
+    color: '#000',
+    fontFamily: 'PoppinsRegular',
     paddingHorizontal: '6%',
     fontSize: 16,
-    lineHeight: 20,
+    lineHeight: 23,
   },
   adsBtnContainer: {
     flexDirection: 'row',
     paddingHorizontal: '6%',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: '3%',
+    marginTop: screenHeight * 0.008,
   },
   adsBtnContainerCentered: {
     justifyContent: 'center',
@@ -163,11 +141,10 @@ export const frameThreestyles = StyleSheet.create({
 export const frameFourstyles = StyleSheet.create({
   container: {
     width: screenWidth - 20,
-    height: screenHeight / 5,
+    height: screenHeight / 5.1,
     borderRadius: 10,
     overflow: 'hidden',
     position: 'relative',
-    marginRight: 7,
   },
   textContainer: {
     backgroundColor: '#f2f0eb',

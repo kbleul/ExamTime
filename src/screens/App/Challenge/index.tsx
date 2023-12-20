@@ -83,7 +83,7 @@ const Index = () => {
               help you achieve your study goals!
             </Text>
           </View>
-          <CircleProgressIndicator />
+          <CircleProgressIndicator progress={0} />
         </View>
 
         <WeeksScreen />

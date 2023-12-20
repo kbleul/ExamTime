@@ -1,12 +1,10 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {scale} from 'react-native-size-matters';
 
-const CircleProgressIndicator = () => {
-  const progress = 0;
+const CircleProgressIndicator = ({progress}: {progress: number}) => {
   return (
     <AnimatedCircularProgress
       size={scale(90)}

@@ -10,11 +10,8 @@ import {RootState} from '../../reduxToolkit/Store';
 
 import {useSelector} from 'react-redux';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import profileImg from '../../assets/Images/Profile/1.png';
-import avatarImg from '../../assets/Images/Profile/avatar.png';
 import frameBlueImg from '../../assets/Images/frame_blue.png';
 
 import {useNavigation} from '@react-navigation/native';
@@ -26,6 +23,7 @@ import {
   frameFourstyles,
 } from '../../styles/Theme/FramesStyle';
 import {screenWidth} from '../../utils/Data/data';
+import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
 
 const CarouselFrame: React.FC<{index: number}> = ({index}) => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -33,20 +31,14 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
     <>
       {user && (
         <View>
-          {index === 0 && (
-            <FrameOne
-              name={user.firstName}
-              img={profileImg}
-              text="Today is a good day to learn something new!"
-            />
-          )}
+          {index === 0 && <FrameOne />}
           {index === 1 && (
             <FrameTwo
               title="Overall progress"
               img={frameBlueImg}
               text="Your overall progress is composed of the subjects you have studied
               and all the exams you have taken."
-              progrss="0%"
+              progrss={0}
             />
           )}
           {index === 2 && (
@@ -63,21 +55,14 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
 
       {!user && (
         <View>
-          {index === 0 && (
-            <FrameOne
-              name=""
-              img={avatarImg}
-              text="Today is a good day
-to learn something new!"
-            />
-          )}
+          {index === 0 && <FrameOne />}
           {index === 1 && (
             <FrameTwo
               title="Overall progress"
               img={frameBlueImg}
               text="Your overall progress is composed of the subjects you have studied
             and all the exams you have taken."
-              progrss="0%"
+              progrss={0}
             />
           )}
           {index === 2 && (
@@ -95,40 +80,19 @@ to learn something new!"
   );
 };
 
-export const FrameOne: React.FC<{
-  name: string;
-  img: any;
-  text: string;
-}> = ({name, img, text}) => {
-  const user = useSelector((state: RootState) => state.auth.user);
+export const FrameOne = () => {
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      style={styles.container}
+      source={require('../../assets/Images/home/c1.png')} // Replace with the correct path to your image
+    >
       <View style={frameOnestyles.leftBoxContainer}>
-        <View style={frameOnestyles.leftSubcontainer}>
-          <Text style={frameOnestyles.helloText}>Hi {name}</Text>
-          <MaterialIcons
-            name="waving-hand"
-            color="#B37E53"
-            size={screenWidth * 0.08}
-            style={frameOnestyles.helloIcon}
-          />
-        </View>
-        <Text style={frameOnestyles.subText}>{text}</Text>
+        <Text style={frameOnestyles.subText}>
+          Today is a good day to learn something new! Learn anytime, anywhere.
+          Welcome to your future.
+        </Text>
       </View>
-      <Image
-        source={
-          user && user.profilePicture
-            ? {
-                uri: user.profilePicture.includes('https://')
-                  ? user.profilePicture
-                  : 'https://dev.think-hubet.com/profile-pictures/' +
-                    user.profilePicture,
-              }
-            : img
-        }
-        style={frameOnestyles.rightBoxContainer}
-      />
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -136,7 +100,7 @@ export const FrameTwo: React.FC<{
   title: string;
   img: any;
   text: string;
-  progrss: string;
+  progrss: number;
 }> = ({title, img, text, progrss}) => {
   return (
     <View style={frameTwostyles.mainContainer}>
@@ -150,6 +114,7 @@ export const FrameTwo: React.FC<{
             <Text style={frameTwostyles.secondText}>{text}</Text>
           </View>
         </View>
+        <CircleProgressIndicator progress={progrss} />
       </ImageBackground>
     </View>
   );
@@ -166,7 +131,10 @@ export const FrameThree: React.FC<{
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    <View style={frameThreestyles.adsContainer}>
+    <ImageBackground
+      style={frameThreestyles.adsContainer}
+      source={require('../../assets/Images/home/c3.png')} // Replace with the correct path to your image
+    >
       <Text style={frameThreestyles.adsTile1}>{title}</Text>
       <Text style={frameThreestyles.adsText}>{text}</Text>
       <View
@@ -196,7 +164,7 @@ export const FrameThree: React.FC<{
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 

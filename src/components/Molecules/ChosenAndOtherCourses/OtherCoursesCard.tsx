@@ -34,6 +34,7 @@ const OtherCoursesCard: React.FC<{
         />
         {isOnboarding && <View style={stylesSecondary.whiteBgBottom} />}
       </View>
+
       <View style={useStyle.contentContainer}>
         <View style={useStyle.contentTextContainer}>
           <Text style={useStyle.title}> {grade}</Text>
@@ -54,38 +55,47 @@ const OtherCoursesCard: React.FC<{
 
 export const styles = StyleSheet.create({
   container: {
-    width: screenWidth * (5 / 10),
-    height: screenHeight * (1 / 6.5),
+    width: screenWidth * (1.8 / 3),
+    height: screenHeight * (1 / 5.5),
     maxHeight: 120,
     marginHorizontal: 5,
-    padding: 15,
     borderRadius: 15,
     backgroundColor: '#F5F5F5',
-    overflow: 'hidden',
+    overflow: 'visible',
+    flexDirection: 'row',
     justifyContent: 'space-evenly',
+    marginTop: 4,
+    paddingLeft: 4,
   },
   imageContainer: {
     width: '40%',
+    position: 'relative',
+    overflow: 'visible',
+    zIndex: 5,
   },
   image: {
-    maxWidth: 90,
-    maxHeight: 129,
+    width: '100%',
+    maxHeight: screenHeight * (1 / 5.8),
+    position: 'absolute',
+    top: -9,
+    zIndex: 10,
   },
   contentContainer: {
-    flexDirection: 'row',
+    width: '60%',
+    justifyContent: 'center',
+    paddingLeft: 3,
   },
   contentTextContainer: {},
   title: {
     color: 'black',
-    fontSize: screenWidth * 0.035,
+    fontSize: screenWidth * 0.032,
     fontFamily: 'PoppinsSemiBold',
     textTransform: 'uppercase',
-    marginBottom: 10,
   },
   subTitle: {
     color: 'black',
-    fontSize: screenWidth * 0.025,
-    fontFamily: 'PoppinsRegular',
+    fontSize: screenWidth * 0.03,
+    fontFamily: 'PoppinsMedium',
   },
   courses: {
     width: Platform.OS === 'ios' ? '95%' : '100%',
@@ -100,6 +110,15 @@ export const styles = StyleSheet.create({
   },
   coursesSecondary: {
     backgroundColor: '#37A9B3',
+    color: 'white',
+    fontSize: screenWidth * 0.025,
+    fontFamily: 'PoppinsMedium',
+    paddingTop: 5,
+    paddingBottom: 3,
+    overflow: 'hidden',
+    borderRadius: 50,
+    width: '60%',
+    textAlign: 'center',
   },
 });
 
