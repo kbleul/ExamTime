@@ -9,32 +9,50 @@ import {ScrollView} from 'react-native-gesture-handler';
 import ShareApp from '../../../components/Organisms/ShareApp';
 import {useGetAboutUsMutation} from '../../../reduxToolkit/Services/auth';
 import Loading from '../../../components/Atoms/Loading';
+import Toast from 'react-native-toast-message';
+import {checkIsOnline} from '../../../utils/Functions/Helper';
 
 const Index = () => {
   const [getAboutUs] = useGetAboutUsMutation();
-  const [aboutUs, setAboutUS] = useState(undefined);
+  const [aboutUs, setAboutUS] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.auth.user);
   useEffect(() => {
     const fetchAboutUs = async () => {
-      try {
-        const response: any = await getAboutUs({});
+      const isOnline = await checkIsOnline();
+      if (isOnline) {
+        try {
+          const response: any = await getAboutUs({});
+          console.log(response);
 
-        if (response.error) {
-          Alert.alert(response.error);
-        } else if (response.data[0].aboutUs) {
-          const aboutUsData = response.data[0].aboutUs;
-          setAboutUS(aboutUsData);
+          if (
+            response.data &&
+            response.data.length > 0 &&
+            response.data[0].aboutUs
+          ) {
+            setAboutUS(response.data[0].aboutUs);
+            setLoading(false);
+
+            return;
+          }
+
+          Toast.show({
+            type: 'error',
+            text1: 'Error getting About us info',
+            text2: 'About us information is empty. Please try again later.',
+          });
           setLoading(false);
-        } else {
-          Alert.alert(
-            'Invalid response format - missing or empty array:',
-            response.data[0].aboutUs,
-          );
+        } catch (error: any) {
+          setLoading(false);
+          Alert.alert('Error fetching about us data:', error);
         }
-      } catch (error: any) {
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Error getting About us info',
+          text2: 'Could not connect to the internet. Please try again.',
+        });
         setLoading(false);
-        Alert.alert('Error fetching about us data:', error);
       }
     };
 
@@ -42,11 +60,13 @@ const Index = () => {
   }, []);
   return (
     <View style={styles.container}>
-      {loading ? (
+      {loading && (
         <View style={styles.loadingIndicator}>
           <Loading />
         </View>
-      ) : (
+      )}
+
+      {aboutUs && (
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}>
@@ -70,7 +90,9 @@ const Index = () => {
           </View>
         </ScrollView>
       )}
+
       <MainBottomNav />
+      <Toast />
     </View>
   );
 };
@@ -94,7 +116,7 @@ const styles = ScaledSheet.create({
     width: '100%',
     backgroundColor: '#F9FCFF',
   },
- 
+
   imageBg: {
     height: '25%',
     width: '70%',
