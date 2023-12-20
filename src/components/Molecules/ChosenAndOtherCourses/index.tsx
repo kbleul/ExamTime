@@ -45,8 +45,6 @@ const ChosenCourses = ({
     setIsLoadingSubjects(false);
   }, 500);
 
-  console.log('savedGrades length', savedGrades.length, savedUserData[0].grade);
-
   const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
       <View>
@@ -91,7 +89,7 @@ const ChosenCourses = ({
         />
       )}
 
-      {savedGrades && savedGrades.length > 0 && (
+      {!isLoadingSubjects && savedGrades && savedGrades.length > 0 && (
         <>
           <View style={styles.subContainer}>
             <Header title="Other Courses" />

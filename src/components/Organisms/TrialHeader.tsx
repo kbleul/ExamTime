@@ -18,7 +18,9 @@ import LoginModal from './LoginModal';
 const TrialHeader: React.FC<{type: string}> = ({type}) => {
   const navigator: any = useNavigation();
 
+  const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
+
   const isSubscribed = useSelector(
     (state: RootState) => state.auth.isSubscribed,
   );
@@ -44,40 +46,44 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
   return (
     <View
       style={
-        isSubscribed
-          ? [HeaderStyle.container, HeaderStyle.containerSubscribed]
-          : HeaderStyle.container
+        user
+          ? HeaderStyle.container
+          : [HeaderStyle.container, HeaderStyle.containerSecondary]
       }>
-      {trialDayCounter !== null && !isSubscribed && (
-        <View style={HeaderStyle.leftContainer}>
-          <Text style={HeaderStyle.leftContainer_text}>
-            {trialDayCounter < 0 ? 0 : trialDayCounter} days left
-          </Text>
-          <MaterialCommunityIcons
-            name="timer-sand-complete"
-            color="#E2725B"
-            size={screenWidth * 0.05}
-          />
+      {user && <Text style={HeaderStyle.nameText}>Hi, Natan</Text>}
+
+      <View style={HeaderStyle.container}>
+        {trialDayCounter !== null && !isSubscribed && (
+          <View style={HeaderStyle.leftContainer}>
+            <Text style={HeaderStyle.leftContainer_text}>
+              {trialDayCounter < 0 ? 0 : trialDayCounter} days left
+            </Text>
+            <MaterialCommunityIcons
+              name="timer-sand-complete"
+              color="#E2725B"
+              size={screenWidth * 0.05}
+            />
+          </View>
+        )}
+        <View style={HeaderStyle.subContainer}>
+          <TouchableOpacity
+            style={HeaderStyle.notificationBtn}
+            touchSoundDisabled
+            onPress={() =>
+              !token && (!notifications || notifications.length === 0)
+                ? setShowLoginPrompt(true)
+                : navigator.navigate('Notification')
+            }>
+            {notifications && hasNewNotification && (
+              <Text style={HeaderStyle.dot} />
+            )}
+            <MaterialIcons
+              name="notifications-none"
+              size={screenWidth * 0.075}
+              color="#000"
+            />
+          </TouchableOpacity>
         </View>
-      )}
-      <View style={HeaderStyle.subContainer}>
-        <TouchableOpacity
-          style={HeaderStyle.notificationBtn}
-          touchSoundDisabled
-          onPress={() =>
-            !token && (!notifications || notifications.length === 0)
-              ? setShowLoginPrompt(true)
-              : navigator.navigate('Notification')
-          }>
-          {notifications && hasNewNotification && (
-            <Text style={HeaderStyle.dot} />
-          )}
-          <MaterialIcons
-            name="notifications-none"
-            size={screenWidth * 0.075}
-            color="#000"
-          />
-        </TouchableOpacity>
       </View>
 
       <LoginModal

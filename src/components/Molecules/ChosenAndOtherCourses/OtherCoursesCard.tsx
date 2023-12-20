@@ -24,30 +24,46 @@ const OtherCoursesCard: React.FC<{
 
   return (
     <View style={useStyle.container}>
-      <View style={useStyle.imageContainer}>
-        <View style={isOnboarding && stylesSecondary.whiteBg} />
-        <Image
-          style={
-            index === 1 ? [useStyle.image, {width: '100%'}] : useStyle.image
-          }
-          source={gradesImages[index] ? gradesImages[index] : gradesImages[0]}
-        />
-        {isOnboarding && <View style={stylesSecondary.whiteBgBottom} />}
-      </View>
+      {grade !== 'Driving Licence' && (
+        <View style={useStyle.imageContainer}>
+          <View style={isOnboarding && stylesSecondary.whiteBg} />
+          <Image
+            style={
+              index === 1 ? [useStyle.image, {width: '100%'}] : useStyle.image
+            }
+            source={gradesImages[index] ? gradesImages[index] : gradesImages[0]}
+          />
+          {isOnboarding && <View style={stylesSecondary.whiteBgBottom} />}
+        </View>
+      )}
 
-      <View style={useStyle.contentContainer}>
+      {grade === 'Driving Licence' && (
+        <Image style={styles.drivingImage} source={gradesImages[100]} />
+      )}
+
+      <View
+        style={
+          grade === 'Driving Licence'
+            ? [useStyle.contentContainer, styles.contentContainerDriving]
+            : useStyle.contentContainer
+        }>
         <View style={useStyle.contentTextContainer}>
           <Text style={useStyle.title}> {grade}</Text>
-          <Text style={useStyle.subTitle}>
-            {' '}
-            {grade.includes('12') ? 'National' : 'Reginal'} Exam Taker
-          </Text>
+          {grade !== 'Driving Licence' && (
+            <Text style={useStyle.subTitle}>
+              {' '}
+              {grade.includes('12') ? 'National' : 'Reginal'} Exam{' '}
+              {isOnboarding && 'Taker'}
+            </Text>
+          )}
         </View>
-        <TouchableOpacity touchSoundDisabled onPress={onPress}>
-          <Text style={useStyle.coursesSecondary}>
-            {subjectsCount} Subjects
-          </Text>
-        </TouchableOpacity>
+        {grade !== 'Driving Licence' && (
+          <TouchableOpacity touchSoundDisabled onPress={onPress}>
+            <Text style={useStyle.coursesSecondary}>
+              {subjectsCount} Subjects
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -55,7 +71,7 @@ const OtherCoursesCard: React.FC<{
 
 export const styles = StyleSheet.create({
   container: {
-    width: screenWidth * (1.8 / 3),
+    width: screenWidth * (2 / 3),
     height: screenHeight * (1 / 5.5),
     maxHeight: 120,
     marginHorizontal: 5,
@@ -64,8 +80,9 @@ export const styles = StyleSheet.create({
     overflow: 'visible',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginTop: 4,
+    marginTop: 9,
     paddingLeft: 4,
+    position: 'relative',
   },
   imageContainer: {
     width: '40%',
@@ -80,10 +97,24 @@ export const styles = StyleSheet.create({
     top: -9,
     zIndex: 10,
   },
+  drivingImage: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: '90%',
+    height: '80%',
+  },
   contentContainer: {
     width: '60%',
     justifyContent: 'center',
     paddingLeft: 3,
+  },
+  contentContainerDriving: {
+    paddingLeft: screenHeight * 0.02,
+    paddingTop: screenWidth * 0.06,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    width: '100%',
   },
   contentTextContainer: {},
   title: {

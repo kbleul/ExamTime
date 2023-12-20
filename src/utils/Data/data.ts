@@ -3,6 +3,7 @@ import img1 from '../../assets/Images/onboarding/1.png';
 import img2 from '../../assets/Images/onboarding/2.png';
 import img3 from '../../assets/Images/onboarding/3.png';
 import img4 from '../../assets/Images/onboarding/4.png';
+import img5 from '../../assets/Images/courses/car.png';
 
 export const screenWidth = Dimensions.get('window').width;
 export const screenHeight = Dimensions.get('window').height;
@@ -180,4 +181,9 @@ export const gradesImages: {[key: number]: any} = {
   1: img2,
   2: img3,
   3: img4,
+  4: img1,
+  5: img2,
+  6: img3,
+  7: img4,
+  100: img5,
 };

@@ -32,14 +32,14 @@ export const frameOnestyles = StyleSheet.create({
 export const frameTwostyles = StyleSheet.create({
   mainContainer: {
     width: screenWidth - 23,
-    height: screenHeight / 5,
+    height: screenHeight / 5.1,
     marginLeft: screenWidth * 0.055,
     borderRadius: 10,
     overflow: 'hidden',
   },
   container: {
     width: '100%',
-    height: screenHeight / 5,
+    height: screenHeight / 5.1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -84,7 +84,7 @@ export const frameTwostyles = StyleSheet.create({
 export const frameThreestyles = StyleSheet.create({
   adsContainer: {
     width: screenWidth - 23,
-    height: screenHeight / 4.8,
+    height: screenHeight / 5.1,
     borderRadius: 10,
     overflow: 'hidden',
     marginLeft: screenWidth * 0.055,

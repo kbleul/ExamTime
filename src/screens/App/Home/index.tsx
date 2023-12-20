@@ -61,7 +61,7 @@ const syncStyle = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     position: 'absolute',
-    paddingVertical: 10,
+    paddingBottom: 10,
     backgroundColor: '#fff',
     zIndex: 10,
   },
