@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, ActivityIndicator, Alert} from 'react-native';
-import {ScaledSheet, ms} from 'react-native-size-matters';
+import {View, Text, Image} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
@@ -9,32 +9,54 @@ import {ScrollView} from 'react-native-gesture-handler';
 import ShareApp from '../../../components/Organisms/ShareApp';
 import {useGetAboutUsMutation} from '../../../reduxToolkit/Services/auth';
 import Loading from '../../../components/Atoms/Loading';
+import Toast from 'react-native-toast-message';
+import {checkIsOnline} from '../../../utils/Functions/Helper';
 
 const Index = () => {
   const [getAboutUs] = useGetAboutUsMutation();
   const [aboutUs, setAboutUS] = useState(undefined);
   const [loading, setLoading] = useState(true);
+
   const user = useSelector((state: RootState) => state.auth.user);
+
   useEffect(() => {
     const fetchAboutUs = async () => {
+      const isonline = await checkIsOnline();
+
+      if (!isonline) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error getting about us information',
+          text2: 'There was a problem wwith your internet connection',
+          visibilityTime: 3000,
+        });
+
+        return;
+      }
       try {
         const response: any = await getAboutUs({});
 
-        if (response.error) {
-          Alert.alert(response.error);
-        } else if (response.data[0].aboutUs) {
-          const aboutUsData = response.data[0].aboutUs;
-          setAboutUS(aboutUsData);
-          setLoading(false);
+        if (response.data[0]) {
+          console.log(response.data[0]);
+          setAboutUS(response.data[0]);
         } else {
-          Alert.alert(
-            'Invalid response format - missing or empty array:',
-            response.data[0].aboutUs,
-          );
+          Toast.show({
+            type: 'error',
+            text1: 'Error getting about us information',
+            text2: 'No about us information available',
+            visibilityTime: 3000,
+          });
         }
+
+        setLoading(false);
       } catch (error: any) {
         setLoading(false);
-        Alert.alert('Error fetching about us data:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error getting about us information',
+          text2: 'Could not fetch about us data. Please try again!',
+          visibilityTime: 3000,
+        });
       }
     };
 
@@ -55,21 +77,25 @@ const Index = () => {
           </View>
 
           {aboutUs && (
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>{aboutUs}</Text>
-            </View>
+            <>
+              <View style={styles.textContainer}>
+                <Text style={styles.text}>{aboutUs}</Text>
+              </View>
+              <View style={styles.imageBg}>
+                <Image
+                  source={require('../../../assets/Logo/ThinkHubIcon.png')}
+                  style={styles.img}
+                />
+              </View>
+              <View style={styles.share}>
+                <ShareApp />
+              </View>
+            </>
           )}
-          <View style={styles.imageBg}>
-            <Image
-              source={require('../../../assets/Logo/ThinkHubIcon.png')}
-              style={styles.img}
-            />
-          </View>
-          <View style={styles.share}>
-            <ShareApp />
-          </View>
         </ScrollView>
       )}
+
+      <Toast />
       <MainBottomNav />
     </View>
   );
@@ -94,7 +120,7 @@ const styles = ScaledSheet.create({
     width: '100%',
     backgroundColor: '#F9FCFF',
   },
- 
+
   imageBg: {
     height: '25%',
     width: '70%',
