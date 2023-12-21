@@ -7,6 +7,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import Toast from 'react-native-toast-message';
+import Config from 'react-native-config';
 
 const Index = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -20,9 +21,8 @@ const Index = () => {
             source={{
               uri: user.profilePicture.includes('https://')
                 ? user.profilePicture
-                : 'https://dev.think-hubet.com/profile-pictures/' +
-                  user.profilePicture,
-            }} // Replace with the correct path to your image
+                : `${Config.API_URL}profile-pictures/` + user.profilePicture,
+            }}
           />
         ) : (
           <View style={styles.noiImageContainer}>
