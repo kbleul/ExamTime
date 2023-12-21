@@ -38,7 +38,7 @@ const Index = () => {
 
         if (response.data[0]) {
           console.log(response.data[0]);
-          setAboutUS(response.data[0]);
+          setAboutUS(response.data[0].aboutUs);
         } else {
           Toast.show({
             type: 'error',
