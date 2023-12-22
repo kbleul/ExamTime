@@ -123,6 +123,7 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
           subject: subjectObject,
           year: year,
           isExamTaken: false,
+          lastTaken: null,
         });
       });
     } catch (err) {

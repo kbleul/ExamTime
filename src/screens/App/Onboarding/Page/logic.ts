@@ -6,6 +6,7 @@ import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import {LocalStorageDataKeys} from '../../../../utils/Data/data';
 import {createRealmSubjectsData} from '../Logic';
+import {Subject} from '../../../../Realm';
 
 type GetGradesMutationFn = ReturnType<typeof useGetGradeMutation>[0];
 type GetSubjectsMutationFn = ReturnType<typeof useGetSubjectMutation>[0];
@@ -30,6 +31,10 @@ export const getSubjectsMutation = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   setSubjectsArray: React.Dispatch<React.SetStateAction<subjectType[] | null>>,
   realm: Realm,
+  setSelectedSubject?: React.Dispatch<React.SetStateAction<
+    subjectType | Subject | null
+  > | null> | null,
+  setIsLoadingSubjectsRealm?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   checkIsOnline(navigator);
   try {
@@ -43,10 +48,17 @@ export const getSubjectsMutation = async (
     const subjects = response.subjects;
 
     setSubjectsArray(subjects);
+    setSelectedSubject && setSelectedSubject(subjects[0]);
 
     const downloadedSubjects = await downloadIcons(subjects);
 
-    createRealmSubjectsData(realm, downloadedSubjects);
+    setIsLoadingSubjectsRealm
+      ? createRealmSubjectsData(
+          realm,
+          downloadedSubjects,
+          setIsLoadingSubjectsRealm,
+        )
+      : createRealmSubjectsData(realm, downloadedSubjects);
   } catch (e) {
     console.log(e);
   }

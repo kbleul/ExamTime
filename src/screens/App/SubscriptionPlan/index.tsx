@@ -1,101 +1,91 @@
-import React, {useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  Animated,
-  Platform,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import React from 'react';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
 
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
-const {width, height} = Dimensions.get('window');
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
-const SPACING = 10;
-const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.5 : width * 0.5;
+import {screenHeight} from '../../../utils/Data/data';
 
 const Index: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [data, setPackge] = React.useState([
     {
       key: '1',
-      planname: 'Basic Plan',
-      price: 200,
+      planname: 'Pro',
+      price: 199,
       current: true,
       color: '#F5A52D',
+      duration: '/3 Month',
       packages: [
         {
-          available: true,
-          packagesname: 'Activated',
-        },
-        {
-          available: true,
-          packagesname: 'Full Access',
-        },
-        {
-          available: true,
-          packagesname: '3 month',
+          available: false,
+          packagesname: 'Only One challenge phase',
         },
         {
           available: false,
-          packagesname: 'Dimond Badge',
+          packagesname: 'Bronze Badge',
+        },
+        {
+          available: false,
+          packagesname: 'updated Insured ',
+        },
+        {
+          available: false,
+          packagesname: 'Full Features including Video',
         },
       ],
     },
     {
       key: '2',
-      planname: 'Intermediate Plan',
-      price: 200,
+      planname: 'BUSINESS',
+      price: 299.99,
       current: false,
       color: '#4F8FCB',
+      duration: '/6 Month',
       packages: [
         {
           available: true,
-          packagesname: 'Activated',
+          packagesname: 'Full Time Challenge',
         },
         {
           available: true,
-          packagesname: 'Full Access',
+          packagesname: 'Silver Badge',
         },
         {
           available: true,
-          packagesname: '3 month',
+          packagesname: 'updated Insured',
         },
         {
           available: false,
-          packagesname: 'Dimond Badge',
+          packagesname: 'Full Features including Video',
         },
       ],
     },
     {
       key: '3',
       planname: 'Pro Plan',
-      price: 200,
+      price: 499.99,
       current: false,
       color: '#8075CB',
+      duration: '/Year',
       packages: [
         {
           available: true,
-          packagesname: 'Activated',
+          packagesname: 'Full Time Challenge feature one',
         },
         {
           available: true,
-          packagesname: 'Full Access',
+          packagesname: 'Gold Badge',
         },
         {
           available: true,
-          packagesname: '3 month',
+          packagesname: 'updated Insured ',
         },
         {
           available: false,
-          packagesname: 'Dimond Badge',
+          packagesname: 'Full Features including Video',
         },
       ],
     },
@@ -127,16 +117,15 @@ const Index: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#fff',
   },
   backicon: {
     marginTop: 0,
   },
   HorizontalList: {
     alignItems: 'center',
-    height: 500,
-    justifyContent: 'center',
-    margin: 5,
+    height: screenHeight + 0.8,
+    justifyContent: 'flex-start',
   },
   scrollContainer: {
     flexGrow: 1,

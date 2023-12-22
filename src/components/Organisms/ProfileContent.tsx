@@ -20,6 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const navigator = useNavigation<any>();
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -123,6 +124,7 @@ const styles = ScaledSheet.create({
   activity: {
     fontFamily: 'PoppinsRegular',
     fontSize: '12@ms',
+    color: '#000',
   },
   badge: {
     justifyContent: 'center',

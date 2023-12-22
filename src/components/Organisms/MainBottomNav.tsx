@@ -7,6 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {downloadAndSavePDF} from '../../screens/App/Study/logic';
 
 const MainBottomNav = () => {
   const navigationState = useNavigationState(state => state);
@@ -103,24 +104,28 @@ const MainBottomNav = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('')}
+          onPress={() => navigation.navigate('History')}
           style={style.buttonWrapper}>
-          {currentScreen === '' && <View style={style.dot} />}
+          {currentScreen === 'History' && <View style={style.dot} />}
 
           <View
             style={
-              currentScreen === ''
+              currentScreen === 'History'
                 ? [style.button, style.buttonSelected]
                 : style.button
             }>
             <MaterialCommunityIcons
               name="progress-clock"
               size={screenWidth * 0.055}
-              style={currentScreen === '' ? style.iconActive : style.icon}
+              style={
+                currentScreen === 'History' ? style.iconActive : style.icon
+              }
             />
             <Text
               style={
-                currentScreen === '' ? style.buttonTextActive : style.buttonText
+                currentScreen === 'History'
+                  ? style.buttonTextActive
+                  : style.buttonText
               }>
               History
             </Text>
@@ -171,13 +176,14 @@ const MainBottomNav = () => {
 const style = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 0,
+    bottom: -3,
     left: 0,
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: screenHeight * 0.088,
+    height: screenHeight * 0.11,
+    backgroundColor: '#fff',
   },
   btnsContainer: {
     flexDirection: 'row',

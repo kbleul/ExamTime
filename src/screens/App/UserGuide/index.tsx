@@ -16,6 +16,8 @@ import GuideTexts from '../../../components/Molecules/GuideHederText';
 import {useGetUserGuideMutation} from '../../../reduxToolkit/Services/auth';
 import scale from '../../../utils/Functions/Scale';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
+import { screenHeight, screenWidth } from '../../../utils/Data/data';
+import Loading from '../../../components/Atoms/Loading';
 
 const Index = () => {
   const [Index, setIndex] = useState(0);
@@ -87,6 +89,13 @@ const Index = () => {
             renderItem={({item}) => (
               <YoutubeCard item={item} loadinga={loading} />
             )}
+            ListFooterComponent={() => (
+              loading ? (
+                <View style={styles.loadingIndicator}>
+                  <Loading />
+                </View>
+              ) : null
+            )}
             horizontal={true}
             pagingEnabled={true}
             showsHorizontalScrollIndicator={false}
@@ -138,7 +147,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Poppins',
   },
-
+  loadingIndicator: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    height: screenHeight*0.35,
+    width: screenWidth,
+    // backgroundColor:"blue"
+  },
   Guide: {
     backgroundColor: 'white',
     width: Dimensions.get('window').width,

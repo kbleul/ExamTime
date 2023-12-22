@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -11,17 +11,68 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import {screenWidth} from '../../../utils/Data/data';
-import {videoType} from '../../../types';
+import {studyType, videoType} from '../../../types';
+import {AuthContext} from '../../../Realm/model';
+import {Study} from '../../../Realm';
+import {calculate_and_Assign_UnitProgress} from './logic';
+
+const getYoutubeVidId = (videosLink: string) => {
+  return videosLink.split('?v=')[1].split('&')[0];
+};
+
+const createPlaylist = (videos: videoType[]) => {
+  const playlistVidsArr = videos.map((video: videoType) =>
+    getYoutubeVidId(video.videoLink),
+  );
+
+  return playlistVidsArr;
+};
+
+const saveProgress = (study: Study, videoId: string, realm: Realm) => {
+  if (study?.videoLink.length > 0) {
+    const videoIndex = study.videoLink.findIndex(v => v.id === videoId);
+
+    if (study.videoLink[videoIndex].isViewed === false) {
+      calculate_and_Assign_UnitProgress(study, realm);
+
+      realm.write(() => {
+        study.videoLink[videoIndex].isViewed = true;
+      });
+    }
+  }
+};
 
 const ViewVideo = ({route}) => {
-  const {videos, selectedVideoIndex} = route.params;
+  const {videos, selectedVideoIndex, studyId} = route.params;
   const navigator: any = useNavigation();
+
+  const {useRealm, useQuery} = AuthContext;
+  const realm = useRealm();
+  const savedStudy = useQuery(Study, studyItem => {
+    return studyItem.filtered(`id == "${studyId}"`);
+  });
 
   const [displayedVideo, setDisplayedVideo] = useState(selectedVideoIndex);
 
-  const youtubeVideoId = videos[displayedVideo].videoLink
-    .split('?v=')[1]
-    .split('&')[0];
+  const playlistVids = useMemo(() => {
+    return createPlaylist(videos);
+  }, [videos]);
+
+  const youtubeVideoId = getYoutubeVidId(videos[displayedVideo].videoLink);
+
+  const handlePress = (index: number, videoId) => {
+    if (index !== displayedVideo) {
+      setDisplayedVideo(index);
+      saveProgress(savedStudy[0], videoId, realm);
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      saveProgress(savedStudy[0], videos[selectedVideoIndex].id, realm);
+    }, 2000);
+  }, []);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -32,7 +83,12 @@ const ViewVideo = ({route}) => {
       </TouchableOpacity>
       <View style={styles.videoContainer}>
         <ActivityIndicator style={styles.loading} />
-        <YoutubePlayer height={230} play={false} videoId={youtubeVideoId} />
+        <YoutubePlayer
+          height={230}
+          play={false}
+          videoId={youtubeVideoId}
+          playList={[...playlistVids]}
+        />
       </View>
 
       <View style={styles.videosList}>
@@ -43,16 +99,14 @@ const ViewVideo = ({route}) => {
               key={video.id + 'vid' + index}
               touchSoundDisabled
               style={styles.videoButton}
-              onPress={() =>
-                index !== displayedVideo && setDisplayedVideo(index)
-              }>
+              onPress={() => handlePress(index, video.id)}>
               <Text
                 style={
                   index === displayedVideo
                     ? [styles.videoText, styles.videoTextActive]
                     : styles.videoText
                 }>
-                {video.text ? `${video.text}` : `0${index + 1}. Study video`}
+                {`0${index + 1}. Study video`}
               </Text>
               <View
                 style={

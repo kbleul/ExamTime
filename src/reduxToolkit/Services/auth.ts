@@ -10,9 +10,10 @@ import {
   studyType,
   subjectType,
   userType,
+  CommentType,
 } from '../../types';
 import Config from 'react-native-config';
-import {newAnswerType} from '../../hooks/usePostSyncData';
+import {newAnswerType} from '../../hooks/useHandleInitialRequests';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({baseUrl: Config.API_URL}),
@@ -117,6 +118,26 @@ export const api = createApi({
         return {
           url: 'grade/grade',
           method: 'GET',
+        };
+      },
+    }),
+    getFaq: build.mutation({
+      query: () => {
+        return {
+          url: 'frequently-asked-question/user/faq',
+          method: 'GET',
+        };
+      },
+    }),
+    Createcomment: build.mutation<{comment: CommentType}, CommentType>({
+      query: data => {
+        return {
+          url: 'comment/create',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          body: {comment: data.comment},
         };
       },
     }),
@@ -258,6 +279,119 @@ export const api = createApi({
         };
       },
     }),
+    changeProfilePicture: build.mutation<{}, {token: String; avatar: string}>({
+      query: data => {
+        const formData = new FormData();
+        formData.append('profilePicture', {
+          uri: data.avatar,
+          type: 'image/jpeg',
+          name: 'avatar.jpg',
+        });
+        return {
+          url: 'user/uploadprofilepicture',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
+        };
+      },
+    }),
+    getExamAnswers: build.mutation<{examAnswers: any}, {token: string}>({
+      query: credentials => {
+        return {
+          url: 'exam-result/results',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
+    getTips: build.mutation<{}, {}>({
+      query: () => {
+        return {
+          url: 'tips/tipsbyparameter',
+          method: 'GET',
+        };
+      },
+    }),
+    getContact: build.mutation<{}, {}>({
+      query: () => {
+        return {
+          url: '/contact-us/user/contactus',
+          method: 'GET',
+        };
+      },
+    }),
+    getFeedBack: build.mutation<any, {token: String; feedback: string}>({
+      query: data => {
+        return {
+          url: '/feedback/create/',
+          body: {feedback: data.feedback},
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
+    getChallenges: build.mutation<{challenges: any}, {token: string}>({
+      query: credentials => {
+        return {
+          url: 'challange/publishedchallenges',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
+    getNotifications: build.mutation<{userNotifications: any}, {token: string}>(
+      {
+        query: credentials => {
+          return {
+            url: 'notification/user/notifications',
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${credentials.token}`,
+            },
+          };
+        },
+      },
+    ),
+    postNotificationStatus: build.mutation<
+      {userNotifications: any},
+      {token: string; notificationId: string}
+    >({
+      query: data => {
+        return {
+          url: 'notification/user/notification/' + data.notificationId,
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
+    deleteNotificationStatus: build.mutation<
+      {userNotifications: any},
+      {token: string; notificationId: string}
+    >({
+      query: data => {
+        return {
+          url: '/notification/user/delete/' + data.notificationId,
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -274,9 +408,20 @@ export const {
   useGetExamsMutation,
   useGetSubjectMutation,
   useGetRandomExamMutation,
+  useGetFaqMutation,
+  useCreatecommentMutation,
   useGetAboutUsMutation,
   useGetUserGuideMutation,
   useGetStudyMutation,
   usePostExamResultsMutation,
   useGetExamResultsMutation,
+  useChangeProfilePictureMutation,
+  useGetExamAnswersMutation,
+  useGetTipsMutation,
+  useGetContactMutation,
+  useGetFeedBackMutation,
+  useGetChallengesMutation,
+  useGetNotificationsMutation,
+  usePostNotificationStatusMutation,
+  useDeleteNotificationStatusMutation,
 } = api;

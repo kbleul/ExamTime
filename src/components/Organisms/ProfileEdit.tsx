@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StatusBar, Text} from 'react-native';
 import {View} from 'react-native';
-import * as yup from 'yup';
 import {Formik} from 'formik';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
@@ -9,6 +8,7 @@ import {
   useChangePasswordMutation,
   useChangeProfileMutation,
   useLoginMutation,
+  useChangeProfilePictureMutation,
 } from '../../reduxToolkit/Services/auth';
 import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 
@@ -31,10 +31,11 @@ import BackButton from '../Atoms/BackButton';
 import DoneButton from '../Atoms/DoneButton';
 import PasswordField from '../Molecules/PasswordField';
 import ChangePasswordButton from '../Atoms/ChangePasswordButton';
+import {screenWidth} from '../../utils/Data/data';
 
-const ProfileEdit: React.FC = () => {
+const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
 
   const {useRealm, useQuery, useObject} = AuthContext;
 
@@ -58,8 +59,10 @@ const ProfileEdit: React.FC = () => {
   const [phone, setPhone] = useState(user?.phoneNumber ?? '');
   const [grade, setGrade] = useState(user?.grade?.grade ?? '');
   const [showPassword, setShowPassword] = useState(true);
-  const [changeProfile, {isLoading}] = useChangeProfileMutation();
-  const [updatePassword] = useChangePasswordMutation();
+  const [changeProfile] = useChangeProfileMutation();
+  const [changeProfilePicture] = useChangeProfilePictureMutation();
+  const [updatePassword, {isLoading: isLoaingChangePassword}] =
+    useChangePasswordMutation();
   const [getGrade] = useGetGradeMutation();
   const [isFocusRegion, setIsFocusRegion] = useState(false);
   const [region, setRegion] = useState<string | null>(
@@ -70,58 +73,117 @@ const ProfileEdit: React.FC = () => {
     regionItemsType[] | []
   >([]);
   const [refetchRegions, setRefetchRegions] = useState(false);
-  const [
-    getRegions,
-    {isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion},
-  ] = useGetRegionsMutation();
+  const [getRegions, {isLoading: isLoadingRegions}] = useGetRegionsMutation();
   type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[5];
 
   const handleUpdateProfile = async () => {
     if (token) {
       const [firstName, lastName] = fullName.split(' ');
+
       const profileData = {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phone,
         grade: grade,
         gender: user?.gender ?? '',
-        region: region?.toLocaleLowerCase(),
+        region: region,
       };
+
+      try {
+        if (avatar) {
+          const profileUpdateResult: any = await changeProfilePicture({
+            token,
+            avatar,
+          });
+
+          if (profileUpdateResult?.data && user) {
+            const newUser = {
+              ...user,
+              profilePicture: profileUpdateResult.data.profilePicture,
+            };
+
+            dispatch(
+              loginSuccess({
+                user: newUser,
+                token: token,
+                isSubscribed: isSubscribed,
+                IsDefaultPasswordChanged: IsDefaultPasswordChanged,
+              }),
+            );
+
+            updateRealmUserData(newUserData, {...newUser}, token, realm);
+          }
+
+          Toast.show({
+            type: 'success',
+            text1: 'success',
+            text2: 'Profile image updated successfuly',
+            visibilityTime: 3000,
+          });
+
+          if (profileUpdateResult.error) {
+            Toast.show({
+              type: 'error',
+              text1: 'Error uploading profile picture!',
+              text2: `${profileUpdateResult.error}`,
+            });
+          }
+        }
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error uploading profile picture',
+          text2: `${error}`,
+        });
+      }
 
       try {
         const result = await changeProfile({token, profileData});
 
-        if (result.data.user) {
+        if (result.error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Error updating profile data!',
+            text2: `${result.error.data.message}`,
+          });
+        }
+
+        if (result?.data && result.data.user && user) {
           dispatch(
             loginSuccess({
-              user: result.data.user,
+              user: {
+                ...result.data.user,
+                profilePicture:
+                  'https://dev.think-hubet.com/profile-pictures/' +
+                  result.data.user.profilePicture,
+              },
               token: token,
               isSubscribed: isSubscribed,
               IsDefaultPasswordChanged: IsDefaultPasswordChanged,
             }),
           );
-        }
-        if (result.error) {
-          Toast.show({
-            type: 'error',
-            text1: 'Error!',
-            text2: `${result.error}`,
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Error!',
-            text2: `${result.error}`,
-          });
-        }
-        updateRealmUserData(newUserData, result.data.user, token, realm);
 
-        Toast.show({
-          type: 'success',
-          text1: 'success',
-          text2: 'Profile updated successfuly',
-          visibilityTime: 4000,
-        });
+          updateRealmUserData(
+            newUserData,
+            avatar
+              ? {
+                  ...result.data.user,
+                  profilePicture:
+                    'https://dev.think-hubet.com/profile-pictures/' +
+                    user.profilePicture,
+                }
+              : {...result.data.user},
+            token,
+            realm,
+          );
+
+          Toast.show({
+            type: 'success',
+            text1: 'success',
+            text2: 'Profile updated successfuly',
+            visibilityTime: 4000,
+          });
+        }
 
         setTimeout(() => navigation.navigate('Profile'), 1000);
         setFullName('');
@@ -130,7 +192,7 @@ const ProfileEdit: React.FC = () => {
       } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Error!',
+          text1: 'Error updating profile data!',
           text2: `${error}`,
         });
       }
@@ -145,34 +207,37 @@ const ProfileEdit: React.FC = () => {
     confirmPassword: string;
     password: string;
   }) => {
-    if (values.newPassword === values.confirmPassword) {
-      try {
-        const response = await updatePassword({
-          currentPassword: values.password,
-          newPassword: values.newPassword,
-          token,
-        });
-        if (!response.error) {
-          await Toast.show({
-            type: 'success',
-            text1: 'success',
-            text2: 'Password updated successfuly',
-            visibilityTime: 4000,
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Error!',
-            text2: 'Something went wrong',
-          });
-        }
-      } catch (error) {
+    try {
+      const userToken = token ? token : '';
+      const response = await updatePassword({
+        currentPassword: values.password,
+        newPassword: values.newPassword,
+        token: userToken,
+      });
+      if (response.error) {
         Toast.show({
           type: 'error',
-          text1: 'Error!',
-          text2: `${error}`,
+          text1: 'Error updating password! Please try again.',
+          text2: response.error.data.message,
+          visibilityTime: 4000,
         });
+
+        return;
       }
+
+      Toast.show({
+        type: 'success',
+        text1: 'success',
+        text2: 'Password updated successfuly',
+        visibilityTime: 4000,
+      });
+      setTimeout(() => navigation.navigate('Profile'), 4000);
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error!',
+        text2: `${error}`,
+      });
     }
   };
 
@@ -189,8 +254,8 @@ const ProfileEdit: React.FC = () => {
 
       response.map((region: {region: string}) => {
         tempRegionsList.push({
-          label: region.region.toUpperCase(),
-          value: region.region.toUpperCase(),
+          label: region.region,
+          value: region.region,
         });
       });
 
@@ -199,6 +264,7 @@ const ProfileEdit: React.FC = () => {
       console.log(err);
     }
   };
+
   useEffect(() => {
     fetchRegions(getRegions, setRegionsListItems, navigation);
   }, [getRegions, refetchRegions, navigation]);
@@ -249,7 +315,7 @@ const ProfileEdit: React.FC = () => {
             <DropdownForRegionField
               regionsListItems={regionsListItems}
               isFocusRegion={isFocusRegion}
-              region={region}
+              region={region ? region : ''}
               setIsFocusRegion={setIsFocusRegion}
               setRegion={setRegion}
               isLoadingRegions={isLoadingRegions}
@@ -292,7 +358,7 @@ const ProfileEdit: React.FC = () => {
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
                 {errors.password && touched.password && (
-                  <Text style={styles.errorText}>{errors.password}</Text>
+                  <Text style={styles.errorText}>* {errors.password}</Text>
                 )}
 
                 <PasswordField
@@ -305,7 +371,7 @@ const ProfileEdit: React.FC = () => {
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
                 {errors.newPassword && touched.newPassword && (
-                  <Text style={styles.errorText}>{errors.newPassword}</Text>
+                  <Text style={styles.errorText}>* {errors.newPassword}</Text>
                 )}
 
                 <PasswordField
@@ -318,10 +384,15 @@ const ProfileEdit: React.FC = () => {
                   togglePassword={() => setShowPassword(!showPassword)}
                 />
                 {errors.confirmPassword && touched.confirmPassword && (
-                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+                  <Text style={styles.errorText}>
+                    * {errors.confirmPassword}
+                  </Text>
                 )}
 
-                <ChangePasswordButton onPress={handleSubmit} />
+                <ChangePasswordButton
+                  onPress={handleSubmit}
+                  isLoading={isLoaingChangePassword}
+                />
               </View>
             )}
           </Formik>
@@ -407,9 +478,11 @@ const styles = ScaledSheet.create({
     fontSize: '20@ms',
   },
   errorText: {
-    color: 'red',
     flex: 1,
-    fontSize: '15@ms',
+    fontSize: screenWidth * 0.033,
+    color: '#f08273',
+    paddingLeft: 30,
+    paddingRight: 20,
   },
   iconContainer: {
     color: 'black',

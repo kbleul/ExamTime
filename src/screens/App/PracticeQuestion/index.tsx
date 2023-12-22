@@ -142,26 +142,11 @@ const PracticeQuestion = ({route}: {route: any}) => {
             examId: savedExam[0].id,
             examDate: new Date().toISOString(),
             userExamAnswers: [...answersArray],
+            timeStamp: new Date(),
           });
-          // realm.create('ExamAnswers', {
-          //   id,
-          //   title,
-          //   objective,
-          //   isPublished,
-          //   createdAt,
-          //   updatedAt,
-          //   grade: gradeObject,
-          //   subject: subjectObject,
-          //   year: yearString,
-          //   unit: unitString,
-          //   section: sectionString,
-          //   selectedQuestion: examQuestionArr,
-          //   progress: 0,
-          //   pdf: pdfObjArr,
-          //   videoLink: videoObjArr,
-          //   userExamAnswers: [],
-          // });
+
           savedExam[0].isExamTaken = true;
+          savedExam[0].lastTaken = new Date();
         });
       } catch (e) {
         console.log('error', e);

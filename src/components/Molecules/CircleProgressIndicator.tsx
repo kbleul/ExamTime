@@ -6,7 +6,7 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {scale} from 'react-native-size-matters';
 
 const CircleProgressIndicator = () => {
-  const progress = 43;
+  const progress = 0;
   return (
     <AnimatedCircularProgress
       size={scale(90)}

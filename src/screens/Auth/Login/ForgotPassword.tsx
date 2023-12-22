@@ -6,6 +6,7 @@ import ForgotPasswordForm from '../../../components/Organisms/ForgotPasswordForm
 import {userType} from '../../../types';
 import VerificationCodeForm from '../../../components/Organisms/OtpVerfication';
 import SetNewPassword from '../../../components/Organisms/SetNewPassword';
+import {screenHeight} from '../../../utils/Data/data';
 
 const ForgotPassword = () => {
   const navigator = useNavigation();
@@ -41,7 +42,7 @@ const ForgotPassword = () => {
 const styles = StyleSheet.create({
   contianer: {
     flex: 1,
-    paddingTop: 30,
+    paddingTop: screenHeight * 0.06,
     backgroundColor: '#F9FCFF',
   },
 });

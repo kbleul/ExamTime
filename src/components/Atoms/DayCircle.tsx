@@ -22,8 +22,8 @@ const DayCircle: React.FC<DayCircleProps> = ({isActive, dayNumber}) => {
 
 const styles = StyleSheet.create({
   circle: {
-    width: screenWidth * 0.07,
-    height: screenWidth * 0.07,
+    width: screenWidth * 0.09,
+    height: screenWidth * 0.09,
     borderRadius: (screenWidth * 0.07) / 2,
     overflow: 'hidden',
     justifyContent: 'center',
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
   },
   weekDaysText: {
     textAlign: 'center',
-    fontSize: screenHeight * 0.018,
-    fontFamily: 'PoppinsMedium',
+    fontSize: screenHeight * 0.025,
+    fontFamily: 'PoppinsSemiBold',
     color: '#2A3061',
   },
 });

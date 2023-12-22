@@ -1,63 +1,136 @@
-import React from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
-import {SvgXml} from 'react-native-svg';
-import {calculateProgress} from '../../../screens/App/Study/logic';
+import {SvgCss} from 'react-native-svg';
+import {calculateStudyProgress} from '../../../screens/App/Study/logic';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
+import {useNavigation} from '@react-navigation/native';
 
 export const onError = (e: Error) => {
-  console.log('----------------', e.message);
+  console.log('Render svg failed', e.message);
 };
 
 const ChosenCoursesCard: React.FC<{
-  title: string;
-  lessonsCount: number;
+  subject: any;
   subjectId?: string;
   bgImage: any;
-}> = ({title, lessonsCount, subjectId, bgImage}) => {
+  setLoginModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoadingSubjects: boolean;
+  timerValue?: number;
+}> = ({
+  subject,
+  subjectId,
+  bgImage,
+  setLoginModalVisible,
+  isLoadingSubjects,
+  timerValue,
+}) => {
+  const navigator: any = useNavigation();
+
+  const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
   const {useQuery} = AuthContext;
 
   const savedStudies = useQuery(Study, studies => {
     return studies.filtered(
-      `subject.id = "${
-        subjectId ? subjectId : 0
-      }" OR subject.subject = "${title}"`,
+      `subject.id = "${subjectId ? subjectId : 0}" OR subject.subject = "${
+        subject.subject
+      }"`,
     );
   });
-  const calProgress = calculateProgress(savedStudies) + '%';
+  const calProgress = calculateStudyProgress(savedStudies);
+
+  const [isLoadingSVG, setIsLoadingSVG] = useState(timerValue ? true : false);
+
+  useEffect(() => {
+    if (timerValue) {
+      setTimeout(() => {
+        setIsLoadingSVG(false);
+      }, timerValue);
+    }
+  }, []);
 
   return (
-    <View
-      style={
-        subjectId !== undefined
-          ? styles.container
-          : [styles.container, styles.containerSecondary]
-      }>
-      <SvgXml style={styles.imageBg} xml={bgImage.uri} onError={onError} />
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Text
+    <>
+      {isLoadingSVG ||
+        (isLoadingSubjects && (
+          <TouchableOpacity
+            style={
+              subjectId !== undefined
+                ? styles.containerLoading
+                : [styles.containerLoading, styles.containerSecondaryLoading]
+            }
+            onPress={() => {
+              if (!user || !token) {
+                setLoginModalVisible && setLoginModalVisible(true);
+                return;
+              }
+
+              savedStudies.length > 0 &&
+                navigator.navigate('StudyDetails', {
+                  subject: subject,
+                });
+            }}
+          />
+        ))}
+
+      {!isLoadingSVG && !isLoadingSubjects && (
+        <TouchableOpacity
           style={
             subjectId !== undefined
-              ? styles.lessons
-              : [styles.lessons, styles.lessonsSecondary]
-          }>
-          {lessonsCount} Lessons
-        </Text>
+              ? styles.container
+              : [styles.container, styles.containerSecondary]
+          }
+          onPress={() => {
+            if (!user || !token) {
+              setLoginModalVisible && setLoginModalVisible(true);
+              return;
+            }
 
-        {subjectId !== undefined && (
-          <>
-            <View style={styles.progressBar}>
-              <View
-                style={[styles.progressBarIndicator, {width: calProgress}]} // calculate progress dynamically
-              />
-            </View>
-            <Text style={styles.progressText}>{calProgress} completed</Text>
-          </>
-        )}
-      </View>
-    </View>
+            savedStudies.length > 0 &&
+              navigator.navigate('StudyDetails', {
+                subject: subject,
+              });
+          }}>
+          <SvgCss style={styles.imageBg} xml={bgImage.uri} onError={onError} />
+
+          <View style={styles.contentContainer}>
+            <Text style={styles.title}>{subject.subject}</Text>
+            <Text
+              style={
+                subjectId !== undefined
+                  ? styles.lessons
+                  : [styles.lessons, styles.lessonsSecondary]
+              }>
+              {savedStudies.length} Lessons
+            </Text>
+
+            {subjectId !== undefined && (
+              <>
+                <View style={styles.progressBar}>
+                  <View
+                    style={[
+                      styles.progressBarIndicator,
+                      {
+                        width:
+                          calProgress > 100 ? 100 + '%' : calProgress + '%',
+                      },
+                    ]} // calculate progress dynamically
+                  />
+                </View>
+                <Text style={styles.progressText}>
+                  {calProgress > 100 ? 100 + '%' : calProgress + '%'} completed
+                </Text>
+              </>
+            )}
+          </View>
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 
@@ -73,12 +146,26 @@ export const styles = StyleSheet.create({
   containerSecondary: {
     height: screenHeight * (1 / 4.5),
     width: screenWidth * (1 / 3),
+    overflow: 'hidden',
+  },
+  containerLoading: {
+    backgroundColor: '#f5f2f2',
+    height: screenHeight * (1 / 3.8),
+    width: screenWidth * (1 / 2.6),
+    marginHorizontal: 5,
+    borderRadius: 15,
+    overflow: 'hidden',
+    maxHeight: 220,
+  },
+  containerSecondaryLoading: {
+    height: screenHeight * (1 / 4.5),
+    width: screenWidth * (1 / 3),
+    overflow: 'hidden',
   },
   imageBg: {
     height: '100%',
     width: screenWidth * (1 / 2.6),
     justifyContent: 'flex-end',
-    borderWidth: 4,
     position: 'relative',
   },
   contentContainer: {
@@ -88,6 +175,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 100,
   },
+
   title: {
     color: 'white',
     fontSize: screenWidth * 0.035,
@@ -133,4 +221,4 @@ export const styles = StyleSheet.create({
   },
 });
 
-export default ChosenCoursesCard;
+export default memo(ChosenCoursesCard);

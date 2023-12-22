@@ -5,10 +5,8 @@ import {
   Image,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  ImageBackground,
   FlatList,
 } from 'react-native';
-import BackWithItem from '../../../components/Organisms/BackWithItem';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {ScaledSheet} from 'react-native-size-matters';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
@@ -18,25 +16,30 @@ import {AuthContext} from '../../../Realm/model';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
-import {calculateProgress, getAllStudies} from './logic';
-import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
+import {calculateStudyProgress} from './logic';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
 import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
-import {SvgXml} from 'react-native-svg';
+import {SvgCss} from 'react-native-svg';
 import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 import LoginModal from '../../../components/Organisms/LoginModal';
 
 const CourseItem = ({
   item,
   setLoginModalVisible,
+  isLoading,
+  timerValue,
 }: {
   item: subjectType;
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
+  timerValue: number;
 }) => {
   const navigator: any = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const [isLoadingSVG, setIsLoadingSVG] = useState(true);
 
   const {useQuery} = AuthContext;
 
@@ -45,59 +48,79 @@ const CourseItem = ({
       `subject.id = "${item.id}" OR subject.subject = "${item.subject.subject}"`,
     );
   });
-  const progress = calculateProgress(savedStudies) + '%';
+  const progress = calculateStudyProgress(savedStudies);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoadingSVG(false);
+    }, timerValue);
+  }, []);
 
   return (
-    <TouchableOpacity
-      style={styles.lcontainer}
-      onPress={() => {
-        if (!user || !token) {
-          setLoginModalVisible(true);
-          return;
-        }
+    <>
+      {!isLoadingSVG && (
+        <TouchableOpacity
+          style={styles.lcontainer}
+          onPress={() => {
+            if (!user || !token) {
+              setLoginModalVisible(true);
+              return;
+            }
 
-        savedStudies.length > 0 &&
-          navigator.navigate('StudyDetails', {
-            subject: item.subject,
-          });
-      }}>
-      <View style={styles.imgContainer}>
-        <SvgXml style={styles.imagebg} xml={item.icon} onError={onError} />
-      </View>
+            savedStudies.length > 0 &&
+              navigator.navigate('StudyDetails', {
+                subject: item.subject,
+              });
+          }}>
+          <View style={styles.imgContainer}>
+            {isLoading && isLoadingSVG ? (
+              <View style={[styles.imagebg, styles.imagebgLoading]} />
+            ) : (
+              <SvgCss
+                xml={item.icon}
+                style={styles.imagebg}
+                onError={onError}
+              />
+            )}
+          </View>
 
-      <View style={styles.infoContainer}>
-        <Text style={styles.subject}>{item.subject.subject}</Text>
-        <Text style={styles.units}>{savedStudies.length} units</Text>
-        <Text style={styles.progressText}>completed {progress}</Text>
+          <View style={styles.infoContainer}>
+            <Text style={styles.subject}>{item.subject.subject}</Text>
+            <Text style={styles.units}>{savedStudies.length} units</Text>
+            <Text style={styles.progressText}>
+              completed {progress > 100 ? 100 : progress + '%'}
+            </Text>
 
-        <View style={styles.indicatorContainer}>
-          <Text style={[styles.indicator, {width: progress}]} />
-        </View>
-      </View>
-    </TouchableOpacity>
+            <View style={styles.indicatorContainer}>
+              <Text
+                style={[
+                  styles.indicator,
+                  {width: progress > 100 ? 100 : progress + '%'},
+                ]}
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 
 const Index = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
 
-  const {useRealm, useQuery} = AuthContext;
-  const realm = useRealm();
+  const {useQuery} = AuthContext;
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
-  const savedStudies = useQuery(Study);
-
-  const [getStudy] = useGetStudyMutation();
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
-  useEffect(() => {
-    if (!savedStudies || savedStudies.length === 0) {
-      getAllStudies(getStudy, navigation, token, realm, Toast);
-    }
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
+
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 500);
 
   return (
     <View style={styles.container}>
@@ -112,13 +135,20 @@ const Index = () => {
             help you achieve your study goals!
           </Text>
           <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('ChallengeScreen')}>
+            onPress={() =>
+              token
+                ? navigation.navigate('ChallengeScreen')
+                : setLoginModalVisible(true)
+            }>
             <View style={styles.button}>
               <Text style={styles.buttonText}>Start Challenge</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <Image source={require('./course.png')} style={styles.image} />
+        <Image
+          source={require('../../../assets/Images/course.png')}
+          style={styles.image}
+        />
       </View>
 
       <Header title="My learning" subTitle="Your Chosen Courses" />
@@ -128,8 +158,13 @@ const Index = () => {
           savedUserData[0].selectedSubjects || [],
           savedSubjects,
         )}
-        renderItem={({item}) => (
-          <CourseItem item={item} setLoginModalVisible={setLoginModalVisible} />
+        renderItem={({item, index}) => (
+          <CourseItem
+            item={item}
+            setLoginModalVisible={setLoginModalVisible}
+            isLoading={isLoading}
+            timerValue={(index + 1) * 200}
+          />
         )}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
@@ -159,6 +194,9 @@ const styles = ScaledSheet.create({
     paddingHorizontal: 10,
     // backgroundColor: 'red',
   },
+  loading: {
+    paddingTop: screenHeight * 0.1,
+  },
   headerContainerTop: {
     paddingHorizontal: screenWidth * 0.02,
   },
@@ -181,7 +219,7 @@ const styles = ScaledSheet.create({
     height: screenHeight / 6,
     minHeight: 150,
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: 'visible',
     position: 'relative',
   },
   textContainer: {
@@ -193,7 +231,7 @@ const styles = ScaledSheet.create({
   text: {
     fontFamily: 'PoppinsRegular',
     color: '#FFFFFF',
-    fontSize: screenWidth * 0.035,
+    fontSize: screenWidth * 0.037,
   },
   button: {
     backgroundColor: 'white',
@@ -215,7 +253,7 @@ const styles = ScaledSheet.create({
   },
   image: {
     width: '40%',
-    height: screenHeight / 6 + 45,
+    height: screenHeight / 6 + 40,
     resizeMode: 'contain',
     position: 'absolute',
     right: 0,
@@ -229,7 +267,7 @@ const styles = ScaledSheet.create({
     marginHorizontal: 2,
     padding: 2,
     marginBottom: 10,
-    borderRadius: 10,
+    borderRadius: 15,
     borderColor: '#E1E1E1',
     borderWidth: 1,
     backgroundColor: 'white',
@@ -247,6 +285,9 @@ const styles = ScaledSheet.create({
     width: screenWidth * (1 / 2.6),
     borderRadius: 5,
     overflow: 'hidden',
+  },
+  imagebgLoading: {
+    backgroundColor: '#f5f2f2',
   },
   infoContainer: {
     width: '67%',

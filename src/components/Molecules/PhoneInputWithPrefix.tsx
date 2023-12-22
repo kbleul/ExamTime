@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import {View, TextInput} from 'react-native';
 import TextPrefixForInputfeild from '../Atoms/TextPrefixForInputfeild';
 import {ScaledSheet} from 'react-native-size-matters';
 
@@ -23,6 +23,7 @@ const TextInputWithPrefix: React.FC<TextInputWithPrefixProps> = ({
         value={value}
         autoComplete="tel"
         keyboardType="numeric"
+        editable={false}
       />
     </View>
   );
@@ -42,9 +43,9 @@ const styles = ScaledSheet.create({
     paddingHorizontal: '20@s',
   },
   inputContainer: {
-    color: '#9E9E9E',
+    color: '#858558',
     flex: 1,
-    fontSize: '14@ms',
+    fontSize: '15@ms',
     paddingVertical: '8@vs',
   },
 });

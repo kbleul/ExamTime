@@ -36,10 +36,19 @@ const PageThree: React.FC<PagesCounterType> = ({
   const [IsLoadingSubjects, setIsLoadingSubjects] = useState(false);
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
 
+  const [IsLoadingSubjectsRealm, setIsLoadingSubjectsRealm] = useState(true);
+
   useEffect(() => {
     savedSubjects && savedSubjects.length > 0
       ? setSubjectsArray([...savedSubjects])
-      : getSubjectsMutation(getSubject, navigator, setSubjectsArray, realm);
+      : getSubjectsMutation(
+          getSubject,
+          navigator,
+          setSubjectsArray,
+          realm,
+          null,
+          setIsLoadingSubjectsRealm,
+        );
   }, []);
 
   useEffect(() => {
@@ -57,6 +66,8 @@ const PageThree: React.FC<PagesCounterType> = ({
         <TopIndicator
           setPageCounter={setPageCounter}
           pageCounter={pageCounter}
+          IsLoadingSubjectsRealm={IsLoadingSubjectsRealm}
+          setIsLoadingSubjects={setIsLoadingSubjects}
         />
 
         <View style={style.titleContainer}>
@@ -86,20 +97,32 @@ const PageThree: React.FC<PagesCounterType> = ({
                 ))}
               </View>
 
-              <View style={style.buttonsSubcontainer}>
-                <GradeButton
-                  text={IsLoadingSubjects ? 'Loading ...' : 'Get Started'}
-                  index={5}
-                  onPress={() =>
-                    createRealmUserData(
-                      realm,
-                      selectedSubjects ? [...selectedSubjects] : [],
-                      navigator,
-                      setIsLoadingSubjects,
-                    )
-                  }
-                  isActive={!IsLoadingSubjects}
-                />
+              <View
+                style={
+                  IsLoadingSubjectsRealm
+                    ? [
+                        style.buttonsSubcontainer,
+                        style.buttonsSubcontainerLoading,
+                      ]
+                    : style.buttonsSubcontainer
+                }>
+                {!IsLoadingSubjectsRealm ? (
+                  <GradeButton
+                    text={IsLoadingSubjects ? 'Loading ...' : 'Get Started'}
+                    index={5}
+                    onPress={() =>
+                      createRealmUserData(
+                        realm,
+                        selectedSubjects ? [...selectedSubjects] : [],
+                        navigator,
+                        setIsLoadingSubjects,
+                      )
+                    }
+                    isActive={!IsLoadingSubjects}
+                  />
+                ) : (
+                  <Loading />
+                )}
               </View>
             </>
           )}
@@ -181,6 +204,10 @@ const style = StyleSheet.create({
     marginTop: '7%',
     width: '90%',
     marginLeft: '5%',
+  },
+  buttonsSubcontainerLoading: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonsSubcontainerTop: {
     marginLeft: '10%',

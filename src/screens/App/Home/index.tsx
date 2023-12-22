@@ -12,26 +12,35 @@ import TrialHeader from '../../../components/Organisms/TrialHeader';
 import HeaderCarousel from '../../../components/Organisms/HeaderCarousel';
 import ChosenCourses from '../../../components/Molecules/ChosenAndOtherCourses';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
-import usePostSyncData from '../../../hooks/usePostSyncData';
+import useHandleInitialRequests from '../../../hooks/useHandleInitialRequests';
 import {screenWidth} from '../../../utils/Data/data';
+import LoginModal from '../../../components/Organisms/LoginModal';
+import Toast from 'react-native-toast-message';
 
 const Index = () => {
   const [isSyncing, setIsSyncing] = useState(false);
-  usePostSyncData(setIsSyncing);
+  useHandleInitialRequests(setIsSyncing);
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={IndexStyle.container}>
       <ScrollView
         contentContainerStyle={IndexStyle.ScrollView}
         showsVerticalScrollIndicator={false}>
-        {isSyncing && <SyncingData title="Syncing data..." />}
+        {isSyncing && <SyncingData title="Syncing data for offline use..." />}
         <TrialHeader type="Dashboard" />
 
         <HeaderCarousel />
 
-        <ChosenCourses />
+        <ChosenCourses setLoginModalVisible={setLoginModalVisible} />
       </ScrollView>
       <MainBottomNav />
+
+      <LoginModal
+        loginModalVisible={loginModalVisible}
+        setLoginModalVisible={setLoginModalVisible}
+      />
+      <Toast />
     </SafeAreaView>
   );
 };

@@ -23,13 +23,12 @@ const styles = StyleSheet.create({
   weekContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: screenHeight * 0.002,
-    gap: screenHeight * 0.01,
+    marginVertical: screenHeight * 0.001,
   },
   weekText: {
     color: '#828484',
-    fontSize: scale(14),
-    fontFamily: 'PoppinsMedium',
+    fontSize: scale(12),
+    fontFamily: 'PoppinsSemiBold',
   },
 });
 

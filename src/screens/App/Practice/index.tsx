@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import MainBottomNav from '../../../components/Organisms/MainBottomNav';
@@ -11,65 +11,92 @@ import TrialHeader from '../../../components/Organisms/TrialHeader';
 import RandomQuestions from '../../../components/Organisms/RandomQuestions';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {AuthContext} from '../../../Realm/model';
-import {Subject} from '../../../Realm';
+import {Study, Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
+import {subjectType} from '../../../types';
+import {useNavigation} from '@react-navigation/native';
+import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
+import {getSubjectsMutation} from '../Onboarding/Page/logic';
+import Loading from '../../../components/Atoms/Loading';
 
 export let availableHeight = screenHeight - screenHeight * 0.088;
 
 const Practice = () => {
-  const {useQuery} = AuthContext;
+  const navigator = useNavigation();
+
+  const {useQuery, useRealm} = AuthContext;
+  const realm = useRealm();
+
   const savedSubjects = useQuery(Subject);
 
-  const [selectedSubject, setSelectedSubject] = useState(savedSubjects[0]);
+  const [selectedSubject, setSelectedSubject] = useState<
+    Subject | subjectType | null
+  >(savedSubjects[0]);
   const [selectedExamType, setSelectedExamType] = useState(
     ExamCatagories[0].name,
   );
+  const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
+    null,
+  );
+
+  const [getSubject, {isLoading, error}] = useGetSubjectMutation();
+
+  useEffect(() => {
+    savedSubjects && savedSubjects.length > 0
+      ? setSubjectsArray([...savedSubjects])
+      : getSubjectsMutation(
+          getSubject,
+          navigator,
+          setSubjectsArray,
+          realm,
+          setSelectedSubject,
+        );
+  }, []);
 
   return (
-    <SafeAreaView style={[IndexStyle.container, styles.container]}>
-      <ScrollView
-        style={styles.ScrollView}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}>
-        <TrialHeader type="Practice" />
+    <>
+      <SafeAreaView style={[IndexStyle.container, styles.container]}>
+        {savedSubjects && savedSubjects.length > 0 && (
+          <ScrollView
+            style={styles.ScrollView}
+            contentContainerStyle={styles.contentContainer}
+            showsVerticalScrollIndicator={false}>
+            <TrialHeader type="Practice" />
 
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerTitle}>Practice Section</Text>
-          <Text style={styles.headerSubTitle}>Choose your Subject</Text>
-        </View>
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerTitle}>Practice Section</Text>
+              <Text style={styles.headerSubTitle}>Choose your Subject</Text>
+            </View>
 
-        <SubjectSelectViewBox
-          SelectedSubject={selectedSubject}
-          setSelectedSubject={setSelectedSubject}
-        />
+            <SubjectSelectViewBox
+              SelectedSubject={selectedSubject}
+              setSelectedSubject={setSelectedSubject}
+            />
 
-        <Tips
-          title={'TIPS & TRICKS FOR PHYSICS EXAM'}
-          note="Your expected ability for this chapter is between 2.0 -- 2.4.
-          Estimated your ability using the following Estimated your ability
-          using the followin..."
-          readonly={false}
-        />
+            <Tips selectedSubject={selectedSubject} />
 
-        <RandomQuestions selectedSubject={selectedSubject} />
+            <RandomQuestions selectedSubject={selectedSubject} />
 
-        <FullExams
-          selectedExamType={selectedExamType}
-          setSelectedExamType={setSelectedExamType}
-          selectedSubject={selectedSubject}
-        />
-      </ScrollView>
+            <FullExams
+              selectedExamType={selectedExamType}
+              setSelectedExamType={setSelectedExamType}
+              selectedSubject={selectedSubject}
+            />
+          </ScrollView>
+        )}
 
-      <Toast />
+        {isLoading && <Loading />}
 
-      <MainBottomNav />
-    </SafeAreaView>
+        <Toast />
+
+        <MainBottomNav />
+      </SafeAreaView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 10,
   },
   ScrollView: {
@@ -77,6 +104,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
+    paddingBottom: 80,
   },
   headerContainer: {
     paddingHorizontal: screenWidth * 0.02,

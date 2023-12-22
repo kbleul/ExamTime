@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ChosenCoursesCard from '../Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 import {screenWidth} from '../../utils/Data/data';
@@ -12,39 +12,56 @@ const SubjectSelectViewBox: React.FC<{
   const {useQuery} = AuthContext;
   const savedSubjects = useQuery(Subject);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, [SelectedSubject]);
+
   const renderItem = ({item}: {item: any}) => (
     <View style={styles.renderStyle}>
-      <SubjectsButton
-        title={item.subject.subject}
-        updateSelectedSubject={() => setSelectedSubject(item)}
-        SelectedSubject={SelectedSubject.id}
-        itemId={item.id}
-      />
+      {SelectedSubject && (
+        <SubjectsButton
+          title={item.subject.subject}
+          updateSelectedSubject={() => {
+            setIsLoading(true);
+            setSelectedSubject(item);
+          }}
+          SelectedSubject={SelectedSubject.id}
+          itemId={item.id}
+        />
+      )}
     </View>
   );
 
   return (
     <View style={styles.subjectsContainer}>
       <View style={styles.subjectsImgContainer}>
-        <ChosenCoursesCard
-          title={SelectedSubject?.subject?.subject || ''}
-          lessonsCount={10}
-          bgImage={{uri: SelectedSubject.icon}}
-        />
+        {SelectedSubject && SelectedSubject.icon && (
+          <ChosenCoursesCard
+            subject={SelectedSubject?.subject}
+            bgImage={{uri: SelectedSubject.icon}}
+            isLoadingSubjects={isLoading}
+          />
+        )}
         <Text style={styles.dot} />
       </View>
 
       <View style={styles.subjectsButtonContaier}>
-        <FlatList
-          data={savedSubjects.filter(
-            subject => subject.id !== SelectedSubject.id,
-          )}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.listContaier}
-          style={styles.listContaier}
-          numColumns={2} // Set the number of columns to 2 for a 2-column layout
-        />
+        {SelectedSubject && (
+          <FlatList
+            data={savedSubjects.filter(
+              subject => subject.id !== SelectedSubject.id,
+            )}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.listContaier}
+            style={styles.listContaier}
+            numColumns={2} // Set the number of columns to 2 for a 2-column layout
+          />
+        )}
       </View>
     </View>
   );

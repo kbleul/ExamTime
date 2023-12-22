@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, ActivityIndicator} from 'react-native';
 
 import {ScaledSheet} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -7,9 +7,13 @@ import {screenHeight} from '../../utils/Data/data';
 
 interface ChangePasswordButtonProps {
   onPress: () => void;
+  isLoading?: boolean;
 }
 
-const ChangePasswordButton: FC<ChangePasswordButtonProps> = ({onPress}) => {
+const ChangePasswordButton: FC<ChangePasswordButtonProps> = ({
+  onPress,
+  isLoading,
+}) => {
   return (
     <TouchableOpacity
       style={[
@@ -18,8 +22,14 @@ const ChangePasswordButton: FC<ChangePasswordButtonProps> = ({onPress}) => {
         styles.changePasswordButton,
       ]}
       onPress={onPress}>
-      <Text style={styles.changePasswordText}>Change Password</Text>
-      <AntDesign name="right" style={styles.changepasswordButtonIcon} />
+      {isLoading ? (
+        <ActivityIndicator color="#fff" style={styles.loading} />
+      ) : (
+        <>
+          <Text style={styles.changePasswordText}>Change Password</Text>
+          <AntDesign name="right" style={styles.changepasswordButtonIcon} />
+        </>
+      )}
     </TouchableOpacity>
   );
 };
@@ -44,6 +54,9 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     marginBottom: '40@ms',
     marginHorizontal: '20@ms',
+  },
+  loading: {
+    paddingVertical: 4,
   },
   changePasswordText: {
     color: '#fff',

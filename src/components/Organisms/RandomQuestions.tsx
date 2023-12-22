@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     color: '#008E97',
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.04,
+    paddingBottom: 12,
   },
   sliderContainer: {
     borderWidth: 1,
@@ -128,6 +129,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '90%',
     marginLeft: '5%',
+    paddingTop: 8,
+    paddingBottom: 8,
   },
   sliderTextContainer: {
     flexDirection: 'row',
@@ -144,6 +147,7 @@ const styles = StyleSheet.create({
   },
   startButton: {
     width: '20%',
+    marginTop: 6,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',

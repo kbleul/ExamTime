@@ -56,27 +56,6 @@ const ExamLeaveModal: React.FC<{
                 ? 'You haven’t completed the exam! are you sure you want to finish?'
                 : ''}
             </Text>
-          )} */}
-
-          <ImageBackground
-            style={styles.modalImageContaner}
-            source={require('../../assets/Images/Practice/running_bg.png')} // Replace with the correct path to your image
-            resizeMode="cover">
-            <Image
-              source={require('../../assets/Images/Practice/bell_bg.png')}
-              style={styles.modalImg}
-            />
-          </ImageBackground>
-
-          <Text style={styles.infoTextYellow}>
-            {examStatusData.total - examStatusData.answered}{' '}
-            <Text style={styles.infoTextYellowSubtext}>Questions left</Text>
-          </Text>
-
-          {!isTimeOver && (
-            <Text style={styles.modalText}>
-              You haven’t completed the exam! are you sure you want to finish?
-            </Text>
           )}
 
           {timeLeft && (

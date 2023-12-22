@@ -50,6 +50,10 @@ export type OTPDataType = {
   code: string;
   forgotPassword: boolean;
 };
+export type CommentType = {
+  token: string;
+  comment: string;
+};
 
 export type CreatePassworDataType = {
   userId: string;
@@ -74,6 +78,10 @@ export type ChangePasswordFormDataType = {
 export type regionItemsType = {
   label: string;
   value: string;
+};
+export type faqItemsType = {
+  question: string;
+  answer: string;
 };
 
 export type examQuestionType = {
@@ -107,6 +115,7 @@ export type examType = {
   subject: singleSubjectType;
   year: year;
   isExamTaken: boolean;
+  lastTaken: Date | null;
 };
 
 export type year =
@@ -170,11 +179,13 @@ export type sectionType = {
 export type pdfType = {
   id: string;
   pdfDocument: string;
+  isViewed: boolean;
 };
 
 export type videoType = {
   id: string;
   videoLink: string;
+  isViewed: boolean;
 };
 
 export type studyType = {
@@ -199,4 +210,35 @@ export type GuideDataType = {
   image: any;
   text: string;
   videoLink: string;
+};
+
+export type TipType = {
+  id: string;
+  tipType: string;
+  tip: string;
+  subject: singleSubjectType | null;
+};
+
+export type singleChallenge = {
+  id: string;
+  subject: singleSubjectType | null;
+  unit: string | null;
+  section: string | null;
+};
+
+export type ChallangeDayType = {
+  id: string;
+  day: number;
+  rest: boolean;
+  singleChallenge: singleChallenge[] | [];
+  scheduledDate: string | null;
+};
+
+export type ChallangeType = {
+  id: string;
+  title: string;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  challengeDay: ChallangeDayType[] | [];
 };

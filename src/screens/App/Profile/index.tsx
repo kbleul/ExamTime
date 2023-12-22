@@ -17,10 +17,13 @@ const Index = () => {
         {user && user?.profilePicture ? (
           <ImageBackground
             style={styles.img}
-            source={{uri: user.profilePicture}} // Replace with the correct path to your image
-          >
-            <Text>{''}</Text>
-          </ImageBackground>
+            source={{
+              uri: user.profilePicture.includes('https://')
+                ? user.profilePicture
+                : 'https://dev.think-hubet.com/profile-pictures/' +
+                  user.profilePicture,
+            }} // Replace with the correct path to your image
+          />
         ) : (
           <View style={styles.noiImageContainer}>
             <Text style={styles.noiImageText}>
@@ -50,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1,
     position: 'relative',
-    paddingBottom: 40,
+    paddingBottom: 50,
     backgroundColor: '#F5F5F5',
   },
   imageBg: {

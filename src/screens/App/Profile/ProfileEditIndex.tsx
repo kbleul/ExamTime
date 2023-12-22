@@ -11,7 +11,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 
 const ProfileEditIndex = () => {
-  const [avatar, setAvatar] = useState('');
+  const [avatar, setAvatar] = useState<string | null>(null);
   const user = useSelector((state: RootState) => state.auth.user);
 
   const uploadImage = async () => {
@@ -34,7 +34,6 @@ const ProfileEditIndex = () => {
       })
       .catch(e => console.error);
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.imageBg}>
@@ -44,10 +43,12 @@ const ProfileEditIndex = () => {
             uri: avatar
               ? avatar
               : user && user?.profilePicture
-              ? user?.profilePicture
+              ? user?.profilePicture.includes('https://')
+                ? user.profilePicture
+                : 'https://dev.think-hubet.com/profile-pictures/' +
+                  user.profilePicture
               : 'https://th.bing.com/th/id/OIP.fmwdQXSSqKuRzNiYrbcNFgHaHa?rs=1&pid=ImgDetMain',
           }}>
-          <Text>{''}</Text>
           <TouchableOpacity
             style={styles.editIconContainer}
             onPress={uploadImage}>
@@ -59,7 +60,7 @@ const ProfileEditIndex = () => {
         </ImageBackground>
       </View>
 
-      <ProfileEdit />
+      <ProfileEdit avatar={avatar} />
 
       <MainBottomNav />
     </View>
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   imageBg: {
-    backgroundColor: 'blue',
+    backgroundColor: '#f0efed',
     height: '25%',
     width: '100%',
     resizeMode: 'cover',

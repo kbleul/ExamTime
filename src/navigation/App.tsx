@@ -21,7 +21,6 @@ import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
 import Practice from '../screens/App/Practice/index';
 import PracticeQuestion from '../screens/App/PracticeQuestion';
 import {ProfileMenuItemsAuth} from '../utils/Data/data';
-import SetNewPassword from '../components/Organisms/SetNewPassword';
 import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
 import ExamReview from '../screens/App/PracticeQuestion/ExamReview';
 import ExamResult from '../screens/App/PracticeQuestion/ExamResult';
@@ -31,12 +30,15 @@ import StudyDetails from '../screens/App/Study/StudyDetails';
 import ViewPdf from '../screens/App/Study/ViewPdf';
 import ViewVideo from '../screens/App/Study/ViewVideo';
 import ViewAssessment from '../screens/App/Study/ViewAssessment';
+import History from '../screens/App/History';
+import Notification from '../screens/App/Notification';
+import NotificationProvider from '../context/notification';
 const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
   Stack,
   showOnboarding,
 }) => {
   return (
-    <>
+    <NotificationProvider>
       <StatusBar
         barStyle="dark-content"
         hidden={false}
@@ -84,6 +86,11 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="Random-Exam"
+          component={RandomQuestionsView}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="Exam-Review"
           component={ExamReview}
           options={{headerShown: false}}
@@ -93,11 +100,44 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           component={ExamResult}
           options={{headerShown: false}}
         />
+
         <Stack.Screen
-          name="Random-Exam"
-          component={RandomQuestionsView}
+          name="StudySection"
+          component={StudySection}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name="StudyDetails"
+          component={StudyDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewPdf"
+          component={ViewPdf}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewVideo"
+          component={ViewVideo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewAssessment"
+          component={ViewAssessment}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChallengeScreen"
+          component={ChallengeSection}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="History"
+          component={History}
+          options={{headerShown: false}}
+        />
+
         <Stack.Screen
           name="Profile"
           component={Profile}
@@ -164,44 +204,14 @@ const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
           component={SetNewPasswordPage}
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          name="StudySection"
-          component={StudySection}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ChallengeScreen"
-          component={ChallengeSection}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="StudyDetails"
-          component={StudyDetails}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewPdf"
-          component={ViewPdf}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewVideo"
-          component={ViewVideo}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewAssessment"
-          component={ViewAssessment}
-          options={{headerShown: false}}
-        />
 
-        {/* <Stack.Screen
-          name="ChallengeScreen"
-          component={ChallengeSection}
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
           options={{headerShown: false}}
-        /> */}
+        />
       </Stack.Navigator>
-    </>
+    </NotificationProvider>
   );
 };
 

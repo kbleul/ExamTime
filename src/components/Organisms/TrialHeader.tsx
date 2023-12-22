@@ -11,16 +11,24 @@ import {UserData} from '../../Realm';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
+import {useNavigation} from '@react-navigation/native';
+import {useNotification} from '../../context/notification';
+import LoginModal from './LoginModal';
 
 const TrialHeader: React.FC<{type: string}> = ({type}) => {
+  const navigator: any = useNavigation();
+
+  const token = useSelector((state: RootState) => state.auth.token);
   const isSubscribed = useSelector(
     (state: RootState) => state.auth.isSubscribed,
   );
 
+  const {notifications, hasNewNotification} = useNotification();
   const {useQuery} = AuthContext;
   const savedUserData = useQuery(UserData);
 
   const [trialDayCounter, setTrialDayCounter] = useState<number | null>(null);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   useEffect(() => {
     const getTrialDay = async () => {
@@ -32,6 +40,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
 
     getTrialDay();
   }, []);
+
   return (
     <View
       style={
@@ -54,8 +63,15 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       <View style={HeaderStyle.subContainer}>
         <TouchableOpacity
           style={HeaderStyle.notificationBtn}
-          touchSoundDisabled>
-          <Text style={HeaderStyle.dot} />
+          touchSoundDisabled
+          onPress={() =>
+            !token && (!notifications || notifications.length === 0)
+              ? setShowLoginPrompt(true)
+              : navigator.navigate('Notification')
+          }>
+          {notifications && hasNewNotification && (
+            <Text style={HeaderStyle.dot} />
+          )}
           <MaterialIcons
             name="notifications-none"
             size={screenWidth * 0.075}
@@ -63,6 +79,11 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
           />
         </TouchableOpacity>
       </View>
+
+      <LoginModal
+        loginModalVisible={showLoginPrompt}
+        setLoginModalVisible={setShowLoginPrompt}
+      />
     </View>
   );
 };
