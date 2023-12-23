@@ -1,16 +1,25 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {ImageBackground, Text} from 'react-native';
 import {StyleSheet, View} from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileContent from '../../../components/Organisms/ProfileContent';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import Toast from 'react-native-toast-message';
 import Config from 'react-native-config';
+import {useNavContext} from '../../../context/bottomNav';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Index = () => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const {setShowNavigation} = useNavContext();
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(true);
+      console.log('Component is focused');
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
@@ -41,8 +50,6 @@ const Index = () => {
 
       <ProfileContent />
       <Toast />
-
-      <MainBottomNav />
     </View>
   );
 };
@@ -53,7 +60,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1,
     position: 'relative',
-    paddingBottom: 50,
     backgroundColor: '#F5F5F5',
   },
   imageBg: {

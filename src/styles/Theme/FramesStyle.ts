@@ -13,19 +13,30 @@ export const styles = StyleSheet.create({
 });
 
 export const frameOnestyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   leftBoxContainer: {
     width: '75%',
     height: '100%',
-    paddingLeft: screenWidth * 0.04,
+    paddingLeft: screenWidth * 0.03,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  subText: {
+  text: {
     color: '#484A51',
-    fontSize: screenWidth * 0.04,
+    fontSize: screenWidth * 0.038,
     lineHeight: 25,
     marginTop: 8,
     fontFamily: 'PoppinsMedium',
+  },
+  rightBoxContainer: {
+    width: '25%',
+    height: screenHeight / 7,
+    borderRadius: 20,
+    overflow: 'hidden',
   },
 });
 

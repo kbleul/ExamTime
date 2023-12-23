@@ -6,10 +6,12 @@ import {createRealmUserData} from '../../screens/App/Onboarding/Logic';
 import {AuthContext} from '../../Realm/model';
 import {screenWidth} from '../../utils/Data/data';
 import {PagesCounterType} from '../../screens/App/Onboarding/Page/types';
+import {useOnboardingContext} from '../../context/onboarding';
 const TopIndicator: React.FC<
   PagesCounterType & {
     IsLoadingSubjectsRealm?: boolean;
     setIsLoadingSubjects?: React.Dispatch<React.SetStateAction<boolean>>;
+    setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>;
   }
 > = ({
   pageCounter,
@@ -17,9 +19,11 @@ const TopIndicator: React.FC<
   IsLoadingSubjectsRealm,
   setIsLoadingSubjects,
 }) => {
+  const {setShowOnboarding} = useOnboardingContext();
   const navigator = useNavigation();
   const {useRealm} = AuthContext;
   const realm = useRealm();
+
   return (
     <View style={style.container}>
       <TouchableOpacity onPress={() => setPageCounter(prev => --prev)}>
@@ -30,7 +34,13 @@ const TopIndicator: React.FC<
         <TouchableOpacity
           onPress={() =>
             setIsLoadingSubjects &&
-            createRealmUserData(realm, [], navigator, setIsLoadingSubjects)
+            createRealmUserData(
+              realm,
+              [],
+              navigator,
+              setIsLoadingSubjects,
+              setShowOnboarding,
+            )
           }>
           <Text style={style.text}>Skip</Text>
         </TouchableOpacity>

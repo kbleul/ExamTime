@@ -60,7 +60,7 @@ export const handleLogin = async (
     setChanged && setChanged(prev => !prev);
 
     response.IsDefaultPasswordChanged
-      ? navigator.navigate('Home')
+      ? navigator.navigate('HomeSection')
       : navigator.navigate('Password-Reset');
   } catch (error) {
     if (

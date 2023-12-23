@@ -4,7 +4,6 @@ import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
 import {screenHeight} from '../../../utils/Data/data';
 
@@ -110,7 +109,6 @@ const Index: React.FC = () => {
           <SubscriptionPlanCards data={data} pagination={true} />
         </View>
       </ScrollView>
-      <MainBottomNav />
     </View>
   );
 };

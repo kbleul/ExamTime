@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     width: '63%',
     alignItems: 'center',
     justifyContent: 'center',
-    maxHeight: 200,
+    maxHeight: 220,
   },
   listContaier: {
     width: '100%',
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   renderStyle: {
     width: '48%',
     marginHorizontal: '1%',
-    marginVertical: '3%',
+    marginVertical: '3.5%',
   },
   subjectsButton: {
     backgroundColor: '#D9D9D9',

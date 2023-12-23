@@ -2,6 +2,7 @@ import React from 'react';
 import {ImageBackground, TouchableOpacity, Image} from 'react-native';
 import {Modal, StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {useNavContext} from '../../context/bottomNav';
 
 const ExamLeaveModal: React.FC<{
   exitExamModalVisible: boolean;
@@ -25,6 +26,8 @@ const ExamLeaveModal: React.FC<{
   isTimeOver,
   showViewReviewBtn,
 }) => {
+  const {setShowNavigation} = useNavContext();
+
   return (
     <Modal
       animationType="slide"
@@ -104,6 +107,7 @@ const ExamLeaveModal: React.FC<{
               onPress={() => {
                 setExitExamModalVisible(false);
                 handleSubmitExam();
+                setShowNavigation(true);
               }}>
               <Text
                 style={[

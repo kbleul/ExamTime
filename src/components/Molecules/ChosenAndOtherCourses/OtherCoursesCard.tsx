@@ -23,13 +23,16 @@ const OtherCoursesCard: React.FC<{
   const useStyle = isOnboarding ? stylesSecondary : styles;
 
   return (
-    <View style={useStyle.container}>
+    <TouchableOpacity
+      style={useStyle.container}
+      onPress={onPress}
+      touchSoundDisabled>
       {grade !== 'Driving Licence' && (
         <View style={useStyle.imageContainer}>
           <View style={isOnboarding && stylesSecondary.whiteBg} />
           <Image
             style={
-              index === 1 ? [useStyle.image, {width: '100%'}] : useStyle.image
+              index === 1 ? [useStyle.image, {width: '80%'}] : useStyle.image
             }
             source={gradesImages[index] ? gradesImages[index] : gradesImages[0]}
           />
@@ -58,14 +61,12 @@ const OtherCoursesCard: React.FC<{
           )}
         </View>
         {grade !== 'Driving Licence' && (
-          <TouchableOpacity touchSoundDisabled onPress={onPress}>
-            <Text style={useStyle.coursesSecondary}>
-              {subjectsCount} Subjects
-            </Text>
-          </TouchableOpacity>
+          <Text style={useStyle.coursesSecondary}>
+            {subjectsCount} Subjects
+          </Text>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -80,21 +81,22 @@ export const styles = StyleSheet.create({
     overflow: 'visible',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginTop: 9,
+    marginTop: 3,
     paddingLeft: 4,
-    position: 'relative',
+    borderTopWidth: screenHeight * 0.018,
+    borderColor: '#F5F5F5',
   },
   imageContainer: {
     width: '40%',
     position: 'relative',
     overflow: 'visible',
-    zIndex: 5,
   },
   image: {
-    width: '100%',
-    maxHeight: screenHeight * (1 / 5.8),
+    width: '98%',
+    marginLeft: '2%',
+    maxHeight: screenHeight * (1 / 5.9),
     position: 'absolute',
-    top: -9,
+    top: -screenHeight * 0.02,
     zIndex: 10,
   },
   drivingImage: {
@@ -167,11 +169,13 @@ export const stylesSecondary = StyleSheet.create({
     marginBottom: 5,
   },
   imageContainer: {
-    width: '35%',
+    width: '30%',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
     overflow: 'visible',
+    borderTopWidth: 5,
+    borderTopColor: '#FFF',
   },
   whiteBg: {
     width: 80,
@@ -187,7 +191,7 @@ export const stylesSecondary = StyleSheet.create({
     height: 12,
     position: 'absolute',
     bottom: -14,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     zIndex: 50,
   },
   image: {
@@ -195,14 +199,14 @@ export const stylesSecondary = StyleSheet.create({
     marginLeft: '10%',
     maxHeight: screenHeight * (1 / 6.5),
     position: 'absolute',
-    top: -4,
+    top: -9,
     zIndex: 40,
   },
   contentContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '65%',
+    width: '70%',
     paddingRight: 7,
   },
   contentTextContainer: {
@@ -235,12 +239,12 @@ export const stylesSecondary = StyleSheet.create({
   },
   coursesSecondary: {
     backgroundColor: '#37A9B3',
-    color: 'white',
+    color: '#fff',
     fontSize: screenWidth * 0.025,
     fontFamily: 'PoppinsRegular',
-    paddingHorizontal: 9,
-    paddingTop: 10,
-    paddingBottom: 8,
+    paddingHorizontal: screenWidth * 0.018,
+    paddingTop: screenWidth * 0.014,
+    paddingBottom: screenWidth * 0.01,
     overflow: 'hidden',
     borderRadius: 10,
   },

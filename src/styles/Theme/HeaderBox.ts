@@ -8,9 +8,6 @@ export const HeaderStyle = StyleSheet.create({
     alignItems: 'center',
     paddingTop: screenHeight * 0.009,
   },
-  containerSecondary: {
-    justifyContent: 'flex-end',
-  },
   nameText: {
     fontFamily: 'PoppinsSemiBold',
     color: '#000',

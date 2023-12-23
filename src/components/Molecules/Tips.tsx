@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginHorizontal: 5,
-    marginTop: 6,
+    marginTop: screenHeight * 0.02,
+    marginBottom: screenHeight * 0.015,
     paddingVertical: 5,
     borderWidth: 1,
     borderRadius: 10,

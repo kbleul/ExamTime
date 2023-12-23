@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E90FF',
     borderRadius: 8,
     overflow: 'hidden',
-    paddingHorizontal: 4,
+    paddingHorizontal: 0,
   },
   startButtonText: {
     width: '70%',
@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.03,
     textAlign: 'right',
-    paddingTop: 4,
-    paddingBottom: 2,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
 });
 

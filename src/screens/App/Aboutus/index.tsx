@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
@@ -96,7 +95,6 @@ const Index = () => {
       )}
 
       <Toast />
-      <MainBottomNav />
     </View>
   );
 };

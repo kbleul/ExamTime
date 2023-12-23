@@ -13,6 +13,7 @@ import {useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import frameBlueImg from '../../assets/Images/frame_blue.png';
+import logoImg from '../../assets/Logo/logo_.png';
 
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -24,6 +25,8 @@ import {
 } from '../../styles/Theme/FramesStyle';
 import {screenWidth} from '../../utils/Data/data';
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
+import Config from 'react-native-config';
+import {useNavContext} from '../../context/bottomNav';
 
 const CarouselFrame: React.FC<{index: number}> = ({index}) => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -81,17 +84,32 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
 };
 
 export const FrameOne = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <ImageBackground
-      style={styles.container}
+      style={[styles.container, frameOnestyles.container]}
       source={require('../../assets/Images/home/c1.png')} // Replace with the correct path to your image
     >
       <View style={frameOnestyles.leftBoxContainer}>
-        <Text style={frameOnestyles.subText}>
+        <Text style={frameOnestyles.text}>
           Today is a good day to learn something new! Learn anytime, anywhere.
           Welcome to your future.
         </Text>
       </View>
+
+      <Image
+        source={
+          user && user.profilePicture
+            ? {
+                uri: user.profilePicture.includes('https://')
+                  ? user.profilePicture
+                  : `${Config.API_URL}profile-pictures/` + user.profilePicture,
+              }
+            : logoImg
+        }
+        style={frameOnestyles.rightBoxContainer}
+      />
     </ImageBackground>
   );
 };
@@ -129,6 +147,7 @@ export const FrameThree: React.FC<{
 }> = ({title, text, btnText, btnTextTwo, issubscribe}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
+  const {setShowNavigation} = useNavContext();
 
   return (
     <ImageBackground
@@ -149,7 +168,10 @@ export const FrameThree: React.FC<{
         <TouchableOpacity
           style={frameThreestyles.adsBtns}
           touchSoundDisabled
-          onPress={() => !issubscribe && navigator.navigate('Login')}>
+          onPress={() => {
+            setShowNavigation(false);
+            !issubscribe && navigator.navigate('Login');
+          }}>
           <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>
         </TouchableOpacity>
         {!user && (
@@ -159,7 +181,10 @@ export const FrameThree: React.FC<{
               frameThreestyles.adsBtns_secondary,
             ]}
             touchSoundDisabled
-            onPress={() => navigator.navigate('Signup')}>
+            onPress={() => {
+              setShowNavigation(false);
+              navigator.navigate('Signup');
+            }}>
             <Text style={frameThreestyles.adsBtnsText}>{btnTextTwo}</Text>
           </TouchableOpacity>
         )}

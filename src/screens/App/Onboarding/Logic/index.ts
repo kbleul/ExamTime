@@ -56,6 +56,7 @@ export const createRealmUserData = async (
   selectedSubjects: string[] | [],
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   setIsLoadingSubjects: React.Dispatch<React.SetStateAction<boolean>>,
+  setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   try {
     setIsLoadingSubjects(true);
@@ -76,12 +77,12 @@ export const createRealmUserData = async (
         selectedSubjects: [...selectedSubjects],
       });
     });
+
+    setShowOnboarding(false);
   } catch (err) {
     console.log(err);
     setIsLoadingSubjects(false);
   }
-
-  navigation.navigate('Home');
 };
 
 export const createRealmSubjectsData = async (

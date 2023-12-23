@@ -9,7 +9,6 @@ import {
   TextInput,
   Linking,
 } from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
@@ -242,9 +241,7 @@ const Index = () => {
               </View>
             </ScrollView>
           )}
-          <View>
-            <MainBottomNav />
-          </View>
+          <View></View>
 
           <LoginModal
             loginModalVisible={showLoginPrompt}

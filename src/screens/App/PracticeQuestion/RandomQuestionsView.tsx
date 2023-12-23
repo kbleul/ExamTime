@@ -22,6 +22,7 @@ import Toast from 'react-native-toast-message';
 import {View} from 'react-native';
 import Loading from '../../../components/Atoms/Loading';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
+import {useNavContext} from '../../../context/bottomNav';
 const RandomQuestionsView = ({route}: {route: any}) => {
   //   const {subject} = route.params;
   const navigator: any = useNavigation();
@@ -44,6 +45,7 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
 
   const [direction, setDirection] = useState<string | null>(null);
+  const {setShowNavigation} = useNavContext();
 
   const refIndex = useRef(0);
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
@@ -118,6 +120,10 @@ const RandomQuestionsView = ({route}: {route: any}) => {
         setTimeout(scrollToIndex, 500);
     }
   }, [showFullPage]);
+
+  useEffect(() => {
+    setShowNavigation(false);
+  }, []);
 
   const filterUnansweredQuestions = () => {
     if (exam) {

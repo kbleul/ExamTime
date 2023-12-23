@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {AuthContext} from '../../../Realm/model';
 import {Exam, ExamAnswers, Subject, UserData} from '../../../Realm';
@@ -6,10 +6,10 @@ import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {subjectType} from '../../../types';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {screenWidth} from '../../../utils/Data/data';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {answersType} from '../PracticeQuestion';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import MessageBox from '../../../components/Atoms/MessageBox';
+import {useNavContext} from '../../../context/bottomNav';
 
 function convertDateFormat(dateString: string) {
   const date = new Date(dateString);
@@ -30,6 +30,7 @@ function convertDateFormat(dateString: string) {
 const History = () => {
   const {useQuery} = AuthContext;
   const isFocused = useIsFocused();
+  const {setShowNavigation} = useNavContext();
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
@@ -68,6 +69,13 @@ const History = () => {
       setSavedExamsArr([]);
     }
   }, [savedExams, isFocused]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(true);
+      console.log('Component is focused');
+    }, []),
+  );
 
   const renderSubjects = ({item}: {item: subjectType}) => {
     return (
@@ -123,8 +131,6 @@ const History = () => {
           subTitle="Try taking some more exams."
         />
       )}
-
-      <MainBottomNav />
     </View>
   );
 };

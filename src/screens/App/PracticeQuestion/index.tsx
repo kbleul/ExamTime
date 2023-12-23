@@ -16,11 +16,16 @@ import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
 import {examQuestionType} from '../../../types';
-import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {
+  getFocusedRouteNameFromRoute,
+  useNavigation,
+  useNavigationState,
+} from '@react-navigation/native';
 import DirectionModal from '../../../components/Organisms/DirectionModal';
 import {AuthContext} from '../../../Realm/model';
 import {Exam} from '../../../Realm';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
+import {useNavContext} from '../../../context/bottomNav';
 
 export type answersType = {
   id: string;
@@ -92,6 +97,8 @@ const PracticeQuestion = ({route}: {route: any}) => {
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
 
   const [direction, setDirection] = useState<string | null>(null);
+
+  const {setShowNavigation} = useNavContext();
 
   const refIndex = useRef(0);
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
@@ -189,6 +196,7 @@ const PracticeQuestion = ({route}: {route: any}) => {
 
   useEffect(() => {
     setStartTimer(true);
+    setShowNavigation(false);
   }, []);
 
   const scrollToIndex = () => {
@@ -354,6 +362,7 @@ const PracticeQuestion = ({route}: {route: any}) => {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 0,
+    zIndex: 100,
   },
   scrollContent: {
     paddingBottom: 65,

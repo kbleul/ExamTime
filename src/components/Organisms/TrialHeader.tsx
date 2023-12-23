@@ -44,13 +44,10 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
   }, []);
 
   return (
-    <View
-      style={
-        user
-          ? HeaderStyle.container
-          : [HeaderStyle.container, HeaderStyle.containerSecondary]
-      }>
-      {user && <Text style={HeaderStyle.nameText}>Hi, {user.firstName}</Text>}
+    <View style={HeaderStyle.container}>
+      <Text style={HeaderStyle.nameText}>
+        {user ? 'Hi, ' + user.firstName : 'Welcome'}
+      </Text>
 
       <View style={HeaderStyle.container}>
         {trialDayCounter !== null && !isSubscribed && (

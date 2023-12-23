@@ -96,7 +96,7 @@ const ChosenCourses = ({
           </View>
 
           <FlatList
-            keyExtractor={item => item.id}
+            keyExtractor={(item, index) => item.id + 'other' + index}
             data={[
               ...savedGrades,
               {id: 'drivingLicenseId', grade: 'Driving Licence'},

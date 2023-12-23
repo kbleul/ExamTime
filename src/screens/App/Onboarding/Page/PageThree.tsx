@@ -16,11 +16,14 @@ import {getSubjectsMutation} from './logic';
 import Loading from '../../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
 import {Subject} from '../../../../Realm';
+import {useOnboardingContext} from '../../../../context/onboarding';
 
 const PageThree: React.FC<PagesCounterType> = ({
   pageCounter,
   setPageCounter,
 }) => {
+  const {setShowOnboarding} = useOnboardingContext();
+
   const {useRealm, useQuery} = AuthContext;
 
   const realm = useRealm();
@@ -115,6 +118,7 @@ const PageThree: React.FC<PagesCounterType> = ({
                         selectedSubjects ? [...selectedSubjects] : [],
                         navigator,
                         setIsLoadingSubjects,
+                        setShowOnboarding,
                       )
                     }
                     isActive={!IsLoadingSubjects}

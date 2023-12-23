@@ -1,16 +1,25 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import StepIndicator from '../../../components/Molecules/StepIndicator';
 import ContentDispatcher from './ContentDispatcher';
+import {useNavContext} from '../../../context/bottomNav';
 
 export default function Signup() {
   const navigator = useNavigation<any>();
+  const {setShowNavigation} = useNavContext();
 
   const [currentStep, setCurrentStep] = useState(1);
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(false);
+      console.log('Component is focused');
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.container}>

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Image, ImageBackground, Text, TouchableOpacity} from 'react-native';
 import {StyleSheet, View} from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileEdit from '../../../components/Organisms/ProfileEdit';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
@@ -62,7 +61,6 @@ const ProfileEditIndex = () => {
 
       <ProfileEdit avatar={avatar} />
 
-      <MainBottomNav />
     </View>
   );
 };

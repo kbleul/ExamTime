@@ -8,12 +8,14 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
+import {useNavContext} from '../../context/bottomNav';
 //import badgeImg from '../../assets/Images/Profile/1.png';
 
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const navigator = useNavigation<any>();
-  console.log('======', user?.profilePicture);
+  const {setShowNavigation} = useNavContext();
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -61,13 +63,19 @@ const ProfileContent = () => {
             <TouchableOpacity
               style={styles.adsBtns}
               touchSoundDisabled
-              onPress={() => navigator.navigate('Signup')}>
+              onPress={() => {
+                setShowNavigation(false);
+                navigator.navigate('Signup');
+              }}>
               <Text style={styles.adsBtnsText}>Signup</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.adsBtns, styles.adsBtns_secondary]}
               touchSoundDisabled
-              onPress={() => navigator.navigate('Login')}>
+              onPress={() => {
+                setShowNavigation(false);
+                navigator.navigate('Login');
+              }}>
               <Text style={styles.adsBtnsText}>Login</Text>
             </TouchableOpacity>
           </View>
@@ -87,7 +95,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: '30@vs',
     borderTopRightRadius: '30@vs',
-    height: '70%',
+    height: '75%',
     width: '100%',
     backgroundColor: '#F5F5F5',
     overflow: 'hidden',

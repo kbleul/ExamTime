@@ -150,8 +150,9 @@ export const styles = StyleSheet.create({
     maxHeight: 220,
   },
   containerSecondary: {
-    height: screenHeight * (1 / 4.5),
+    height: screenHeight * (1 / 3.8),
     width: screenWidth * (1 / 3),
+    maxHeight: 220,
     overflow: 'hidden',
   },
   containerLoading: {
@@ -164,8 +165,9 @@ export const styles = StyleSheet.create({
     maxHeight: 220,
   },
   containerSecondaryLoading: {
-    height: screenHeight * (1 / 4.5),
+    height: screenHeight * (1 / 3.8),
     width: screenWidth * (1 / 3),
+    maxHeight: 220,
     overflow: 'hidden',
   },
   imageBg: {
