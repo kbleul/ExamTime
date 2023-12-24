@@ -36,7 +36,6 @@ const Index = () => {
         const response: any = await getAboutUs({});
 
         if (response.data[0]) {
-          console.log(response.data[0]);
           setAboutUS(response.data[0].aboutUs);
         } else {
           Toast.show({
@@ -86,9 +85,6 @@ const Index = () => {
                   style={styles.img}
                 />
               </View>
-              <View style={styles.share}>
-                <ShareApp />
-              </View>
             </>
           )}
         </ScrollView>
@@ -120,8 +116,8 @@ const styles = ScaledSheet.create({
   },
 
   imageBg: {
-    height: '25%',
-    width: '70%',
+    height: '20%',
+    width: '60%',
     marginLeft: '15%',
     justifyContent: 'center',
     alignItems: 'center',

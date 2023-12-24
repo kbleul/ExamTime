@@ -98,7 +98,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             avatar,
           });
 
-          console.log(profileUpdateResult.data.profilePicture);
           if (profileUpdateResult?.data && user) {
             const newUser = {
               ...user,

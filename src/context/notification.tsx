@@ -73,8 +73,6 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
             notificationId: id,
           }).unwrap();
 
-          console.log('DELETE response updaee ', response);
-
           if (response?.message) {
             setNotifications([
               ...notifications?.filter(notfItem => notfItem.id !== id),

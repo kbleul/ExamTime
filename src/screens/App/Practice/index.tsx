@@ -57,7 +57,6 @@ const Practice = () => {
   useFocusEffect(
     useCallback(() => {
       setShowNavigation(true);
-      console.log('Component is focused');
     }, []),
   );
 
@@ -102,6 +101,7 @@ const Practice = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
+    paddingTop: screenHeight * 0.06,
   },
   ScrollView: {
     flex: 1,

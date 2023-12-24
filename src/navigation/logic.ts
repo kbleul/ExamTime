@@ -25,7 +25,6 @@ export const checkUserStatus = (
     */
 
   if (savedUserData && savedUserData[0]) {
-    console.log('==================');
     setShowOnboarding(false);
     if (!savedUserData[0].user && !savedUserData[0].isSubscribed) {
       // realm.write(() => {

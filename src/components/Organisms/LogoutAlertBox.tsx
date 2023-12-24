@@ -24,6 +24,8 @@ const LogoutAlertBox: React.FC<{
   const handleLogout = () => {
     dispatch(logoutSuccess());
     removeRealmUserData(realm, savedUserData);
+    setShowLogoutDialog(false);
+
     navigator.navigate('HomeSection');
   };
   return (

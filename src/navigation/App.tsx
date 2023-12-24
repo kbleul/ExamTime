@@ -38,7 +38,6 @@ import Notification from '../screens/App/Notification';
 import NotificationProvider from '../context/notification';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -51,18 +50,11 @@ import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
 import {useOnboardingContext} from '../context/onboarding';
 
-const HomeStackScreens = ({showOnboarding}: {showOnboarding: boolean}) => {
+const HomeStackScreens = () => {
   const StudyStack = createStackNavigator();
 
   return (
     <StudyStack.Navigator>
-      {showOnboarding && (
-        <StudyStack.Screen
-          name="Onboarding"
-          component={Onboarding}
-          options={{headerShown: false}}
-        />
-      )}
       <StudyStack.Screen
         name="Home"
         component={Home}
@@ -692,7 +684,6 @@ const AppRoutes = ({Stack}: {Stack: any}) => {
   const {showOnboarding} = useOnboardingContext();
 
   const navigator: any = useNavigation();
-  console.log('------------------', showOnboarding);
 
   return (
     <NotificationProvider>
@@ -709,8 +700,9 @@ const AppRoutes = ({Stack}: {Stack: any}) => {
             }}>
             <Tab.Screen
               name="HomeSection"
+              component={HomeStackScreens}
               options={({route}) => ({
-                tabBarIcon: ({focused}) => (
+                tabBarIcon: ({color, size, focused}) => (
                   <>
                     <View
                       style={
@@ -735,21 +727,9 @@ const AppRoutes = ({Stack}: {Stack: any}) => {
                   </>
                 ),
                 unmountOnBlur: route.name !== 'HomeSection', // Unmount nested screens when tab is not focused
-                tabBarButton: props => (
-                  <TouchableOpacity
-                    {...props}
-                    onPress={() => {
-                      // Your custom function to run when the HomeSection tab is pressed
-                      console.log('Profile tab pressed with route:', route);
-                      // navigator.navigate('HomeSection', {
-                      //   screen: 'Home',
-                      // });
-                    }}
-                  />
-                ),
-              })}>
-              {() => <HomeStackScreens showOnboarding={showOnboarding} />}
-            </Tab.Screen>
+              })}
+            />
+
             <Tab.Screen
               name="Study"
               component={StudyStackScreens}
@@ -780,13 +760,6 @@ const AppRoutes = ({Stack}: {Stack: any}) => {
                 ),
                 unmountOnBlur: route.name !== 'Study', // Unmount nested screens when tab is not focused
               })}
-              // listeners={({navigation, route}) => ({
-              //   tabPress: e => {
-              //     // Your custom function to run when the Study tab is pressed
-              //     navigator.navigate('StudySection');
-              //     console.log('Study tab pressed with route:', route);
-              //   },
-              // })}
             />
 
             <Tab.Screen
@@ -834,8 +807,8 @@ const AppRoutes = ({Stack}: {Stack: any}) => {
                             [style.button, style.buttonSelected]
                           : style.button
                       }>
-                      <AntDesign
-                        name="setting"
+                      <MaterialCommunityIcons
+                        name="progress-clock"
                         size={screenWidth * 0.06}
                         style={
                           focused
@@ -870,8 +843,8 @@ const AppRoutes = ({Stack}: {Stack: any}) => {
                             [style.button, style.buttonSelected]
                           : style.button
                       }>
-                      <MaterialCommunityIcons
-                        name="progress-clock"
+                      <AntDesign
+                        name="setting"
                         size={screenWidth * 0.06}
                         style={
                           focused
@@ -894,8 +867,6 @@ const AppRoutes = ({Stack}: {Stack: any}) => {
                   <TouchableOpacity
                     {...props}
                     onPress={() => {
-                      // Your custom function to run when the HomeSection tab is pressed
-                      console.log('Profile tab pressed with route:', route);
                       navigator.navigate('ProfileSection', {
                         screen: 'Profile',
                       });

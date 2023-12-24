@@ -22,7 +22,6 @@ export default function Login() {
   useFocusEffect(
     useCallback(() => {
       setShowNavigation(false);
-      console.log('Component is focused');
     }, []),
   );
 

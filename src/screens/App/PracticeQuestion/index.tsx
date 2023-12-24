@@ -16,11 +16,7 @@ import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
 import {examQuestionType} from '../../../types';
-import {
-  getFocusedRouteNameFromRoute,
-  useNavigation,
-  useNavigationState,
-} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 import DirectionModal from '../../../components/Organisms/DirectionModal';
 import {AuthContext} from '../../../Realm/model';
 import {Exam} from '../../../Realm';
@@ -243,8 +239,12 @@ const PracticeQuestion = ({route}: {route: any}) => {
     <SafeAreaView
       style={
         showFullPage
-          ? [IndexStyle.container, styles.container]
-          : IndexStyle.container
+          ? [
+              IndexStyle.container,
+              styles.container,
+              exitExamModalVisible && styles.overlay,
+            ]
+          : [IndexStyle.container, exitExamModalVisible && styles.overlay]
       }>
       {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
@@ -324,13 +324,6 @@ const PracticeQuestion = ({route}: {route: any}) => {
           />
         </View>
       )}
-      <ExamNavigateButtons
-        setExitExamModalVisible={setExitExamModalVisible}
-        showFullPage={showFullPage}
-        currentQuestion={currentQuestion}
-        setCurrentQuestion={setCurrentQuestion}
-        totalQuestionsLength={currentViewExam.length}
-      />
 
       <ExamLeaveModal
         exitExamModalVisible={exitExamModalVisible}
@@ -354,6 +347,14 @@ const PracticeQuestion = ({route}: {route: any}) => {
         }
       />
 
+      <ExamNavigateButtons
+        setExitExamModalVisible={setExitExamModalVisible}
+        showFullPage={showFullPage}
+        currentQuestion={currentQuestion}
+        setCurrentQuestion={setCurrentQuestion}
+        totalQuestionsLength={currentViewExam.length}
+      />
+
       <DirectionModal direction={direction} setDirection={setDirection} />
     </SafeAreaView>
   );
@@ -363,6 +364,12 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 0,
     zIndex: 100,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the opacity as needed
+    flex: 1,
+    position: 'absolute',
   },
   scrollContent: {
     paddingBottom: 65,

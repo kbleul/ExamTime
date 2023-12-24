@@ -73,7 +73,6 @@ const History = () => {
   useFocusEffect(
     useCallback(() => {
       setShowNavigation(true);
-      console.log('Component is focused');
     }, []),
   );
 

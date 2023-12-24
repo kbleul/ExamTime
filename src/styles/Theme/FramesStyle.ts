@@ -37,6 +37,13 @@ export const frameOnestyles = StyleSheet.create({
     height: screenHeight / 7,
     borderRadius: 20,
     overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rightBoxImage: {
+    width: '80%',
+    height: '80%',
+    borderRadius: 20,
   },
 });
 
@@ -76,7 +83,6 @@ export const frameTwostyles = StyleSheet.create({
   firstText: {
     fontSize: screenWidth * 0.05,
     fontFamily: 'PoppinsMedium',
-    marginBottom: 5,
     color: 'white',
   },
   secondText: {

@@ -197,8 +197,6 @@ export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
       path: `${RNFetchBlob.fs.dirs.DocumentDir}/pdfs/${Date.now()}`,
     }).fetch('GET', pdfItem.pdfDocument);
 
-    console.log('PDF file downloaded and saved:', response.path());
-
     const filePath = response.path();
 
     let pdfObject = null;

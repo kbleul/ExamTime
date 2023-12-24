@@ -27,7 +27,6 @@ const Index = () => {
   useFocusEffect(
     useCallback(() => {
       setShowNavigation(true);
-      console.log('Component is focused');
     }, []),
   );
 
@@ -69,6 +68,7 @@ const syncStyle = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     position: 'absolute',
+    paddingTop: 30,
     paddingBottom: 140,
     backgroundColor: '#fff',
     zIndex: 10,

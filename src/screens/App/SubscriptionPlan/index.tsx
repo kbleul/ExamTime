@@ -92,11 +92,9 @@ const Index: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
+      <View style={styles.scrollContainer}>
         <View style={styles.backicon}>
-          <BackWithItem type="SubscriptionPlan" isTrial={user ? false : true} />
+          <BackWithItem type="SubscriptionPlan" isTrial={false} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>
@@ -108,7 +106,7 @@ const Index: React.FC = () => {
         <View style={styles.HorizontalList}>
           <SubscriptionPlanCards data={data} pagination={true} />
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };

@@ -98,18 +98,21 @@ export const FrameOne = () => {
         </Text>
       </View>
 
-      <Image
-        source={
-          user && user.profilePicture
-            ? {
-                uri: user.profilePicture.includes('https://')
-                  ? user.profilePicture
-                  : `${Config.API_URL}profile-pictures/` + user.profilePicture,
-              }
-            : logoImg
-        }
-        style={frameOnestyles.rightBoxContainer}
-      />
+      <View style={frameOnestyles.rightBoxContainer}>
+        <Image
+          source={
+            user && user.profilePicture
+              ? {
+                  uri: user.profilePicture.includes('https://')
+                    ? user.profilePicture
+                    : `${Config.API_URL}profile-pictures/` +
+                      user.profilePicture,
+                }
+              : logoImg
+          }
+          style={frameOnestyles.rightBoxImage}
+        />
+      </View>
     </ImageBackground>
   );
 };

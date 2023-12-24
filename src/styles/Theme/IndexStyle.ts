@@ -5,6 +5,7 @@ export const IndexStyle = StyleSheet.create({
   container: {
     flex: screenHeight,
     width: '100%',
+    paddingTop: screenHeight * 0.02,
     padding: 5,
     backgroundColor: '#F9FCFF',
   },

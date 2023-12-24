@@ -139,7 +139,6 @@ const Index = () => {
   useFocusEffect(
     useCallback(() => {
       setShowNavigation(true);
-      console.log('Component is focused');
     }, []),
   );
 
@@ -217,7 +216,7 @@ const styles = ScaledSheet.create({
     width: screenWidth,
     backgroundColor: '#F9FCFF',
     paddingTop: 40,
-    paddingBottom: 20,
+    paddingBottom: screenHeight * 0.048,
     // backgroundColor: 'red',
   },
   loading: {

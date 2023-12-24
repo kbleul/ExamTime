@@ -7,7 +7,7 @@ import {Grade, Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
-import {screenHeight} from '../../../utils/Data/data';
+import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
@@ -43,7 +43,7 @@ const ChosenCourses = ({
 
   setTimeout(() => {
     setIsLoadingSubjects(false);
-  }, 500);
+  }, 2300);
 
   const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
@@ -55,7 +55,7 @@ const ChosenCourses = ({
             bgImage={{uri: item.icon}}
             setLoginModalVisible={setLoginModalVisible}
             isLoadingSubjects={isLoadingSubjects}
-            timerValue={(index + 1) * 200}
+            timerValue={(index + 1) * 400}
           />
         )}
       </View>
@@ -70,11 +70,19 @@ const ChosenCourses = ({
     );
   };
 
+  const renderItemLoading = () => {
+    return (
+      <View
+        style={[styles.containerLoading, styles.containerSecondaryLoading]}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Header title="My learning" subTitle="Your Chosen Courses" seeAll />
 
-      {subjectsArray && subjectsArray.length > 0 && (
+      {!isLoadingSubjects && subjectsArray && subjectsArray.length > 0 && (
         <FlatList
           keyExtractor={(item, index) => item.id + 'my-course' + index}
           data={PushFavorateToFront(
@@ -89,7 +97,17 @@ const ChosenCourses = ({
         />
       )}
 
-      {!isLoadingSubjects && savedGrades && savedGrades.length > 0 && (
+      {isLoadingSubjects && (
+        <FlatList
+          keyExtractor={(item, index) => 'my-course-loading' + index}
+          data={Array.from({length: 6})}
+          renderItem={renderItemLoading}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
+
+      {savedGrades && savedGrades.length > 0 && (
         <>
           <View style={styles.subContainer}>
             <Header title="Other Courses" />
@@ -116,6 +134,21 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     marginTop: screenHeight * 0.01,
+  },
+  containerLoading: {
+    backgroundColor: '#f5f2f2',
+    height: screenHeight * (1 / 3.8),
+    width: screenWidth * (1 / 2.6),
+    marginHorizontal: 5,
+    borderRadius: 15,
+    overflow: 'hidden',
+    maxHeight: 220,
+  },
+  containerSecondaryLoading: {
+    height: screenHeight * (1 / 3.8),
+    width: screenWidth * (1 / 3),
+    maxHeight: 220,
+    overflow: 'hidden',
   },
 });
 
