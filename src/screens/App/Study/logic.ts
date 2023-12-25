@@ -1,5 +1,5 @@
 import {NavigationProp} from '@react-navigation/native';
-// import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
@@ -17,11 +17,12 @@ export const getAllStudies = async (
 ) => {
   if (token) {
     checkIsOnline(navigator);
-
+    console.log('4444444444444444444444444444444444444');
     try {
       const response = await getStudy({
         token,
       }).unwrap();
+      console.log(response);
       saveStudyToRealm(realm, response.studies, Toast);
     } catch (error) {
       if (
@@ -139,8 +140,9 @@ export const saveStudyToRealm = async (
 
             videoObjArr.push(videoObject);
           });
-
+          console.log('herrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeee');
           await savePdfs(pdf, pdfObjArr, realm).then(() => {
+            console.log('++++++++++++++++++', pdfObjArr);
             realm.write(() => {
               try {
                 realm.create(LocalObjectDataKeys.Study, {
@@ -185,42 +187,117 @@ const savePdfs = async (
 ) => {
   for (const pdfItem of pdf) {
     const pdfObject = await downloadAndCreatePDF(pdfItem, realm);
+    console.log('---00000000000000000000000009999999999999', pdfObject);
+
     pdfObject && pdfObjArr.push(pdfObject);
   }
+
+  return pdfObjArr;
 };
 
 export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
+  const pdfUrl = pdfItem.pdfDocument;
+
+  const fileName = `pdf_${Date.now()}.pdf`;
+
+  const directoryPath = `${RNFS.DocumentDirectoryPath}/pdfs`;
+
+  const filePath = `${directoryPath}/${fileName}`;
+
+  const downloadOptions = {
+    fromUrl: pdfUrl,
+    toFile: filePath,
+  };
+
   try {
-    const response = await RNFetchBlob.config({
-      fileCache: true,
-      appendExt: 'pdf',
-      path: `${RNFetchBlob.fs.dirs.DocumentDir}/pdfs/${Date.now()}`,
-    }).fetch('GET', pdfItem.pdfDocument);
+    console.log('================');
 
-    console.log('PDF file downloaded and saved:', response.path());
+    return RNFS.mkdir(directoryPath)
+      .then(() => RNFS.downloadFile(downloadOptions))
+      .then((response: any) => {
+        console.log(response);
 
-    const filePath = response.path();
+        console.log('Downloaded PDF path:', filePath);
 
-    let pdfObject = null;
+        let pdfObject = null;
 
-    realm.write(() => {
-      try {
-        pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
-          id: pdfItem.id,
-          pdfDocument: filePath,
-          isViewed: false,
+        realm.write(() => {
+          try {
+            pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
+              id: pdfItem.id,
+              pdfDocument: filePath,
+              isViewed: false,
+            });
+
+            console.log('pdfObject', pdfObject);
+          } catch (e) {
+            console.log('Error saving pdf file ', e);
+          }
         });
-      } catch (e) {
-        console.log('Error saving pdf file ', e);
-      }
-    });
 
-    return pdfObject;
+        return pdfObject;
+      })
+      .catch(error => {
+        // Handle download error
+        console.error('Error downloading PDF:', error);
+      });
   } catch (error) {
     console.error('Error downloading PDF file:', error);
     return null;
   }
 };
+
+// export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
+//   const pdfUrl = pdfItem.pdfDocument;
+
+//   const fileName = `pdf_${Date.now()}.pdf`;
+
+//   const directoryPath = `${RNFS.DocumentDirectoryPath}/pdfs`;
+
+//   const filePath = `${directoryPath}/${fileName}`;
+
+//   const downloadOptions = {
+//     fromUrl: pdfUrl,
+//     toFile: filePath,
+//   };
+
+//   try {
+//     console.log('================');
+
+//     RNFS.mkdir(directoryPath)
+//       .then(() => RNFS.downloadFile(downloadOptions))
+//       .then((response: any) => {
+//         console.log(response);
+
+//         console.log('Downloaded PDF path:', filePath);
+
+//         let pdfObject = null;
+
+//         realm.write(() => {
+//           try {
+//             pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
+//               id: pdfItem.id,
+//               pdfDocument: filePath,
+//               isViewed: false,
+//             });
+
+//             console.log('pdfObject', pdfObject);
+//           } catch (e) {
+//             console.log('Error saving pdf file ', e);
+//           }
+//         });
+
+//         return pdfObject;
+//       })
+//       .catch(error => {
+//         // Handle download error
+//         console.error('Error downloading PDF:', error);
+//       });
+//   } catch (error) {
+//     console.error('Error downloading PDF file:', error);
+//     return null;
+//   }
+// };
 
 export const getSections = (studies: ResultsType<Study>) => {
   const sections: string[] = [];
