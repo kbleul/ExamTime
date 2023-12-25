@@ -90,7 +90,6 @@ const Index = () => {
           </View>
         </ScrollView>
       )}
-
       <MainBottomNav />
       <Toast />
     </View>

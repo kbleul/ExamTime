@@ -1,7 +1,5 @@
 import {NavigationProp} from '@react-navigation/native';
 import RNFS from 'react-native-fs';
-import RNFetchBlob from 'rn-fetch-blob';
-
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
