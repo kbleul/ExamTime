@@ -10,15 +10,16 @@
 		00E356F31AD99517003FC87E /* ExamTimeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ExamTimeTests.m */; };
 		02650D35743E4A678B60D26D /* PoppinsSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 432225C3060749BBAEDBE95C /* PoppinsSemiBold.ttf */; };
 		0371D694C3B44D3C81C9CC72 /* PoppinsExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9C1E81EDC09441A8351A991 /* PoppinsExtraBold.ttf */; };
-		0EBAC52C68EA4F8EFEF983F7 /* libPods-ExamTime-ExamTimeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 653B726285170C30BDEF45AD /* libPods-ExamTime-ExamTimeTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		180F397D2B35992F00141A22 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = CBE412ED2AFB66F30058C057 /* Fonts */; };
 		48EF87A2E27D4FD8953E2400 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 73EDAC69A4354309AACB3377 /* Montserrat-SemiBold.ttf */; };
+		56FEA545AC5899125915091C /* libPods-ExamTime-ExamTimeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 622EA8936B55C566EED83371 /* libPods-ExamTime-ExamTimeTests.a */; };
+		7EDB2F5895422E0A568B0275 /* libPods-ExamTime.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4F38E6C9AB3D19EF3977A68 /* libPods-ExamTime.a */; };
 		80191B8EF8FE4A6DB959A705 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CBC4A21A949E4B67B2035F8A /* Montserrat-Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B7FDC1D2F59145E696F9B3A3 /* PoppinsBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CA61BDFDB78434089B1F267 /* PoppinsBold.ttf */; };
-		C6AC0F28F5328932AE12088C /* libPods-ExamTime.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05B44D1062957A41CC82CA98 /* libPods-ExamTime.a */; };
 		C6FA0B426DB24319A27326E6 /* PoppinsLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 30845BF3713E4E5E81A37ED6 /* PoppinsLight.ttf */; };
 		DF590CB38341400E8EF13FC5 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 235E71DB52654C858DF01BF3 /* Montserrat-Bold.ttf */; };
 		E4B55F1C32A745FBB1354E05 /* PoppinsMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 569D72110D414E5199143092 /* PoppinsMedium.ttf */; };
@@ -39,9 +40,8 @@
 		00E356EE1AD99517003FC87E /* ExamTimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExamTimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ExamTimeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamTimeTests.m; sourceTree = "<group>"; };
-		05B44D1062957A41CC82CA98 /* libPods-ExamTime.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExamTime.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0980B9FCA4B8FD720AC025DD /* Pods-ExamTime.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamTime.release.xcconfig"; path = "Target Support Files/Pods-ExamTime/Pods-ExamTime.release.xcconfig"; sourceTree = "<group>"; };
 		111C8D1C0BF44A6E9EDA22B5 /* PoppinsRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsRegular.ttf; path = ../src/assets/Fonts/PoppinsRegular.ttf; sourceTree = "<group>"; };
+		11600715A226F7694F88818A /* Pods-ExamTime-ExamTimeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamTime-ExamTimeTests.debug.xcconfig"; path = "Target Support Files/Pods-ExamTime-ExamTimeTests/Pods-ExamTime-ExamTimeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ExamTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExamTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ExamTime/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = ExamTime/AppDelegate.mm; sourceTree = "<group>"; };
@@ -50,18 +50,19 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ExamTime/main.m; sourceTree = "<group>"; };
 		1CA61BDFDB78434089B1F267 /* PoppinsBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsBold.ttf; path = ../src/assets/Fonts/PoppinsBold.ttf; sourceTree = "<group>"; };
 		235E71DB52654C858DF01BF3 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/Fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
-		2528DBFF0B5C436633BA7F28 /* Pods-ExamTime-ExamTimeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamTime-ExamTimeTests.release.xcconfig"; path = "Target Support Files/Pods-ExamTime-ExamTimeTests/Pods-ExamTime-ExamTimeTests.release.xcconfig"; sourceTree = "<group>"; };
-		2EC3A8F21288A4145E83E4E1 /* Pods-ExamTime.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamTime.debug.xcconfig"; path = "Target Support Files/Pods-ExamTime/Pods-ExamTime.debug.xcconfig"; sourceTree = "<group>"; };
 		30845BF3713E4E5E81A37ED6 /* PoppinsLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsLight.ttf; path = ../src/assets/Fonts/PoppinsLight.ttf; sourceTree = "<group>"; };
-		3260313CCE76E00D1D04C47D /* Pods-ExamTime-ExamTimeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamTime-ExamTimeTests.debug.xcconfig"; path = "Target Support Files/Pods-ExamTime-ExamTimeTests/Pods-ExamTime-ExamTimeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		432225C3060749BBAEDBE95C /* PoppinsSemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsSemiBold.ttf; path = ../src/assets/Fonts/PoppinsSemiBold.ttf; sourceTree = "<group>"; };
 		569D72110D414E5199143092 /* PoppinsMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsMedium.ttf; path = ../src/assets/Fonts/PoppinsMedium.ttf; sourceTree = "<group>"; };
-		653B726285170C30BDEF45AD /* libPods-ExamTime-ExamTimeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExamTime-ExamTimeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		622EA8936B55C566EED83371 /* libPods-ExamTime-ExamTimeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExamTime-ExamTimeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73EDAC69A4354309AACB3377 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../src/assets/Fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ExamTime/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8BCDB85ACEC24929C988BDF5 /* Pods-ExamTime.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamTime.release.xcconfig"; path = "Target Support Files/Pods-ExamTime/Pods-ExamTime.release.xcconfig"; sourceTree = "<group>"; };
+		C9D75FA2DCB18767B1420AD1 /* Pods-ExamTime.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamTime.debug.xcconfig"; path = "Target Support Files/Pods-ExamTime/Pods-ExamTime.debug.xcconfig"; sourceTree = "<group>"; };
 		CBC4A21A949E4B67B2035F8A /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../src/assets/Fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		CBE412ED2AFB66F30058C057 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = ../../../Desktop/Fonts; sourceTree = "<group>"; };
+		CBE412ED2AFB66F30058C057 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
 		D9C1E81EDC09441A8351A991 /* PoppinsExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsExtraBold.ttf; path = ../src/assets/Fonts/PoppinsExtraBold.ttf; sourceTree = "<group>"; };
+		E4F38E6C9AB3D19EF3977A68 /* libPods-ExamTime.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ExamTime.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E728CC35B15E84949A03A6BD /* Pods-ExamTime-ExamTimeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamTime-ExamTimeTests.release.xcconfig"; path = "Target Support Files/Pods-ExamTime-ExamTimeTests/Pods-ExamTime-ExamTimeTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -70,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EBAC52C68EA4F8EFEF983F7 /* libPods-ExamTime-ExamTimeTests.a in Frameworks */,
+				56FEA545AC5899125915091C /* libPods-ExamTime-ExamTimeTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,7 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6AC0F28F5328932AE12088C /* libPods-ExamTime.a in Frameworks */,
+				7EDB2F5895422E0A568B0275 /* libPods-ExamTime.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,8 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				05B44D1062957A41CC82CA98 /* libPods-ExamTime.a */,
-				653B726285170C30BDEF45AD /* libPods-ExamTime-ExamTimeTests.a */,
+				E4F38E6C9AB3D19EF3977A68 /* libPods-ExamTime.a */,
+				622EA8936B55C566EED83371 /* libPods-ExamTime-ExamTimeTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -161,10 +162,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2EC3A8F21288A4145E83E4E1 /* Pods-ExamTime.debug.xcconfig */,
-				0980B9FCA4B8FD720AC025DD /* Pods-ExamTime.release.xcconfig */,
-				3260313CCE76E00D1D04C47D /* Pods-ExamTime-ExamTimeTests.debug.xcconfig */,
-				2528DBFF0B5C436633BA7F28 /* Pods-ExamTime-ExamTimeTests.release.xcconfig */,
+				C9D75FA2DCB18767B1420AD1 /* Pods-ExamTime.debug.xcconfig */,
+				8BCDB85ACEC24929C988BDF5 /* Pods-ExamTime.release.xcconfig */,
+				11600715A226F7694F88818A /* Pods-ExamTime-ExamTimeTests.debug.xcconfig */,
+				E728CC35B15E84949A03A6BD /* Pods-ExamTime-ExamTimeTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -237,7 +238,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -282,6 +284,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				DF590CB38341400E8EF13FC5 /* Montserrat-Bold.ttf in Resources */,
+				180F397D2B35992F00141A22 /* Fonts in Resources */,
 				80191B8EF8FE4A6DB959A705 /* Montserrat-Regular.ttf in Resources */,
 				48EF87A2E27D4FD8953E2400 /* Montserrat-SemiBold.ttf in Resources */,
 				B7FDC1D2F59145E696F9B3A3 /* PoppinsBold.ttf in Resources */,
@@ -476,15 +479,16 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3260313CCE76E00D1D04C47D /* Pods-ExamTime-ExamTimeTests.debug.xcconfig */;
+			baseConfigurationReference = 11600715A226F7694F88818A /* Pods-ExamTime-ExamTimeTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = TM7H9CCXTK;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = ExamTimeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -503,12 +507,13 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2528DBFF0B5C436633BA7F28 /* Pods-ExamTime-ExamTimeTests.release.xcconfig */;
+			baseConfigurationReference = E728CC35B15E84949A03A6BD /* Pods-ExamTime-ExamTimeTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = TM7H9CCXTK;
 				INFOPLIST_FILE = ExamTimeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -527,22 +532,26 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EC3A8F21288A4145E83E4E1 /* Pods-ExamTime.debug.xcconfig */;
+			baseConfigurationReference = C9D75FA2DCB18767B1420AD1 /* Pods-ExamTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TM7H9CCXTK;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				INFOPLIST_FILE = ExamTime/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Exam TIme";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -558,21 +567,25 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0980B9FCA4B8FD720AC025DD /* Pods-ExamTime.release.xcconfig */;
+			baseConfigurationReference = 8BCDB85ACEC24929C988BDF5 /* Pods-ExamTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TM7H9CCXTK;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				INFOPLIST_FILE = ExamTime/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Exam TIme";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -589,8 +602,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -618,6 +632,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -634,7 +649,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -653,8 +668,14 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Wl",
+					"-ld_classic",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -662,8 +683,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -691,6 +713,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -700,7 +723,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -718,8 +741,14 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Wl",
+					"-ld_classic",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

@@ -12,7 +12,7 @@ import {
   usePostExamResultsMutation,
 } from '../reduxToolkit/Services/auth';
 import {answersType} from '../screens/App/PracticeQuestion';
-import {getAllStudies} from '../screens/App/Study/logic';
+// import {getAllStudies} from '../screens/App/Study/logic';
 import {useNavigation} from '@react-navigation/native';
 import {getExamAnswersFromDB} from './logic';
 
@@ -124,9 +124,9 @@ const useHandleInitialRequests = (
       // if (nextAppState === 'background' || nextAppState === 'inactive') {
       const isConnected = await checkIsOnline();
       if (isConnected) {
-        if (!savedStudies || savedStudies.length === 0) {
-          getAllStudies(getStudy, navigation, token, realm, Toast);
-        }
+        // if (!savedStudies || savedStudies.length === 0) {
+        //   getAllStudies(getStudy, navigation, token, realm, Toast);
+        // }
 
         if (savedTakenExams.length > 0) {
           // Perform data sync with the database

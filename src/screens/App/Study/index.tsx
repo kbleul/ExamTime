@@ -169,7 +169,6 @@ const Index = () => {
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
       />
-
       <MainBottomNav />
       <LoginModal
         loginModalVisible={loginModalVisible}
