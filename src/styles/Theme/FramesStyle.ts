@@ -41,8 +41,8 @@ export const frameOnestyles = StyleSheet.create({
     alignItems: 'center',
   },
   rightBoxImage: {
-    width: '80%',
-    height: '80%',
+    width: '78%',
+    height: '76%',
     borderRadius: 20,
   },
 });

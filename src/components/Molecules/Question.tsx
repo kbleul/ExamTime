@@ -80,17 +80,38 @@ const Question: React.FC<{
                 ? [styles.questionContainer, styles.questionContainerFullpage]
                 : styles.questionContainer
             }>
+            <Text style={styles.counterTitle}>
+              Question {questionCounter}/{total}
+            </Text>
+
             <View style={styles.counterContainer}>
-              <Text style={styles.counterTitle}>
-                Question {questionCounter}/{total}
-              </Text>
               {question.description &&
                 question.description !== 'no-description' && (
                   <TouchableOpacity
                     touchSoundDisabled
                     style={styles.readParagraphBtn}
                     onPress={() => setDirection(question.description)}>
-                    <Text style={styles.readParagraphText}>Directions</Text>
+                    <Text style={styles.readParagraphText}>Explanation</Text>
+                  </TouchableOpacity>
+                )}
+
+              {question.metadata &&
+                question.metadata !== '' &&
+                question.metadata !== ' ' && (
+                  <TouchableOpacity
+                    touchSoundDisabled
+                    style={[
+                      styles.readParagraphBtn,
+                      styles.readParagraphBtnSecondary,
+                    ]}
+                    onPress={() => setDirection(question.metadata)}>
+                    <Text
+                      style={[
+                        styles.readParagraphText,
+                        styles.readParagraphTextSecondary,
+                      ]}>
+                      Directions
+                    </Text>
                   </TouchableOpacity>
                 )}
             </View>
@@ -344,9 +365,11 @@ const styles = StyleSheet.create({
   },
   counterContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 10,
+    gap: 20,
+    marginTop: 20,
   },
   counterTitle: {
     fontSize: 18,
@@ -377,6 +400,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderColor: '#F5A52D',
   },
+  readParagraphBtnSecondary: {
+    borderColor: '#45baf5',
+  },
   readParagraphText: {
     fontSize: 12,
     fontFamily: 'PoppinsSemiBold',
@@ -385,6 +411,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingTop: 6,
     paddingBottom: 4,
+  },
+  readParagraphTextSecondary: {
+    color: '#45baf5',
   },
   questionImageContainer: {
     width: '80%',

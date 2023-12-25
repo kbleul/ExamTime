@@ -172,7 +172,7 @@ export const FrameThree: React.FC<{
           style={frameThreestyles.adsBtns}
           touchSoundDisabled
           onPress={() => {
-            setShowNavigation(false);
+            !issubscribe && setShowNavigation(false);
             !issubscribe && navigator.navigate('Login');
           }}>
           <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>

@@ -58,23 +58,12 @@ const ChosenCoursesCard: React.FC<{
     <>
       {isLoadingSVG ||
         (isLoadingSubjects && (
-          <TouchableOpacity
+          <View
             style={
               subjectId !== undefined
                 ? styles.containerLoading
                 : [styles.containerLoading, styles.containerSecondaryLoading]
             }
-            onPress={() => {
-              if (!user || !token) {
-                setLoginModalVisible && setLoginModalVisible(true);
-                return;
-              }
-
-              savedStudies.length > 0 &&
-                navigator.navigate('StudyDetails', {
-                  subject: subject,
-                });
-            }}
           />
         ))}
 
@@ -91,10 +80,10 @@ const ChosenCoursesCard: React.FC<{
               return;
             }
 
-            savedStudies.length > 0 &&
-              navigator.navigate('StudyDetails', {
-                subject: subject,
-              });
+            navigator.navigate('Study', {
+              screen: 'StudyDetails',
+              params: {subject: subject},
+            });
           }}>
           {bgImage && (
             <SvgXml

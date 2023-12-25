@@ -23,6 +23,7 @@ import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
 import {calculate_and_Assign_UnitProgress} from './logic';
+import {useNavContext} from '../../../context/bottomNav';
 
 const ViewAssessment = ({route}) => {
   const {questions, selectedSubject, subjectId} = route.params;
@@ -52,6 +53,8 @@ const ViewAssessment = ({route}) => {
     refIndex.current = viewableItems.changed[0].index;
     // Use viewable items in state or as intended
   }, []);
+
+  const {setShowNavigation} = useNavContext();
 
   useEffect(() => {
     const backHandler: any = null;
@@ -143,6 +146,11 @@ const ViewAssessment = ({route}) => {
       navigator.navigate('StudySection');
     }
   };
+
+  console.log('-----------------------------');
+  useEffect(() => {
+    setShowNavigation(false);
+  }, []);
 
   const renderItem = ({
     item,

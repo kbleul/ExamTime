@@ -7,11 +7,11 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useGetTipsMutation} from '../../reduxToolkit/Services/auth';
 import {fetchTips} from '../../utils/Functions/Get';
-import {TipType} from '../../types';
+import {TipType, subjectType} from '../../types';
 import AllTipsModal from './AllTipsModal';
 
 const Tips: React.FC<{
-  selectedSubject: Subject;
+  selectedSubject: Subject | subjectType | null;
 }> = ({selectedSubject}) => {
   const token = useSelector((state: RootState) => state.auth.token);
 

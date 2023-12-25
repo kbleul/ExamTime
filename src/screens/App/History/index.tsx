@@ -115,7 +115,9 @@ const History = () => {
       </View>
 
       {savedExams && savedExams.length > 0 ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollStyle}>
           {savedExams.map((exam, index) => (
             <HistoryCard
               key={exam.id + '==' + index}
@@ -233,9 +235,10 @@ const styles = StyleSheet.create({
     width: screenWidth,
     backgroundColor: '#F9FCFF',
     paddingTop: 40,
-    paddingBottom: 80,
     paddingHorizontal: 20,
-    // backgroundColor: 'red',
+  },
+  scrollStyle: {
+    flex: 1,
   },
   header: {
     fontFamily: 'PoppinsSemiBold',

@@ -40,7 +40,7 @@ const Practice = () => {
     null,
   );
 
-  const [getSubject, {isLoading, error}] = useGetSubjectMutation();
+  const [getSubject, {isLoading}] = useGetSubjectMutation();
 
   useEffect(() => {
     savedSubjects && savedSubjects.length > 0
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    paddingBottom: 80,
+    paddingBottom: screenWidth * 0.009,
   },
   headerContainer: {
     paddingHorizontal: screenWidth * 0.02,

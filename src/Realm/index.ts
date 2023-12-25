@@ -159,6 +159,7 @@ class ExamQuestion extends Realm.Object {
   D: string = '';
   answer: string = '';
   description: string = '';
+  metadata: string | null = null;
   createdAt: string = '';
   updatedAt: string = '';
   static schema = {
@@ -174,6 +175,7 @@ class ExamQuestion extends Realm.Object {
       D: 'string',
       answer: 'string',
       description: 'string',
+      metadata: 'string?',
       createdAt: 'string',
       updatedAt: 'string',
     },

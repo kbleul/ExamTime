@@ -20,8 +20,13 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from '@gluestack-ui/themed';
+import {subjectType} from '../../types';
 
-const RandomQuestions = ({selectedSubject}: {selectedSubject: Subject}) => {
+const RandomQuestions = ({
+  selectedSubject,
+}: {
+  selectedSubject: Subject | subjectType | null;
+}) => {
   const navigator: any = useNavigation();
   const [currentAmount, setCurrentAmount] = useState(10);
 

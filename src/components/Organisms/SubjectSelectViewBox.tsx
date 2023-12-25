@@ -4,10 +4,13 @@ import ChosenCoursesCard from '../Molecules/ChosenAndOtherCourses/ChosenCoursesC
 import {screenWidth} from '../../utils/Data/data';
 import {Subject} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
+import {subjectType} from '../../types';
 
 const SubjectSelectViewBox: React.FC<{
-  SelectedSubject: Subject;
-  setSelectedSubject: React.Dispatch<React.SetStateAction<Subject>>;
+  SelectedSubject: Subject | subjectType | null;
+  setSelectedSubject: React.Dispatch<
+    React.SetStateAction<subjectType | Subject | null>
+  >;
 }> = ({SelectedSubject, setSelectedSubject}) => {
   const {useQuery} = AuthContext;
   const savedSubjects = useQuery(Subject);

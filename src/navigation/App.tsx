@@ -834,7 +834,7 @@ const AppRoutes = ({Stack}: {Stack: any}) => {
               name="ProfileSection"
               component={ProfileStackScreens}
               options={({route}) => ({
-                tabBarIcon: ({color, size, focused}) => (
+                tabBarIcon: ({focused}) => (
                   <>
                     <View
                       style={

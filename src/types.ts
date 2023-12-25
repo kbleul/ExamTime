@@ -95,6 +95,7 @@ export type examQuestionType = {
   D: string;
   answer: string;
   description: string;
+  metadata: string | null;
   createdAt: string;
   updatedAt: string;
 };

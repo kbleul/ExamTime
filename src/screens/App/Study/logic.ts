@@ -80,12 +80,9 @@ export const saveStudyToRealm = async (
             },
           );
 
-          const gradeObject = realm.create(LocalObjectDataKeys.Grade, {
-            id: grade.id,
-            grade: grade.grade,
-            createdAt: grade.createdAt,
-            updatedAt: grade.updatedAt,
-          });
+          const gradeObject = realm
+            .objects(LocalObjectDataKeys.Grade)
+            .filtered(`id = "${grade.id}"`);
 
           const examQuestionArr: examQuestionType[] = [];
           const pdfObjArr: pdfType[] = [];
@@ -103,6 +100,7 @@ export const saveStudyToRealm = async (
               D,
               answer,
               description,
+              metadata,
               createdAt: qCreatedAt,
               updatedAt: qUpdatedAt,
             } = question;
@@ -120,6 +118,7 @@ export const saveStudyToRealm = async (
                 D,
                 answer,
                 description,
+                metadata,
                 createdAt: qCreatedAt,
                 updatedAt: qUpdatedAt,
               },
@@ -150,7 +149,7 @@ export const saveStudyToRealm = async (
                   isPublished,
                   createdAt,
                   updatedAt,
-                  grade: gradeObject,
+                  grade: gradeObject[0],
                   subject: subjectObject,
                   year: yearString,
                   unit: unitString,

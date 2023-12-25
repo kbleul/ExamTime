@@ -69,8 +69,8 @@ const Buttons: React.FC<{
   const handleAction = () => {
     if (isReview) {
       isStudy
-        ? navigator.navigate('StudySection')
-        : navigator.navigate('Practice');
+        ? navigator.navigate('Study', {screen: 'StudySection'})
+        : navigator.navigate('PracticeSection', {screen: 'Practice'});
     } else {
     }
     setExitExamModalVisible(true);
