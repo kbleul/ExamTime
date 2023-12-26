@@ -1,7 +1,6 @@
 import React from 'react';
 import Onboarding from '../screens/App/Onboarding/index';
 import Home from '../screens/App/Home/index';
-import Courses from '../screens/App/Courses/index';
 import Profile from '../screens/App/Profile/index';
 import Aboutus from '../screens/App/Aboutus/index';
 import SubscriptionPlan from '../screens/App/SubscriptionPlan/index';
@@ -223,21 +222,13 @@ const StudyStackScreens = () => {
         component={ChallengeSection}
         options={{headerShown: false}}
       />
+
       <StudyStack.Screen
         name="Home"
         component={Home}
         options={{headerShown: false}}
       />
-      <StudyStack.Screen
-        name="View-Course"
-        component={ViewSubjectDetails}
-        options={{headerShown: false}}
-      />
-      <StudyStack.Screen
-        name="View-Course-Content"
-        component={ViewCourseContent}
-        options={{headerShown: false}}
-      />
+
       <StudyStack.Screen
         name="Practice"
         component={Practice}
@@ -368,6 +359,7 @@ const StudyStackScreens = () => {
 
 const PracticeStackScreens = () => {
   const StudyStack = createStackNavigator();
+
   return (
     <StudyStack.Navigator>
       <StudyStack.Screen

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {checkIsOnline} from '../Helper';
 import {LocalObjectDataKeys} from '../../Data/data';
-import {TipType} from '../../../types';
+import {TipType, subjectType} from '../../../types';
 import {Subject} from '../../../Realm';
 
 type TipMutationFn = ReturnType<typeof useGetTipsMutation>[0];
@@ -49,19 +49,18 @@ export const getObject_from_localStorage = async (key: string) => {
 export const fetchTips = async (
   getTips: TipMutationFn,
   realm: Realm,
-  token: string | null,
   setTips: React.Dispatch<React.SetStateAction<TipType[] | null>>,
-  setUseSaved: React.Dispatch<React.SetStateAction<boolean>>,
-  selectedSubject: Subject,
+  selectedSubject: Subject | subjectType,
+  gradeId: string | null,
 ) => {
   const isConnected = await checkIsOnline();
-  if (isConnected && token) {
+  if (isConnected) {
     try {
       const response: any = await getTips({
-        token,
+        gradeId,
       }).unwrap();
 
-      if (response.tips && response.tips.length > 0) {
+      if (response.tips && response.tips.length > 0 && selectedSubject) {
         saveTipsToRealm(response.tips, realm);
         setTips([
           ...response.tips.filter(
@@ -69,16 +68,12 @@ export const fetchTips = async (
               tip.subject && tip.subject.id === selectedSubject.subject.id,
           ),
         ]);
-        setUseSaved(false);
 
         return;
       }
     } catch (error) {
       console.error(error);
-      setUseSaved(true);
     }
-  } else {
-    setUseSaved(true);
   }
 };
 

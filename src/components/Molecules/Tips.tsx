@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {AuthContext} from '../../Realm/model';
-import {StudyTips, Subject} from '../../Realm';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../reduxToolkit/Store';
+import {StudyTips, Subject, UserData} from '../../Realm';
+
 import {useGetTipsMutation} from '../../reduxToolkit/Services/auth';
 import {fetchTips} from '../../utils/Functions/Get';
 import {TipType, subjectType} from '../../types';
@@ -13,23 +12,28 @@ import AllTipsModal from './AllTipsModal';
 const Tips: React.FC<{
   selectedSubject: Subject | subjectType | null;
 }> = ({selectedSubject}) => {
-  const token = useSelector((state: RootState) => state.auth.token);
-
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
 
-  const savedTips = useQuery(StudyTips);
-  //
-  const [tips, setTips] = useState<TipType[] | null>(null);
+  const userData = useQuery(UserData);
 
-  const [useSaved, setUseSaved] = useState(false);
+  const savedTips = useQuery(StudyTips);
+
+  const [tips, setTips] = useState<TipType[] | null>(null);
 
   const [showTipsModal, setShowTipsModal] = useState(false);
 
   const [getTips] = useGetTipsMutation();
+
   useEffect(() => {
-    if (savedTips.length === 0 || !useSaved) {
-      fetchTips(getTips, realm, token, setTips, setUseSaved, selectedSubject);
+    if (savedTips.length === 0 && selectedSubject) {
+      fetchTips(
+        getTips,
+        realm,
+        setTips,
+        selectedSubject,
+        userData[0]?.grade ? userData[0].grade.id || null : null,
+      );
     }
   }, []);
 
@@ -45,7 +49,7 @@ const Tips: React.FC<{
 
   return (
     <>
-      {(!tips || tips.length === 0) && !token && (
+      {(!tips || tips.length === 0) && (
         <View style={styles.container}>
           <View style={styles.imgContainer}>
             <Image
@@ -55,10 +59,10 @@ const Tips: React.FC<{
             />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.tipTitle}>Login to get tips</Text>
-            <Text style={styles.tipText}>
-              Get tips on how to manage time, optimize your results and more
+            <Text style={styles.tipTitle}>
+              No tips found for {selectedSubject?.subject?.subject}
             </Text>
+            <Text style={styles.tipText}>Try anonther subject</Text>
           </View>
         </View>
       )}

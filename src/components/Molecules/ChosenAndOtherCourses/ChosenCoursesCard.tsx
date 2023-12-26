@@ -9,6 +9,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export const onError = (e: Error) => {
   console.log('Render svg failed', e.message);
@@ -43,7 +44,6 @@ const ChosenCoursesCard: React.FC<{
     );
   });
   const calProgress = calculateStudyProgress(savedStudies);
-
   const [isLoadingSVG, setIsLoadingSVG] = useState(timerValue ? true : false);
 
   useEffect(() => {
@@ -51,6 +51,9 @@ const ChosenCoursesCard: React.FC<{
       setTimeout(() => {
         setIsLoadingSVG(false);
       }, timerValue);
+    }
+
+    if (savedStudies.length === 0) {
     }
   }, []);
 
@@ -80,10 +83,16 @@ const ChosenCoursesCard: React.FC<{
               return;
             }
 
-            navigator.navigate('Study', {
-              screen: 'StudyDetails',
-              params: {subject: subject},
-            });
+            savedStudies.length > 0
+              ? navigator.navigate('Study', {
+                  screen: 'StudyDetails',
+                  params: {subject: subject},
+                })
+              : Toast.show({
+                  type: 'error',
+                  text1: 'No studies found for this subject',
+                  text2: 'Try a different subject',
+                });
           }}>
           {bgImage && (
             <SvgXml
@@ -125,6 +134,8 @@ const ChosenCoursesCard: React.FC<{
           </View>
         </TouchableOpacity>
       )}
+
+      <Toast />
     </>
   );
 };
