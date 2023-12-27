@@ -9,7 +9,7 @@ import {Provider} from 'react-redux';
 import store from './src/reduxToolkit/Store';
 import {AuthContext} from './src/Realm/model';
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const {RealmProvider} = AuthContext;
 
   useEffect(() => {
