@@ -1,7 +1,6 @@
 package com.examtime
 
 import android.os.Bundle
-import android.os.Bundle
 import com.zoontek.rnbootsplash.RNBootSplash
 
 
@@ -11,19 +10,19 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnable
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
 class MainActivity : ReactActivity() {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    RNBootSplash.init(this, R.style.BootTheme); // ⬅️ initialize the splash screen
-    super.onCreate(null);
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    RNBootSplash.init(this, R.style.BootTheme) // ⬅️ initialize the splash screen
   }
 
-  /**
-  override fun getMainComponentName(): String = "ExamTime"
-
-    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
+   override fun getMainComponentName(): String = "ExamTime"
+   
+  /**  
+   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
    * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
-   */	   
+   */   
     override fun createReactActivityDelegate(): ReactActivityDelegate =
-      DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+     DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 
 }
