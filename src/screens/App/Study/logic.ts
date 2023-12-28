@@ -17,7 +17,6 @@ export const getAllStudies = async (
 ) => {
   if (token) {
     checkIsOnline(navigator);
-    console.log('4444444444444444444444444444444444444');
     try {
       const response = await getStudy({
         token,
@@ -81,9 +80,12 @@ export const saveStudyToRealm = async (
             },
           );
 
-          const gradeObject = realm
-            .objects(LocalObjectDataKeys.Grade)
-            .filtered(`id = "${grade.id}"`);
+          const gradeObject = realm.create(LocalObjectDataKeys.Grade, {
+            id: grade.id,
+            grade: grade.grade,
+            createdAt: grade.createdAt,
+            updatedAt: grade.updatedAt,
+          });
 
           const examQuestionArr: examQuestionType[] = [];
           const pdfObjArr: pdfType[] = [];
@@ -139,9 +141,8 @@ export const saveStudyToRealm = async (
 
             videoObjArr.push(videoObject);
           });
-          console.log('herrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeee');
+
           await savePdfs(pdf, pdfObjArr, realm).then(() => {
-            console.log('++++++++++++++++++', pdfObjArr);
             realm.write(() => {
               try {
                 realm.create(LocalObjectDataKeys.Study, {
@@ -151,7 +152,7 @@ export const saveStudyToRealm = async (
                   isPublished,
                   createdAt,
                   updatedAt,
-                  grade: gradeObject[0],
+                  grade: gradeObject,
                   subject: subjectObject,
                   year: yearString,
                   unit: unitString,
@@ -186,8 +187,6 @@ const savePdfs = async (
 ) => {
   for (const pdfItem of pdf) {
     const pdfObject = await downloadAndCreatePDF(pdfItem, realm);
-    console.log('---00000000000000000000000009999999999999', pdfObject);
-
     pdfObject && pdfObjArr.push(pdfObject);
   }
 
@@ -209,10 +208,9 @@ export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
   };
 
   try {
-    console.log('================');
-
-    const filePath = response.path();
-
+    return RNFS.mkdir(directoryPath)
+      .then(() => RNFS.downloadFile(downloadOptions))
+      .then((response: any) => {
         let pdfObject = null;
 
         realm.write(() => {
@@ -222,8 +220,6 @@ export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
               pdfDocument: filePath,
               isViewed: false,
             });
-
-            console.log('pdfObject', pdfObject);
           } catch (e) {
             console.log('Error saving pdf file ', e);
           }
@@ -240,58 +236,6 @@ export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
     return null;
   }
 };
-
-// export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
-//   const pdfUrl = pdfItem.pdfDocument;
-
-//   const fileName = `pdf_${Date.now()}.pdf`;
-
-//   const directoryPath = `${RNFS.DocumentDirectoryPath}/pdfs`;
-
-//   const filePath = `${directoryPath}/${fileName}`;
-
-//   const downloadOptions = {
-//     fromUrl: pdfUrl,
-//     toFile: filePath,
-//   };
-
-//   try {
-//     console.log('================');
-
-//     RNFS.mkdir(directoryPath)
-//       .then(() => RNFS.downloadFile(downloadOptions))
-//       .then((response: any) => {
-//         console.log(response);
-
-//         console.log('Downloaded PDF path:', filePath);
-
-//         let pdfObject = null;
-
-//         realm.write(() => {
-//           try {
-//             pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
-//               id: pdfItem.id,
-//               pdfDocument: filePath,
-//               isViewed: false,
-//             });
-
-//             console.log('pdfObject', pdfObject);
-//           } catch (e) {
-//             console.log('Error saving pdf file ', e);
-//           }
-//         });
-
-//         return pdfObject;
-//       })
-//       .catch(error => {
-//         // Handle download error
-//         console.error('Error downloading PDF:', error);
-//       });
-//   } catch (error) {
-//     console.error('Error downloading PDF file:', error);
-//     return null;
-//   }
-// };
 
 export const getSections = (studies: ResultsType<Study>) => {
   const sections: string[] = [];
