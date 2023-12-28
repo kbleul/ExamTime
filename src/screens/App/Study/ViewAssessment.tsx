@@ -147,7 +147,6 @@ const ViewAssessment = ({route}) => {
     }
   };
 
-  console.log('-----------------------------');
   useEffect(() => {
     setShowNavigation(false);
   }, []);

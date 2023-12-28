@@ -17,7 +17,6 @@ export default function Signup() {
   useFocusEffect(
     useCallback(() => {
       setShowNavigation(false);
-      console.log('Component is focused');
     }, []),
   );
 

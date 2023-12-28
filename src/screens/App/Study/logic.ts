@@ -1,5 +1,5 @@
 import {NavigationProp} from '@react-navigation/native';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
@@ -17,11 +17,11 @@ export const getAllStudies = async (
 ) => {
   if (token) {
     checkIsOnline(navigator);
-
     try {
       const response = await getStudy({
         token,
       }).unwrap();
+      console.log(response);
       saveStudyToRealm(realm, response.studies, Toast);
     } catch (error) {
       if (
@@ -80,9 +80,12 @@ export const saveStudyToRealm = async (
             },
           );
 
-          const gradeObject = realm
-            .objects(LocalObjectDataKeys.Grade)
-            .filtered(`id = "${grade.id}"`);
+          const gradeObject = realm.create(LocalObjectDataKeys.Grade, {
+            id: grade.id,
+            grade: grade.grade,
+            createdAt: grade.createdAt,
+            updatedAt: grade.updatedAt,
+          });
 
           const examQuestionArr: examQuestionType[] = [];
           const pdfObjArr: pdfType[] = [];
@@ -100,7 +103,6 @@ export const saveStudyToRealm = async (
               D,
               answer,
               description,
-              metadata,
               createdAt: qCreatedAt,
               updatedAt: qUpdatedAt,
             } = question;
@@ -118,7 +120,6 @@ export const saveStudyToRealm = async (
                 D,
                 answer,
                 description,
-                metadata,
                 createdAt: qCreatedAt,
                 updatedAt: qUpdatedAt,
               },
@@ -149,7 +150,7 @@ export const saveStudyToRealm = async (
                   isPublished,
                   createdAt,
                   updatedAt,
-                  grade: gradeObject[0],
+                  grade: gradeObject,
                   subject: subjectObject,
                   year: yearString,
                   unit: unitString,
@@ -184,35 +185,53 @@ const savePdfs = async (
 ) => {
   for (const pdfItem of pdf) {
     const pdfObject = await downloadAndCreatePDF(pdfItem, realm);
+
     pdfObject && pdfObjArr.push(pdfObject);
   }
+
+  return pdfObjArr;
 };
 
 export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
+  const pdfUrl = pdfItem.pdfDocument;
+
+  const fileName = `pdf_${Date.now()}.pdf`;
+
+  const directoryPath = `${RNFS.DocumentDirectoryPath}/pdfs`;
+
+  const filePath = `${directoryPath}/${fileName}`;
+
+  const downloadOptions = {
+    fromUrl: pdfUrl,
+    toFile: filePath,
+  };
+
   try {
-    const response = await RNFetchBlob.config({
-      fileCache: true,
-      appendExt: 'pdf',
-      path: `${RNFetchBlob.fs.dirs.DocumentDir}/pdfs/${Date.now()}`,
-    }).fetch('GET', pdfItem.pdfDocument);
+    console.log('================');
 
-    const filePath = response.path();
+    return RNFS.mkdir(directoryPath)
+      .then(() => RNFS.downloadFile(downloadOptions))
+      .then(() => {
+        let pdfObject = null;
 
-    let pdfObject = null;
-
-    realm.write(() => {
-      try {
-        pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
-          id: pdfItem.id,
-          pdfDocument: filePath,
-          isViewed: false,
+        realm.write(() => {
+          try {
+            pdfObject = realm.create(LocalObjectDataKeys.Pdf, {
+              id: pdfItem.id,
+              pdfDocument: filePath,
+              isViewed: false,
+            });
+          } catch (e) {
+            console.log('Error saving pdf file ', e);
+          }
         });
-      } catch (e) {
-        console.log('Error saving pdf file ', e);
-      }
-    });
 
-    return pdfObject;
+        return pdfObject;
+      })
+      .catch(error => {
+        // Handle download error
+        console.error('Error downloading PDF:', error);
+      });
   } catch (error) {
     console.error('Error downloading PDF file:', error);
     return null;
