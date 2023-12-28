@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StatusBar, Text} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import {View} from 'react-native';
 import {Formik} from 'formik';
 import {useSelector, useDispatch} from 'react-redux';
@@ -32,6 +32,7 @@ import DoneButton from '../Atoms/DoneButton';
 import PasswordField from '../Molecules/PasswordField';
 import ChangePasswordButton from '../Atoms/ChangePasswordButton';
 import {screenWidth} from '../../utils/Data/data';
+import Config from 'react-native-config';
 
 const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const dispatch = useDispatch();
@@ -78,11 +79,12 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
 
   const handleUpdateProfile = async () => {
     if (token) {
-      const [firstName, lastName] = fullName.split(' ');
-
       const profileData = {
-        firstName: firstName,
-        lastName: lastName,
+        firstName: fullName.split(' ')[0],
+        lastName:
+          fullName.split(' ').length === 1
+            ? '-'
+            : fullName.split(' ')[fullName.split(' ').length - 1],
         phoneNumber: phone,
         grade: grade,
         gender: user?.gender ?? '',
@@ -126,6 +128,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
               type: 'error',
               text1: 'Error uploading profile picture!',
               text2: `${profileUpdateResult.error}`,
+              visibilityTime: 4000,
             });
           }
         }
@@ -134,19 +137,12 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
           type: 'error',
           text1: 'Error uploading profile picture',
           text2: `${error}`,
+          visibilityTime: 4000,
         });
       }
 
       try {
         const result = await changeProfile({token, profileData});
-
-        if (result.error) {
-          Toast.show({
-            type: 'error',
-            text1: 'Error updating profile data!',
-            text2: `${result.error.data.message}`,
-          });
-        }
 
         if (result?.data && result.data.user && user) {
           dispatch(
@@ -154,7 +150,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
               user: {
                 ...result.data.user,
                 profilePicture:
-                  'https://dev.think-hubet.com/profile-pictures/' +
+                  `${Config.API_URL}profile-pictures/` +
                   result.data.user.profilePicture,
               },
               token: token,
@@ -169,8 +165,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
               ? {
                   ...result.data.user,
                   profilePicture:
-                    'https://dev.think-hubet.com/profile-pictures/' +
-                    user.profilePicture,
+                    `${Config.API_URL}profile-pictures/` + user.profilePicture,
                 }
               : {...result.data.user},
             token,
@@ -181,6 +176,12 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             type: 'success',
             text1: 'success',
             text2: 'Profile updated successfuly',
+            visibilityTime: 4000,
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Error updating profile data!',
             visibilityTime: 4000,
           });
         }
@@ -194,6 +195,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
           type: 'error',
           text1: 'Error updating profile data!',
           text2: `${error}`,
+          visibilityTime: 4000,
         });
       }
     } else {
@@ -237,6 +239,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
         type: 'error',
         text1: 'Error!',
         text2: `${error}`,
+        visibilityTime: 4000,
       });
     }
   };
@@ -246,7 +249,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
     setRegionsListItems: React.Dispatch<
       React.SetStateAction<regionItemsType[] | []>
     >,
-    navigator: NavigationProp<ReactNavigation.RootParamList>,
   ) => {
     try {
       const response = await getRegions().unwrap();
@@ -292,7 +294,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
 
   return (
     <>
-      <StatusBar hidden={true} />
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* back Icon and DoneTExt Container */}

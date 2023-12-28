@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Image, ImageBackground, Text, TouchableOpacity} from 'react-native';
 import {StyleSheet, View} from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import ProfileEdit from '../../../components/Organisms/ProfileEdit';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
@@ -9,6 +8,7 @@ import {RESULTS} from 'react-native-permissions';
 import checkCameraPermission from '../../../utils/Functions/Helper/CameraPermisstion';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
+import Config from 'react-native-config';
 
 const ProfileEditIndex = () => {
   const [avatar, setAvatar] = useState<string | null>(null);
@@ -45,8 +45,7 @@ const ProfileEditIndex = () => {
               : user && user?.profilePicture
               ? user?.profilePicture.includes('https://')
                 ? user.profilePicture
-                : 'https://dev.think-hubet.com/profile-pictures/' +
-                  user.profilePicture
+                : `${Config.API_URL}/profile-pictures/` + user.profilePicture
               : 'https://th.bing.com/th/id/OIP.fmwdQXSSqKuRzNiYrbcNFgHaHa?rs=1&pid=ImgDetMain',
           }}>
           <TouchableOpacity
@@ -62,7 +61,6 @@ const ProfileEditIndex = () => {
 
       <ProfileEdit avatar={avatar} />
 
-      <MainBottomNav />
     </View>
   );
 };

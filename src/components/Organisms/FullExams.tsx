@@ -14,9 +14,9 @@ import {getPreviousExams} from '../../screens/App/Practice/logic';
 import {FetchBaseQueryError} from '@reduxjs/toolkit/dist/query';
 import {SerializedError} from '@reduxjs/toolkit';
 import ShowAllExamsModal from './ShowAllExamsModal';
-import {examType} from '../../types';
+import {examType, subjectType} from '../../types';
 import Toast from 'react-native-toast-message';
-import {Exam, Grade, Subject} from '../../Realm';
+import {Exam, Subject, UserData} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 import PracticeModeModal from './PracticeModeModal';
 
@@ -34,13 +34,14 @@ export const ExamCatagories = [
 const FullExams: React.FC<{
   selectedExamType: string;
   setSelectedExamType: React.Dispatch<React.SetStateAction<string>>;
-  selectedSubject: Subject;
+  selectedSubject: Subject | subjectType | null;
 }> = ({selectedExamType, setSelectedExamType, selectedSubject}) => {
   const navigator = useNavigation();
   const {useRealm, useQuery} = AuthContext;
   const realm = useRealm();
 
-  const savedGrade = useQuery(Grade);
+  const userData = useQuery(UserData);
+
   const savedExams = useQuery(Exam, savedExamItem => {
     return savedExamItem.filtered(
       `examType == "${
@@ -66,7 +67,7 @@ const FullExams: React.FC<{
           getExams,
           setExams,
           selectedSubject.subject?.subject || '',
-          savedGrade[0].grade,
+          userData[0].grade.grade,
           realm,
           ExamCatagories.find(item => item.name === selectedExamType)?.type ||
             '',

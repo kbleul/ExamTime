@@ -48,7 +48,6 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
     if (token && isOnline) {
       try {
         const response = await getNotifications({token}).unwrap();
-        console.log('yyy', response);
         if (response.userNotifications) {
           const notificationsArr: any[] = response.userNotifications;
           setNotifications([...notificationsArr]);
@@ -74,8 +73,6 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
             notificationId: id,
           }).unwrap();
 
-          console.log('DELETE response updaee ', response);
-
           if (response?.message) {
             setNotifications([
               ...notifications?.filter(notfItem => notfItem.id !== id),
@@ -98,12 +95,10 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
     async (id: string) => {
       if (token && notifications && notifications.length > 0) {
         try {
-          const response = await postNotificationStatus({
+          await postNotificationStatus({
             token,
             notificationId: id,
           }).unwrap();
-
-          console.log('response updaee ', response);
 
           const updatedItem = notifications.find(item => item.id === id);
           updatedItem.wasRead = true;

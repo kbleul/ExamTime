@@ -7,7 +7,6 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 
 import {useNavigation} from '@react-navigation/native';
 import PrimaryBtn from '../../../components/Atoms/PrimaryBtn';
@@ -16,7 +15,7 @@ import GuideTexts from '../../../components/Molecules/GuideHederText';
 import {useGetUserGuideMutation} from '../../../reduxToolkit/Services/auth';
 import scale from '../../../utils/Functions/Scale';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import { screenHeight, screenWidth } from '../../../utils/Data/data';
+import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import Loading from '../../../components/Atoms/Loading';
 
 const Index = () => {
@@ -89,13 +88,13 @@ const Index = () => {
             renderItem={({item}) => (
               <YoutubeCard item={item} loadinga={loading} />
             )}
-            ListFooterComponent={() => (
+            ListFooterComponent={() =>
               loading ? (
                 <View style={styles.loadingIndicator}>
                   <Loading />
                 </View>
               ) : null
-            )}
+            }
             horizontal={true}
             pagingEnabled={true}
             showsHorizontalScrollIndicator={false}
@@ -116,9 +115,6 @@ const Index = () => {
         </View>
       </ScrollView>
 
-      <View>
-        <MainBottomNav />
-      </View>
     </View>
   );
 };
@@ -151,7 +147,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    height: screenHeight*0.35,
+    height: screenHeight * 0.35,
     width: screenWidth,
     // backgroundColor:"blue"
   },

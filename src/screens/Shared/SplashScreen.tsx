@@ -2,7 +2,7 @@ import React from 'react';
 import {ActivityIndicator, Image} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {View} from 'react-native';
-import logo from '../../assets/Logo/logoWhite.jpg';
+import logo from '../../assets/Logo/logo_.png';
 
 const SplashScreen = () => {
   return (
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 100,
+    marginBottom: 30,
   },
 });
 export default SplashScreen;

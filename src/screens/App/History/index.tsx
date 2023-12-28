@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {AuthContext} from '../../../Realm/model';
 import {Exam, ExamAnswers, Subject, UserData} from '../../../Realm';
@@ -6,10 +6,10 @@ import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {subjectType} from '../../../types';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {screenWidth} from '../../../utils/Data/data';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {answersType} from '../PracticeQuestion';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import MessageBox from '../../../components/Atoms/MessageBox';
+import {useNavContext} from '../../../context/bottomNav';
 
 function convertDateFormat(dateString: string) {
   const date = new Date(dateString);
@@ -30,6 +30,7 @@ function convertDateFormat(dateString: string) {
 const History = () => {
   const {useQuery} = AuthContext;
   const isFocused = useIsFocused();
+  const {setShowNavigation} = useNavContext();
 
   const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
@@ -68,6 +69,12 @@ const History = () => {
       setSavedExamsArr([]);
     }
   }, [savedExams, isFocused]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(true);
+    }, []),
+  );
 
   const renderSubjects = ({item}: {item: subjectType}) => {
     return (
@@ -108,7 +115,9 @@ const History = () => {
       </View>
 
       {savedExams && savedExams.length > 0 ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollStyle}>
           {savedExams.map((exam, index) => (
             <HistoryCard
               key={exam.id + '==' + index}
@@ -123,8 +132,6 @@ const History = () => {
           subTitle="Try taking some more exams."
         />
       )}
-
-      <MainBottomNav />
     </View>
   );
 };
@@ -228,9 +235,10 @@ const styles = StyleSheet.create({
     width: screenWidth,
     backgroundColor: '#F9FCFF',
     paddingTop: 40,
-    paddingBottom: 80,
     paddingHorizontal: 20,
-    // backgroundColor: 'red',
+  },
+  scrollStyle: {
+    flex: 1,
   },
   header: {
     fontFamily: 'PoppinsSemiBold',

@@ -6,12 +6,14 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
+import {useNavContext} from '../../context/bottomNav';
 
 const LoginModal: React.FC<{
   loginModalVisible: boolean;
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({loginModalVisible, setLoginModalVisible}) => {
   const navigator: any = useNavigation();
+  const {setShowNavigation} = useNavContext();
 
   return (
     <Modal
@@ -44,6 +46,7 @@ const LoginModal: React.FC<{
               style={[styles.optionButton, styles.optionButtonSecondary]}
               onPress={() => {
                 setLoginModalVisible(false);
+                setShowNavigation(false);
                 navigator.navigate('Signup');
               }}>
               <Text
@@ -64,6 +67,7 @@ const LoginModal: React.FC<{
                 ]}
                 onPress={() => {
                   setLoginModalVisible(false);
+                  setShowNavigation(false);
                   navigator.navigate('Login');
                 }}>
                 Login

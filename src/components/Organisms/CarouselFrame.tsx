@@ -10,12 +10,10 @@ import {RootState} from '../../reduxToolkit/Store';
 
 import {useSelector} from 'react-redux';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import profileImg from '../../assets/Images/Profile/1.png';
-import avatarImg from '../../assets/Images/Profile/avatar.png';
 import frameBlueImg from '../../assets/Images/frame_blue.png';
+import logoImg from '../../assets/Logo/logo_.png';
 
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -26,6 +24,9 @@ import {
   frameFourstyles,
 } from '../../styles/Theme/FramesStyle';
 import {screenWidth} from '../../utils/Data/data';
+import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
+import Config from 'react-native-config';
+import {useNavContext} from '../../context/bottomNav';
 
 const CarouselFrame: React.FC<{index: number}> = ({index}) => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -33,20 +34,14 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
     <>
       {user && (
         <View>
-          {index === 0 && (
-            <FrameOne
-              name={user.firstName}
-              img={profileImg}
-              text="Today is a good day to learn something new!"
-            />
-          )}
+          {index === 0 && <FrameOne />}
           {index === 1 && (
             <FrameTwo
               title="Overall progress"
               img={frameBlueImg}
               text="Your overall progress is composed of the subjects you have studied
               and all the exams you have taken."
-              progrss="0%"
+              progrss={0}
             />
           )}
           {index === 2 && (
@@ -63,21 +58,14 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
 
       {!user && (
         <View>
-          {index === 0 && (
-            <FrameOne
-              name=""
-              img={avatarImg}
-              text="Today is a good day
-to learn something new!"
-            />
-          )}
+          {index === 0 && <FrameOne />}
           {index === 1 && (
             <FrameTwo
               title="Overall progress"
               img={frameBlueImg}
               text="Your overall progress is composed of the subjects you have studied
             and all the exams you have taken."
-              progrss="0%"
+              progrss={0}
             />
           )}
           {index === 2 && (
@@ -95,40 +83,37 @@ to learn something new!"
   );
 };
 
-export const FrameOne: React.FC<{
-  name: string;
-  img: any;
-  text: string;
-}> = ({name, img, text}) => {
+export const FrameOne = () => {
   const user = useSelector((state: RootState) => state.auth.user);
+
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      style={[styles.container, frameOnestyles.container]}
+      source={require('../../assets/Images/home/c1.png')} // Replace with the correct path to your image
+    >
       <View style={frameOnestyles.leftBoxContainer}>
-        <View style={frameOnestyles.leftSubcontainer}>
-          <Text style={frameOnestyles.helloText}>Hi {name}</Text>
-          <MaterialIcons
-            name="waving-hand"
-            color="#B37E53"
-            size={screenWidth * 0.08}
-            style={frameOnestyles.helloIcon}
-          />
-        </View>
-        <Text style={frameOnestyles.subText}>{text}</Text>
+        <Text style={frameOnestyles.text}>
+          Today is a good day to learn something new! Learn anytime, anywhere.
+          Welcome to your future.
+        </Text>
       </View>
-      <Image
-        source={
-          user && user.profilePicture
-            ? {
-                uri: user.profilePicture.includes('https://')
-                  ? user.profilePicture
-                  : 'https://dev.think-hubet.com/profile-pictures/' +
-                    user.profilePicture,
-              }
-            : img
-        }
-        style={frameOnestyles.rightBoxContainer}
-      />
-    </View>
+
+      <View style={frameOnestyles.rightBoxContainer}>
+        <Image
+          source={
+            user && user.profilePicture
+              ? {
+                  uri: user.profilePicture.includes('https://')
+                    ? user.profilePicture
+                    : `${Config.API_URL}profile-pictures/` +
+                      user.profilePicture,
+                }
+              : logoImg
+          }
+          style={frameOnestyles.rightBoxImage}
+        />
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -136,7 +121,7 @@ export const FrameTwo: React.FC<{
   title: string;
   img: any;
   text: string;
-  progrss: string;
+  progrss: number;
 }> = ({title, img, text, progrss}) => {
   return (
     <View style={frameTwostyles.mainContainer}>
@@ -150,6 +135,7 @@ export const FrameTwo: React.FC<{
             <Text style={frameTwostyles.secondText}>{text}</Text>
           </View>
         </View>
+        <CircleProgressIndicator progress={progrss} />
       </ImageBackground>
     </View>
   );
@@ -164,9 +150,13 @@ export const FrameThree: React.FC<{
 }> = ({title, text, btnText, btnTextTwo, issubscribe}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
+  const {setShowNavigation} = useNavContext();
 
   return (
-    <View style={frameThreestyles.adsContainer}>
+    <ImageBackground
+      style={frameThreestyles.adsContainer}
+      source={require('../../assets/Images/home/c3.png')} // Replace with the correct path to your image
+    >
       <Text style={frameThreestyles.adsTile1}>{title}</Text>
       <Text style={frameThreestyles.adsText}>{text}</Text>
       <View
@@ -181,7 +171,10 @@ export const FrameThree: React.FC<{
         <TouchableOpacity
           style={frameThreestyles.adsBtns}
           touchSoundDisabled
-          onPress={() => !issubscribe && navigator.navigate('Login')}>
+          onPress={() => {
+            !issubscribe && setShowNavigation(false);
+            !issubscribe && navigator.navigate('Login');
+          }}>
           <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>
         </TouchableOpacity>
         {!user && (
@@ -191,12 +184,15 @@ export const FrameThree: React.FC<{
               frameThreestyles.adsBtns_secondary,
             ]}
             touchSoundDisabled
-            onPress={() => navigator.navigate('Signup')}>
+            onPress={() => {
+              setShowNavigation(false);
+              navigator.navigate('Signup');
+            }}>
             <Text style={frameThreestyles.adsBtnsText}>{btnTextTwo}</Text>
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 

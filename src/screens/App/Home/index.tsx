@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   ActivityIndicator,
   SafeAreaView,
@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import TrialHeader from '../../../components/Organisms/TrialHeader';
 import HeaderCarousel from '../../../components/Organisms/HeaderCarousel';
 import ChosenCourses from '../../../components/Molecules/ChosenAndOtherCourses';
@@ -16,11 +15,20 @@ import useHandleInitialRequests from '../../../hooks/useHandleInitialRequests';
 import {screenWidth} from '../../../utils/Data/data';
 import LoginModal from '../../../components/Organisms/LoginModal';
 import Toast from 'react-native-toast-message';
+import {useFocusEffect} from '@react-navigation/native';
+import {useNavContext} from '../../../context/bottomNav';
 
 const Index = () => {
   const [isSyncing, setIsSyncing] = useState(false);
+  const {setShowNavigation} = useNavContext();
   useHandleInitialRequests(setIsSyncing);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(true);
+    }, []),
+  );
 
   return (
     <SafeAreaView style={IndexStyle.container}>
@@ -34,7 +42,6 @@ const Index = () => {
 
         <ChosenCourses setLoginModalVisible={setLoginModalVisible} />
       </ScrollView>
-      <MainBottomNav />
 
       <LoginModal
         loginModalVisible={loginModalVisible}
@@ -61,7 +68,8 @@ const syncStyle = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     position: 'absolute',
-    paddingVertical: 10,
+    paddingTop: 30,
+    paddingBottom: 140,
     backgroundColor: '#fff',
     zIndex: 10,
   },

@@ -67,9 +67,9 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
         const subjectObject = realm.create(LocalObjectDataKeys.SingleSubject, {
           ...subject,
         });
-        const gradeObject = realm.create(LocalObjectDataKeys.Grade, {
-          ...grade,
-        });
+        const gradeObject = realm
+          .objects(LocalObjectDataKeys.Grade)
+          .filtered(`id = "${grade.id}"`);
 
         examQuestion.forEach(question => {
           let {
@@ -83,6 +83,7 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
             D,
             answer,
             description,
+            metadata,
             createdAt: qCreatedAt,
             updatedAt: qUpdatedAt,
           } = question;
@@ -99,6 +100,7 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
               D,
               answer,
               description,
+              metadata,
               createdAt: qCreatedAt,
               updatedAt: qUpdatedAt,
             },
@@ -119,7 +121,7 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
           createdAt,
           updatedAt,
           examQuestion: questionsArray,
-          grade: gradeObject,
+          grade: gradeObject[0],
           subject: subjectObject,
           year: year,
           isExamTaken: false,

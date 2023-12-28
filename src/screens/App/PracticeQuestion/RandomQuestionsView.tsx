@@ -22,6 +22,7 @@ import Toast from 'react-native-toast-message';
 import {View} from 'react-native';
 import Loading from '../../../components/Atoms/Loading';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
+import {useNavContext} from '../../../context/bottomNav';
 const RandomQuestionsView = ({route}: {route: any}) => {
   //   const {subject} = route.params;
   const navigator: any = useNavigation();
@@ -44,6 +45,7 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
 
   const [direction, setDirection] = useState<string | null>(null);
+  const {setShowNavigation} = useNavContext();
 
   const refIndex = useRef(0);
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
@@ -119,6 +121,10 @@ const RandomQuestionsView = ({route}: {route: any}) => {
     }
   }, [showFullPage]);
 
+  useEffect(() => {
+    setShowNavigation(false);
+  }, []);
+
   const filterUnansweredQuestions = () => {
     if (exam) {
       const filteredQusetions = filterUnanswered(exam, userAnswers || []);
@@ -186,8 +192,12 @@ const RandomQuestionsView = ({route}: {route: any}) => {
         <SafeAreaView
           style={
             showFullPage
-              ? [IndexStyle.container, styles.container]
-              : IndexStyle.container
+              ? [
+                  IndexStyle.container,
+                  styles.container,
+                  exitExamModalVisible && styles.overlay,
+                ]
+              : [IndexStyle.container, exitExamModalVisible && styles.overlay]
           }>
           {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
@@ -207,52 +217,58 @@ const RandomQuestionsView = ({route}: {route: any}) => {
             <Text style={styles.emptyText}>No more questions left !</Text>
           )}
 
-          {!showFullPage && currentViewExam?.length > 0 && (
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={showFullPage}>
-              <Question
-                key={currentViewExam[currentQuestion].id}
-                showFullPage={showFullPage}
-                question={
-                  refIndex.current
-                    ? currentViewExam[refIndex.current]
-                    : currentViewExam[currentQuestion]
-                }
-                questionCounter={currentQuestion + 1}
-                total={currentViewExam.length}
-                isPracticeMode={false}
-                setUserAnswers={setUserAnswers}
-                setDirection={setDirection}
-                userAnswers={userAnswers}
-              />
-            </ScrollView>
-          )}
+          {!showFullPage &&
+            currentViewExam?.length > 0 &&
+            !exitExamModalVisible && (
+              <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={showFullPage}>
+                <Question
+                  key={currentViewExam[currentQuestion].id}
+                  showFullPage={showFullPage}
+                  question={
+                    refIndex.current
+                      ? currentViewExam[refIndex.current]
+                      : currentViewExam[currentQuestion]
+                  }
+                  questionCounter={currentQuestion + 1}
+                  total={currentViewExam.length}
+                  isPracticeMode={false}
+                  setUserAnswers={setUserAnswers}
+                  setDirection={setDirection}
+                  userAnswers={userAnswers}
+                />
+              </ScrollView>
+            )}
 
-          {showFullPage && currentViewExam?.length > 0 && (
-            <View style={styles.scrollContentFullPage}>
-              <FlatList
-                ref={flatListRef}
-                data={currentViewExam}
-                initialNumToRender={10}
-                renderItem={({item, index}) => renderItem({item, index})}
-                keyExtractor={item => item.id.toString()}
-                numColumns={1} // Set the number of columns to 2 for a 2-column layout
-                onViewableItemsChanged={onViewCallBack}
-                viewabilityConfig={viewConfigRef.current}
-                onScrollToIndexFailed={info => {
-                  const wait = new Promise(resolve => setTimeout(resolve, 500));
-                  wait.then(() => {
-                    flatListRef.current?.scrollToIndex({
-                      animated: true,
-                      index: info.index,
-                      viewPosition: 0.5,
+          {showFullPage &&
+            currentViewExam?.length > 0 &&
+            !exitExamModalVisible && (
+              <View style={styles.scrollContentFullPage}>
+                <FlatList
+                  ref={flatListRef}
+                  data={currentViewExam}
+                  initialNumToRender={10}
+                  renderItem={({item, index}) => renderItem({item, index})}
+                  keyExtractor={item => item.id.toString()}
+                  numColumns={1} // Set the number of columns to 2 for a 2-column layout
+                  onViewableItemsChanged={onViewCallBack}
+                  viewabilityConfig={viewConfigRef.current}
+                  onScrollToIndexFailed={info => {
+                    const wait = new Promise(resolve =>
+                      setTimeout(resolve, 500),
+                    );
+                    wait.then(() => {
+                      flatListRef.current?.scrollToIndex({
+                        animated: true,
+                        index: info.index,
+                        viewPosition: 0.5,
+                      });
                     });
-                  });
-                }}
-              />
-            </View>
-          )}
+                  }}
+                />
+              </View>
+            )}
           <ExamNavigateButtons
             setExitExamModalVisible={setExitExamModalVisible}
             showFullPage={showFullPage}
@@ -294,6 +310,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FBFDFF',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust the opacity as needed
+    flex: 1,
+    position: 'absolute',
+    zIndex: 400,
   },
   scrollContent: {
     paddingBottom: 80,

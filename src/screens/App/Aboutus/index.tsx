@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, ActivityIndicator, Alert} from 'react-native';
-import {ScaledSheet, ms} from 'react-native-size-matters';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
+import {View, Text, Image} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import {ScrollView} from 'react-native-gesture-handler';
-import ShareApp from '../../../components/Organisms/ShareApp';
 import {useGetAboutUsMutation} from '../../../reduxToolkit/Services/auth';
 import Loading from '../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
@@ -16,43 +14,46 @@ const Index = () => {
   const [getAboutUs] = useGetAboutUsMutation();
   const [aboutUs, setAboutUS] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(true);
+
   const user = useSelector((state: RootState) => state.auth.user);
+
   useEffect(() => {
     const fetchAboutUs = async () => {
-      const isOnline = await checkIsOnline();
-      if (isOnline) {
-        try {
-          const response: any = await getAboutUs({});
-          console.log(response);
+      const isonline = await checkIsOnline();
 
-          if (
-            response.data &&
-            response.data.length > 0 &&
-            response.data[0].aboutUs
-          ) {
-            setAboutUS(response.data[0].aboutUs);
-            setLoading(false);
-
-            return;
-          }
-
-          Toast.show({
-            type: 'error',
-            text1: 'Error getting About us info',
-            text2: 'About us information is empty. Please try again later.',
-          });
-          setLoading(false);
-        } catch (error: any) {
-          setLoading(false);
-          Alert.alert('Error fetching about us data:', error);
-        }
-      } else {
+      if (!isonline) {
         Toast.show({
           type: 'error',
-          text1: 'Error getting About us info',
-          text2: 'Could not connect to the internet. Please try again.',
+          text1: 'Error getting about us information',
+          text2: 'There was a problem wwith your internet connection',
+          visibilityTime: 3000,
         });
+
+        return;
+      }
+      try {
+        const response: any = await getAboutUs({});
+
+        if (response.data[0]) {
+          setAboutUS(response.data[0].aboutUs);
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Error getting about us information',
+            text2: 'No about us information available',
+            visibilityTime: 3000,
+          });
+        }
+
         setLoading(false);
+      } catch (error: any) {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Error getting about us information',
+          text2: 'Could not fetch about us data. Please try again!',
+          visibilityTime: 3000,
+        });
       }
     };
 
@@ -75,22 +76,20 @@ const Index = () => {
           </View>
 
           {aboutUs && (
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>{aboutUs}</Text>
-            </View>
+            <>
+              <View style={styles.textContainer}>
+                <Text style={styles.text}>{aboutUs}</Text>
+              </View>
+              <View style={styles.imageBg}>
+                <Image
+                  source={require('../../../assets/Logo/ThinkHubIcon.png')}
+                  style={styles.img}
+                />
+              </View>
+            </>
           )}
-          <View style={styles.imageBg}>
-            <Image
-              source={require('../../../assets/Logo/ThinkHubIcon.png')}
-              style={styles.img}
-            />
-          </View>
-          <View style={styles.share}>
-            <ShareApp />
-          </View>
         </ScrollView>
       )}
-      <MainBottomNav />
       <Toast />
     </View>
   );
@@ -117,8 +116,8 @@ const styles = ScaledSheet.create({
   },
 
   imageBg: {
-    height: '25%',
-    width: '70%',
+    height: '20%',
+    width: '60%',
     marginLeft: '15%',
     justifyContent: 'center',
     alignItems: 'center',

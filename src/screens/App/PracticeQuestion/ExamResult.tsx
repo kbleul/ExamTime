@@ -59,8 +59,8 @@ const ExamResult = ({route}: {route: any}) => {
   useEffect(() => {
     const backAction = () => {
       isStudy
-        ? navigator.navigate('StudySection')
-        : navigator.navigate('Practice');
+        ? navigator.navigate('Study', {screen: 'StudySection'})
+        : navigator.navigate('PracticeSection', {screen: 'Practice'});
       return true;
     };
 
@@ -102,7 +102,7 @@ const ExamResult = ({route}: {route: any}) => {
         titleStyle={{fontWeight: 'bold'}}
       />
 
-      <View style={styles.midSection}>
+      {/* <View style={styles.midSection}>
         <View
           style={[
             styles.midSectionSubContainer,
@@ -117,7 +117,7 @@ const ExamResult = ({route}: {route: any}) => {
           <Text style={styles.midSectionSubTitle}>PROGRESS</Text>
           <Text style={styles.midSectionSubTitle}>COMPATISON</Text>
         </View>
-      </View>
+      </View> */}
 
       <View style={styles.lastSection}>
         <View style={styles.lastSectionContainer}>

@@ -29,12 +29,12 @@ export const menuStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingRight: 30,
-    marginLeft: screenWidth * 0.07,
+    paddingRight: screenWidth * 0.02,
+    marginLeft: screenWidth * 0.02,
   },
   button: {
     paddingVertical: 2,
-    paddingHorizontal: screenWidth / 6,
+    paddingHorizontal: screenWidth * 0.09,
   },
   buttonSelected: {
     borderBottomWidth: 3,
@@ -56,6 +56,7 @@ export const unitCardStyles = StyleSheet.create({
     overflow: 'hidden',
     borderColor: '#c2c0c0',
     backgroundColor: '#fff',
+    height: 'auto',
   },
   topcontainer: {
     flexDirection: 'row',
@@ -76,6 +77,8 @@ export const unitCardStyles = StyleSheet.create({
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.042,
     textTransform: 'capitalize',
+    height: screenWidth * 0.06,
+    overflow: 'hidden',
   },
   textSubTitle: {
     color: '#000',
@@ -83,6 +86,8 @@ export const unitCardStyles = StyleSheet.create({
     fontSize: screenWidth * 0.04,
     position: 'absolute',
     bottom: -10,
+    height: screenWidth * 0.07,
+    overflow: 'hidden',
   },
   downBtn: {
     alignItems: 'flex-end',

@@ -7,7 +7,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
-import {downloadAndSavePDF} from '../../screens/App/Study/logic';
 
 const MainBottomNav = () => {
   const navigationState = useNavigationState(state => state);
@@ -20,7 +19,6 @@ const MainBottomNav = () => {
         <TouchableOpacity
           style={style.buttonWrapper}
           onPress={() => navigation.navigate('Home')}>
-          {currentScreen === 'Home' && <View style={style.dot} />}
           <View
             style={
               currentScreen === 'Home'
@@ -29,24 +27,19 @@ const MainBottomNav = () => {
             }>
             <FontAwesome
               name="home"
-              size={screenWidth * 0.055}
+              size={screenWidth * 0.06}
               style={currentScreen === 'Home' ? style.iconActive : style.icon}
             />
-            <Text
-              style={
-                currentScreen === 'Home'
-                  ? style.buttonTextActive
-                  : style.buttonText
-              }>
-              Home
-            </Text>
           </View>
+          {currentScreen === 'Home' ? (
+            <View style={style.dot} />
+          ) : (
+            <View style={[style.dot, style.dotHidden]} />
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('StudySection')}
           style={style.buttonWrapper}>
-          {currentScreen === 'StudySection' && <View style={style.dot} />}
-
           <View
             style={
               currentScreen === 'StudySection'
@@ -55,28 +48,21 @@ const MainBottomNav = () => {
             }>
             <Feather
               name="book-open"
-              size={screenWidth * 0.055}
+              size={screenWidth * 0.06}
               style={
                 currentScreen === 'StudySection' ? style.iconActive : style.icon
               }
             />
-            <Text
-              style={
-                currentScreen === 'StudySection'
-                  ? style.buttonTextActive
-                  : style.buttonText
-              }>
-              Study
-            </Text>
           </View>
+          {currentScreen === 'StudySection' ? (
+            <View style={style.dot} />
+          ) : (
+            <View style={[style.dot, style.dotHidden]} />
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('Practice')}
           style={style.buttonWrapper}>
-          {(currentScreen === 'Practice' || currentScreen === 'Exam-View') && (
-            <View style={style.dot} />
-          )}
-
           <View
             style={
               currentScreen === 'Practice' || currentScreen === 'Exam-View'
@@ -85,7 +71,7 @@ const MainBottomNav = () => {
             }>
             <MaterialCommunityIcons
               name="file-document-edit-outline"
-              size={screenWidth * 0.055}
+              size={screenWidth * 0.06}
               color="white"
               style={
                 currentScreen === 'Practice' || currentScreen === 'Exam-View'
@@ -93,21 +79,16 @@ const MainBottomNav = () => {
                   : style.icon
               }
             />
-            <Text
-              style={
-                currentScreen === 'Practice' || currentScreen === 'Exam-View'
-                  ? style.buttonTextActive
-                  : style.buttonText
-              }>
-              Practice
-            </Text>
           </View>
+          {currentScreen === 'Practice' || currentScreen === 'Exam-View' ? (
+            <View style={style.dot} />
+          ) : (
+            <View style={[style.dot, style.dotHidden]} />
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('History')}
           style={style.buttonWrapper}>
-          {currentScreen === 'History' && <View style={style.dot} />}
-
           <View
             style={
               currentScreen === 'History'
@@ -116,57 +97,27 @@ const MainBottomNav = () => {
             }>
             <MaterialCommunityIcons
               name="progress-clock"
-              size={screenWidth * 0.055}
+              size={screenWidth * 0.06}
               style={
                 currentScreen === 'History' ? style.iconActive : style.icon
               }
             />
-            <Text
-              style={
-                currentScreen === 'History'
-                  ? style.buttonTextActive
-                  : style.buttonText
-              }>
-              History
-            </Text>
           </View>
+          {currentScreen === 'History' ? (
+            <View style={style.dot} />
+          ) : (
+            <View style={[style.dot, style.dotHidden]} />
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('Profile')}
           style={style.buttonWrapper}>
-          {(currentScreen === 'Profile' ||
-            currentScreen === 'Profile-Edit') && (
-            // Object.keys(ProfileMenuItemsAuth).includes(currentScreen))
+         
+          {currentScreen === 'Profile' || currentScreen === 'Profile-Edit' ? (
             <View style={style.dot} />
+          ) : (
+            <View style={[style.dot, style.dotHidden]} />
           )}
-
-          <View
-            style={
-              currentScreen === 'Profile' || currentScreen === 'Profile-Edit'
-                ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
-                  [style.button, style.buttonSelected]
-                : style.button
-            }>
-            <AntDesign
-              name="setting"
-              size={screenWidth * 0.055}
-              style={
-                currentScreen === 'Profile' || currentScreen === 'Profile-Edit'
-                  ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
-                    style.iconActive
-                  : style.icon
-              }
-            />
-            <Text
-              style={
-                currentScreen === 'Profile' || currentScreen === 'Profile-Edit'
-                  ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
-                    style.buttonTextActive
-                  : style.buttonText
-              }>
-              Setting
-            </Text>
-          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -203,14 +154,14 @@ const style = StyleSheet.create({
     borderRadius: 14,
     overflow: 'hidden',
     marginBottom: screenHeight * 0.001,
-    width: screenWidth * 0.12,
-    height: screenWidth * 0.12,
+    width: screenWidth * 0.11,
+    height: screenWidth * 0.11,
     maxWidth: 55,
     maxHeight: 55,
     paddingTop: 10,
   },
   buttonSelected: {
-    backgroundColor: '#0066B2',
+    backgroundColor: '#00509D',
     borderColor: 'white',
     marginTop: 0,
     paddingTop: 0,
@@ -224,7 +175,7 @@ const style = StyleSheet.create({
     marginTop: 2,
   },
   buttonText: {
-    fontSize: screenWidth * 0.025,
+    fontSize: screenWidth * 0.022,
     fontFamily: 'Montserrat-Regular',
     color: '#1E90FF',
     marginTop: 2,
@@ -234,8 +185,11 @@ const style = StyleSheet.create({
     height: screenWidth * 0.02,
     borderRadius: 10,
     overflow: 'hidden',
-    backgroundColor: '#0066B2',
-    marginBottom: 3,
+    backgroundColor: '#00509D',
+    marginTop: 3,
+  },
+  dotHidden: {
+    backgroundColor: '#fff',
   },
   icon: {
     color: '#1E90FF',

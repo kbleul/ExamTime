@@ -6,18 +6,16 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import ShareApp from '../../../components/Organisms/ShareApp';
+import {useNavigation} from '@react-navigation/native';
 import FaqContener from '../../../components/Organisms/FaqContener';
 const Index = () => {
   const navigator = useNavigation<any>();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View  style={styles.mcontainer}>
+      <View style={styles.mcontainer}>
         <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => navigator.goBack()}>
             <Ionicons name="chevron-back-outline" color="#000" size={28} />
@@ -28,7 +26,6 @@ const Index = () => {
         <View style={styles.faqContaner}>
           <FaqContener />
         </View>
-        <MainBottomNav />
       </View>
     </SafeAreaView>
   );
@@ -38,11 +35,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     flex: 1,
-
   },
   mcontainer: {
     flex: 1,
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   topHeader: {
     flexDirection: 'row',

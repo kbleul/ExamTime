@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {View, StyleSheet} from 'react-native';
 import {CourseCatagories} from '../../../utils/Data/data';
 import HeaderSection from '../../../components/Molecules/HeaderSection';
@@ -16,7 +15,6 @@ const Index = () => {
       />
 
       {selectedCatagory === CourseCatagories[0] ? <Study /> : <Challenges />}
-      <MainBottomNav />
     </View>
   );
 };

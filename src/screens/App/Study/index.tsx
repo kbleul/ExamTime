@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
+
 import {ScaledSheet} from 'react-native-size-matters';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {Study, Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
@@ -23,6 +24,7 @@ import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
 import {SvgCss} from 'react-native-svg';
 import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 import LoginModal from '../../../components/Organisms/LoginModal';
+import {useNavContext} from '../../../context/bottomNav';
 
 const CourseItem = ({
   item,
@@ -49,6 +51,7 @@ const CourseItem = ({
     );
   });
   const progress = calculateStudyProgress(savedStudies);
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoadingSVG(false);
@@ -75,29 +78,38 @@ const CourseItem = ({
             {isLoading && isLoadingSVG ? (
               <View style={[styles.imagebg, styles.imagebgLoading]} />
             ) : (
-              <SvgCss
-                xml={item.icon}
-                style={styles.imagebg}
-                onError={onError}
-              />
+              item.icon && (
+                <SvgCss
+                  xml={item.icon}
+                  style={styles.imagebg}
+                  onError={onError}
+                />
+              )
             )}
           </View>
 
           <View style={styles.infoContainer}>
             <Text style={styles.subject}>{item.subject.subject}</Text>
-            <Text style={styles.units}>{savedStudies.length} units</Text>
-            <Text style={styles.progressText}>
-              completed {progress > 100 ? 100 : progress + '%'}
+            <Text style={styles.units}>
+              {savedStudies.length} lessons . . .
             </Text>
+          </View>
 
-            <View style={styles.indicatorContainer}>
-              <Text
-                style={[
-                  styles.indicator,
-                  {width: progress > 100 ? 100 : progress + '%'},
-                ]}
-              />
-            </View>
+          <View style={styles.circleContainer}>
+            <AnimatedCircularProgress
+              size={60}
+              width={4}
+              backgroundWidth={2}
+              fill={progress}
+              tintColor="#F0E2A1"
+              backgroundColor="#000"
+              rotation={0}>
+              {fill => (
+                <View style={styles.progressTextContainer}>
+                  <Text style={styles.progressText}>{Math.round(fill)}%</Text>
+                </View>
+              )}
+            </AnimatedCircularProgress>
           </View>
         </TouchableOpacity>
       )}
@@ -107,7 +119,9 @@ const CourseItem = ({
 
 const Index = () => {
   const navigation: any = useNavigation();
+  const {setShowNavigation} = useNavContext();
   const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const {useQuery} = AuthContext;
 
@@ -122,18 +136,28 @@ const Index = () => {
     setIsLoading(false);
   }, 500);
 
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(true);
+    }, []),
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainerTop}>
         <Text style={styles.headerTitle}>Study Section</Text>
+        <Text style={styles.welcomeText}>
+          Welcome back{user && ', ' + user.firstName}
+        </Text>
       </View>
 
       <View style={styles.Headercontainer}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>
-            Join the challenge phase and get a structured timeline of tasks to
-            help you achieve your study goals!
+            Time to shine! Dive into the challenge phase and conquer the
+            season's biggest learning adventure.
           </Text>
+          <Text style={[styles.text, styles.subText]}>You got this!</Text>
           <TouchableWithoutFeedback
             onPress={() =>
               token
@@ -146,30 +170,32 @@ const Index = () => {
           </TouchableWithoutFeedback>
         </View>
         <Image
-          source={require('../../../assets/Images/course.png')}
+          source={require('../../../assets/Images/courses/studing.png')}
           style={styles.image}
         />
       </View>
 
-      <Header title="My learning" subTitle="Your Chosen Courses" />
+      <View style={styles.subjectsContainer}>
+        <Header title="Course in progres" />
 
-      <FlatList
-        data={PushFavorateToFront(
-          savedUserData[0].selectedSubjects || [],
-          savedSubjects,
-        )}
-        renderItem={({item, index}) => (
-          <CourseItem
-            item={item}
-            setLoginModalVisible={setLoginModalVisible}
-            isLoading={isLoading}
-            timerValue={(index + 1) * 200}
-          />
-        )}
-        keyExtractor={(item, index) => index.toString()}
-        showsVerticalScrollIndicator={false}
-      />
-      <MainBottomNav />
+        <FlatList
+          data={PushFavorateToFront(
+            savedUserData[0].selectedSubjects || [],
+            savedSubjects,
+          )}
+          renderItem={({item, index}) => (
+            <CourseItem
+              item={item}
+              setLoginModalVisible={setLoginModalVisible}
+              isLoading={isLoading}
+              timerValue={(index + 1) * 200}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+
       <LoginModal
         loginModalVisible={loginModalVisible}
         setLoginModalVisible={setLoginModalVisible}
@@ -190,15 +216,15 @@ const styles = ScaledSheet.create({
     width: screenWidth,
     backgroundColor: '#F9FCFF',
     paddingTop: 40,
-    paddingBottom: 70,
-    paddingHorizontal: 10,
+    paddingBottom: screenHeight * 0.048,
     // backgroundColor: 'red',
   },
   loading: {
     paddingTop: screenHeight * 0.1,
+    paddingHorizontal: 10,
   },
   headerContainerTop: {
-    paddingHorizontal: screenWidth * 0.02,
+    paddingHorizontal: 15,
   },
   headerTitle: {
     fontFamily: 'PoppinsSemiBold',
@@ -207,49 +233,64 @@ const styles = ScaledSheet.create({
     lineHeight: screenHeight * 0.05, //34
     marginTop: screenWidth * 0.009,
   },
+  welcomeText: {
+    fontFamily: 'PoppinsLight',
+    fontSize: screenWidth * 0.045, //28
+    color: '#C1C2C6',
+    lineHeight: screenHeight * 0.04, //34
+  },
   Headercontainer: {
     marginVertical: 2,
     flexDirection: 'row',
-    backgroundColor: '#FFA500',
+    backgroundColor: '#F0E2A1',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: '10@ms',
-    width: screenWidth - 30,
-    height: screenHeight / 6,
+    width: screenWidth - 15,
     minHeight: 150,
-    borderRadius: 10,
-    overflow: 'visible',
+    borderTopRightRadius: 28,
+    borderBottomRightRadius: 28,
+    overflow: 'hidden',
     position: 'relative',
   },
   textContainer: {
-    width: '70%',
+    width: '80%',
     alignItems: 'flex-start',
-    gap: 10,
     justifyContent: 'space-between',
   },
   text: {
-    fontFamily: 'PoppinsRegular',
-    color: '#FFFFFF',
-    fontSize: screenWidth * 0.037,
+    fontFamily: 'PoppinsMedium',
+    color: '#000',
+    fontSize: screenWidth * 0.035,
+    lineHeight: screenWidth * 0.054,
+    paddingLeft: 10,
+  },
+  subText: {
+    textAlign: 'center',
+    width: '90%',
+    lineHeight: screenWidth * 0.054,
   },
   button: {
-    backgroundColor: 'white',
+    marginTop: 10,
+    backgroundColor: '#000',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
     borderRadius: 100,
     overflow: 'hidden',
-    paddingHorizontal: screenWidth * 0.05,
-    paddingTop: screenWidth * 0.018,
-    paddingBottom: screenWidth * 0.01,
+    paddingHorizontal: screenWidth * 0.076,
+    paddingTop: screenWidth * 0.013,
+    paddingBottom: screenWidth * 0.006,
+    marginRight: screenWidth * 0.07,
   },
   buttonText: {
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    color: '#000000',
-    fontFamily: 'PoppinsBold',
-    fontSize: screenHeight * 0.017,
+    color: '#fff',
+    fontFamily: 'PoppinsMedium',
+    fontSize: screenHeight * 0.018,
   },
   image: {
     width: '40%',
@@ -257,65 +298,59 @@ const styles = ScaledSheet.create({
     resizeMode: 'contain',
     position: 'absolute',
     right: 0,
-    bottom: 0,
+    bottom: -10,
   },
-
+  subjectsContainer: {
+    paddingHorizontal: 15,
+    marginBottom: 240,
+  },
   lcontainer: {
-    alignItems: 'stretch',
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginHorizontal: 2,
-    padding: 2,
+    marginHorizontal: 20,
     marginBottom: 10,
     borderRadius: 15,
     borderColor: '#E1E1E1',
     borderWidth: 1,
     backgroundColor: 'white',
+    maxHeight: screenHeight * 0.14,
+    overflow: 'hidden',
   },
   imgContainer: {
-    width: '30%',
-    height: screenHeight * 0.16,
-    margin: 8,
+    width: '27%',
+    height: '100%',
     backgroundColor: 'white',
-    borderRadius: 10,
     overflow: 'hidden',
   },
   imagebg: {
     height: '100%',
     width: screenWidth * (1 / 2.6),
-    borderRadius: 5,
+    borderRadius: 15,
+
     overflow: 'hidden',
   },
   imagebgLoading: {
     backgroundColor: '#f5f2f2',
   },
   infoContainer: {
-    width: '67%',
-    padding: 10,
+    width: '50%',
+    paddingHorizontal: 10,
     backgroundColor: 'white',
     borderTopEndRadius: 10,
     borderBottomEndRadius: 10,
     justifyContent: 'flex-end',
   },
   subject: {
-    fontSize: screenWidth * 0.05,
-    fontFamily: 'PoppinsSemiBold',
+    fontSize: screenWidth * 0.04,
+    fontFamily: 'PoppinsRegular',
     textTransform: 'capitalize',
     color: '#000',
   },
   units: {
     fontSize: screenWidth * 0.033,
-    fontFamily: 'PoppinsSemiBold',
-    textTransform: 'capitalize',
+    fontFamily: 'PoppinsRegular',
     color: '#000',
-    paddingVertical: 2,
-    paddingTop: 3,
-    paddingLeft: 16,
-    marginVertical: 8,
-    borderRadius: 100,
-    overflow: 'hidden',
-    backgroundColor: '#9ED2E3',
-    maxWidth: '68%',
   },
   indicatorContainer: {
     width: '100%',
@@ -330,10 +365,22 @@ const styles = ScaledSheet.create({
     borderBottomLeftRadius: 100,
     backgroundColor: '#6067B3',
   },
+  progressTextContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#000',
+  },
   progressText: {
-    color: '#000',
-    fontFamily: 'PoppinsRegular',
-    fontSize: screenWidth * 0.033,
+    fontSize: screenWidth * 0.042,
+    fontFamily: 'PoppinsMedium',
+    color: '#F0E2A1',
+  },
+  circleContainer: {
+    backgroundColor: '#000',
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    marginRight: 10,
   },
 });
 export default Index;

@@ -13,7 +13,6 @@ import BackWithItem from '../../../components/Organisms/BackWithItem';
 import ProgressBar from '../../../components/Molecules/ProgressBar';
 import UnitsAccordion from '../../../components/Molecules/UnitsAccordion';
 import AuthPrompt from '../../../components/Organisms/AuthPrompt';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 
@@ -97,7 +96,6 @@ const ViewSubjectDetails = () => {
         </View>
       )}
 
-      <MainBottomNav />
     </View>
   );
 };

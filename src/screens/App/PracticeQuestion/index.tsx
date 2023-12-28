@@ -21,6 +21,7 @@ import DirectionModal from '../../../components/Organisms/DirectionModal';
 import {AuthContext} from '../../../Realm/model';
 import {Exam} from '../../../Realm';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
+import {useNavContext} from '../../../context/bottomNav';
 
 export type answersType = {
   id: string;
@@ -92,6 +93,8 @@ const PracticeQuestion = ({route}: {route: any}) => {
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
 
   const [direction, setDirection] = useState<string | null>(null);
+
+  const {setShowNavigation} = useNavContext();
 
   const refIndex = useRef(0);
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
@@ -189,6 +192,7 @@ const PracticeQuestion = ({route}: {route: any}) => {
 
   useEffect(() => {
     setStartTimer(true);
+    setShowNavigation(false);
   }, []);
 
   const scrollToIndex = () => {
@@ -235,8 +239,12 @@ const PracticeQuestion = ({route}: {route: any}) => {
     <SafeAreaView
       style={
         showFullPage
-          ? [IndexStyle.container, styles.container]
-          : IndexStyle.container
+          ? [
+              IndexStyle.container,
+              styles.container,
+              exitExamModalVisible && styles.overlay,
+            ]
+          : [IndexStyle.container, exitExamModalVisible && styles.overlay]
       }>
       {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
 
@@ -251,7 +259,7 @@ const PracticeQuestion = ({route}: {route: any}) => {
         setCurrentQuestion={setCurrentQuestion}
         refIndex={refIndex}
       />
-      {!isPracticeMode && (
+      {!isPracticeMode && !exitExamModalVisible && (
         <ExamTimer
           formatedTime={formatedTime}
           timer={timer}
@@ -266,33 +274,35 @@ const PracticeQuestion = ({route}: {route: any}) => {
         <Text style={styles.emptyText}>No more questions left !</Text>
       )}
 
-      {!showFullPage && currentViewExam?.length > 0 && (
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={showFullPage}>
-          <Question
-            key={
-              currentViewExam[currentQuestion]
-                ? currentViewExam[currentQuestion].id
-                : '---'
-            }
-            showFullPage={showFullPage}
-            question={
-              refIndex.current
-                ? currentViewExam[refIndex.current]
-                : currentViewExam[currentQuestion]
-            }
-            questionCounter={currentQuestion + 1}
-            total={currentViewExam.length}
-            isPracticeMode={isPracticeMode}
-            setUserAnswers={setUserAnswers}
-            setDirection={setDirection}
-            userAnswers={userAnswers}
-          />
-        </ScrollView>
-      )}
+      {!showFullPage &&
+        currentViewExam?.length > 0 &&
+        !exitExamModalVisible && (
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={showFullPage}>
+            <Question
+              key={
+                currentViewExam[currentQuestion]
+                  ? currentViewExam[currentQuestion].id
+                  : '---'
+              }
+              showFullPage={showFullPage}
+              question={
+                refIndex.current
+                  ? currentViewExam[refIndex.current]
+                  : currentViewExam[currentQuestion]
+              }
+              questionCounter={currentQuestion + 1}
+              total={currentViewExam.length}
+              isPracticeMode={isPracticeMode}
+              setUserAnswers={setUserAnswers}
+              setDirection={setDirection}
+              userAnswers={userAnswers}
+            />
+          </ScrollView>
+        )}
 
-      {showFullPage && currentViewExam?.length > 0 && (
+      {showFullPage && currentViewExam?.length > 0 && !exitExamModalVisible && (
         <View style={styles.scrollContentFullPage}>
           <FlatList
             ref={flatListRef}
@@ -316,13 +326,6 @@ const PracticeQuestion = ({route}: {route: any}) => {
           />
         </View>
       )}
-      <ExamNavigateButtons
-        setExitExamModalVisible={setExitExamModalVisible}
-        showFullPage={showFullPage}
-        currentQuestion={currentQuestion}
-        setCurrentQuestion={setCurrentQuestion}
-        totalQuestionsLength={currentViewExam.length}
-      />
 
       <ExamLeaveModal
         exitExamModalVisible={exitExamModalVisible}
@@ -346,6 +349,14 @@ const PracticeQuestion = ({route}: {route: any}) => {
         }
       />
 
+      <ExamNavigateButtons
+        setExitExamModalVisible={setExitExamModalVisible}
+        showFullPage={showFullPage}
+        currentQuestion={currentQuestion}
+        setCurrentQuestion={setCurrentQuestion}
+        totalQuestionsLength={currentViewExam.length}
+      />
+
       <DirectionModal direction={direction} setDirection={setDirection} />
     </SafeAreaView>
   );
@@ -354,6 +365,14 @@ const PracticeQuestion = ({route}: {route: any}) => {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 0,
+    zIndex: 100,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust the opacity as needed
+    flex: 1,
+    position: 'absolute',
+    zIndex: 400,
   },
   scrollContent: {
     paddingBottom: 65,

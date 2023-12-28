@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback} from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import LoginHeader from '../../../components/Molecules/LoginHeader';
 import LoginForm from '../../../components/Organisms/LoginForm';
@@ -9,12 +9,22 @@ import {calculateDateDifference} from '../../App/Onboarding/Logic';
 import {AuthContext} from '../../../Realm/model';
 import {UserData} from '../../../Realm';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavContext} from '../../../context/bottomNav';
 
 export default function Login() {
   const navigator = useNavigation<any>();
+  const {setShowNavigation} = useNavContext();
+
   const {useQuery} = AuthContext;
   const savedUserData = useQuery(UserData);
   const dateDiff = calculateDateDifference(savedUserData[0].initialDate);
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(false);
+    }, []),
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -38,13 +48,22 @@ export default function Login() {
       <AuthNavigatorOption
         headingText="Don’t have an account?"
         buttonText="Create one now"
-        onPress={() => navigator.navigate('Signup')}
+        onPress={() => {
+          setShowNavigation(false);
+          navigator.navigate('Signup');
+        }}
       />
 
       <View style={styles.homeBtnContainer}>
         <TouchableOpacity
           touchSoundDisabled
-          onPress={() => navigator.navigate('Home')}>
+          onPress={() => {
+            setShowNavigation(false);
+            // navigator.navigate('HomeSection');
+            navigator.getState().routeNames[0] === 'Home'
+              ? navigator.navigate('Home')
+              : navigator.navigate('HomeSection');
+          }}>
           <Text style={styles.homeBtnText}>Home</Text>
         </TouchableOpacity>
       </View>

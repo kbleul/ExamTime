@@ -9,7 +9,6 @@ import {
   TextInput,
   Linking,
 } from 'react-native';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
@@ -34,7 +33,7 @@ const Index = () => {
 
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
-  const [getContact] = useGetContactMutation();
+  const [getContact, {isLoading}] = useGetContactMutation();
   const [getFeedBack] = useGetFeedBackMutation();
   const [contactUs, setConatctUs] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -145,6 +144,21 @@ const Index = () => {
     });
   };
 
+  const handleOpenTelegram = (telegramLink: string) => {
+    console.log(typeof telegramLink[0]);
+    Linking.openURL(telegramLink[0]).catch(error => {
+      console.log('Error opening Telegram app:', error);
+      // Handle the error, e.g., show an error message to the user
+    });
+  };
+
+  const handleOpenURLInBrowser = (url: string) => {
+    Linking.openURL(url[0]).catch(error => {
+      console.log('Error opening URL in browser:', error);
+      // Handle the error, e.g., show an error message to the user
+    });
+  };
+
   return (
     <>
       {contactUs && (
@@ -168,55 +182,106 @@ const Index = () => {
                 {contactUs &&
                   contactUs.map((item, index) => (
                     <View key={'contact' + index}>
-                      <View style={styles.contactDiv}>
-                        <View style={styles.address}>
-                          <Text style={styles.addressTitle}>Phone Number</Text>
-                          <Text style={styles.addressLInk}>
-                            {item.phoneNumber}
-                          </Text>
+                      {item.phoneNumber && (
+                        <View style={styles.contactDiv}>
+                          <View style={styles.address}>
+                            <Text style={styles.addressTitle}>
+                              Phone Number
+                            </Text>
+                            <Text style={styles.addressLInk}>
+                              {item.phoneNumber}
+                            </Text>
+                          </View>
+                          <View style={styles.adressIcons}>
+                            <TouchableOpacity
+                              touchSoundDisabled
+                              onPress={() =>
+                                handlePhoneContact(item.phoneNumber)
+                              }>
+                              <Ionicons
+                                name="call-sharp"
+                                color="#000"
+                                size={26}
+                              />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              touchSoundDisabled
+                              onPress={() =>
+                                handleMessageContact(item.phoneNumber)
+                              }>
+                              <Ionicons
+                                name="chatbox-ellipses-sharp"
+                                color="#000"
+                                size={26}
+                                style={styles.iconLeft}
+                              />
+                            </TouchableOpacity>
+                          </View>
                         </View>
-                        <View style={styles.adressIcons}>
-                          <TouchableOpacity
-                            touchSoundDisabled
-                            onPress={() =>
-                              handlePhoneContact(item.phoneNumber)
-                            }>
+                      )}
+                      {item.email && (
+                        <TouchableOpacity
+                          touchSoundDisabled
+                          style={styles.contactDiv}
+                          onPress={() => handleSendEmail(item.email)}>
+                          <View style={styles.address}>
+                            <Text style={styles.addressTitle}>
+                              Email Address
+                            </Text>
+                            <Text style={styles.addressLInk}>{item.email}</Text>
+                          </View>
+                          <View style={styles.adressIcons}>
                             <Ionicons
-                              name="call-sharp"
+                              name="chevron-forward-outline"
                               color="#000"
-                              size={26}
+                              size={24}
                             />
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            touchSoundDisabled
-                            onPress={() =>
-                              handleMessageContact(item.phoneNumber)
-                            }>
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                      {item.website && (
+                        <TouchableOpacity
+                          touchSoundDisabled
+                          style={styles.contactDiv}
+                          onPress={() => handleOpenURLInBrowser(item.website)}>
+                          <View style={styles.address}>
+                            <Text style={styles.addressTitle}>Website</Text>
+                            <Text style={styles.addressLInk}>
+                              {item.website}
+                            </Text>
+                          </View>
+                          <View style={styles.adressIcons}>
                             <Ionicons
-                              name="chatbox-ellipses-sharp"
+                              name="chevron-forward-outline"
                               color="#000"
-                              size={26}
-                              style={styles.iconLeft}
+                              size={24}
                             />
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                      <TouchableOpacity
-                        touchSoundDisabled
-                        style={styles.contactDiv}
-                        onPress={() => handleSendEmail(item.email)}>
-                        <View style={styles.address}>
-                          <Text style={styles.addressTitle}>Email Address</Text>
-                          <Text style={styles.addressLInk}>{item.email}</Text>
-                        </View>
-                        <View style={styles.adressIcons}>
-                          <Ionicons
-                            name="chevron-forward-outline"
-                            color="#000"
-                            size={24}
-                          />
-                        </View>
-                      </TouchableOpacity>
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                      {item.telegram && (
+                        <TouchableOpacity
+                          touchSoundDisabled
+                          style={styles.contactDiv}
+                          onPress={() => handleOpenTelegram(item.telegram)}>
+                          <View style={styles.address}>
+                            <Text style={styles.addressTitle}>
+                              Be part of Exam Time family by joining our
+                              telegram Channel
+                            </Text>
+                            <Text style={styles.addressLInk}>
+                              {item.telegram}
+                            </Text>
+                          </View>
+                          <View style={styles.adressIcons}>
+                            <Ionicons
+                              name="chevron-forward-outline"
+                              color="#000"
+                              size={24}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      )}
                     </View>
                   ))}
                 <View style={styles.CFeedBack}>
@@ -242,15 +307,19 @@ const Index = () => {
               </View>
             </ScrollView>
           )}
-          <View>
-            <MainBottomNav />
-          </View>
+          <View></View>
 
           <LoginModal
             loginModalVisible={showLoginPrompt}
             setLoginModalVisible={setShowLoginPrompt}
           />
           <Toast />
+        </SafeAreaView>
+      )}
+
+      {(isLoading || loading) && (
+        <SafeAreaView style={styles.container}>
+          <Loading />
         </SafeAreaView>
       )}
     </>
@@ -270,7 +339,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: Scale(5),
-    paddingVertical: Scale(10),
+    paddingTop: Scale(10),
   },
   headerText: {
     color: '#0F0F0F',
@@ -301,7 +370,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // Adjust the width as needed
     // borderBottomColor: 'rgba(0, 0, 0, 0.09)', // Adj
-    padding: Scale(8),
+    paddingHorizontal: Scale(8),
     marginTop: Scale(12),
     overflow: 'hidden',
   },

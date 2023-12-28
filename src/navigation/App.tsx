@@ -1,218 +1,269 @@
-import React from 'react';
+import React, {memo} from 'react';
 import Onboarding from '../screens/App/Onboarding/index';
-import Home from '../screens/App/Home/index';
-import Courses from '../screens/App/Courses/index';
-import Profile from '../screens/App/Profile/index';
-import Aboutus from '../screens/App/Aboutus/index';
-import SubscriptionPlan from '../screens/App/SubscriptionPlan/index';
-import StudySection from '../screens/App/Study/index';
-import ChallengeSection from '../screens/App/Challenge/index';
-import ProfileEditIndex from '../screens/App/Profile/ProfileEditIndex';
-import Login from '../screens/Auth/Login/Login';
-import Signup from '../screens/Auth/Signup/Signup';
-import NetworkError from '../screens/Shared/NetworkError';
-import ContactUs from '../screens/App/ContactUs/index';
-import FAQ from '../screens/App/FAQ/index';
-import {StatusBar} from 'react-native';
-import ForgotPassword from '../screens/Auth/Login/ForgotPassword';
-import SignupCompleted from '../components/Organisms/SignupCompleted';
-import ViewSubjectDetails from '../screens/App/Courses/ViewSubjectDetails';
-import ViewCourseContent from '../screens/App/Courses/ViewCourseContent';
-import Practice from '../screens/App/Practice/index';
-import PracticeQuestion from '../screens/App/PracticeQuestion';
-import {ProfileMenuItemsAuth} from '../utils/Data/data';
-import SetNewPasswordPage from '../screens/Auth/SetNewPassword';
-import ExamReview from '../screens/App/PracticeQuestion/ExamReview';
-import ExamResult from '../screens/App/PracticeQuestion/ExamResult';
-import RandomQuestionsView from '../screens/App/PracticeQuestion/RandomQuestionsView';
-import UserGuide from '../screens/App/UserGuide';
-import StudyDetails from '../screens/App/Study/StudyDetails';
-import ViewPdf from '../screens/App/Study/ViewPdf';
-import ViewVideo from '../screens/App/Study/ViewVideo';
-import ViewAssessment from '../screens/App/Study/ViewAssessment';
-import History from '../screens/App/History';
-import Notification from '../screens/App/Notification';
+
+import {screenHeight, screenWidth} from '../utils/Data/data';
+
 import NotificationProvider from '../context/notification';
-const AppRoutes: React.FC<{Stack: any; showOnboarding: boolean}> = ({
-  Stack,
-  showOnboarding,
-}) => {
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import {StyleSheet, View} from 'react-native';
+import {useNavContext} from '../context/bottomNav';
+import {useOnboardingContext} from '../context/onboarding';
+import HomeStackScreens from './stacks/HomeStackScreens';
+import StudyStackScreens from './stacks/StudyStackScreens';
+import PracticeStackScreens from './stacks/PracticeStackScreens';
+import HistoryStackScreens from './stacks/HistoryStackScreens';
+import ProfileStackScreens from './stacks/ProfileStackScreens';
+
+const TABSList = [
+  'HomeSection',
+  'Study',
+  'PracticeSection',
+  'HistorySection',
+  'ProfileSection',
+];
+
+const AppRoutes = ({Stack}: {Stack: any}) => {
+  const Tab = createBottomTabNavigator();
+  const {showNavigation} = useNavContext();
+  const {showOnboarding} = useOnboardingContext();
+
   return (
     <NotificationProvider>
-      <StatusBar
-        barStyle="dark-content"
-        hidden={false}
-        backgroundColor="#F9FCFF"
-        translucent={true}
-      />
-      <Stack.Navigator>
-        {showOnboarding && (
-          <Stack.Screen
-            name="Onboarding"
-            component={Onboarding}
-            options={{headerShown: false}}
-          />
+      <GestureHandlerRootView style={{flex: 1}}>
+        {!showOnboarding && (
+          <Tab.Navigator
+            screenOptions={{
+              tabBarShowLabel: false,
+              headerShown: false,
+              tabBarStyle: {
+                display: showNavigation ? 'flex' : 'none',
+                height: 67,
+              },
+            }}>
+            <Tab.Screen
+              name="HomeSection"
+              component={HomeStackScreens}
+              options={({route}) => ({
+                tabBarIcon: ({focused}) => (
+                  // eslint-disable-next-line
+                  <RenderTab type="HomeSection" focused={focused} />
+                ),
+                unmountOnBlur: route.name !== 'HomeSection',
+              })}
+            />
+
+            <Tab.Screen
+              name="Study"
+              component={StudyStackScreens}
+              options={({route}) => ({
+                tabBarIcon: ({focused}) => (
+                  <RenderTab type="Study" focused={focused} />
+                ),
+                unmountOnBlur: route.name !== 'Study',
+              })}
+            />
+
+            <Tab.Screen
+              name="PracticeSection"
+              component={PracticeStackScreens}
+              options={({route}) => ({
+                tabBarIcon: ({focused}) => (
+                  <RenderTab type="PracticeSection" focused={focused} />
+                ),
+                unmountOnBlur: route.name !== 'PracticeSection',
+              })}
+            />
+
+            <Tab.Screen
+              name="HistorySection"
+              component={HistoryStackScreens}
+              options={({route}) => ({
+                tabBarIcon: ({focused}) => (
+                  <RenderTab type="HistorySection" focused={focused} />
+                ),
+                unmountOnBlur: route.name !== 'HistorySection',
+              })}
+            />
+
+            <Tab.Screen
+              name="ProfileSection"
+              component={ProfileStackScreens}
+              options={({route}) => ({
+                tabBarIcon: ({focused}) => (
+                  <RenderTab type="ProfileSection" focused={focused} />
+                ),
+                unmountOnBlur: route.name !== 'ProfileSection',
+              })}
+            />
+          </Tab.Navigator>
         )}
 
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Courses"
-          component={Courses}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="View-Course"
-          component={ViewSubjectDetails}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="View-Course-Content"
-          component={ViewCourseContent}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Practice"
-          component={Practice}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Exam-View"
-          component={PracticeQuestion}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Random-Exam"
-          component={RandomQuestionsView}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Exam-Review"
-          component={ExamReview}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Exam-Result"
-          component={ExamResult}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="StudySection"
-          component={StudySection}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="StudyDetails"
-          component={StudyDetails}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewPdf"
-          component={ViewPdf}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewVideo"
-          component={ViewVideo}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ViewAssessment"
-          component={ViewAssessment}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ChallengeScreen"
-          component={ChallengeSection}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="History"
-          component={History}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="Profile"
-          component={Profile}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={ProfileMenuItemsAuth['Contact Us'].navigate}
-          component={ContactUs}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={ProfileMenuItemsAuth['FAQ'].navigate}
-          component={FAQ}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={ProfileMenuItemsAuth['User Guide'].navigate}
-          component={UserGuide}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="Profile-Edit"
-          component={ProfileEditIndex}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="forgot-password"
-          component={ForgotPassword}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="network-error"
-          component={NetworkError}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="signup-success"
-          component={SignupCompleted}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Aboutus"
-          component={Aboutus}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="SubscriptionPlan"
-          component={SubscriptionPlan}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Password-Reset"
-          component={SetNewPasswordPage}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="Notification"
-          component={Notification}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
+        {showOnboarding && (
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Onboarding"
+              component={Onboarding}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        )}
+      </GestureHandlerRootView>
     </NotificationProvider>
   );
 };
+
+const AssignSVG = (type: string, focused: boolean) => {
+  switch (type) {
+    case TABSList[0]:
+      return (
+        <FontAwesome
+          name="home"
+          size={screenWidth * 0.06}
+          color="white"
+          style={focused ? style.iconActive : style.icon}
+        />
+      );
+    case TABSList[1]:
+      return (
+        <Feather
+          name="book-open"
+          size={screenWidth * 0.06}
+          color="white"
+          style={focused ? style.iconActive : style.icon}
+        />
+      );
+    case TABSList[2]:
+      return (
+        <MaterialCommunityIcons
+          name="file-document-edit-outline"
+          size={screenWidth * 0.06}
+          color="white"
+          style={focused ? style.iconActive : style.icon}
+        />
+      );
+    case TABSList[3]:
+      return (
+        <MaterialCommunityIcons
+          name="progress-clock"
+          size={screenWidth * 0.06}
+          style={focused ? style.iconActive : style.icon}
+        />
+      );
+    case TABSList[4]:
+      return (
+        <AntDesign
+          name="setting"
+          size={screenWidth * 0.06}
+          style={
+            focused
+              ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
+                style.iconActive
+              : style.icon
+          }
+        />
+      );
+
+    default:
+      return <></>;
+  }
+};
+
+const RenderTab = memo(({type, focused}: {type: string; focused: boolean}) => {
+  return (
+    <>
+      <View
+        style={focused ? [style.button, style.buttonSelected] : style.button}>
+        {AssignSVG(type, focused)}
+      </View>
+
+      {focused ? (
+        <View style={style.dot} />
+      ) : (
+        <View style={[style.dot, style.dotHidden]} />
+      )}
+    </>
+  );
+});
+
+const style = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: -3,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: screenHeight * 0.11,
+    backgroundColor: '#fff',
+  },
+  btnsContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  buttonWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 14,
+    overflow: 'hidden',
+    marginBottom: screenHeight * 0.001,
+    width: screenWidth * 0.11,
+    height: screenWidth * 0.11,
+    maxWidth: 55,
+    maxHeight: 55,
+    paddingTop: 10,
+  },
+  buttonSelected: {
+    backgroundColor: '#00509D',
+    borderColor: 'white',
+    marginTop: 0,
+    paddingTop: 0,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  buttonTextActive: {
+    fontSize: screenWidth * 0.02,
+    fontFamily: 'Montserrat-Regular',
+    color: 'white',
+    marginTop: 2,
+  },
+  buttonText: {
+    fontSize: screenWidth * 0.022,
+    fontFamily: 'Montserrat-Regular',
+    color: '#1E90FF',
+    marginTop: 2,
+  },
+  dot: {
+    width: screenWidth * 0.02,
+    height: screenWidth * 0.02,
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: '#00509D',
+    marginTop: 3,
+  },
+  dotHidden: {
+    backgroundColor: '#fff',
+  },
+  icon: {
+    color: '#1E90FF',
+  },
+  iconActive: {
+    color: '#fff',
+  },
+});
 
 export default AppRoutes;

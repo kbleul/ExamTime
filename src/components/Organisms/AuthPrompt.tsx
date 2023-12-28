@@ -3,8 +3,10 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ImageBackground} from 'react-native';
+import {useNavContext} from '../../context/bottomNav';
 const AuthPrompt = () => {
   const navigator = useNavigation();
+  const {setShowNavigation} = useNavContext();
 
   return (
     <ImageBackground
@@ -25,13 +27,19 @@ const AuthPrompt = () => {
           <TouchableOpacity
             style={styles.adsBtns}
             touchSoundDisabled
-            onPress={() => navigator.navigate('Signup')}>
+            onPress={() => {
+              setShowNavigation(false);
+              navigator.navigate('Signup');
+            }}>
             <Text style={styles.adsBtnsText}>Signup</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.adsBtns, styles.adsBtns_secondary]}
             touchSoundDisabled
-            onPress={() => navigator.navigate('Login')}>
+            onPress={() => {
+              setShowNavigation(false);
+              navigator.navigate('Login');
+            }}>
             <Text style={styles.adsBtnsText}>Login</Text>
           </TouchableOpacity>
         </View>

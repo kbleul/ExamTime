@@ -5,7 +5,6 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {Text} from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 
 const ViewCourseContent = ({route}: any) => {
   const {isVideo} = route.params;
@@ -118,7 +117,6 @@ const ViewCourseContent = ({route}: any) => {
         </TouchableOpacity>
       </ScrollView>
 
-      <MainBottomNav />
     </View>
   );
 };

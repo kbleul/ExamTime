@@ -1,7 +1,7 @@
 import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
-import {SvgCss} from 'react-native-svg';
+import {SvgXml} from 'react-native-svg';
 import {calculateStudyProgress} from '../../../screens/App/Study/logic';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
@@ -9,6 +9,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export const onError = (e: Error) => {
   console.log('Render svg failed', e.message);
@@ -43,7 +44,6 @@ const ChosenCoursesCard: React.FC<{
     );
   });
   const calProgress = calculateStudyProgress(savedStudies);
-
   const [isLoadingSVG, setIsLoadingSVG] = useState(timerValue ? true : false);
 
   useEffect(() => {
@@ -52,29 +52,21 @@ const ChosenCoursesCard: React.FC<{
         setIsLoadingSVG(false);
       }, timerValue);
     }
+
+    if (savedStudies.length === 0) {
+    }
   }, []);
 
   return (
     <>
       {isLoadingSVG ||
         (isLoadingSubjects && (
-          <TouchableOpacity
+          <View
             style={
               subjectId !== undefined
                 ? styles.containerLoading
                 : [styles.containerLoading, styles.containerSecondaryLoading]
             }
-            onPress={() => {
-              if (!user || !token) {
-                setLoginModalVisible && setLoginModalVisible(true);
-                return;
-              }
-
-              savedStudies.length > 0 &&
-                navigator.navigate('StudyDetails', {
-                  subject: subject,
-                });
-            }}
           />
         ))}
 
@@ -91,12 +83,24 @@ const ChosenCoursesCard: React.FC<{
               return;
             }
 
-            savedStudies.length > 0 &&
-              navigator.navigate('StudyDetails', {
-                subject: subject,
-              });
+            savedStudies.length > 0
+              ? navigator.navigate('Study', {
+                  screen: 'StudyDetails',
+                  params: {subject: subject},
+                })
+              : Toast.show({
+                  type: 'error',
+                  text1: 'No studies found for this subject',
+                  text2: 'Try a different subject',
+                });
           }}>
-          <SvgCss style={styles.imageBg} xml={bgImage.uri} onError={onError} />
+          {bgImage && (
+            <SvgXml
+              style={styles.imageBg}
+              xml={bgImage.uri}
+              onError={onError}
+            />
+          )}
 
           <View style={styles.contentContainer}>
             <Text style={styles.title}>{subject.subject}</Text>
@@ -130,6 +134,8 @@ const ChosenCoursesCard: React.FC<{
           </View>
         </TouchableOpacity>
       )}
+
+      <Toast />
     </>
   );
 };
@@ -144,8 +150,9 @@ export const styles = StyleSheet.create({
     maxHeight: 220,
   },
   containerSecondary: {
-    height: screenHeight * (1 / 4.5),
+    height: screenHeight * (1 / 3.8),
     width: screenWidth * (1 / 3),
+    maxHeight: 220,
     overflow: 'hidden',
   },
   containerLoading: {
@@ -158,8 +165,9 @@ export const styles = StyleSheet.create({
     maxHeight: 220,
   },
   containerSecondaryLoading: {
-    height: screenHeight * (1 / 4.5),
+    height: screenHeight * (1 / 3.8),
     width: screenWidth * (1 / 3),
+    maxHeight: 220,
     overflow: 'hidden',
   },
   imageBg: {

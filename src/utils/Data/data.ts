@@ -1,5 +1,9 @@
 import {Dimensions} from 'react-native';
-import {GuideDataType} from '../../types';
+import img1 from '../../assets/Images/onboarding/1.png';
+import img2 from '../../assets/Images/onboarding/2.png';
+import img3 from '../../assets/Images/onboarding/3.png';
+import img4 from '../../assets/Images/onboarding/4.png';
+import img5 from '../../assets/Images/courses/car.png';
 
 export const screenWidth = Dimensions.get('window').width;
 export const screenHeight = Dimensions.get('window').height;
@@ -172,24 +176,14 @@ export const CarouselData_guest = [
   },
 ];
 
-export const userGuideData: GuideDataType[] = [
-  {
-    id: '01',
-    image: require('../../assets/Images/card.png'),
-    text: 'how to subscribe',
-    videoLink: 'https://www.youtube.com/watch?v=B53L62DqOXg',
-  },
-  {
-    id: '02',
-    image: require('../../assets/Images/pay.png'),
-    text: 'how to pay',
-    videoLink: 'https://www.youtube.com/watch?v=6l1K-bHPWbU',
-  },
-
-  {
-    id: '03',
-    image: require('../../assets/Images/How.png'),
-    text: 'how to take exams',
-    videoLink: 'https://www.youtube.com/watch?v=fD4uGhNa5ec',
-  },
-];
+export const gradesImages: {[key: number]: any} = {
+  0: img1,
+  1: img2,
+  2: img3,
+  3: img4,
+  4: img1,
+  5: img2,
+  6: img3,
+  7: img4,
+  100: img5,
+};

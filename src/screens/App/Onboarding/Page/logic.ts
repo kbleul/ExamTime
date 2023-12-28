@@ -4,7 +4,10 @@ import {useGetGradeMutation} from '../../../../reduxToolkit/Services/grade';
 import {gradeType, subjectType} from '../../../../types';
 import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
-import {LocalStorageDataKeys} from '../../../../utils/Data/data';
+import {
+  LocalObjectDataKeys,
+  LocalStorageDataKeys,
+} from '../../../../utils/Data/data';
 import {createRealmSubjectsData} from '../Logic';
 import {Subject} from '../../../../Realm';
 
@@ -15,14 +18,44 @@ export const getGradesMutation = async (
   getGrades: GetGradesMutationFn,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   setGradesArray: React.Dispatch<React.SetStateAction<gradeType[] | null>>,
+  realm: Realm,
 ) => {
   checkIsOnline(navigator);
 
   try {
-    const response = await getGrades({}).unwrap();
-    setGradesArray(response);
+    const response: gradeType[] | null = await getGrades({}).unwrap();
+
+    if (response && response.length > 0) {
+      setGradesArray(response);
+      saveGradesToRealm(response, realm);
+    }
   } catch (e) {
     console.log(e);
+  }
+};
+
+const saveGradesToRealm = (grades: gradeType[], realm: Realm) => {
+  const savedGrades = realm.objects(LocalObjectDataKeys.Grade);
+  try {
+    if (savedGrades && savedGrades.length > 0) {
+      realm.write(() => {
+        realm.delete(savedGrades);
+      });
+    }
+
+    for (const gradeItem of grades) {
+      const {id, grade, createdAt, updatedAt} = gradeItem;
+      realm.write(() => {
+        realm.create(LocalObjectDataKeys.Grade, {
+          id,
+          grade,
+          createdAt,
+          updatedAt,
+        });
+      });
+    }
+  } catch (err) {
+    console.error('Error saving grades to Realm', err);
   }
 };
 

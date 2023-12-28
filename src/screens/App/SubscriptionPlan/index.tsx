@@ -4,7 +4,6 @@ import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
 import {screenHeight} from '../../../utils/Data/data';
 
@@ -93,11 +92,9 @@ const Index: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
+      <View style={styles.scrollContainer}>
         <View style={styles.backicon}>
-          <BackWithItem type="SubscriptionPlan" isTrial={user ? false : true} />
+          <BackWithItem type="SubscriptionPlan" isTrial={false} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>
@@ -109,8 +106,7 @@ const Index: React.FC = () => {
         <View style={styles.HorizontalList}>
           <SubscriptionPlanCards data={data} pagination={true} />
         </View>
-      </ScrollView>
-      <MainBottomNav />
+      </View>
     </View>
   );
 };

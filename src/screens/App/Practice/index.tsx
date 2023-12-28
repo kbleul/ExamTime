@@ -1,28 +1,29 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
-import MainBottomNav from '../../../components/Organisms/MainBottomNav';
 import SubjectSelectViewBox from '../../../components/Organisms/SubjectSelectViewBox';
 import Tips from '../../../components/Molecules/Tips';
 import FullExams, {
   ExamCatagories,
 } from '../../../components/Organisms/FullExams';
-import TrialHeader from '../../../components/Organisms/TrialHeader';
 import RandomQuestions from '../../../components/Organisms/RandomQuestions';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {AuthContext} from '../../../Realm/model';
-import {Study, Subject} from '../../../Realm';
+import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../Onboarding/Page/logic';
 import Loading from '../../../components/Atoms/Loading';
+import {useNavContext} from '../../../context/bottomNav';
 
 export let availableHeight = screenHeight - screenHeight * 0.088;
 
 const Practice = () => {
   const navigator = useNavigation();
+
+  const {setShowNavigation} = useNavContext();
 
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
@@ -39,7 +40,7 @@ const Practice = () => {
     null,
   );
 
-  const [getSubject, {isLoading, error}] = useGetSubjectMutation();
+  const [getSubject, {isLoading}] = useGetSubjectMutation();
 
   useEffect(() => {
     savedSubjects && savedSubjects.length > 0
@@ -53,6 +54,12 @@ const Practice = () => {
         );
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(true);
+    }, []),
+  );
+
   return (
     <>
       <SafeAreaView style={[IndexStyle.container, styles.container]}>
@@ -61,8 +68,6 @@ const Practice = () => {
             style={styles.ScrollView}
             contentContainerStyle={styles.contentContainer}
             showsVerticalScrollIndicator={false}>
-            <TrialHeader type="Practice" />
-
             <View style={styles.headerContainer}>
               <Text style={styles.headerTitle}>Practice Section</Text>
               <Text style={styles.headerSubTitle}>Choose your Subject</Text>
@@ -88,8 +93,6 @@ const Practice = () => {
         {isLoading && <Loading />}
 
         <Toast />
-
-        <MainBottomNav />
       </SafeAreaView>
     </>
   );
@@ -98,13 +101,14 @@ const Practice = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
+    paddingTop: screenHeight * 0.06,
   },
   ScrollView: {
     flex: 1,
   },
   contentContainer: {
     flexGrow: 1,
-    paddingBottom: 80,
+    paddingBottom: screenWidth * 0.009,
   },
   headerContainer: {
     paddingHorizontal: screenWidth * 0.02,
