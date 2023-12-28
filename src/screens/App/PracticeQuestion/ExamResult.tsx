@@ -10,6 +10,7 @@ import {
 import {answersType} from '.';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {useNavContext} from '../../../context/bottomNav';
 
 const gradeStatus = {
   Passed: 'Passed',
@@ -27,6 +28,8 @@ const calculateGrade = (correctAnswers: number, total: number) => {
 };
 
 const ExamResult = ({route}: {route: any}) => {
+  const {setShowNavigation} = useNavContext();
+
   const navigationState = useNavigationState(state => state);
   const currentScreen = navigationState.routes[navigationState.index].name;
   const navigator: any = useNavigation();
@@ -58,6 +61,8 @@ const ExamResult = ({route}: {route: any}) => {
 
   useEffect(() => {
     const backAction = () => {
+      setShowNavigation(true);
+
       isStudy
         ? navigator.navigate('Study', {screen: 'StudySection'})
         : navigator.navigate('PracticeSection', {screen: 'Practice'});

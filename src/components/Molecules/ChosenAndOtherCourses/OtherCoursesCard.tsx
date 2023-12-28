@@ -191,7 +191,7 @@ export const stylesSecondary = StyleSheet.create({
     height: 12,
     position: 'absolute',
     bottom: -14,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     zIndex: 50,
   },
   image: {

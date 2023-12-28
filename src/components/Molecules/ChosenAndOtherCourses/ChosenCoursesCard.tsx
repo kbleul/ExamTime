@@ -78,21 +78,23 @@ const ChosenCoursesCard: React.FC<{
               : [styles.container, styles.containerSecondary]
           }
           onPress={() => {
-            if (!user || !token) {
-              setLoginModalVisible && setLoginModalVisible(true);
-              return;
-            }
+            if (subjectId) {
+              if (!user || !token) {
+                setLoginModalVisible && setLoginModalVisible(true);
+                return;
+              }
 
-            savedStudies.length > 0
-              ? navigator.navigate('Study', {
-                  screen: 'StudyDetails',
-                  params: {subject: subject},
-                })
-              : Toast.show({
-                  type: 'error',
-                  text1: 'No studies found for this subject',
-                  text2: 'Try a different subject',
-                });
+              savedStudies.length > 0
+                ? navigator.navigate('Study', {
+                    screen: 'StudyDetails',
+                    params: {subject: subject},
+                  })
+                : Toast.show({
+                    type: 'error',
+                    text1: 'No studies found for this subject',
+                    text2: 'Try a different subject',
+                  });
+            }
           }}>
           {bgImage && (
             <SvgXml

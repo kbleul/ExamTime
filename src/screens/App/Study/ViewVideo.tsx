@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -11,13 +11,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import {screenWidth} from '../../../utils/Data/data';
-import {studyType, videoType} from '../../../types';
+import {videoType} from '../../../types';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
 import {calculate_and_Assign_UnitProgress} from './logic';
 
 const getYoutubeVidId = (videosLink: string) => {
-  return videosLink.split('?v=')[1].split('&')[0];
+  return videosLink.includes('?v=')
+    ? videosLink.split('?v=')[1].split('&')[0]
+    : null;
 };
 
 const createPlaylist = (videos: videoType[]) => {
@@ -81,44 +83,58 @@ const ViewVideo = ({route}) => {
         onPress={() => navigator.goBack()}>
         <Ionicons name="arrow-back" color="#000" size={25} />
       </TouchableOpacity>
-      <View style={styles.videoContainer}>
-        <ActivityIndicator style={styles.loading} />
-        <YoutubePlayer
-          height={230}
-          play={false}
-          videoId={youtubeVideoId}
-          playList={[...playlistVids]}
-        />
-      </View>
 
-      <View style={styles.videosList}>
-        {videos &&
-          videos.length > 0 &&
-          videos.map((video: videoType, index: number) => (
-            <TouchableOpacity
-              key={video.id + 'vid' + index}
-              touchSoundDisabled
-              style={styles.videoButton}
-              onPress={() => handlePress(index, video.id)}>
-              <Text
-                style={
-                  index === displayedVideo
-                    ? [styles.videoText, styles.videoTextActive]
-                    : styles.videoText
-                }>
-                {`0${index + 1}. Study video`}
-              </Text>
-              <View
-                style={
-                  index === displayedVideo
-                    ? [styles.videoIcon, styles.videoIconActive]
-                    : styles.videoIcon
-                }>
-                <Entypo name="controller-play" size={30} color="#fff" />
-              </View>
-            </TouchableOpacity>
-          ))}
-      </View>
+      {youtubeVideoId && (
+        <View>
+          <View style={styles.videoContainer}>
+            <ActivityIndicator style={styles.loading} />
+            <YoutubePlayer
+              height={230}
+              play={false}
+              videoId={youtubeVideoId}
+              playList={[...playlistVids]}
+            />
+          </View>
+
+          <View style={styles.videosList}>
+            {videos &&
+              videos.length > 0 &&
+              videos.map((video: videoType, index: number) => (
+                <TouchableOpacity
+                  key={video.id + 'vid' + index}
+                  touchSoundDisabled
+                  style={styles.videoButton}
+                  onPress={() => handlePress(index, video.id)}>
+                  <Text
+                    style={
+                      index === displayedVideo
+                        ? [styles.videoText, styles.videoTextActive]
+                        : styles.videoText
+                    }>
+                    {`0${index + 1}. Study video`}
+                  </Text>
+                  <View
+                    style={
+                      index === displayedVideo
+                        ? [styles.videoIcon, styles.videoIconActive]
+                        : styles.videoIcon
+                    }>
+                    <Entypo name="controller-play" size={30} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+              ))}
+          </View>
+        </View>
+      )}
+
+      {!youtubeVideoId && (
+        <View style={styles.invalidContainer}>
+          <Text style={styles.invalidTitle}>
+            It seems that the YouTube video link you are tring to access is
+            Please select another video to watch. invalid or inaccessible.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -185,6 +201,17 @@ const styles = StyleSheet.create({
   },
   videoIconActive: {
     backgroundColor: '#f09295',
+  },
+  invalidContainer: {
+    marginTop: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  invalidTitle: {
+    fontFamily: 'PoppinsMedium',
+    color: '#000',
+    fontSize: screenWidth * 0.045,
   },
 });
 export default ViewVideo;

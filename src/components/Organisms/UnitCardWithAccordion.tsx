@@ -38,12 +38,8 @@ const UnitCardWithAccordion = ({
           <AntDesign name="menuunfold" size={40} color="#EEEAFF" />
         </View>
         <View style={unitCardStyles.textContainer}>
-          <Text style={unitCardStyles.textTitle}>
-            {study.unit}asd jandjaskndjkasndjkasndjkasdkasjdkasjdkas
-          </Text>
-          <Text style={unitCardStyles.textSubTitle}>
-            {study.title}sdjafjkasdjaksdnjkasndjkasndjkasjkd
-          </Text>
+          <Text style={unitCardStyles.textTitle}>{study.unit}</Text>
+          <Text style={unitCardStyles.textSubTitle}>{study.title}</Text>
         </View>
         <View style={unitCardStyles.downBtn}>
           <AntDesign

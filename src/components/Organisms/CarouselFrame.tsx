@@ -13,7 +13,7 @@ import {useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import frameBlueImg from '../../assets/Images/frame_blue.png';
-import logoImg from '../../assets/Logo/logo_.png';
+import logoImg from '../../assets/Logo/logo_small.png';
 
 import {useNavigation} from '@react-navigation/native';
 import {

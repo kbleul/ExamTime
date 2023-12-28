@@ -74,6 +74,8 @@ const RandomQuestions = ({
                 selectedSubject: selectedSubject,
                 amount: currentAmount,
               });
+
+              setTimeout(() => setCurrentAmount(10), 1500);
             } else {
               Toast.show({
                 type: 'error',

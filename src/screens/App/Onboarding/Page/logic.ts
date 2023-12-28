@@ -97,8 +97,37 @@ export const getSubjectsMutation = async (
   }
 };
 
+// export const downloadIcons = async (subjects: subjectType[]) => {
+//   const downloadPromises = subjects.map(async subject => {
+//     if (subject.icon && subject.icon !== '') {
+//       try {
+//         const response = await fetch(subject.icon);
+//         if (!response.ok) {
+//           throw new Error(
+//             `Error downloading icon: ${response.status} ${response.statusText}`,
+//           );
+//         }
+
+//         const iconData = await response.text(); // Binary data of the downloaded icon
+
+//         return {...subject, icon: iconData};
+//       } catch (error) {
+//         console.log(
+//           `Error downloading/saving icon for subject ${subject.id}:`,
+//           error,
+//         );
+//       }
+//     }
+
+//     return subject;
+//   });
+
+//   const newSubjects = await Promise.all(downloadPromises);
+//   return newSubjects;
+// };
+
 export const downloadIcons = async (subjects: subjectType[]) => {
-  const downloadPromises = subjects.map(async subject => {
+  const downloadIcon = async (subject: subjectType) => {
     if (subject.icon && subject.icon !== '') {
       try {
         const response = await fetch(subject.icon);
@@ -107,9 +136,10 @@ export const downloadIcons = async (subjects: subjectType[]) => {
             `Error downloading icon: ${response.status} ${response.statusText}`,
           );
         }
+        console.log('done1');
 
         const iconData = await response.text(); // Binary data of the downloaded icon
-
+        console.log('done');
         return {...subject, icon: iconData};
       } catch (error) {
         console.log(
@@ -118,9 +148,15 @@ export const downloadIcons = async (subjects: subjectType[]) => {
         );
       }
     }
-    return subject;
-  });
 
+    return subject;
+  };
+
+  // Map each subject to a download promise
+  const downloadPromises = subjects.map(subject => downloadIcon(subject));
+
+  // Use Promise.all to execute all download promises in parallel
   const newSubjects = await Promise.all(downloadPromises);
+
   return newSubjects;
 };

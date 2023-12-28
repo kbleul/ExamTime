@@ -207,8 +207,6 @@ export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
   };
 
   try {
-    console.log('================');
-
     return RNFS.mkdir(directoryPath)
       .then(() => RNFS.downloadFile(downloadOptions))
       .then(() => {

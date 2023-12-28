@@ -31,8 +31,6 @@ const ExamLeaveModal: React.FC<{
   isTimeOver,
   showViewReviewBtn,
 }) => {
-  const {setShowNavigation} = useNavContext();
-
   return (
     <Modal
       animationType="slide"
@@ -115,7 +113,6 @@ const ExamLeaveModal: React.FC<{
                 onPress={() => {
                   setExitExamModalVisible(false);
                   handleSubmitExam();
-                  setShowNavigation(true);
                 }}>
                 <Text
                   style={[

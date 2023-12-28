@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     right: 18,
     top: 18,
     padding: 5,
+    zIndex: 10,
   },
   typeText: {
     fontFamily: 'PoppinsBold',

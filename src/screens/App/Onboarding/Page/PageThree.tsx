@@ -41,6 +41,7 @@ const PageThree: React.FC<PagesCounterType> = ({
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
 
   const [IsLoadingSubjectsRealm, setIsLoadingSubjectsRealm] = useState(true);
+
   useEffect(() => {
     if (savedSubjects && savedSubjects.length > 0) {
       realm.write(() => {
@@ -116,7 +117,6 @@ const PageThree: React.FC<PagesCounterType> = ({
                       createRealmUserData(
                         realm,
                         selectedSubjects ? [...selectedSubjects] : [],
-                        navigator,
                         setIsLoadingSubjects,
                         setShowOnboarding,
                       )

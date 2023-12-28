@@ -99,6 +99,8 @@ const ExamReview = ({route}) => {
   const {userAnswers, examQuestions, isStudy} = route.params;
   const [selectedCategory, setSelectedCategory] = useState(CATAGORIES[0]);
 
+  const navigator: any = useNavigation();
+
   const [viewQuestionsArray, setViewQuestionsArray] = useState<
     examQuestionType[] | newQuestionsArray[] | null
   >(null);
@@ -107,6 +109,35 @@ const ExamReview = ({route}) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [direction, setDirection] = useState<string | null>(null);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
+
+  useEffect(() => {
+    const backAction = () => {
+      setShowNavigation(true);
+
+      isStudy
+        ? navigator.navigate('Study', {screen: 'StudySection'})
+        : navigator.navigate('PracticeSection', {screen: 'Practice'});
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'Exam-Result') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     filterQuestions(

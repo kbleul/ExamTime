@@ -54,7 +54,6 @@ export const checkIsTrial = async () => {
 export const createRealmUserData = async (
   realm: Realm,
   selectedSubjects: string[] | [],
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   setIsLoadingSubjects: React.Dispatch<React.SetStateAction<boolean>>,
   setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
