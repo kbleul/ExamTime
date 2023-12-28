@@ -13,7 +13,7 @@ import {checkIsOnline} from '../../../utils/Functions/Helper';
 
 const Index = () => {
   const [getAboutUs] = useGetAboutUsMutation();
-  const [aboutUs, setAboutUS] = useState(undefined);
+  const [aboutUs, setAboutUS] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   const user = useSelector((state: RootState) => state.auth.user);
@@ -62,11 +62,13 @@ const Index = () => {
   }, []);
   return (
     <View style={styles.container}>
-      {loading ? (
+      {loading && (
         <View style={styles.loadingIndicator}>
           <Loading />
         </View>
-      ) : (
+      )}
+
+      {aboutUs && (
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}>
@@ -89,7 +91,6 @@ const Index = () => {
           )}
         </ScrollView>
       )}
-
       <Toast />
     </View>
   );
