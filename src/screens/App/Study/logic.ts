@@ -103,7 +103,6 @@ export const saveStudyToRealm = async (
               D,
               answer,
               description,
-              metadata,
               createdAt: qCreatedAt,
               updatedAt: qUpdatedAt,
             } = question;
@@ -121,7 +120,6 @@ export const saveStudyToRealm = async (
                 D,
                 answer,
                 description,
-                metadata,
                 createdAt: qCreatedAt,
                 updatedAt: qUpdatedAt,
               },

@@ -310,10 +310,11 @@ export const api = createApi({
         };
       },
     }),
-    getTips: build.mutation<{}, {}>({
-      query: () => {
+    getTips: build.mutation<{}, {gradeId: string}>({
+      query: data => {
+        console.log(data.gradeId);
         return {
-          url: 'tips/tipsbyparameter',
+          url: `tips/tipsbyparameter?gradeId=${data.gradeId}`,
           method: 'GET',
         };
       },

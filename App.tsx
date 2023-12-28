@@ -16,7 +16,7 @@ import NavProvider from './src/context/bottomNav';
 import Routes from './src/navigation/Index';
 import OnboardingProvider from './src/context/onboarding';
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const {RealmProvider} = AuthContext;
 
   useEffect(() => {

@@ -29,12 +29,12 @@ export const menuStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingRight: 30,
-    marginLeft: screenWidth * 0.07,
+    paddingRight: screenWidth * 0.02,
+    marginLeft: screenWidth * 0.02,
   },
   button: {
     paddingVertical: 2,
-    paddingHorizontal: screenWidth / 6,
+    paddingHorizontal: screenWidth * 0.09,
   },
   buttonSelected: {
     borderBottomWidth: 3,

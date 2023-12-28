@@ -55,7 +55,6 @@ const DirectionModal: React.FC<{
     }),
   ).current;
 
-  console.log(direction);
   return (
     <Modal
       animationType="slide"

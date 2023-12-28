@@ -18,8 +18,6 @@ export const getPreviousExams = async (
   try {
     checkIsOnline(navigator);
 
-    console.log('my grade', grade);
-
     const response: any = await getExams({
       params: {
         grade: grade ? grade : undefined,

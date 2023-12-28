@@ -5,7 +5,6 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import {ScrollView} from 'react-native-gesture-handler';
-import ShareApp from '../../../components/Organisms/ShareApp';
 import {useGetAboutUsMutation} from '../../../reduxToolkit/Services/auth';
 import Loading from '../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
