@@ -184,7 +184,6 @@ const savePdfs = async (
 ) => {
   for (const pdfItem of pdf) {
     const pdfObject = await downloadAndCreatePDF(pdfItem, realm);
-
     pdfObject && pdfObjArr.push(pdfObject);
   }
 
