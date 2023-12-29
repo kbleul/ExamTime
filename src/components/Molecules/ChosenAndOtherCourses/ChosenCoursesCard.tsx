@@ -9,7 +9,6 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
 
 export const onError = (e: Error) => {
   console.log('Render svg failed', e.message);
@@ -84,16 +83,11 @@ const ChosenCoursesCard: React.FC<{
                 return;
               }
 
-              savedStudies.length > 0
-                ? navigator.navigate('Study', {
-                    screen: 'StudyDetails',
-                    params: {subject: subject},
-                  })
-                : Toast.show({
-                    type: 'error',
-                    text1: 'No studies found for this subject',
-                    text2: 'Try a different subject',
-                  });
+              savedStudies.length > 0 &&
+                navigator.navigate('Study', {
+                  screen: 'StudyDetails',
+                  params: {subject: subject},
+                });
             }
           }}>
           {bgImage && (
@@ -136,8 +130,6 @@ const ChosenCoursesCard: React.FC<{
           </View>
         </TouchableOpacity>
       )}
-
-      <Toast />
     </>
   );
 };

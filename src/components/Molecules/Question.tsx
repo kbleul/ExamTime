@@ -64,7 +64,7 @@ const Question: React.FC<{
   userAnswers,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
+  console.log(isPracticeMode);
   return (
     <>
       {question && (
@@ -86,7 +86,8 @@ const Question: React.FC<{
 
             <View style={styles.counterContainer}>
               {question.description &&
-                question.description !== 'no-description' && (
+                question.description !== 'no-description' &&
+                (isPracticeMode || isReview) && (
                   <TouchableOpacity
                     touchSoundDisabled
                     style={styles.readParagraphBtn}
@@ -97,7 +98,8 @@ const Question: React.FC<{
 
               {question.metadata &&
                 question.metadata !== '' &&
-                question.metadata !== ' ' && (
+                question.metadata !== ' ' &&
+                !isReview && (
                   <TouchableOpacity
                     touchSoundDisabled
                     style={[

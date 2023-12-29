@@ -26,6 +26,8 @@ import {useNavContext} from '../../../context/bottomNav';
 const RandomQuestionsView = ({route}: {route: any}) => {
   //   const {subject} = route.params;
   const navigator: any = useNavigation();
+  const {setShowNavigation} = useNavContext();
+
   const flatListRef = useRef<FlatList<any> | null>(null);
 
   const {selectedSubject, amount} = route.params;
@@ -45,7 +47,6 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
 
   const [direction, setDirection] = useState<string | null>(null);
-  const {setShowNavigation} = useNavContext();
 
   const refIndex = useRef(0);
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});

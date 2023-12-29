@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import {Modal, StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
-import {useNavContext} from '../../context/bottomNav';
 
 const ExamLeaveModal: React.FC<{
   exitExamModalVisible: boolean;

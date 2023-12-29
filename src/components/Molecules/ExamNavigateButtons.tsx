@@ -66,8 +66,6 @@ const Buttons: React.FC<{
   isReview,
   isStudy,
 }) => {
-  const {setShowNavigation} = useNavContext();
-
   const navigator: any = useNavigation();
   const handleAction = () => {
     if (isReview) {
@@ -77,7 +75,6 @@ const Buttons: React.FC<{
     } else {
     }
     setExitExamModalVisible(true);
-    setShowNavigation(true);
   };
   return (
     <TouchableOpacity

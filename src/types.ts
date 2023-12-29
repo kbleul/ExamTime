@@ -185,7 +185,7 @@ export type pdfType = {
 
 export type videoType = {
   id: string;
-  videoLink: string;
+  mobileVideoLink: string;
   isViewed: boolean;
 };
 
@@ -203,7 +203,7 @@ export type studyType = {
   section: sectionType;
   selectedQuestion: examQuestionType[] | [];
   pdf: pdfType[] | [];
-  videoLink: videoType[] | [];
+  mobileVideoLink: videoType[] | [];
 };
 
 export type GuideDataType = {
