@@ -145,7 +145,6 @@ const Index = () => {
   };
 
   const handleOpenTelegram = (telegramLink: string) => {
-    console.log(typeof telegramLink[0]);
     Linking.openURL(telegramLink[0]).catch(error => {
       console.log('Error opening Telegram app:', error);
       // Handle the error, e.g., show an error message to the user

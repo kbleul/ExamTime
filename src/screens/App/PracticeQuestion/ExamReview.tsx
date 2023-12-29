@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  BackHandler,
 } from 'react-native';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
@@ -13,6 +14,10 @@ import {examQuestionType} from '../../../types';
 import {answersType} from '.';
 import Question from '../../../components/Molecules/Question';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {useNavContext} from '../../../context/bottomNav';
+import DirectionModal from '../../../components/Organisms/DirectionModal';
+
 const CATAGORIES = ['Incorrect', 'Skipped', 'Correct'];
 
 type newQuestionsArray = examQuestionType & {
@@ -96,8 +101,14 @@ const filterQuestions = (
 };
 
 const ExamReview = ({route}) => {
+  const navigationState = useNavigationState(state => state);
+  const currentScreen = navigationState.routes[navigationState.index].name;
+  const {setShowNavigation} = useNavContext();
+
   const {userAnswers, examQuestions, isStudy} = route.params;
   const [selectedCategory, setSelectedCategory] = useState(CATAGORIES[0]);
+
+  const navigator: any = useNavigation();
 
   const [viewQuestionsArray, setViewQuestionsArray] = useState<
     examQuestionType[] | newQuestionsArray[] | null
@@ -107,6 +118,35 @@ const ExamReview = ({route}) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [direction, setDirection] = useState<string | null>(null);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
+
+  useEffect(() => {
+    const backAction = () => {
+      setShowNavigation(true);
+
+      isStudy
+        ? navigator.navigate('Study', {screen: 'StudySection'})
+        : navigator.navigate('PracticeSection', {screen: 'Practice'});
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'Exam-Review') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     filterQuestions(
@@ -192,6 +232,8 @@ const ExamReview = ({route}) => {
           isStudy={isStudy ? isStudy : false}
         />
       )}
+
+      <DirectionModal direction={direction} setDirection={setDirection} />
 
       {viewQuestionsArray && viewQuestionsArray.length === 0 && (
         <Text style={styles.emptyText}>0 {selectedCategory} Questions</Text>

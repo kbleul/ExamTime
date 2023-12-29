@@ -273,14 +273,14 @@ class Pdf extends Realm.Object {
 
 class VideoLink extends Realm.Object {
   id: string = '';
-  videoLink: string = '';
+  mobileVideoLink: string = '';
   isViewed: boolean = false;
 
   static schema = {
     name: 'VideoLink',
     properties: {
       id: 'string',
-      videoLink: 'string',
+      mobileVideoLink: 'string',
       isViewed: 'bool',
     },
   };

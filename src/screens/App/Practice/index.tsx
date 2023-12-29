@@ -101,7 +101,7 @@ const Practice = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    paddingTop: screenHeight * 0.06,
+    paddingTop: screenHeight * 0.045,
   },
   ScrollView: {
     flex: 1,
@@ -115,15 +115,16 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.05, //28
+    fontSize: screenWidth * 0.065,
     color: '#000',
-    lineHeight: screenHeight * 0.03, //34
-    marginTop: screenWidth * 0.005,
+    lineHeight: screenHeight * 0.05,
+    marginTop: screenWidth * 0.009,
   },
   headerSubTitle: {
-    fontFamily: 'PoppinsRegular',
-    fontSize: screenWidth * 0.043, //17 18
+    fontFamily: 'PoppinsLight',
+    fontSize: screenWidth * 0.045,
     color: '#C1C2C6',
+    lineHeight: screenHeight * 0.04, //34
   },
   BOX1: {
     height: availableHeight - 20,

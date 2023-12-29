@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message';
 import Config from 'react-native-config';
 import {useNavContext} from '../../../context/bottomNav';
 import {useFocusEffect} from '@react-navigation/native';
+import {screenHeight} from '../../../utils/Data/data';
 
 const Index = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     backgroundColor: '#F5F5F5',
+    paddingBottom: screenHeight * 0.012,
   },
   imageBg: {
     height: '35%',

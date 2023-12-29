@@ -68,6 +68,7 @@ export const getSubjectsMutation = async (
     subjectType | Subject | null
   > | null> | null,
   setIsLoadingSubjectsRealm?: React.Dispatch<React.SetStateAction<boolean>>,
+  setRelamSaveStatus?: React.Dispatch<React.SetStateAction<number>>,
 ) => {
   checkIsOnline(navigator);
   try {
@@ -83,7 +84,9 @@ export const getSubjectsMutation = async (
     setSubjectsArray(subjects);
     setSelectedSubject && setSelectedSubject(subjects[0]);
 
-    const downloadedSubjects = await downloadIcons(subjects);
+    const downloadedSubjects = setRelamSaveStatus
+      ? await downloadIcons(subjects, setRelamSaveStatus)
+      : await downloadIcons(subjects, null);
 
     setIsLoadingSubjectsRealm
       ? createRealmSubjectsData(
@@ -97,8 +100,11 @@ export const getSubjectsMutation = async (
   }
 };
 
-export const downloadIcons = async (subjects: subjectType[]) => {
-  const downloadPromises = subjects.map(async subject => {
+export const downloadIcons = async (
+  subjects: subjectType[],
+  setRelamSaveStatus: React.Dispatch<React.SetStateAction<number>> | null,
+) => {
+  const downloadIcon = async (subject: subjectType) => {
     if (subject.icon && subject.icon !== '') {
       try {
         const response = await fetch(subject.icon);
@@ -110,6 +116,7 @@ export const downloadIcons = async (subjects: subjectType[]) => {
 
         const iconData = await response.text(); // Binary data of the downloaded icon
 
+        setRelamSaveStatus && setRelamSaveStatus(prev => ++prev);
         return {...subject, icon: iconData};
       } catch (error) {
         console.log(
@@ -118,9 +125,15 @@ export const downloadIcons = async (subjects: subjectType[]) => {
         );
       }
     }
-    return subject;
-  });
 
+    return subject;
+  };
+
+  // Map each subject to a download promise
+  const downloadPromises = subjects.map(subject => downloadIcon(subject));
+
+  // Use Promise.all to execute all download promises in parallel
   const newSubjects = await Promise.all(downloadPromises);
+
   return newSubjects;
 };

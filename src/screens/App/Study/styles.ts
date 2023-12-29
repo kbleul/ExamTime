@@ -74,7 +74,7 @@ export const unitCardStyles = StyleSheet.create({
   },
   textTitle: {
     color: '#1e90ff',
-    fontFamily: 'PoppinsSemiBold',
+    fontFamily: 'PoppinsMedium',
     fontSize: screenWidth * 0.042,
     textTransform: 'capitalize',
     height: screenWidth * 0.06,

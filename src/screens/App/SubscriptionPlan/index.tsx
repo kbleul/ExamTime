@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    marginTop: 40,
+    marginTop: screenHeight * 0.045,
   },
   text: {
     color: '#222E50',

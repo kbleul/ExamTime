@@ -195,7 +195,7 @@ export const api = createApi({
           url: 'exam/randomexam',
           body: {
             subject: credentials.subject,
-            grade: credentials.grade,
+            grade: [credentials.grade],
             noOfQuestions: credentials.noOfQuestions,
             unit: '',
           },
@@ -312,7 +312,6 @@ export const api = createApi({
     }),
     getTips: build.mutation<{}, {gradeId: string}>({
       query: data => {
-        console.log(data.gradeId);
         return {
           url: `tips/tipsbyparameter?gradeId=${data.gradeId}`,
           method: 'GET',

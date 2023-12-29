@@ -1,13 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {FAQ, screenHeight, screenWidth} from '../../utils/Data/data';
 
 import Accordion from 'react-native-collapsible/Accordion';
 import FaqHeader from '../Atoms/FaqHeader';
 import FaqContent from '../Atoms/FaqContent';
+import Loading from '../Atoms/Loading';
+import Toast from 'react-native-toast-message';
+import {checkIsOnline} from '../../utils/Functions/Helper';
+import {useGetFaqMutation} from '../../reduxToolkit/Services/auth';
 
-const AccordionComponet = () => {
+export type faqType = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
+const AccordionComponent = () => {
+  const [faq, setFaq] = useState<faqType[] | []>([]);
+  const [getFaq, {isLoading: loading}] = useGetFaqMutation();
+
   const [activeSections, setActiveSections] = useState<number[]>([]);
+
   const toggleSection = (index: number) => {
     setActiveSections(prevSections => {
       if (prevSections.includes(index)) {
@@ -17,10 +31,42 @@ const AccordionComponet = () => {
       }
     });
   };
-  const renderHeader = (faqQuestion, index: number, isActive: boolean) => {
+
+  const fetchFaq = async () => {
+    const isOnline = await checkIsOnline();
+
+    if (isOnline) {
+      try {
+        const response: faqType[] | [] = await getFaq({}).unwrap();
+        console.log('faq', response);
+        setFaq(response);
+      } catch (err) {
+        Toast.show({
+          type: 'error',
+          text1: 'Could not connect to the server, please try',
+        });
+      }
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Could not connect to the internet',
+        text2: 'Make sure you have an internet connection and try again',
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchFaq();
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  const renderHeader = (faqItem: faqType, index: number, isActive: boolean) => {
     return (
       <FaqHeader
-        faqQuestion={faqQuestion}
+        faqQuestion={faqItem}
         index={index}
         isActive={isActive}
         onPress={toggleSection}
@@ -33,14 +79,16 @@ const AccordionComponet = () => {
   };
 
   return (
-    <Accordion
-      sections={FAQ}
-      activeSections={activeSections}
-      renderHeader={renderHeader}
-      renderContent={renderContent}
-      onChange={setActiveSections}
-      containerStyle={styles.accordion}
-    />
+    <>
+      <Accordion
+        sections={faq}
+        activeSections={activeSections}
+        renderHeader={renderHeader}
+        renderContent={renderContent}
+        onChange={setActiveSections}
+        containerStyle={styles.accordion}
+      />
+    </>
   );
 };
 
@@ -103,4 +151,4 @@ const styles = StyleSheet.create({
     lineHeight: 17,
   },
 });
-export default AccordionComponet;
+export default AccordionComponent;

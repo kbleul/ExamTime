@@ -8,8 +8,6 @@ import {
   Alert,
 } from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
-import PrimaryBtn from '../../../components/Atoms/PrimaryBtn';
 import YoutubeCard from '../../../components/Molecules/YoutubeCard';
 import GuideTexts from '../../../components/Molecules/GuideHederText';
 import {useGetUserGuideMutation} from '../../../reduxToolkit/Services/auth';
@@ -37,6 +35,7 @@ const Index = () => {
         if (response.error) {
           Alert.alert(response.error);
         } else if (response.data) {
+          console.log(response.data);
           setuserGuide(response.data);
           setLoading(false);
         } else {
@@ -78,10 +77,6 @@ const Index = () => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.Guide}>
-          <GuideTexts
-            title={'videos'}
-            body={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '}
-          />
           <FlatList
             data={userGuide}
             keyExtractor={item => item.id}
@@ -110,11 +105,10 @@ const Index = () => {
           )}
           <GuideTexts
             title={'Guided tour'}
-            body={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '}
+            body={'Watch this videos to learn  about how to use the app'}
           />
         </View>
       </ScrollView>
-
     </View>
   );
 };

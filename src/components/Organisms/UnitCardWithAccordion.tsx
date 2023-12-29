@@ -8,6 +8,32 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import {useNavigation} from '@react-navigation/native';
 import {accordiontyles, unitCardStyles} from '../../screens/App/Study/styles';
+import {screenWidth} from '../../utils/Data/data';
+import {isHtml} from '../../utils/Functions/Helper';
+import RenderHTML from 'react-native-render-html';
+
+const tagsStylesQuestion = {
+  p: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.9,
+    marginLeft: screenWidth * 0.025,
+    fontFamily: 'PoppinsBold',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    fontSize: screenWidth * 0.036,
+    lineHeight: 25,
+    borderWidth: 1,
+    borderColor: '#E1E1E1',
+    borderRadius: 10,
+    padding: 10,
+  },
+  img: {
+    width: screenWidth * 0.8,
+    marginTop: 5,
+  },
+};
 
 const UnitCardWithAccordion = ({
   study,
@@ -19,7 +45,6 @@ const UnitCardWithAccordion = ({
   setShowAccordianId: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
   const [showContent, setShowContent] = useState(false);
-
   return (
     <View style={unitCardStyles.container}>
       <TouchableOpacity
@@ -38,12 +63,8 @@ const UnitCardWithAccordion = ({
           <AntDesign name="menuunfold" size={40} color="#EEEAFF" />
         </View>
         <View style={unitCardStyles.textContainer}>
-          <Text style={unitCardStyles.textTitle}>
-            {study.unit}asd jandjaskndjkasndjkasndjkasdkasjdkasjdkas
-          </Text>
-          <Text style={unitCardStyles.textSubTitle}>
-            {study.title}sdjafjkasdjaksdnjkasndjkasndjkasjkd
-          </Text>
+          <Text style={unitCardStyles.textTitle}>{study.unit}</Text>
+          <Text style={unitCardStyles.textSubTitle}>{study.title}</Text>
         </View>
         <View style={unitCardStyles.downBtn}>
           <AntDesign
@@ -70,7 +91,17 @@ const Accordion = ({study}: {study: Study}) => {
   return (
     <View>
       {study.objective && (
-        <Text style={accordiontyles.objectiveText}>{study.objective}</Text>
+        <>
+          {isHtml(study.objective) ? (
+            <RenderHTML
+              contentWidth={screenWidth}
+              source={{html: study.objective}}
+              tagsStyles={tagsStylesQuestion}
+            />
+          ) : (
+            <Text style={accordiontyles.objectiveText}>{study.objective}</Text>
+          )}
+        </>
       )}
 
       {study.selectedQuestion && study.selectedQuestion.length > 0 && (
@@ -128,7 +159,7 @@ const Accordion = ({study}: {study: Study}) => {
       {study.videoLink && study.videoLink.length > 0 && (
         <View style={accordiontyles.container}>
           {study.videoLink.map((link, index) => (
-            <View key={link.videoLink + '' + index + 'links'}>
+            <View key={link.id + '' + index + 'links'}>
               <TouchableOpacity
                 touchSoundDisabled
                 style={accordiontyles.videoContainer}

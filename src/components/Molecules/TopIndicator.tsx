@@ -11,7 +11,6 @@ const TopIndicator: React.FC<
   PagesCounterType & {
     IsLoadingSubjectsRealm?: boolean;
     setIsLoadingSubjects?: React.Dispatch<React.SetStateAction<boolean>>;
-    setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>;
   }
 > = ({
   pageCounter,

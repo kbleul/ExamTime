@@ -9,7 +9,23 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
+import {useNavContext} from '../../../context/bottomNav';
+
+const getFilteredSavedSubject = (
+  realm: Realm,
+  subjectId: string,
+  subjectName: string,
+): ResultsType<Study> => {
+  const savedUserExamAnswers = realm
+    .objects(Study)
+    .filtered(
+      `subject.id = "${
+        subjectId ? subjectId : 0
+      }" OR subject.subject = "${subjectName}"`,
+    );
+
+  return savedUserExamAnswers;
+};
 
 export const onError = (e: Error) => {
   console.log('Render svg failed', e.message);
@@ -31,18 +47,23 @@ const ChosenCoursesCard: React.FC<{
   timerValue,
 }) => {
   const navigator: any = useNavigation();
+  const {setShowNavigation} = useNavContext();
 
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
-  const {useQuery} = AuthContext;
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
 
-  const savedStudies = useQuery(Study, studies => {
-    return studies.filtered(
-      `subject.id = "${subjectId ? subjectId : 0}" OR subject.subject = "${
-        subject.subject
-      }"`,
-    );
-  });
+  const [savedStudies, setSavedStudies] = useState([]);
+
+  // const savedStudies = useQuery(Study, studies => {
+  //   return studies.filtered(
+  //     `subject.id = "${subject.id ? subject.id : 0}" OR subject.subject = "${
+  //       subject.subject
+  //     }"`,
+  //   );
+  // });
+
   const calProgress = calculateStudyProgress(savedStudies);
   const [isLoadingSVG, setIsLoadingSVG] = useState(timerValue ? true : false);
 
@@ -52,10 +73,13 @@ const ChosenCoursesCard: React.FC<{
         setIsLoadingSVG(false);
       }, timerValue);
     }
-
-    if (savedStudies.length === 0) {
-    }
   }, []);
+
+  useEffect(() => {
+    setSavedStudies(
+      getFilteredSavedSubject(realm, subject.id, subject.subject),
+    );
+  }, [subject, realm]);
 
   return (
     <>
@@ -78,21 +102,20 @@ const ChosenCoursesCard: React.FC<{
               : [styles.container, styles.containerSecondary]
           }
           onPress={() => {
-            if (!user || !token) {
-              setLoginModalVisible && setLoginModalVisible(true);
-              return;
-            }
+            if (subjectId) {
+              if (!user || !token) {
+                setLoginModalVisible && setLoginModalVisible(true);
+                return;
+              }
 
-            savedStudies.length > 0
-              ? navigator.navigate('Study', {
+              if (savedStudies.length > 0) {
+                navigator.navigate('Study', {
                   screen: 'StudyDetails',
                   params: {subject: subject},
-                })
-              : Toast.show({
-                  type: 'error',
-                  text1: 'No studies found for this subject',
-                  text2: 'Try a different subject',
                 });
+                setShowNavigation(false);
+              }
+            }
           }}>
           {bgImage && (
             <SvgXml
@@ -134,8 +157,6 @@ const ChosenCoursesCard: React.FC<{
           </View>
         </TouchableOpacity>
       )}
-
-      <Toast />
     </>
   );
 };
@@ -217,7 +238,8 @@ export const styles = StyleSheet.create({
   progressBarIndicator: {
     height: 5,
     backgroundColor: '#fff',
-    borderRadiusLeft: 20,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
     overflow: 'hidden',
   },
   progressText: {

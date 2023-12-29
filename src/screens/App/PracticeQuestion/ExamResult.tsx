@@ -10,6 +10,7 @@ import {
 import {answersType} from '.';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {useNavContext} from '../../../context/bottomNav';
 
 const gradeStatus = {
   Passed: 'Passed',
@@ -17,16 +18,35 @@ const gradeStatus = {
 };
 const calculateGrade = (correctAnswers: number, total: number) => {
   const gradePrercentage = Math.round((correctAnswers * 100) / total);
+  console.log(correctAnswers, gradePrercentage, total);
 
-  let status = gradePrercentage >= 50 ? gradeStatus.Passed : gradeStatus.Failed;
+  let result: any = {grade: gradePrercentage};
 
-  return {
-    grade: gradePrercentage,
-    status,
-  };
+  if (gradePrercentage < 50) {
+    result.status = 'Failed';
+    result.color = '#bc1f26';
+  } else if (gradePrercentage >= 50 && gradePrercentage < 55) {
+    result.status = 'Poor';
+    result.color = '#ef4723';
+  } else if (gradePrercentage >= 55 && gradePrercentage < 60) {
+    result.status = 'Fair';
+    result.color = '#f68e1f';
+  } else if (gradePrercentage >= 60 && gradePrercentage < 75) {
+    result.status = 'Good';
+    result.color = '#fdc808';
+  } else if (gradePrercentage >= 75 && gradePrercentage < 85) {
+    result.status = 'Very Good';
+    result.color = '#7ebb42';
+  } else {
+    result.status = 'Excellent';
+    result.color = '#0f9246';
+  }
+  return result;
 };
 
 const ExamResult = ({route}: {route: any}) => {
+  const {setShowNavigation} = useNavContext();
+
   const navigationState = useNavigationState(state => state);
   const currentScreen = navigationState.routes[navigationState.index].name;
   const navigator: any = useNavigation();
@@ -58,6 +78,8 @@ const ExamResult = ({route}: {route: any}) => {
 
   useEffect(() => {
     const backAction = () => {
+      setShowNavigation(true);
+
       isStudy
         ? navigator.navigate('Study', {screen: 'StudySection'})
         : navigator.navigate('PracticeSection', {screen: 'Practice'});
@@ -90,34 +112,96 @@ const ExamResult = ({route}: {route: any}) => {
         radius={screenWidth * 0.25}
         duration={1000}
         progressValueColor={'black'}
-        activeStrokeColor={
-          gradePrercentage.status === gradeStatus.Passed ? '#3CAB8C' : 'red'
-        }
-        inActiveStrokeColor={'#d9d9d9'}
+        activeStrokeColor={gradePrercentage.color}
+        inActiveStrokeColor={'#f3f3f3'}
         maxValue={total}
         title={gradePrercentage.status}
-        titleColor={
-          gradePrercentage.status === gradeStatus.Passed ? '#3CAB8C' : 'red'
-        }
+        titleColor={gradePrercentage.color}
         titleStyle={{fontWeight: 'bold'}}
       />
 
-      {/* <View style={styles.midSection}>
-        <View
-          style={[
-            styles.midSectionSubContainer,
-            styles.midSectionSubContainerSecondary,
-          ]}>
-          <Text style={styles.midSectionTitle}>85%</Text>
-          <Text style={styles.midSectionSubTitle}>PROBABILITY OF</Text>
-          <Text style={styles.midSectionSubTitle}>PASSING</Text>
+      <View style={styles.midSection}>
+        <View style={styles.gradeMainWrapper}>
+          <View
+            style={[
+              styles.midSectionSubContainer,
+              styles.midSectionSubContainerSecondary,
+            ]}>
+            <View style={styles.gradesContainer}>
+              <View style={[styles.colorBox, {backgroundColor: '#0f9246'}]} />
+              <View style={styles.textContainer}>
+                <Text style={styles.gradesTitle}>{'>85%'}</Text>
+                <Text style={styles.gradesSubTitle}>Excellent</Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={[
+              styles.midSectionSubContainer,
+              styles.midSectionSubContainerSecondary,
+            ]}>
+            <View style={styles.gradesContainer}>
+              <View style={[styles.colorBox, {backgroundColor: '#7ebb42'}]} />
+
+              <View style={styles.textContainer}>
+                <Text style={styles.gradesTitle}>{'85% - 75%'}</Text>
+                <Text style={styles.gradesSubTitle}>Very Good</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.midSectionSubContainer}>
+            <View style={styles.gradesContainer}>
+              <View style={[styles.colorBox, {backgroundColor: '#fdc808'}]} />
+
+              <View style={styles.textContainer}>
+                <Text style={styles.gradesTitle}>{'75% - 60%'}</Text>
+                <Text style={styles.gradesSubTitle}>Good</Text>
+              </View>
+            </View>
+          </View>
         </View>
-        <View style={styles.midSectionSubContainer}>
-          <Text style={styles.midSectionTitle}>25%</Text>
-          <Text style={styles.midSectionSubTitle}>PROGRESS</Text>
-          <Text style={styles.midSectionSubTitle}>COMPATISON</Text>
+
+        <View style={styles.gradeMainWrapper}>
+          <View
+            style={[
+              styles.midSectionSubContainer,
+              styles.midSectionSubContainerSecondary,
+            ]}>
+            <View style={styles.gradesContainer}>
+              <View style={[styles.colorBox, {backgroundColor: '#f68e1f'}]} />
+
+              <View style={styles.textContainer}>
+                <Text style={styles.gradesTitle}>{'60% - 55%'}</Text>
+                <Text style={styles.gradesSubTitle}>Fair</Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={[
+              styles.midSectionSubContainer,
+              styles.midSectionSubContainerSecondary,
+            ]}>
+            <View style={styles.gradesContainer}>
+              <View style={[styles.colorBox, {backgroundColor: '#ef4723'}]} />
+
+              <View style={styles.textContainer}>
+                <Text style={styles.gradesTitle}>{'55% - 50%'}</Text>
+                <Text style={styles.gradesSubTitle}>Poor</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.midSectionSubContainer}>
+            <View style={styles.gradesContainer}>
+              <View style={[styles.colorBox, {backgroundColor: '#bc1f26'}]} />
+
+              <View style={styles.textContainer}>
+                <Text style={styles.gradesTitle}>{'<50%'}</Text>
+                <Text style={styles.gradesSubTitle}>Very Poor</Text>
+              </View>
+            </View>
+          </View>
         </View>
-      </View> */}
+      </View>
 
       <View style={styles.lastSection}>
         <View style={styles.lastSectionContainer}>
@@ -221,9 +305,8 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   midSection: {
-    width: '72%',
-    flexDirection: 'row',
-    marginTop: 30,
+    width: '92%',
+    marginTop: screenHeight * 0.02,
     paddingVertical: 5,
     borderRadius: 10,
     overflow: 'hidden',
@@ -232,8 +315,46 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderRightWidth: 3,
   },
+  gradeMainWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  gradesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+    paddingHorizontal: screenWidth * 0.01,
+    paddingTop: screenWidth * 0.04,
+  },
+  colorBox: {
+    width: screenWidth * 0.035,
+    height: screenWidth * 0.035,
+    borderRadius: 7,
+  },
+  textContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  gradesTitle: {
+    textAlign: 'center',
+    color: '#000',
+    fontFamily: 'PoppinsBold',
+    fontSize: screenWidth * 0.032,
+    lineHeight: screenWidth * 0.04,
+  },
+  gradesSubTitle: {
+    textAlign: 'center',
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: screenWidth * 0.028,
+    lineHeight: screenWidth * 0.03,
+    paddingTop: 2,
+    color: '#000',
+    elevation: 40,
+  },
   midSectionSubContainer: {
-    width: '50%',
+    width: '30%',
     marginVertical: 4,
   },
   midSectionSubContainerSecondary: {
@@ -244,8 +365,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000',
     fontFamily: 'PoppinsBold',
-    fontSize: 22,
-    lineHeight: 22,
+    fontSize: screenWidth * 0.055,
+    lineHeight: screenWidth * 0.055,
     paddingTop: 10,
   },
   midSectionSubTitle: {
@@ -260,7 +381,8 @@ const styles = StyleSheet.create({
   lastSection: {
     flexDirection: 'row',
     width: '72%',
-    marginTop: 30,
+    marginTop: screenHeight * 0.04,
+
     borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: '#3FA0FF',

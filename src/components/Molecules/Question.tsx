@@ -64,7 +64,6 @@ const Question: React.FC<{
   userAnswers,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
   return (
     <>
       {question && (
@@ -80,24 +79,15 @@ const Question: React.FC<{
                 ? [styles.questionContainer, styles.questionContainerFullpage]
                 : styles.questionContainer
             }>
-            <Text style={styles.counterTitle}>
-              Question {questionCounter}/{total}
-            </Text>
-
             <View style={styles.counterContainer}>
-              {question.description &&
-                question.description !== 'no-description' && (
-                  <TouchableOpacity
-                    touchSoundDisabled
-                    style={styles.readParagraphBtn}
-                    onPress={() => setDirection(question.description)}>
-                    <Text style={styles.readParagraphText}>Explanation</Text>
-                  </TouchableOpacity>
-                )}
+              <Text style={styles.counterTitle}>
+                Question {questionCounter}/{total}
+              </Text>
 
               {question.metadata &&
                 question.metadata !== '' &&
-                question.metadata !== ' ' && (
+                question.metadata !== ' ' &&
+                !isReview && (
                   <TouchableOpacity
                     touchSoundDisabled
                     style={[
@@ -115,6 +105,7 @@ const Question: React.FC<{
                   </TouchableOpacity>
                 )}
             </View>
+
             <Text>
               {isHtml(question.question) ? (
                 <RenderHtml
@@ -126,6 +117,23 @@ const Question: React.FC<{
                 <Text style={styles.questionText}>{question.question}</Text>
               )}
             </Text>
+
+            <View
+              style={[
+                styles.counterContainer,
+                styles.counterContainerSecondary,
+              ]}>
+              {question.description &&
+                question.description !== 'no-description' &&
+                (isPracticeMode || isReview) && (
+                  <TouchableOpacity
+                    touchSoundDisabled
+                    style={styles.readParagraphBtn}
+                    onPress={() => setDirection(question.description)}>
+                    <Text style={styles.readParagraphText}>Explanation</Text>
+                  </TouchableOpacity>
+                )}
+            </View>
           </View>
 
           <ScrollView
@@ -365,11 +373,13 @@ const styles = StyleSheet.create({
   },
   counterContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 10,
     gap: 20,
-    marginTop: 20,
+  },
+  counterContainerSecondary: {
+    justifyContent: 'center',
   },
   counterTitle: {
     fontSize: 18,

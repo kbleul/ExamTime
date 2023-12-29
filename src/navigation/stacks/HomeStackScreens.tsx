@@ -2,8 +2,6 @@ import React from 'react';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../../screens/App/Home/index';
-import ViewSubjectDetails from '../../screens/App/Courses/ViewSubjectDetails';
-import ViewCourseContent from '../../screens/App/Courses/ViewCourseContent';
 import Practice from '../../screens/App/Practice';
 import PracticeQuestion from '../../screens/App/PracticeQuestion';
 import ExamReview from '../../screens/App/PracticeQuestion/ExamReview';
@@ -43,16 +41,6 @@ const HomeStackScreens = () => {
         options={{headerShown: false}}
       />
 
-      <StudyStack.Screen
-        name="View-Course"
-        component={ViewSubjectDetails}
-        options={{headerShown: false}}
-      />
-      <StudyStack.Screen
-        name="View-Course-Content"
-        component={ViewCourseContent}
-        options={{headerShown: false}}
-      />
       <StudyStack.Screen
         name="Practice"
         component={Practice}

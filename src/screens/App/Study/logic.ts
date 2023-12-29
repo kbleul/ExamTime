@@ -21,7 +21,6 @@ export const getAllStudies = async (
       const response = await getStudy({
         token,
       }).unwrap();
-      console.log(response);
       saveStudyToRealm(realm, response.studies, Toast);
     } catch (error) {
       if (
@@ -62,7 +61,7 @@ export const saveStudyToRealm = async (
           section,
           selectedQuestion,
           pdf,
-          videoLink,
+          mobileVideoLink,
         } = study;
 
         const yearString = year.year;
@@ -128,12 +127,12 @@ export const saveStudyToRealm = async (
             examQuestionArr.push(questiontObject);
           });
 
-          videoLink.forEach(videoItem => {
-            const {id: videoId, videoLink} = videoItem;
+          mobileVideoLink.forEach(videoItem => {
+            const {id: videoId, mobileVideoLink: videoLink} = videoItem;
 
             const videoObject = realm.create(LocalObjectDataKeys.VideoLink, {
               id: videoId,
-              videoLink,
+              mobileVideoLink: videoLink,
               isViewed: false,
             });
 
@@ -208,7 +207,7 @@ export const downloadAndCreatePDF = async (pdfItem: pdfType, realm: Realm) => {
   try {
     return RNFS.mkdir(directoryPath)
       .then(() => RNFS.downloadFile(downloadOptions))
-      .then((response: any) => {
+      .then(() => {
         let pdfObject = null;
 
         realm.write(() => {

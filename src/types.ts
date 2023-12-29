@@ -185,7 +185,7 @@ export type pdfType = {
 
 export type videoType = {
   id: string;
-  videoLink: string;
+  mobileVideoLink: string;
   isViewed: boolean;
 };
 
