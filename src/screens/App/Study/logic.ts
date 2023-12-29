@@ -21,7 +21,6 @@ export const getAllStudies = async (
       const response = await getStudy({
         token,
       }).unwrap();
-      console.log(response);
       saveStudyToRealm(realm, response.studies, Toast);
     } catch (error) {
       if (

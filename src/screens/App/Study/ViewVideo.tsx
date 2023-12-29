@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
+  BackHandler,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,12 +10,13 @@ import {
 import YoutubePlayer from 'react-native-youtube-iframe';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {screenWidth} from '../../../utils/Data/data';
 import {videoType} from '../../../types';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
 import {calculate_and_Assign_UnitProgress} from './logic';
+import {useNavContext} from '../../../context/bottomNav';
 
 const getYoutubeVidId = (videosLink: string) => {
   return videosLink.includes('?v=')
@@ -24,17 +26,17 @@ const getYoutubeVidId = (videosLink: string) => {
 
 const createPlaylist = (videos: videoType[]) => {
   const playlistVidsArr = videos.map((video: videoType) =>
-    getYoutubeVidId(video.videoLink),
+    getYoutubeVidId(video.mobileVideoLink),
   );
 
-  return playlistVidsArr;
+  return playlistVidsArr.filter(vid => vid !== null);
 };
 
 const saveProgress = (study: Study, videoId: string, realm: Realm) => {
   if (study?.videoLink.length > 0) {
-    const videoIndex = study.videoLink.findIndex(v => v.id === videoId);
+    const videoIndex = study?.videoLink.findIndex(v => v.id === videoId);
 
-    if (study.videoLink[videoIndex].isViewed === false) {
+    if (study?.videoLink[videoIndex].isViewed === false) {
       calculate_and_Assign_UnitProgress(study, realm);
 
       realm.write(() => {
@@ -45,6 +47,10 @@ const saveProgress = (study: Study, videoId: string, realm: Realm) => {
 };
 
 const ViewVideo = ({route}) => {
+  const navigationState = useNavigationState(state => state);
+  const currentScreen = navigationState.routes[navigationState.index].name;
+  const {setShowNavigation} = useNavContext();
+
   const {videos, selectedVideoIndex, studyId} = route.params;
   const navigator: any = useNavigation();
 
@@ -60,9 +66,11 @@ const ViewVideo = ({route}) => {
     return createPlaylist(videos);
   }, [videos]);
 
-  const youtubeVideoId = getYoutubeVidId(videos[displayedVideo].videoLink);
+  const youtubeVideoId = getYoutubeVidId(
+    videos[displayedVideo].mobileVideoLink,
+  );
 
-  const handlePress = (index: number, videoId) => {
+  const handlePress = (index: number, videoId: string) => {
     if (index !== displayedVideo) {
       setDisplayedVideo(index);
       saveProgress(savedStudy[0], videoId, realm);
@@ -73,6 +81,33 @@ const ViewVideo = ({route}) => {
     setTimeout(() => {
       saveProgress(savedStudy[0], videos[selectedVideoIndex].id, realm);
     }, 2000);
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      navigator.goBack();
+      setShowNavigation(false);
+
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'ViewVideo') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
   }, []);
 
   return (
@@ -130,8 +165,8 @@ const ViewVideo = ({route}) => {
       {!youtubeVideoId && (
         <View style={styles.invalidContainer}>
           <Text style={styles.invalidTitle}>
-            It seems that the YouTube video link you are tring to access is
-            Please select another video to watch. invalid or inaccessible.
+            It seems that the YouTube video link you are trying to access is
+            invalid or inaccessible. Please select another video to watch.
           </Text>
         </View>
       )}

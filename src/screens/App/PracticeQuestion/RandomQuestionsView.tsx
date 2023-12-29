@@ -23,10 +23,17 @@ import {View} from 'react-native';
 import Loading from '../../../components/Atoms/Loading';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useNavContext} from '../../../context/bottomNav';
+import {UserData} from '../../../Realm';
+import {AuthContext} from '../../../Realm/model';
 const RandomQuestionsView = ({route}: {route: any}) => {
   //   const {subject} = route.params;
   const navigator: any = useNavigation();
   const {setShowNavigation} = useNavContext();
+
+  const {useQuery} = AuthContext;
+  const userData = useQuery(UserData);
+
+  console.log(userData[0].grade, '===');
 
   const flatListRef = useRef<FlatList<any> | null>(null);
 
@@ -59,28 +66,35 @@ const RandomQuestionsView = ({route}: {route: any}) => {
     const backHandler = null;
 
     const getExam = async () => {
-      try {
-        const response: any = await getRandomExam({
-          grade: 'grade_8',
-          subject: selectedSubject.subject.subject,
-          noOfQuestions: amount,
-        }).unwrap();
+      if (
+        userData &&
+        userData.length > 0 &&
+        userData[0].grade &&
+        userData[0].grade.grade
+      ) {
+        try {
+          const response: any = await getRandomExam({
+            grade: userData[0].grade?.grade,
+            subject: selectedSubject.subject.subject,
+            noOfQuestions: amount,
+          }).unwrap();
 
-        setCurrentViewExam(response?.randomQuestions);
-        setExam(response?.randomQuestions);
+          setCurrentViewExam(response?.randomQuestions);
+          setExam(response?.randomQuestions);
 
-        const backAction = () => {
-          isLoading || error
-            ? navigator.navgate('Practice')
-            : setExitExamModalVisible(prev => !prev);
-          return true;
-        };
+          const backAction = () => {
+            isLoading || error
+              ? navigator.navgate('Practice')
+              : setExitExamModalVisible(prev => !prev);
+            return true;
+          };
 
-        BackHandler.addEventListener('hardwareBackPress', backAction);
+          BackHandler.addEventListener('hardwareBackPress', backAction);
 
-        return () => backHandler && backHandler.remove();
-      } catch (err: any) {
-        backHandler && backHandler.remove();
+          return () => backHandler && backHandler.remove();
+        } catch (err: any) {
+          backHandler && backHandler.remove();
+        }
       }
     };
 
@@ -98,11 +112,9 @@ const RandomQuestionsView = ({route}: {route: any}) => {
             : 'Unable to get exams',
       });
 
-      if (!checkIsOnline(navigator)) {
-        setTimeout(() => {
-          navigator.navigate('Practice');
-        }, 3000);
-      }
+      setTimeout(() => {
+        navigator.navigate('Practice');
+      }, 2000);
     }
   }, [error]);
 

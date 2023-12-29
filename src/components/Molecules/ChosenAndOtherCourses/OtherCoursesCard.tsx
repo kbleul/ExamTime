@@ -73,7 +73,7 @@ const OtherCoursesCard: React.FC<{
 export const styles = StyleSheet.create({
   container: {
     width: screenWidth * (2 / 3),
-    height: screenHeight * (1 / 5.5),
+    height: screenHeight * (1 / 5.0),
     maxHeight: 120,
     marginHorizontal: 5,
     borderRadius: 15,
@@ -94,7 +94,7 @@ export const styles = StyleSheet.create({
   image: {
     width: '98%',
     marginLeft: '2%',
-    maxHeight: screenHeight * (1 / 5.9),
+    maxHeight: 120,
     position: 'absolute',
     top: -screenHeight * 0.02,
     zIndex: 10,

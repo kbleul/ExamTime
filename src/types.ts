@@ -203,7 +203,7 @@ export type studyType = {
   section: sectionType;
   selectedQuestion: examQuestionType[] | [];
   pdf: pdfType[] | [];
-  mobileVideoLink: videoType[] | [];
+  videoLink: videoType[] | [];
 };
 
 export type GuideDataType = {

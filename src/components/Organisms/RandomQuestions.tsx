@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-// import Slider from '@react-native-community/slider';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
@@ -92,7 +91,7 @@ const RandomQuestions = ({
             <Text style={styles.startButtonText}>Start</Text>
           )}
           {!isLoading && (
-            <AntDesign name="right" color="white" size={screenWidth * 0.03} />
+            <AntDesign name="right" color="white" size={screenWidth * 0.035} />
           )}
         </TouchableOpacity>
       </View>
@@ -102,14 +101,14 @@ const RandomQuestions = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: screenHeight * 0.01,
+    marginTop: screenHeight * 0.01,
+    marginBottom: screenHeight * 0.023,
     marginHorizontal: 5,
   },
   title: {
     color: '#008E97',
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.04,
-    paddingBottom: 12,
   },
   sliderContainer: {
     borderWidth: 1,
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
   sliderText: {
     color: '#858585',
     fontFamily: 'PoppinsRegular',
-    fontSize: screenWidth * 0.025,
+    fontSize: screenWidth * 0.03,
   },
   startButton: {
     width: '20%',
@@ -164,12 +163,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   startButtonText: {
-    width: '70%',
+    width: '60%',
     color: 'white',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.03,
+    fontSize: screenWidth * 0.035,
     textAlign: 'right',
-    paddingTop: 0,
+    paddingTop: screenWidth * 0.002,
     paddingBottom: 0,
   },
 });

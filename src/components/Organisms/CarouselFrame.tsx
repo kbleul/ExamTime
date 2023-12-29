@@ -13,7 +13,7 @@ import {useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import frameBlueImg from '../../assets/Images/frame_blue.png';
-import logoImg from '../../assets/Logo/logo_small.png';
+import logoImg from '../../assets/Logo/logo_.png';
 
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -23,10 +23,11 @@ import {
   frameThreestyles,
   frameFourstyles,
 } from '../../styles/Theme/FramesStyle';
-import {screenWidth} from '../../utils/Data/data';
+import {ProfileMenuItemsAuth, screenWidth} from '../../utils/Data/data';
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
 import Config from 'react-native-config';
 import {useNavContext} from '../../context/bottomNav';
+import Toast from 'react-native-toast-message';
 
 const CarouselFrame: React.FC<{index: number}> = ({index}) => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -172,8 +173,17 @@ export const FrameThree: React.FC<{
           style={frameThreestyles.adsBtns}
           touchSoundDisabled
           onPress={() => {
-            !issubscribe && setShowNavigation(false);
-            !issubscribe && navigator.navigate('Login');
+            if (issubscribe) {
+              Toast.show({
+                type: 'success',
+                text1: 'Comming Soon!',
+                text2:
+                  'You will soon be able to subsribe and unlock more helpfull content',
+              });
+            } else {
+              setShowNavigation(false);
+              navigator.navigate('Login');
+            }
           }}>
           <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>
         </TouchableOpacity>
@@ -199,6 +209,8 @@ export const FrameThree: React.FC<{
 export const FrameFour: React.FC<{
   text: string;
 }> = ({text}) => {
+  const navigator: any = useNavigation();
+
   return (
     <ImageBackground
       style={frameFourstyles.container}
@@ -210,7 +222,12 @@ export const FrameFour: React.FC<{
 
       <TouchableOpacity
         touchSoundDisabled
-        style={frameFourstyles.iconCOntainer}>
+        style={frameFourstyles.iconCOntainer}
+        onPress={() =>
+          navigator.navigate('ProfileSection', {
+            screen: ProfileMenuItemsAuth['User Guide'].navigate,
+          })
+        }>
         <AntDesign name="youtube" color="#FF3131" size={screenWidth * 0.18} />
       </TouchableOpacity>
     </ImageBackground>

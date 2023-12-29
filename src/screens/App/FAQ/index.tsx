@@ -10,6 +10,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import FaqContener from '../../../components/Organisms/FaqContener';
+import Toast from 'react-native-toast-message';
 const Index = () => {
   const navigator = useNavigation<any>();
 
@@ -27,6 +28,7 @@ const Index = () => {
           <FaqContener />
         </View>
       </View>
+      <Toast />
     </SafeAreaView>
   );
 };

@@ -1,5 +1,6 @@
 import React, {memo, useEffect, useState} from 'react';
 import {
+  BackHandler,
   SafeAreaView,
   ScrollView,
   Text,
@@ -15,9 +16,17 @@ import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import Toast from 'react-native-toast-message';
 import {menuStyle, style} from './styles';
 import UnitCardWithAccordion from '../../../components/Organisms/UnitCardWithAccordion';
+import {useNavContext} from '../../../context/bottomNav';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 
 const StudyDetails = ({route}) => {
+  const navigationState = useNavigationState(state => state);
+  const currentScreen = navigationState.routes[navigationState.index].name;
+
   const {subject} = route.params;
+  const {setShowNavigation} = useNavContext();
+
+  const navigator: any = useNavigation();
 
   const {useQuery} = AuthContext;
 
@@ -50,6 +59,33 @@ const StudyDetails = ({route}) => {
         setViewStudies,
         setSelectedSection,
       );
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      navigator.goBack();
+      setShowNavigation(true);
+
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'StudyDetails') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
   }, []);
 
   return (

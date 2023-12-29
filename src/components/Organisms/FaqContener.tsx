@@ -1,56 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, Text, View, TextInput, StyleSheet} from 'react-native';
-import Antdesign from 'react-native-vector-icons/AntDesign';
-import Accordion from '../Molecules/Accordion';
-import {FAQ, screenHeight} from '../../utils/Data/data';
-import AccordionComponet from '../Molecules/Accordion';
+import React from 'react';
+import {ScrollView, Text, View, StyleSheet} from 'react-native';
+
+import {screenHeight} from '../../utils/Data/data';
+import AccordionComponent from '../Molecules/Accordion';
 import scale from '../../utils/Functions/Scale';
-import {useGetFaqMutation} from '../../reduxToolkit/Services/auth';
+
 const FaqContener = () => {
-  const [faq, setFaq] = useState([]);
-  const [getFaq, {isLoading: loading}] = useGetFaqMutation();
-  const fetchFaq = async () => {
-    try {
-      const response = await getFaq().unwrap();
-      setFaq(response);
-    } catch (err) {}
-  };
-  const HandelSearch = input => {
-    setFaq(
-      faq?.filter(faq =>
-        faq.question.toUpperCase().includes(input.toUpperCase()),
-      ),
-    );
-  };
-  useEffect(() => {
-    fetchFaq();
-  }, []);
-  if (loading) {
-    return (
-      <View
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{color: 'black', fontSize: 18}}>Loading....</Text>
-      </View>
-    );
-  }
   return (
     <View>
-      {/* <View style={styles.faqInput}>
-        <Antdesign name="search1" size={24} color="#d4d4d4" />
-        <TextInput placeholder="Search Using Keywords" style={styles.input} />
-      </View> */}
-
       <View style={styles.faq}>
         <ScrollView
           style={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}>
           <Text style={styles.faqText}>About Exam Time</Text>
-          <AccordionComponet />
+          <AccordionComponent />
         </ScrollView>
       </View>
     </View>

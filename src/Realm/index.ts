@@ -301,7 +301,7 @@ class Study extends Realm.Object {
   selectedQuestion: examQuestionType[] = [];
   progress: number = 0;
   pdf: pdfType[] = [];
-  mobileVideoLink: videoType[] = [];
+  videoLink: videoType[] = [];
   userExamAnswers: answersType[] | [] = [];
 
   static schema = {

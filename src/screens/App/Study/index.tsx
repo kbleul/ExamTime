@@ -38,6 +38,8 @@ const CourseItem = ({
   timerValue: number;
 }) => {
   const navigator: any = useNavigation();
+  const {setShowNavigation} = useNavContext();
+
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -50,6 +52,7 @@ const CourseItem = ({
       `subject.id = "${item.id}" OR subject.subject = "${item.subject.subject}"`,
     );
   });
+
   const progress = calculateStudyProgress(savedStudies);
 
   useEffect(() => {
@@ -69,10 +72,13 @@ const CourseItem = ({
               return;
             }
 
-            savedStudies.length > 0 &&
+            if (savedStudies.length > 0) {
               navigator.navigate('StudyDetails', {
                 subject: item.subject,
               });
+
+              setShowNavigation(false);
+            }
           }}>
           <View style={styles.imgContainer}>
             {isLoading && isLoadingSVG ? (
@@ -215,7 +221,7 @@ const styles = ScaledSheet.create({
     flex: 1,
     width: screenWidth,
     backgroundColor: '#F9FCFF',
-    paddingTop: 40,
+    paddingTop: screenHeight * 0.045,
     paddingBottom: screenHeight * 0.048,
     // backgroundColor: 'red',
   },
@@ -308,7 +314,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginHorizontal: 20,
+    marginHorizontal: screenWidth * 0.02,
     marginBottom: 10,
     borderRadius: 15,
     borderColor: '#E1E1E1',

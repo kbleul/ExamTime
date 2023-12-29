@@ -1,14 +1,25 @@
-import React, {useCallback, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  BackHandler,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Pdf from 'react-native-pdf';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
 import {calculate_and_Assign_UnitProgress} from './logic';
+import {useNavContext} from '../../../context/bottomNav';
 
 const ViewPdf = ({route}) => {
+  const navigationState = useNavigationState(state => state);
+  const currentScreen = navigationState.routes[navigationState.index].name;
+  const {setShowNavigation} = useNavContext();
+
   const {pdf, studyId} = route.params;
   const navigator: any = useNavigation();
 
@@ -37,6 +48,33 @@ const ViewPdf = ({route}) => {
         savedStudy[0].pdf[pdfCounter].isViewed = true;
       });
     }
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      navigator.goBack();
+      setShowNavigation(false);
+
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'ViewPdf') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
   }, []);
 
   return (

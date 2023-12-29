@@ -1,24 +1,16 @@
 import React from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  ImageBackground,
-  StyleSheet,
-} from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {scale} from 'react-native-size-matters';
+import {faqType} from '../Molecules/Accordion';
 
-interface SubjectHeaderProps {
-  faqQuestion: {
-    id: string;
-    ques: string;
-  };
+type SubjectHeaderProps = {
+  faqQuestion: faqType;
   index: number;
   isActive: boolean;
   onPress: (index: number) => void;
-}
+};
 
 const FaqHeader: React.FC<SubjectHeaderProps> = ({
   faqQuestion,
@@ -37,7 +29,7 @@ const FaqHeader: React.FC<SubjectHeaderProps> = ({
       activeOpacity={0.8}>
       <View style={styles.infoContainer}>
         <View>
-          <Text style={styles.subject}>{faqQuestion.ques}</Text>
+          <Text style={styles.subject}>{faqQuestion?.question}</Text>
         </View>
       </View>
       <View
@@ -46,7 +38,7 @@ const FaqHeader: React.FC<SubjectHeaderProps> = ({
           {borderColor: isActive ? '#3C3D6E' : '#CECECF'},
         ]}>
         <Ionicons
-          name={isActive ? 'chevron-down-outline' : 'chevron-up-outline'}
+          name={isActive ? 'chevron-up-outline' : 'chevron-down-outline'}
           size={20}
           color={isActive ? '#333333' : '#CECECF'}
         />

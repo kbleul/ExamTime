@@ -41,6 +41,7 @@ const PageThree: React.FC<PagesCounterType> = ({
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
 
   const [IsLoadingSubjectsRealm, setIsLoadingSubjectsRealm] = useState(true);
+  const [relamSaveStatus, setRelamSaveStatus] = useState(-1);
 
   useEffect(() => {
     if (savedSubjects && savedSubjects.length > 0) {
@@ -56,6 +57,7 @@ const PageThree: React.FC<PagesCounterType> = ({
       realm,
       null,
       setIsLoadingSubjectsRealm,
+      setRelamSaveStatus,
     );
   }, []);
 
@@ -77,6 +79,23 @@ const PageThree: React.FC<PagesCounterType> = ({
           IsLoadingSubjectsRealm={IsLoadingSubjectsRealm}
           setIsLoadingSubjects={setIsLoadingSubjects}
         />
+
+        {IsLoadingSubjectsRealm &&
+          subjectsArray &&
+          subjectsArray.length > 0 && (
+            <View style={style.indicatorContainer}>
+              {subjectsArray.map((subject, index) => (
+                <View
+                  key={subject.id + '--' + subject.id}
+                  style={
+                    relamSaveStatus < index
+                      ? style.indicator
+                      : [style.indicator, style.indicatorDone]
+                  }
+                />
+              ))}
+            </View>
+          )}
 
         <View style={style.titleContainer}>
           <Text style={style.subtitle}>
@@ -213,6 +232,21 @@ const style = StyleSheet.create({
   },
   buttonsSubcontainerTop: {
     marginLeft: '10%',
+  },
+  indicatorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    marginTop: '10%',
+  },
+  indicator: {
+    width: 30,
+    height: 8,
+    backgroundColor: '#f3f3f3',
+    borderRadius: 20,
+  },
+  indicatorDone: {
+    backgroundColor: '#00509d',
   },
 });
 

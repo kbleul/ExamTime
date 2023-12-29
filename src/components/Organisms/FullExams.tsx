@@ -62,8 +62,6 @@ const FullExams: React.FC<{
   useEffect(() => {
     if (selectedSubject) {
       if (!savedExams || savedExams.length === 0) {
-        console.log(savedExams.length);
-
         getPreviousExams(
           navigator,
           getExams,

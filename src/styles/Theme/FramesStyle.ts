@@ -39,10 +39,11 @@ export const frameOnestyles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: screenWidth * 0.02,
   },
   rightBoxImage: {
-    width: '78%',
-    height: '76%',
+    width: '100%',
+    height: '100%',
     borderRadius: 20,
   },
 });

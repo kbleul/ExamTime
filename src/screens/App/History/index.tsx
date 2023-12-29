@@ -5,7 +5,7 @@ import {Exam, ExamAnswers, Subject, UserData} from '../../../Realm';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {subjectType} from '../../../types';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {screenWidth} from '../../../utils/Data/data';
+import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {answersType} from '../PracticeQuestion';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import MessageBox from '../../../components/Atoms/MessageBox';
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: screenWidth,
     backgroundColor: '#F9FCFF',
-    paddingTop: 40,
+    paddingTop: screenHeight * 0.045,
     paddingHorizontal: 20,
   },
   scrollStyle: {
@@ -242,8 +242,10 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.062,
-    color: 'black',
+    fontSize: screenWidth * 0.065,
+    color: '#000',
+    lineHeight: screenHeight * 0.05,
+    marginTop: screenWidth * 0.009,
     zIndex: 10,
   },
   buttonsContainer: {

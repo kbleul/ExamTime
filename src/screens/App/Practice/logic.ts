@@ -17,15 +17,12 @@ export const getPreviousExams = async (
 ) => {
   try {
     checkIsOnline(navigator);
-    console.log('object');
     const response: any = await getExams({
       params: {
         grade: grade ? grade : undefined,
         subject,
       },
     }).unwrap();
-
-    console.log(response);
 
     setExams([
       ...response?.exams.filter(
