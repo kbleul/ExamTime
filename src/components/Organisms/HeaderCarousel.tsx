@@ -10,6 +10,8 @@ import {
   handleCarouselScroll,
 } from '../../utils/Functions/Helper/index';
 import CarouselFrame from './CarouselFrame';
+import Toast from 'react-native-toast-message';
+import CustomToast from '../Molecules/CustomToast';
 
 interface Item {
   id: string;
@@ -20,6 +22,7 @@ const HeaderCarousel = () => {
   const flatListRef = useRef<FlatList<Item> | null>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showAlert, setShowAlert] = useState(false);
 
   //scroll animation with interval
   useEffect(() => {
@@ -54,7 +57,7 @@ const HeaderCarousel = () => {
   const renderItem = ({item, index}: {item: Item; index: number}) => {
     return (
       <View>
-        <CarouselFrame index={index} />
+        <CarouselFrame index={index} setShowAlert={setShowAlert} />
       </View>
     );
   };
@@ -78,6 +81,14 @@ const HeaderCarousel = () => {
 
   return (
     <View>
+      {showAlert && (
+        <CustomToast
+          text="You will soon be able to subscribe and unlock even more helpfull items. Use ExamTime for free for now"
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+          topPosition={screenHeight - (screenHeight + 90)}
+        />
+      )}
       <FlatList
         keyExtractor={item => item.id}
         ref={flatListRef}

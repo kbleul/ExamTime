@@ -19,6 +19,9 @@ import SetNewPasswordPage from '../../screens/Auth/SetNewPassword';
 import Notification from '../../screens/App/Notification';
 import StudySection from '../../screens/App/Study/index';
 import ChallengeSection from '../../screens/App/Challenge/index';
+import UserGuide from '../../screens/App/UserGuide';
+
+import {ProfileMenuItemsAuth} from '../../utils/Data/data';
 
 const HomeStackScreens = () => {
   const StudyStack = createStackNavigator();
@@ -116,6 +119,11 @@ const HomeStackScreens = () => {
       <StudyStack.Screen
         name="Notification"
         component={Notification}
+        options={{headerShown: false}}
+      />
+      <StudyStack.Screen
+        name={ProfileMenuItemsAuth['User Guide'].navigate}
+        component={UserGuide}
         options={{headerShown: false}}
       />
     </StudyStack.Navigator>

@@ -30,9 +30,9 @@ const Tips: React.FC<{
       fetchTips(
         getTips,
         realm,
+        userData[0]?.grade ? userData[0].grade.id || null : null,
         setTips,
         selectedSubject,
-        userData[0]?.grade ? userData[0].grade.id || null : null,
       );
     }
   }, []);

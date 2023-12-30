@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -23,13 +23,15 @@ import {
   frameThreestyles,
   frameFourstyles,
 } from '../../styles/Theme/FramesStyle';
-import {ProfileMenuItemsAuth, screenWidth} from '../../utils/Data/data';
+import {screenWidth} from '../../utils/Data/data';
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
 import Config from 'react-native-config';
 import {useNavContext} from '../../context/bottomNav';
-import Toast from 'react-native-toast-message';
 
-const CarouselFrame: React.FC<{index: number}> = ({index}) => {
+const CarouselFrame: React.FC<{
+  index: number;
+  setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({index, setShowAlert}) => {
   const user = useSelector((state: RootState) => state.auth.user);
   return (
     <>
@@ -51,6 +53,7 @@ const CarouselFrame: React.FC<{index: number}> = ({index}) => {
               text="Elevate learning. Join our community, expand your knowledge."
               btnText="Subscribe"
               issubscribe={true}
+              setShowAlert={setShowAlert}
             />
           )}
           {index === 3 && <FrameFour text="How to use the app" />}
@@ -148,61 +151,60 @@ export const FrameThree: React.FC<{
   btnText: string;
   btnTextTwo?: string;
   issubscribe?: boolean;
-}> = ({title, text, btnText, btnTextTwo, issubscribe}) => {
+  setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({title, text, btnText, btnTextTwo, issubscribe, setShowAlert}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
   const {setShowNavigation} = useNavContext();
 
   return (
-    <ImageBackground
-      style={frameThreestyles.adsContainer}
-      source={require('../../assets/Images/home/c3.png')} // Replace with the correct path to your image
-    >
-      <Text style={frameThreestyles.adsTile1}>{title}</Text>
-      <Text style={frameThreestyles.adsText}>{text}</Text>
-      <View
-        style={
-          user
-            ? [
-                frameThreestyles.adsBtnContainer,
-                frameThreestyles.adsBtnContainerCentered,
-              ]
-            : frameThreestyles.adsBtnContainer
-        }>
-        <TouchableOpacity
-          style={frameThreestyles.adsBtns}
-          touchSoundDisabled
-          onPress={() => {
-            if (issubscribe) {
-              Toast.show({
-                type: 'success',
-                text1: 'Comming Soon!',
-                text2:
-                  'You will soon be able to subsribe and unlock more helpfull content',
-              });
-            } else {
-              setShowNavigation(false);
-              navigator.navigate('Login');
-            }
-          }}>
-          <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>
-        </TouchableOpacity>
-        {!user && (
+    <>
+      <ImageBackground
+        style={frameThreestyles.adsContainer}
+        source={require('../../assets/Images/home/c3.png')} // Replace with the correct path to your image
+      >
+        <Text style={frameThreestyles.adsTile1}>{title}</Text>
+        <Text style={frameThreestyles.adsText}>{text}</Text>
+        <View
+          style={
+            user
+              ? [
+                  frameThreestyles.adsBtnContainer,
+                  frameThreestyles.adsBtnContainerCentered,
+                ]
+              : frameThreestyles.adsBtnContainer
+          }>
           <TouchableOpacity
-            style={[
-              frameThreestyles.adsBtns,
-              frameThreestyles.adsBtns_secondary,
-            ]}
+            style={frameThreestyles.adsBtns}
             touchSoundDisabled
             onPress={() => {
-              setShowNavigation(false);
-              navigator.navigate('Signup');
+              console.log(issubscribe);
+              if (issubscribe) {
+                setShowAlert(true);
+              } else {
+                setShowNavigation(false);
+                navigator.navigate('Login');
+              }
             }}>
-            <Text style={frameThreestyles.adsBtnsText}>{btnTextTwo}</Text>
+            <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>
           </TouchableOpacity>
-        )}
-      </View>
-    </ImageBackground>
+          {!user && (
+            <TouchableOpacity
+              style={[
+                frameThreestyles.adsBtns,
+                frameThreestyles.adsBtns_secondary,
+              ]}
+              touchSoundDisabled
+              onPress={() => {
+                setShowNavigation(false);
+                navigator.navigate('Signup');
+              }}>
+              <Text style={frameThreestyles.adsBtnsText}>{btnTextTwo}</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </ImageBackground>
+    </>
   );
 };
 
@@ -223,11 +225,7 @@ export const FrameFour: React.FC<{
       <TouchableOpacity
         touchSoundDisabled
         style={frameFourstyles.iconCOntainer}
-        onPress={() =>
-          navigator.navigate('ProfileSection', {
-            screen: ProfileMenuItemsAuth['User Guide'].navigate,
-          })
-        }>
+        onPress={() => navigator.navigate('User Guide')}>
         <AntDesign name="youtube" color="#FF3131" size={screenWidth * 0.18} />
       </TouchableOpacity>
     </ImageBackground>

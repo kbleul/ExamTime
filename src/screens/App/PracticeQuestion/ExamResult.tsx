@@ -12,10 +12,6 @@ import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
 
-const gradeStatus = {
-  Passed: 'Passed',
-  Failed: 'Failed',
-};
 const calculateGrade = (correctAnswers: number, total: number) => {
   const gradePrercentage = Math.round((correctAnswers * 100) / total);
   console.log(correctAnswers, gradePrercentage, total);

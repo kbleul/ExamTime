@@ -10,6 +10,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
+import {Alert, AlertIcon, AlertText} from '@gluestack-ui/themed';
 
 const getFilteredSavedSubject = (
   realm: Realm,
@@ -38,6 +39,7 @@ const ChosenCoursesCard: React.FC<{
   setLoginModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
   isLoadingSubjects: boolean;
   timerValue?: number;
+  setShowAlert?: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({
   subject,
   subjectId,
@@ -45,6 +47,7 @@ const ChosenCoursesCard: React.FC<{
   setLoginModalVisible,
   isLoadingSubjects,
   timerValue,
+  setShowAlert,
 }) => {
   const navigator: any = useNavigation();
   const {setShowNavigation} = useNavContext();
@@ -55,14 +58,6 @@ const ChosenCoursesCard: React.FC<{
   const realm = useRealm();
 
   const [savedStudies, setSavedStudies] = useState([]);
-
-  // const savedStudies = useQuery(Study, studies => {
-  //   return studies.filtered(
-  //     `subject.id = "${subject.id ? subject.id : 0}" OR subject.subject = "${
-  //       subject.subject
-  //     }"`,
-  //   );
-  // });
 
   const calProgress = calculateStudyProgress(savedStudies);
   const [isLoadingSVG, setIsLoadingSVG] = useState(timerValue ? true : false);
@@ -93,7 +88,6 @@ const ChosenCoursesCard: React.FC<{
             }
           />
         ))}
-
       {!isLoadingSVG && !isLoadingSubjects && (
         <TouchableOpacity
           style={
@@ -114,6 +108,13 @@ const ChosenCoursesCard: React.FC<{
                   params: {subject: subject},
                 });
                 setShowNavigation(false);
+                return;
+              }
+
+              if (setShowAlert) {
+                setShowAlert(true);
+
+                setTimeout(() => setShowAlert(false), 3500);
               }
             }
           }}>
@@ -248,6 +249,11 @@ export const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Regular',
     marginBottom: 5,
     paddingLeft: 2,
+  },
+  alertCOntainer: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
   },
 });
 

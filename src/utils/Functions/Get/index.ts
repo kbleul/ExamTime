@@ -49,25 +49,29 @@ export const getObject_from_localStorage = async (key: string) => {
 export const fetchTips = async (
   getTips: TipMutationFn,
   realm: Realm,
-  setTips: React.Dispatch<React.SetStateAction<TipType[] | null>>,
-  selectedSubject: Subject | subjectType,
   gradeId: string | null,
+  setTips?: React.Dispatch<React.SetStateAction<TipType[] | null>>,
+  selectedSubject?: Subject | subjectType,
 ) => {
   const isConnected = await checkIsOnline();
   if (isConnected) {
+    console.log('got tips');
     try {
       const response: any = await getTips({
         gradeId,
       }).unwrap();
 
-      if (response.tips && response.tips.length > 0 && selectedSubject) {
+      if (response.tips && response.tips.length > 0) {
         saveTipsToRealm(response.tips, realm);
-        setTips([
-          ...response.tips.filter(
-            (tip: TipType) =>
-              tip.subject && tip.subject.id === selectedSubject.subject.id,
-          ),
-        ]);
+
+        if (selectedSubject && setTips) {
+          setTips([
+            ...response.tips.filter(
+              (tip: TipType) =>
+                tip.subject && tip.subject.id === selectedSubject.subject.id,
+            ),
+          ]);
+        }
 
         return;
       }

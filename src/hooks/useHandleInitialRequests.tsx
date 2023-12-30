@@ -5,16 +5,18 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../reduxToolkit/Store';
 import {checkIsOnline} from '../utils/Functions/Helper';
 import {AuthContext} from '../Realm/model';
-import {Exam, ExamAnswers, Study} from '../Realm';
+import {Exam, ExamAnswers, Study, UserData} from '../Realm';
 import {
   useGetExamAnswersMutation,
   useGetStudyMutation,
+  useGetTipsMutation,
   usePostExamResultsMutation,
 } from '../reduxToolkit/Services/auth';
 import {answersType} from '../screens/App/PracticeQuestion';
 import {getAllStudies} from '../screens/App/Study/logic';
 import {useNavigation} from '@react-navigation/native';
 import {getExamAnswersFromDB} from './logic';
+import {fetchTips} from '../utils/Functions/Get';
 
 export type newAnswerType = {
   [id: string]: {
@@ -118,6 +120,10 @@ const useHandleInitialRequests = (
   const savedExamAnswers = useQuery(ExamAnswers);
   const savedStudies = useQuery(Study);
 
+  const userData = useQuery(UserData);
+
+  const [getTips] = useGetTipsMutation();
+
   useEffect(() => {
     const handleSync = async () => {
       // App is going to background or about to be terminated
@@ -143,6 +149,13 @@ const useHandleInitialRequests = (
             })
             .catch(err => {
               console.log('errr', err);
+            })
+            .finally(() => {
+              fetchTips(
+                getTips,
+                realm,
+                userData[0]?.grade ? userData[0].grade.id || null : null,
+              );
             });
         } else {
           getExamAnswersFromDB(getExamAnswers, token, realm);
