@@ -14,75 +14,75 @@ import SetNewPasswordPage from '../../screens/Auth/SetNewPassword';
 import RandomQuestionsView from '../../screens/App/PracticeQuestion/RandomQuestionsView';
 
 const PracticeStackScreens = () => {
-  const StudyStack = createStackNavigator();
+  const PracticeStack = createStackNavigator();
 
   return (
-    <StudyStack.Navigator>
-      <StudyStack.Screen
+    <PracticeStack.Navigator>
+      <PracticeStack.Screen
         name="Practice"
         component={Practice}
         options={{headerShown: false}}
       />
 
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="Exam-View"
         component={PracticeQuestion}
         options={{headerShown: false}}
       />
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="Random-Exam"
         component={RandomQuestionsView}
         options={{headerShown: false}}
       />
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="Exam-Review"
         component={ExamReview}
         options={{headerShown: false}}
       />
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="Exam-Result"
         component={ExamResult}
         options={{headerShown: false}}
       />
 
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="ViewAssessment"
         component={ViewAssessment}
         options={{headerShown: false}}
       />
 
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="Login"
         component={Login}
         options={{headerShown: false}}
       />
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="forgot-password"
         component={ForgotPassword}
         options={{headerShown: false}}
       />
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="network-error"
         component={NetworkError}
         options={{headerShown: false}}
       />
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="signup-success"
         component={SignupCompleted}
         options={{headerShown: false}}
       />
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="Signup"
         component={Signup}
         options={{headerShown: false}}
       />
 
-      <StudyStack.Screen
+      <PracticeStack.Screen
         name="Password-Reset"
         component={SetNewPasswordPage}
         options={{headerShown: false}}
       />
-    </StudyStack.Navigator>
+    </PracticeStack.Navigator>
   );
 };
 

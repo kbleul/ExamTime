@@ -160,12 +160,7 @@ const AssignSVG = (type: string, focused: boolean) => {
         <AntDesign
           name="setting"
           size={screenWidth * 0.06}
-          style={
-            focused
-              ? // Object.keys(ProfileMenuItemsAuth).includes(currentScreen)
-                style.iconActive
-              : style.icon
-          }
+          style={focused ? style.iconActive : style.icon}
         />
       );
 
