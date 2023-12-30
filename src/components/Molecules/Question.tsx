@@ -90,18 +90,9 @@ const Question: React.FC<{
                 !isReview && (
                   <TouchableOpacity
                     touchSoundDisabled
-                    style={[
-                      styles.readParagraphBtn,
-                      styles.readParagraphBtnSecondary,
-                    ]}
+                    style={styles.readParagraphBtn}
                     onPress={() => setDirection(question.metadata)}>
-                    <Text
-                      style={[
-                        styles.readParagraphText,
-                        styles.readParagraphTextSecondary,
-                      ]}>
-                      Directions
-                    </Text>
+                    <Text style={styles.readParagraphText}>Directions</Text>
                   </TouchableOpacity>
                 )}
             </View>
@@ -140,13 +131,6 @@ const Question: React.FC<{
             style={styles.choiceContainer}
             contentContainerStyle={styles.choiceContainerContent}
             showsVerticalScrollIndicator={false}>
-            {/* <View style={styles.questionImageContainer}>
-              <Image
-                style={styles.questionImage}
-                source={require('../../assets/Images/home/s2.png')}
-                resizeMode="cover"
-              />
-            </View> */}
             {Choice.map((letter: string, index: number) => (
               <QuestionChoice
                 key={letter + 'letter' + index}
@@ -379,7 +363,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   counterContainerSecondary: {
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   counterTitle: {
     fontSize: 18,
@@ -405,13 +389,11 @@ const styles = StyleSheet.create({
   readParagraphBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
+    borderWidth: 1.5,
     borderRadius: 10,
     overflow: 'hidden',
     borderColor: '#F5A52D',
-  },
-  readParagraphBtnSecondary: {
-    borderColor: '#45baf5',
+    marginTop: 3,
   },
   readParagraphText: {
     fontSize: 12,
@@ -422,9 +404,7 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     paddingBottom: 4,
   },
-  readParagraphTextSecondary: {
-    color: '#45baf5',
-  },
+
   questionImageContainer: {
     width: '80%',
     height: screenHeight * (3 / 10),
