@@ -11,6 +11,7 @@ import PracticeQuestion from '../../screens/App/PracticeQuestion';
 import Practice from '../../screens/App/Practice';
 import StudySection from '../../screens/App/Study/index';
 import ChallengeSection from '../../screens/App/Challenge/index';
+import NetworkError from '../../screens/Shared/NetworkError';
 
 const StudyStackScreens = () => {
   const StudyStack = createStackNavigator();
@@ -70,6 +71,11 @@ const StudyStackScreens = () => {
       <StudyStack.Screen
         name="ViewAssessment"
         component={ViewAssessment}
+        options={{headerShown: false}}
+      />
+      <StudyStack.Screen
+        name="network-error"
+        component={NetworkError}
         options={{headerShown: false}}
       />
     </StudyStack.Navigator>

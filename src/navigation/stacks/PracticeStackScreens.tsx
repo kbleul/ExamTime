@@ -1,5 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+
+import NetworkError from '../../screens/Shared/NetworkError';
+
 import Practice from '../../screens/App/Practice';
 import PracticeQuestion from '../../screens/App/PracticeQuestion';
 import ExamReview from '../../screens/App/PracticeQuestion/ExamReview';
@@ -42,6 +45,12 @@ const PracticeStackScreens = () => {
       <PracticeStack.Screen
         name="ViewAssessment"
         component={ViewAssessment}
+        options={{headerShown: false}}
+      />
+
+      <PracticeStack.Screen
+        name="network-error"
+        component={NetworkError}
         options={{headerShown: false}}
       />
     </PracticeStack.Navigator>
