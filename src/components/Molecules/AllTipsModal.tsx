@@ -24,9 +24,7 @@ const AllTipsModal = ({
     return (
       <View style={styles.container}>
         <Text style={styles.typeText}>{item.tipType}</Text>
-        <Text style={styles.subtitle}>
-          TIPS & TRICKS FOR {item.tipType} Exam and Study
-        </Text>
+        <Text style={styles.subtitle}>TIPS & TRICKS FOR Exam and Study</Text>
 
         <Text style={styles.tip}>{item.tip}</Text>
       </View>

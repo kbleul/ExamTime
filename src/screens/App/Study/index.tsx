@@ -6,7 +6,9 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   FlatList,
+  StyleSheet,
 } from 'react-native';
+
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 import {ScaledSheet} from 'react-native-size-matters';
@@ -25,17 +27,20 @@ import {SvgCss} from 'react-native-svg';
 import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
 import LoginModal from '../../../components/Organisms/LoginModal';
 import {useNavContext} from '../../../context/bottomNav';
+import CustomToast from '../../../components/Molecules/CustomToast';
 
 const CourseItem = ({
   item,
   setLoginModalVisible,
   isLoading,
   timerValue,
+  setShowAlert,
 }: {
   item: subjectType;
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
   timerValue: number;
+  setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const navigator: any = useNavigation();
   const {setShowNavigation} = useNavContext();
@@ -78,7 +83,11 @@ const CourseItem = ({
               });
 
               setShowNavigation(false);
+              return;
             }
+
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3500);
           }}>
           <View style={styles.imgContainer}>
             {isLoading && isLoadingSVG ? (
@@ -137,6 +146,7 @@ const Index = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
 
   setTimeout(() => {
     setIsLoading(false);
@@ -150,6 +160,16 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
+      {showAlert && (
+        <CustomToast
+          text=" There is no study available for this subject, New studies will be
+        added soon!"
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+          topPosition={0}
+        />
+      )}
+
       <View style={styles.headerContainerTop}>
         <Text style={styles.headerTitle}>Study Section</Text>
         <Text style={styles.welcomeText}>
@@ -195,6 +215,7 @@ const Index = () => {
               setLoginModalVisible={setLoginModalVisible}
               isLoading={isLoading}
               timerValue={(index + 1) * 200}
+              setShowAlert={setShowAlert}
             />
           )}
           keyExtractor={(item, index) => index.toString()}
@@ -223,7 +244,14 @@ const styles = ScaledSheet.create({
     backgroundColor: '#F9FCFF',
     paddingTop: screenHeight * 0.045,
     paddingBottom: screenHeight * 0.048,
-    // backgroundColor: 'red',
+    position: 'relative',
+  },
+  alertContainer: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    marginTop: screenHeight * 0.045,
+    zIndex: 10,
   },
   loading: {
     paddingTop: screenHeight * 0.1,

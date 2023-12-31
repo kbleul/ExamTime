@@ -63,7 +63,7 @@ const StudyDetails = ({route}) => {
 
   useEffect(() => {
     const backAction = () => {
-      navigator.goBack();
+      navigator.navigate('StudySection');
       setShowNavigation(true);
 
       return true;

@@ -33,8 +33,6 @@ const RandomQuestionsView = ({route}: {route: any}) => {
   const {useQuery} = AuthContext;
   const userData = useQuery(UserData);
 
-  console.log(userData[0].grade, '===');
-
   const flatListRef = useRef<FlatList<any> | null>(null);
 
   const {selectedSubject, amount} = route.params;

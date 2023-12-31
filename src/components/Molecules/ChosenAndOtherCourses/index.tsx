@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
+import {Alert, AlertIcon, AlertText} from '@gluestack-ui/themed';
+
 import Header from './Header';
 import ChosenCoursesCard from './ChosenCoursesCard';
 import OtherCoursesCard from './OtherCoursesCard';
@@ -11,6 +13,7 @@ import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
+import CustomToast from '../CustomToast';
 
 const ChosenCourses = ({
   setLoginModalVisible,
@@ -35,6 +38,8 @@ const ChosenCourses = ({
 
   const [getSubject] = useGetSubjectMutation();
 
+  const [showAlert, setShowAlert] = useState(false);
+
   useEffect(() => {
     savedSubjects && savedSubjects.length > 0
       ? setSubjectsArray([...savedSubjects])
@@ -56,6 +61,7 @@ const ChosenCourses = ({
             setLoginModalVisible={setLoginModalVisible}
             isLoadingSubjects={isLoadingSubjects}
             timerValue={(index + 1) * 400}
+            setShowAlert={setShowAlert}
           />
         )}
       </View>
@@ -80,6 +86,16 @@ const ChosenCourses = ({
 
   return (
     <View style={styles.container}>
+      {showAlert && (
+        <CustomToast
+          text="There is no study available for this subject, New studies will be
+        added soon!"
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+          topPosition={screenHeight - (screenHeight + 250)}
+        />
+      )}
+
       <Header title="My learning" subTitle="Your Chosen Courses" seeAll />
 
       {!isLoadingSubjects && subjectsArray && subjectsArray.length > 0 && (
@@ -131,6 +147,7 @@ const ChosenCourses = ({
 const styles = StyleSheet.create({
   container: {
     marginTop: screenHeight * 0.01,
+    position: 'relative',
   },
   subContainer: {
     marginTop: screenHeight * 0.01,
