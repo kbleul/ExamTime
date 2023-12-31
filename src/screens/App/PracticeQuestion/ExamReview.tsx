@@ -106,6 +106,7 @@ const ExamReview = ({route}) => {
   const {setShowNavigation} = useNavContext();
 
   const {userAnswers, examQuestions, isStudy} = route.params;
+
   const [selectedCategory, setSelectedCategory] = useState(CATAGORIES[0]);
 
   const navigator: any = useNavigation();

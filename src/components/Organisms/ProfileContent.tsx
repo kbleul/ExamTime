@@ -51,9 +51,7 @@ const ProfileContent = () => {
                 resources to help you achieve academic excellence!
               </Text>
             </View>
-            {/* <Text style={styles.name}>
-              {user ? `${user.firstName} ${user.lastName}` : ''}
-            </Text> */}
+
             <Image style={styles.badge} source={badgeImg} />
           </View>
         )}
@@ -65,7 +63,7 @@ const ProfileContent = () => {
               touchSoundDisabled
               onPress={() => {
                 setShowNavigation(false);
-                navigator.navigate('Signup');
+                navigator.navigate('HomeSection', {screen: 'Signup'});
               }}>
               <Text style={styles.adsBtnsText}>Signup</Text>
             </TouchableOpacity>
@@ -74,7 +72,7 @@ const ProfileContent = () => {
               touchSoundDisabled
               onPress={() => {
                 setShowNavigation(false);
-                navigator.navigate('Login');
+                navigator.navigate('HomeSection', {screen: 'Login'});
               }}>
               <Text style={styles.adsBtnsText}>Login</Text>
             </TouchableOpacity>

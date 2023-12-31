@@ -49,46 +49,6 @@ const ProfileStackScreens = () => {
         component={ProfileEditIndex}
         options={{headerShown: false}}
       />
-      <ProfileStack.Screen
-        name="Login"
-        component={Login}
-        options={{headerShown: false}}
-      />
-      <ProfileStack.Screen
-        name="forgot-password"
-        component={ForgotPassword}
-        options={{headerShown: false}}
-      />
-      <ProfileStack.Screen
-        name="network-error"
-        component={NetworkError}
-        options={{headerShown: false}}
-      />
-      <ProfileStack.Screen
-        name="signup-success"
-        component={SignupCompleted}
-        options={{headerShown: false}}
-      />
-      <ProfileStack.Screen
-        name="Signup"
-        component={Signup}
-        options={{headerShown: false}}
-      />
-      <ProfileStack.Screen
-        name="Aboutus"
-        component={Aboutus}
-        options={{headerShown: false}}
-      />
-      <ProfileStack.Screen
-        name="SubscriptionPlan"
-        component={SubscriptionPlan}
-        options={{headerShown: false}}
-      />
-      <ProfileStack.Screen
-        name="Password-Reset"
-        component={SetNewPasswordPage}
-        options={{headerShown: false}}
-      />
     </ProfileStack.Navigator>
   );
 };

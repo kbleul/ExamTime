@@ -47,7 +47,7 @@ const LoginModal: React.FC<{
               onPress={() => {
                 setLoginModalVisible(false);
                 setShowNavigation(false);
-                navigator.navigate('Signup');
+                navigator.navigate('HomeSection', {screen: 'Signup'});
               }}>
               <Text
                 style={[
@@ -68,7 +68,7 @@ const LoginModal: React.FC<{
                 onPress={() => {
                   setLoginModalVisible(false);
                   setShowNavigation(false);
-                  navigator.navigate('Login');
+                  navigator.navigate('HomeSection', {screen: 'Login'});
                 }}>
                 Login
               </Text>

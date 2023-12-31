@@ -178,7 +178,6 @@ export const FrameThree: React.FC<{
             style={frameThreestyles.adsBtns}
             touchSoundDisabled
             onPress={() => {
-              console.log(issubscribe);
               if (issubscribe) {
                 setShowAlert(true);
               } else {

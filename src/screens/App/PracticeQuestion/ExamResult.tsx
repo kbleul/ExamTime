@@ -14,7 +14,6 @@ import {useNavContext} from '../../../context/bottomNav';
 
 const calculateGrade = (correctAnswers: number, total: number) => {
   const gradePrercentage = Math.round((correctAnswers * 100) / total);
-  console.log(correctAnswers, gradePrercentage, total);
 
   let result: any = {grade: gradePrercentage};
 

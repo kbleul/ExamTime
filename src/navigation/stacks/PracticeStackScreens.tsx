@@ -5,12 +5,6 @@ import PracticeQuestion from '../../screens/App/PracticeQuestion';
 import ExamReview from '../../screens/App/PracticeQuestion/ExamReview';
 import ExamResult from '../../screens/App/PracticeQuestion/ExamResult';
 import ViewAssessment from '../../screens/App/Study/ViewAssessment';
-import Login from '../../screens/Auth/Login/Login';
-import ForgotPassword from '../../screens/Auth/Login/ForgotPassword';
-import NetworkError from '../../screens/Shared/NetworkError';
-import SignupCompleted from '../../components/Organisms/SignupCompleted';
-import Signup from '../../screens/Auth/Signup/Signup';
-import SetNewPasswordPage from '../../screens/Auth/SetNewPassword';
 import RandomQuestionsView from '../../screens/App/PracticeQuestion/RandomQuestionsView';
 
 const PracticeStackScreens = () => {
@@ -48,38 +42,6 @@ const PracticeStackScreens = () => {
       <PracticeStack.Screen
         name="ViewAssessment"
         component={ViewAssessment}
-        options={{headerShown: false}}
-      />
-
-      <PracticeStack.Screen
-        name="Login"
-        component={Login}
-        options={{headerShown: false}}
-      />
-      <PracticeStack.Screen
-        name="forgot-password"
-        component={ForgotPassword}
-        options={{headerShown: false}}
-      />
-      <PracticeStack.Screen
-        name="network-error"
-        component={NetworkError}
-        options={{headerShown: false}}
-      />
-      <PracticeStack.Screen
-        name="signup-success"
-        component={SignupCompleted}
-        options={{headerShown: false}}
-      />
-      <PracticeStack.Screen
-        name="Signup"
-        component={Signup}
-        options={{headerShown: false}}
-      />
-
-      <PracticeStack.Screen
-        name="Password-Reset"
-        component={SetNewPasswordPage}
         options={{headerShown: false}}
       />
     </PracticeStack.Navigator>

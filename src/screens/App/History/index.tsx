@@ -1,15 +1,27 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {AuthContext} from '../../../Realm/model';
 import {Exam, ExamAnswers, Subject, UserData} from '../../../Realm';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {subjectType} from '../../../types';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {answersType} from '../PracticeQuestion';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import MessageBox from '../../../components/Atoms/MessageBox';
 import {useNavContext} from '../../../context/bottomNav';
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function convertDateFormat(dateString: string) {
   const date = new Date(dateString);
@@ -42,8 +54,8 @@ const History = () => {
     savedSubjects,
   );
 
-  const [selectedSubject, setSelectedSubject] = useState(
-    formatedSubjectSArr.length > 0 ? formatedSubjectSArr[0] : null,
+  const [selectedSubject, setSelectedSubject] = useState<subjectType | null>(
+    null,
   );
 
   const savedExams = useQuery(
@@ -59,14 +71,12 @@ const History = () => {
     },
     [selectedSubject],
   );
-  const [savedExamsArr, setSavedExamsArr] = useState([...savedExams]);
 
   useEffect(() => {
-    if (isFocused) {
-      setSavedExamsArr([...savedExams]);
-    } else {
-      setSelectedSubject(null);
-      setSavedExamsArr([]);
+    if (isFocused && !selectedSubject) {
+      setSelectedSubject(
+        formatedSubjectSArr.length > 0 ? formatedSubjectSArr[0] : null,
+      );
     }
   }, [savedExams, isFocused]);
 
@@ -184,6 +194,9 @@ const CardData = ({
   exam: Exam;
   examAnswers: ExamAnswers;
 }) => {
+  const navigator: any = useNavigation();
+  const {setShowNavigation} = useNavContext();
+
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
   useEffect(() => {
@@ -225,6 +238,29 @@ const CardData = ({
           </Text>
         </View>
       </View>
+
+      <TouchableOpacity
+        touchSoundDisabled
+        style={cardStyle.reviewBtn}
+        onPress={() => {
+          setShowNavigation(false);
+
+          navigator.navigate('PracticeSection', {
+            screen: 'Exam-Review',
+            params: {
+              userAnswers: examAnswers.userExamAnswers,
+              examQuestions: exam.examQuestion,
+              isStudy: false,
+            },
+          });
+        }}>
+        <Text style={cardStyle.reviewBtnText}>Review Exam</Text>
+        <AntDesign
+          name="arrowright"
+          color={'#3c3d6e'}
+          size={screenWidth * 0.035}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -292,6 +328,19 @@ const cardStyle = StyleSheet.create({
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.045,
     paddingBottom: 5,
+    color: '#3c3d6e',
+  },
+  reviewBtn: {
+    alignSelf: 'flex-end',
+    marginBottom: 4,
+    flexDirection: 'row',
+    gap: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  reviewBtnText: {
+    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.033,
     color: '#3c3d6e',
   },
   testContainer: {

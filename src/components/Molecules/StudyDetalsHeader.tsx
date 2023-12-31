@@ -16,7 +16,7 @@ const StudyDetalsHeader = ({
     <View style={styles.container}>
       <TouchableOpacity
         touchSoundDisabled
-        onPress={() => navigator.goBack()}
+        onPress={() => navigator.navigate('StudySection')}
         style={styles.button}>
         <AntDesign name="left" size={22} color="#000" />
         <Text style={styles.buttonText}>{subjectName}</Text>

@@ -35,7 +35,6 @@ const Index = () => {
         if (response.error) {
           Alert.alert(response.error);
         } else if (response.data) {
-          console.log(response.data);
           setuserGuide(response.data);
           setLoading(false);
         } else {

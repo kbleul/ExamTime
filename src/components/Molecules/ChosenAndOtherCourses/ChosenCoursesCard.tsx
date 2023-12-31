@@ -10,7 +10,6 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
-import {Alert, AlertIcon, AlertText} from '@gluestack-ui/themed';
 
 const getFilteredSavedSubject = (
   realm: Realm,

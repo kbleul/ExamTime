@@ -1,11 +1,5 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import SetNewPasswordPage from '../../screens/Auth/SetNewPassword';
-import Signup from '../../screens/Auth/Signup/Signup';
-import SignupCompleted from '../../components/Organisms/SignupCompleted';
-import NetworkError from '../../screens/Shared/NetworkError';
-import ForgotPassword from '../../screens/Auth/Login/ForgotPassword';
-import Login from '../../screens/Auth/Login/Login';
 import ViewAssessment from '../../screens/App/Study/ViewAssessment';
 import ViewVideo from '../../screens/App/Study/ViewVideo';
 import ViewPdf from '../../screens/App/Study/ViewPdf';
@@ -76,38 +70,6 @@ const StudyStackScreens = () => {
       <StudyStack.Screen
         name="ViewAssessment"
         component={ViewAssessment}
-        options={{headerShown: false}}
-      />
-
-      <StudyStack.Screen
-        name="Login"
-        component={Login}
-        options={{headerShown: false}}
-      />
-      <StudyStack.Screen
-        name="forgot-password"
-        component={ForgotPassword}
-        options={{headerShown: false}}
-      />
-      <StudyStack.Screen
-        name="network-error"
-        component={NetworkError}
-        options={{headerShown: false}}
-      />
-      <StudyStack.Screen
-        name="signup-success"
-        component={SignupCompleted}
-        options={{headerShown: false}}
-      />
-      <StudyStack.Screen
-        name="Signup"
-        component={Signup}
-        options={{headerShown: false}}
-      />
-
-      <StudyStack.Screen
-        name="Password-Reset"
-        component={SetNewPasswordPage}
         options={{headerShown: false}}
       />
     </StudyStack.Navigator>

@@ -55,7 +55,6 @@ export const fetchTips = async (
 ) => {
   const isConnected = await checkIsOnline();
   if (isConnected) {
-    console.log('got tips');
     try {
       const response: any = await getTips({
         gradeId,

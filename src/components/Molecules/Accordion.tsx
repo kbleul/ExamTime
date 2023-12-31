@@ -38,7 +38,6 @@ const AccordionComponent = () => {
     if (isOnline) {
       try {
         const response: faqType[] | [] = await getFaq({}).unwrap();
-        console.log('faq', response);
         setFaq(response);
       } catch (err) {
         Toast.show({
