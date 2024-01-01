@@ -1,12 +1,10 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {
   Modal,
   StyleSheet,
   View,
   TouchableOpacity,
-  PanResponder,
-  Animated,
-  TouchableWithoutFeedback,
+  ScrollView,
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
@@ -14,6 +12,24 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const tagsStylesQuestion = {
   p: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.8,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+    lineHeight: 25,
+  },
+  div: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.8,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+    lineHeight: 25,
+  },
+  span: {
     whiteSpace: 'normal',
     color: '#000',
     textAlign: 'left',
@@ -32,29 +48,6 @@ const DirectionModal: React.FC<{
   direction: string | null;
   setDirection: React.Dispatch<React.SetStateAction<string | null>>;
 }> = ({direction, setDirection}) => {
-  const pan = useRef(new Animated.ValueXY()).current;
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, {dy: pan.y}], {
-        useNativeDriver: false,
-      }),
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dy > 150) {
-          // User has swiped down, close the modal
-          setDirection(null);
-        } else {
-          // Animate the modal back to its initial position
-          Animated.spring(pan, {
-            toValue: {x: 0, y: 0},
-            useNativeDriver: false,
-          }).start();
-        }
-      },
-    }),
-  ).current;
-
   return (
     <Modal
       animationType="slide"
@@ -63,31 +56,28 @@ const DirectionModal: React.FC<{
       onRequestClose={() => {
         setDirection(null);
       }}>
-      <TouchableWithoutFeedback onPress={() => setDirection(null)}>
-        <View style={styles.centeredView}>
-          <Animated.View
-            style={[styles.modalView, {transform: [{translateY: pan.y}]}]}
-            {...panResponder.panHandlers}>
-            <View style={styles.closeBtnContainer}>
-              <View style={styles.indicator} />
-              <TouchableOpacity
-                style={styles.closeBtn}
-                onPress={() => setDirection(null)}>
-                <AntDesign
-                  name="close"
-                  size={screenWidth * 0.05}
-                  color="#000"
-                />
-              </TouchableOpacity>
-            </View>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <View style={styles.closeBtnContainer}>
+            <View style={styles.indicator} />
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={() => setDirection(null)}>
+              <AntDesign name="close" size={screenWidth * 0.05} color="#000" />
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView
+            style={styles.scrollContainer}
+            contentContainerStyle={styles.scrollContentContainer}>
             <RenderHtml
               contentWidth={screenWidth - 80}
               source={{html: direction}}
               tagsStyles={tagsStylesQuestion}
             />
-          </Animated.View>
+          </ScrollView>
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     </Modal>
   );
 };
@@ -111,7 +101,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
 
     overflow: 'hidden',
-    padding: 10,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -123,17 +112,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: '100%',
   },
-  modalImageContaner: {
-    width: '60%',
-    height: 180,
-    overflow: 'hidden',
-    marginBottom: 10,
-  },
   closeBtnContainer: {
     width: '100%',
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: screenWidth * 0.06,
   },
   indicator: {
     width: screenWidth / 4,
@@ -141,6 +125,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 4,
     backgroundColor: '#b3afa6',
+    paddingHorizontal: screenWidth * 0.09,
+  },
+  scrollContainer: {
+    paddingHorizontal: screenWidth * 0.09,
+    width: '100%',
+  },
+  scrollContentContainer: {
+    paddingBottom: 20,
   },
   closeBtn: {
     alignSelf: 'flex-end',
