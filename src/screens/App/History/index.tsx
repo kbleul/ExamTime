@@ -294,7 +294,6 @@ const styles = StyleSheet.create({
 const renderSubjectsStyle = StyleSheet.create({
   button: {
     paddingHorizontal: 28,
-    paddingVertical: 7,
     backgroundColor: '#fff',
     borderRadius: 8,
     marginRight: 16,
@@ -306,9 +305,12 @@ const renderSubjectsStyle = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'PoppinsSemiBold',
-    fontSize: 14,
+    fontSize: screenWidth * 0.035,
+    lineHeight: screenWidth * 0.045,
     textAlign: 'center',
     color: '#A2A2A2',
+    overflow: 'hidden',
+    marginTop: screenWidth * 0.035,
   },
   buttonTextActive: {
     color: '#fff',

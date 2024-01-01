@@ -167,7 +167,7 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     maxHeight: 220,
-    backgroundColor: '#64CAE9',
+    backgroundColor: '#8edcf5',
   },
   containerSecondary: {
     height: screenHeight * (1 / 3.8),
