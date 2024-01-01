@@ -21,7 +21,6 @@ import {answersType, filterUnanswered} from './index';
 import Toast from 'react-native-toast-message';
 import {View} from 'react-native';
 import Loading from '../../../components/Atoms/Loading';
-import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useNavContext} from '../../../context/bottomNav';
 import {UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
@@ -169,13 +168,6 @@ const RandomQuestionsView = ({route}: {route: any}) => {
       });
     }
   };
-
-  // useEffect(() => {
-  //   const backHandler = null;
-
-  //   // Clean up the event listener when the component is unmounted
-  //   return () => backHandler && backHandler.remove();
-  // }, [isLoading, error]);
 
   const renderItem = ({
     item,

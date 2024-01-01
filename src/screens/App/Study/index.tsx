@@ -6,7 +6,6 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   FlatList,
-  StyleSheet,
 } from 'react-native';
 
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
@@ -29,109 +28,6 @@ import LoginModal from '../../../components/Organisms/LoginModal';
 import {useNavContext} from '../../../context/bottomNav';
 import CustomToast from '../../../components/Molecules/CustomToast';
 
-const CourseItem = ({
-  item,
-  setLoginModalVisible,
-  isLoading,
-  timerValue,
-  setShowAlert,
-}: {
-  item: subjectType;
-  setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  timerValue: number;
-  setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const navigator: any = useNavigation();
-  const {setShowNavigation} = useNavContext();
-
-  const token = useSelector((state: RootState) => state.auth.token);
-  const user = useSelector((state: RootState) => state.auth.user);
-
-  const [isLoadingSVG, setIsLoadingSVG] = useState(true);
-
-  const {useQuery} = AuthContext;
-
-  const savedStudies = useQuery(Study, studies => {
-    return studies.filtered(
-      `subject.id = "${item.id}" OR subject.subject = "${item.subject.subject}"`,
-    );
-  });
-
-  const progress = calculateStudyProgress(savedStudies);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoadingSVG(false);
-    }, timerValue);
-  }, []);
-
-  return (
-    <>
-      {!isLoadingSVG && (
-        <TouchableOpacity
-          style={styles.lcontainer}
-          onPress={() => {
-            if (!user || !token) {
-              setLoginModalVisible(true);
-              return;
-            }
-
-            if (savedStudies.length > 0) {
-              navigator.navigate('StudyDetails', {
-                subject: item.subject,
-              });
-
-              setShowNavigation(false);
-              return;
-            }
-
-            setShowAlert(true);
-            setTimeout(() => setShowAlert(false), 3500);
-          }}>
-          <View style={styles.imgContainer}>
-            {isLoading && isLoadingSVG ? (
-              <View style={[styles.imagebg, styles.imagebgLoading]} />
-            ) : (
-              item.icon && (
-                <SvgCss
-                  xml={item.icon}
-                  style={styles.imagebg}
-                  onError={onError}
-                />
-              )
-            )}
-          </View>
-
-          <View style={styles.infoContainer}>
-            <Text style={styles.subject}>{item.subject.subject}</Text>
-            <Text style={styles.units}>
-              {savedStudies.length} lessons . . .
-            </Text>
-          </View>
-
-          <View style={styles.circleContainer}>
-            <AnimatedCircularProgress
-              size={60}
-              width={4}
-              backgroundWidth={2}
-              fill={progress}
-              tintColor="#F0E2A1"
-              backgroundColor="#000"
-              rotation={0}>
-              {fill => (
-                <View style={styles.progressTextContainer}>
-                  <Text style={styles.progressText}>{Math.round(fill)}%</Text>
-                </View>
-              )}
-            </AnimatedCircularProgress>
-          </View>
-        </TouchableOpacity>
-      )}
-    </>
-  );
-};
-
 const Index = () => {
   const navigation: any = useNavigation();
   const {setShowNavigation} = useNavContext();
@@ -145,12 +41,7 @@ const Index = () => {
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
-
-  setTimeout(() => {
-    setIsLoading(false);
-  }, 500);
 
   useFocusEffect(
     useCallback(() => {
@@ -213,7 +104,6 @@ const Index = () => {
             <CourseItem
               item={item}
               setLoginModalVisible={setLoginModalVisible}
-              isLoading={isLoading}
               timerValue={(index + 1) * 200}
               setShowAlert={setShowAlert}
             />
@@ -230,6 +120,106 @@ const Index = () => {
 
       <Toast />
     </View>
+  );
+};
+
+const RenderIcon = ({
+  timerValue,
+  icon,
+}: {
+  timerValue: number;
+
+  icon: string;
+}) => {
+  const [isLoadingSVG, setIsLoadingSVG] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoadingSVG(false);
+    }, timerValue);
+  }, []);
+
+  return isLoadingSVG ? (
+    <View style={[styles.imagebg, styles.imagebgLoading]} />
+  ) : (
+    <SvgCss xml={icon} style={styles.imagebg} onError={onError} />
+  );
+};
+
+const CourseItem = ({
+  item,
+  setLoginModalVisible,
+  timerValue,
+  setShowAlert,
+}: {
+  item: subjectType;
+  setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  timerValue: number;
+  setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const navigator: any = useNavigation();
+  const {setShowNavigation} = useNavContext();
+
+  const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const {useQuery} = AuthContext;
+
+  const savedStudies = useQuery(Study, studies => {
+    return studies.filtered(
+      `subject.id = "${item.id}" OR subject.subject = "${item.subject.subject}"`,
+    );
+  });
+
+  const progress = calculateStudyProgress(savedStudies);
+
+  return (
+    <TouchableOpacity
+      style={styles.lcontainer}
+      onPress={() => {
+        if (!user || !token) {
+          setLoginModalVisible(true);
+          return;
+        }
+
+        if (savedStudies.length > 0) {
+          navigator.navigate('StudyDetails', {
+            subject: item.subject,
+          });
+
+          setShowNavigation(false);
+          return;
+        }
+
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3500);
+      }}>
+      <View style={styles.imgContainer}>
+        {item.icon && <RenderIcon timerValue={timerValue} icon={item.icon} />}
+      </View>
+
+      <View style={styles.infoContainer}>
+        <Text style={styles.subject}>{item.subject.subject}</Text>
+        <Text style={styles.units}>{savedStudies.length} lessons . . .</Text>
+      </View>
+
+      <View style={styles.circleContainer}>
+        <AnimatedCircularProgress
+          size={60}
+          width={4}
+          backgroundWidth={2}
+          fill={progress}
+          tintColor="#F0E2A1"
+          backgroundColor="#000"
+          rotation={0}>
+          {fill => (
+            <View style={styles.progressTextContainer}>
+              <Text style={styles.progressText}>{Math.round(fill)}%</Text>
+            </View>
+          )}
+        </AnimatedCircularProgress>
+      </View>
+    </TouchableOpacity>
   );
 };
 

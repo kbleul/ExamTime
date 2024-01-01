@@ -36,7 +36,6 @@ const ChosenCoursesCard: React.FC<{
   subjectId?: string;
   bgImage: any;
   setLoginModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoadingSubjects: boolean;
   timerValue?: number;
   setShowAlert?: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({
@@ -44,7 +43,6 @@ const ChosenCoursesCard: React.FC<{
   subjectId,
   bgImage,
   setLoginModalVisible,
-  isLoadingSubjects,
   timerValue,
   setShowAlert,
 }) => {
@@ -77,17 +75,7 @@ const ChosenCoursesCard: React.FC<{
 
   return (
     <>
-      {isLoadingSVG ||
-        (isLoadingSubjects && (
-          <View
-            style={
-              subjectId !== undefined
-                ? styles.containerLoading
-                : [styles.containerLoading, styles.containerSecondaryLoading]
-            }
-          />
-        ))}
-      {!isLoadingSVG && !isLoadingSubjects && (
+      {!isLoadingSVG && (
         <TouchableOpacity
           style={
             subjectId !== undefined
@@ -117,13 +105,7 @@ const ChosenCoursesCard: React.FC<{
               }
             }
           }}>
-          {bgImage && (
-            <SvgXml
-              style={styles.imageBg}
-              xml={bgImage.uri}
-              onError={onError}
-            />
-          )}
+          <RenderSvg bgImage={bgImage.uri} />
 
           <View style={styles.contentContainer}>
             <Text style={styles.title}>{subject.subject}</Text>
@@ -161,6 +143,22 @@ const ChosenCoursesCard: React.FC<{
   );
 };
 
+const RenderSvg = ({bgImage}: {bgImage: string}) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  return loading ? (
+    <></>
+  ) : (
+    <SvgXml style={styles.imageBg} xml={bgImage} onError={onError} />
+  );
+};
+
 export const styles = StyleSheet.create({
   container: {
     height: screenHeight * (1 / 3.8),
@@ -169,12 +167,14 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     maxHeight: 220,
+    backgroundColor: '#64CAE9',
   },
   containerSecondary: {
     height: screenHeight * (1 / 3.8),
     width: screenWidth * (1 / 3),
     maxHeight: 220,
     overflow: 'hidden',
+    backgroundColor: '#f5f2f2',
   },
   containerLoading: {
     backgroundColor: '#f5f2f2',
