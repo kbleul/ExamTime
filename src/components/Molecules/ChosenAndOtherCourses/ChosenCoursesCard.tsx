@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {SvgXml} from 'react-native-svg';
 import {calculateStudyProgress} from '../../../screens/App/Study/logic';
@@ -218,7 +218,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: screenWidth * 0.02,
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
     borderRadius: 100,
-    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
+    overflow: Platform.OS === 'ios' ? 'hidden' : 'visible',
     color: 'white',
     fontSize: screenWidth * 0.028,
     fontFamily: 'Montserrat-SemiBold',

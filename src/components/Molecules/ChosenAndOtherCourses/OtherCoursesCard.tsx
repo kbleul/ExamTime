@@ -149,8 +149,10 @@ export const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 3,
     overflow: 'hidden',
-    borderRadius: 50,
-    width: '60%',
+    borderRadius: Platform.OS === 'ios' ? 20 : 50,
+    borderWidth: 1,
+    borderColor: '#37a9b3',
+    width: Platform.OS === 'ios' ? '90%' : '90%',
     textAlign: 'center',
   },
 });

@@ -122,6 +122,13 @@ const History = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
         />
+        <View style={styles.iconContainer}>
+          <AntDesign
+            name="arrowright"
+            color={'#3c3d6e'}
+            size={screenWidth * 0.05}
+          />
+        </View>
       </View>
 
       {savedExams && savedExams.length > 0 ? (
@@ -285,9 +292,15 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   buttonsContainer: {
-    marginBottom: 10,
+    marginVertical: 10,
     paddingVertical: 10,
     height: 65,
+    position: 'relative',
+  },
+  iconContainer: {
+    position: 'absolute',
+    top: -18,
+    right: 0,
   },
 });
 

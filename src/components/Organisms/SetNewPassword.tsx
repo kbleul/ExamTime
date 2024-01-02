@@ -41,16 +41,12 @@ const SetNewPassword: React.FC<{
   const [createPassword, {isLoading, isError, error}] =
     useCreatePasswordMutation();
 
-  const [
-    changePassword,
-    {isLoading: isLoadingChange, isError: isErrorChange, error: errorChange},
-  ] = useChangePasswordMutation();
+  const [changePassword, {error: errorChange}] = useChangePasswordMutation();
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
 
   const IsDefaultPasswordChanged = useSelector(

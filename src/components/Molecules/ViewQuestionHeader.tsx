@@ -26,20 +26,8 @@ const ViewQuestionHeader: React.FC<{
 }) => {
   return (
     <View style={styles.container}>
-      {/* <TouchableOpacity touchSoundDisabled onPress={() => navigator.goBack()}>
-        <Ionicons name="chevron-back" color="black" size={30} />
-      </TouchableOpacity> */}
-
       <Text style={styles.titleText}>{title}</Text>
 
-      {/* <TouchableOpacity touchSoundDisabled>
-            <FontAwesome5
-              name="undo-alt"
-              size={25}
-              color="#1E90FF"
-              style={styles.icon}
-            />
-          </TouchableOpacity> */}
       <View
         style={
           isReview

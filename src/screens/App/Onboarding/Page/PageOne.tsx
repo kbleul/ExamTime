@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import img from '../../../../assets/Images/onboarding/1a.png';
 import {PagesProps} from './types';
@@ -13,7 +15,7 @@ import {screenHeight, screenWidth} from '../../../../utils/Data/data';
 
 const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
   return (
-    <View style={style.container}>
+    <SafeAreaView style={style.container}>
       <ScrollView
         contentContainerStyle={style.scrollContainer}
         showsVerticalScrollIndicator={false}>
@@ -37,7 +39,7 @@ const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
           </Text>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -70,8 +72,7 @@ const style = StyleSheet.create({
   },
   agreementContainer: {
     position: 'absolute',
-    bottom: 20,
-    paddingHorizontal: 20,
+    bottom: Platform.OS === 'ios' ? screenHeight * 0.16 : screenHeight * 0.02,
   },
   buttonContainer: {
     width: '100%',
