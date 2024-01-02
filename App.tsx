@@ -11,7 +11,6 @@ import store from './src/reduxToolkit/Store';
 import {AuthContext} from './src/Realm/model';
 import {StatusBar} from 'react-native';
 
-import AppRoutes from './src/navigation/App';
 import NavProvider from './src/context/bottomNav';
 import Routes from './src/navigation/Index';
 import OnboardingProvider from './src/context/onboarding';

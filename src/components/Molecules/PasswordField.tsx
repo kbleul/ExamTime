@@ -14,7 +14,6 @@ interface PasswordFieldProps {
 }
 
 const PasswordField: FC<PasswordFieldProps> = ({
-  label,
   value,
   onChangeText,
   onBlur,

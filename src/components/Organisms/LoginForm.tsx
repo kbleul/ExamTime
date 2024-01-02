@@ -62,7 +62,6 @@ const LoginForm = () => {
     control,
     handleSubmit,
     formState: {errors},
-    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });

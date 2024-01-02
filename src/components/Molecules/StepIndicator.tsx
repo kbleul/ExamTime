@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   iconContIner: {
     borderRadius: 100,
-    overflow: 'hidden',
+    overflow: 'visible',
     borderWidth: 2,
     padding: 13,
     width: 56,

@@ -26,7 +26,7 @@ const getYoutubeVidId = (videosLink: string) => {
 
 const createPlaylist = (videos: videoType[]) => {
   const playlistVidsArr = videos.map((video: videoType) =>
-    getYoutubeVidId(video.mobileVideoLink),
+    getYoutubeVidId(video.videoLink),
   );
 
   return playlistVidsArr.filter(vid => vid !== null);
@@ -66,9 +66,7 @@ const ViewVideo = ({route}) => {
     return createPlaylist(videos);
   }, [videos]);
 
-  const youtubeVideoId = getYoutubeVidId(
-    videos[displayedVideo].mobileVideoLink,
-  );
+  const youtubeVideoId = getYoutubeVidId(videos[displayedVideo].videoLink);
 
   const handlePress = (index: number, videoId: string) => {
     if (index !== displayedVideo) {

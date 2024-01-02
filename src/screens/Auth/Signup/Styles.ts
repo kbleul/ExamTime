@@ -1,4 +1,5 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
+import {screenWidth} from '../../../utils/Data/data';
 
 export const formStyles = StyleSheet.create({
   container: {
@@ -24,8 +25,8 @@ export const formStyles = StyleSheet.create({
     overflow: 'hidden',
     borderColor: '#9CC0EC',
     paddingHorizontal: 20,
-    paddingVertical: 6,
-    fontSize: 16,
+    paddingVertical: Platform.OS == 'ios' ? 10 : 8,
+    fontSize: screenWidth * 0.04,
     color: '#000',
   },
   phoneContainer: {
@@ -37,6 +38,7 @@ export const formStyles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     borderColor: '#8dbaf0',
+    paddingVertical: Platform.OS == 'ios' ? 2 : 0,
   },
   phoneSmallBox: {
     fontSize: 16,

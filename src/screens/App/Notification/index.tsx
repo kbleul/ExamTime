@@ -33,12 +33,15 @@ const Notification = () => {
         <AntDesign name="left" size={screenWidth * 0.05} color="#000" />
         <Text style={styles.headerTitle}>Notifications</Text>
       </TouchableOpacity>
-      {!notifications || notifications?.length === 0 ? (
-        <MessageBox
-          title="No notifications to show right now!"
-          subTitle="Check back after a while."
-        />
-      ) : (
+
+      {!notifications ||
+        (notifications?.length === 0 && (
+          <MessageBox
+            title="No notifications to show right now!"
+            subTitle="Check back after a while."
+          />
+        ))}
+      {!notification && (
         <ScrollView
           contentContainerStyle={IndexStyle.ScrollView}
           showsVerticalScrollIndicator={false}>
@@ -75,11 +78,11 @@ const NotificationMsg = ({
 
   const handlePress = () => {
     setNotification(message ? {...message, wasRead: true} : ' ');
+
     if (message.wasRead === false) {
       updateNotificationStatus(message.id);
     }
   };
-
   return (
     <TouchableOpacity
       touchSoundDisabled
@@ -108,7 +111,8 @@ const styles = StyleSheet.create({
   headerContainerTop: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    paddingTop: screenHeight * 0.045,
+
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     marginBottom: screenWidth * 0.03,
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
     paddingBottom: screenWidth * 0.04,
   },
   headerTitle: {
-    fontFamily: 'PoppinsMedium',
+    fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.055, //28
     color: '#000',
     lineHeight: screenHeight * 0.05, //34

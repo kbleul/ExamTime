@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 
 export const style = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    paddingTop: 30,
+    paddingTop: screenHeight * 0.035,
     width: '100%',
     backgroundColor: '#fff',
     flex: screenHeight,
@@ -14,6 +14,7 @@ export const style = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
+    paddingTop: Platform.OS ? screenHeight * 0.035 : screenHeight * 0.01,
   },
 });
 

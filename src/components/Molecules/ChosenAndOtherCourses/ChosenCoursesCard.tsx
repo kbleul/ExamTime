@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {SvgXml} from 'react-native-svg';
 import {calculateStudyProgress} from '../../../screens/App/Study/logic';
@@ -36,7 +36,6 @@ const ChosenCoursesCard: React.FC<{
   subjectId?: string;
   bgImage: any;
   setLoginModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoadingSubjects: boolean;
   timerValue?: number;
   setShowAlert?: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({
@@ -44,7 +43,6 @@ const ChosenCoursesCard: React.FC<{
   subjectId,
   bgImage,
   setLoginModalVisible,
-  isLoadingSubjects,
   timerValue,
   setShowAlert,
 }) => {
@@ -77,17 +75,7 @@ const ChosenCoursesCard: React.FC<{
 
   return (
     <>
-      {isLoadingSVG ||
-        (isLoadingSubjects && (
-          <View
-            style={
-              subjectId !== undefined
-                ? styles.containerLoading
-                : [styles.containerLoading, styles.containerSecondaryLoading]
-            }
-          />
-        ))}
-      {!isLoadingSVG && !isLoadingSubjects && (
+      {!isLoadingSVG && (
         <TouchableOpacity
           style={
             subjectId !== undefined
@@ -117,13 +105,7 @@ const ChosenCoursesCard: React.FC<{
               }
             }
           }}>
-          {bgImage && (
-            <SvgXml
-              style={styles.imageBg}
-              xml={bgImage.uri}
-              onError={onError}
-            />
-          )}
+          <RenderSvg bgImage={bgImage.uri} />
 
           <View style={styles.contentContainer}>
             <Text style={styles.title}>{subject.subject}</Text>
@@ -161,6 +143,22 @@ const ChosenCoursesCard: React.FC<{
   );
 };
 
+const RenderSvg = ({bgImage}: {bgImage: string}) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  return loading ? (
+    <></>
+  ) : (
+    <SvgXml style={styles.imageBg} xml={bgImage} onError={onError} />
+  );
+};
+
 export const styles = StyleSheet.create({
   container: {
     height: screenHeight * (1 / 3.8),
@@ -169,12 +167,14 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     maxHeight: 220,
+    backgroundColor: '#8edcf5',
   },
   containerSecondary: {
     height: screenHeight * (1 / 3.8),
     width: screenWidth * (1 / 3),
     maxHeight: 220,
     overflow: 'hidden',
+    backgroundColor: '#f5f2f2',
   },
   containerLoading: {
     backgroundColor: '#f5f2f2',
@@ -218,7 +218,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: screenWidth * 0.02,
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
     borderRadius: 100,
-    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
+    overflow: Platform.OS === 'ios' ? 'hidden' : 'visible',
     color: 'white',
     fontSize: screenWidth * 0.028,
     fontFamily: 'Montserrat-SemiBold',

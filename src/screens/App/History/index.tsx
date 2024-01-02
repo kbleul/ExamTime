@@ -122,6 +122,13 @@ const History = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
         />
+        <View style={styles.iconContainer}>
+          <AntDesign
+            name="arrowright"
+            color={'#3c3d6e'}
+            size={screenWidth * 0.05}
+          />
+        </View>
       </View>
 
       {savedExams && savedExams.length > 0 ? (
@@ -285,16 +292,21 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   buttonsContainer: {
-    marginBottom: 10,
+    marginVertical: 10,
     paddingVertical: 10,
     height: 65,
+    position: 'relative',
+  },
+  iconContainer: {
+    position: 'absolute',
+    top: -18,
+    right: 0,
   },
 });
 
 const renderSubjectsStyle = StyleSheet.create({
   button: {
     paddingHorizontal: 28,
-    paddingVertical: 7,
     backgroundColor: '#fff',
     borderRadius: 8,
     marginRight: 16,
@@ -306,9 +318,12 @@ const renderSubjectsStyle = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'PoppinsSemiBold',
-    fontSize: 14,
+    fontSize: screenWidth * 0.035,
+    lineHeight: screenWidth * 0.045,
     textAlign: 'center',
     color: '#A2A2A2',
+    overflow: 'hidden',
+    marginTop: screenWidth * 0.035,
   },
   buttonTextActive: {
     color: '#fff',

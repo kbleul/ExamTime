@@ -49,7 +49,7 @@ const SubjectSelectViewBox: React.FC<{
             isLoadingSubjects={isLoading}
           />
         )}
-        <Text style={styles.dot} />
+        <Text style={styles.dot}>1</Text>
       </View>
 
       <View style={styles.subjectsButtonContaier}>
@@ -101,10 +101,13 @@ const styles = StyleSheet.create({
   dot: {
     width: 10,
     height: 10,
-    backgroundColor: 'black',
+    backgroundColor: '#000',
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#000',
     overflow: 'hidden',
     marginTop: 5,
+    color: '#000',
   },
   subjectsButtonContaier: {
     width: '63%',

@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 export const HeaderStyle = StyleSheet.create({
@@ -42,8 +42,10 @@ export const HeaderStyle = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#0066B2',
     backgroundColor: '#0066B2',
-    overflow: 'visible',
+    overflow: Platform.OS === 'ios' ? 'hidden' : 'visible',
     zIndex: 10,
   },
   leftContainer: {

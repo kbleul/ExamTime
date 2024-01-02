@@ -40,8 +40,7 @@ const DeleteAccountAlertBox: React.FC<{
 
   const dispatch = useDispatch();
 
-  const [deleteAccount, {isLoading, isError, error}] =
-    useDeleteAccountMutation();
+  const [deleteAccount, {isLoading, error}] = useDeleteAccountMutation();
 
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
@@ -92,6 +91,7 @@ const DeleteAccountAlertBox: React.FC<{
           setShowLastPrompt={setShowLastPrompt}
           setShowPasswordForm={setShowPasswordForm}
           setUserPassword={setUserPassword}
+          setShowLDeleteDialog={setShowLDeleteDialog}
         />
       )}
 
@@ -163,10 +163,12 @@ const PasswordForm = ({
   setShowLastPrompt,
   setShowPasswordForm,
   setUserPassword,
+  setShowLDeleteDialog,
 }: {
   setShowLastPrompt: React.Dispatch<React.SetStateAction<boolean>>;
   setShowPasswordForm: React.Dispatch<React.SetStateAction<boolean>>;
   setUserPassword: React.Dispatch<React.SetStateAction<string>>;
+  setShowLDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const {
     control,
@@ -185,7 +187,7 @@ const PasswordForm = ({
   const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(true);
-  const [login, {isLoading, isError, error}] = useLoginMutation();
+  const [login, {isLoading, error}] = useLoginMutation();
 
   return (
     <View>
@@ -257,9 +259,16 @@ const PasswordForm = ({
             <ActivityIndicator color={'#FFF'} />
           ) : (
             <Text style={[styles.buttonText, styles.buttonTextSecondary]}>
-              Verify Password
+              Verify
             </Text>
           )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          touchSoundDisabled
+          onPress={() => setShowLDeleteDialog(false)}>
+          <Text style={styles.buttonText}>Cancle</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -356,6 +365,7 @@ const LoginFormstyles = StyleSheet.create({
     overflow: 'hidden',
     marginHorizontal: 20,
     marginTop: 20,
+    paddingVertical: Platform.OS === 'ios' ? 2 : 0,
   },
   smallBox: {
     width: '20%',

@@ -61,12 +61,12 @@ export const saveStudyToRealm = async (
           section,
           selectedQuestion,
           pdf,
-          mobileVideoLink,
+          videoLink,
         } = study;
 
-        const yearString = year.year;
-        const unitString = unit.unit;
-        const sectionString = section.section;
+        const yearString = year && year.year ? year.year : '';
+        const unitString = unit && unit.unit ? unit.unit : '';
+        const sectionString = section && section.section ? section.section : '';
 
         realm.write(async () => {
           const subjectObject = realm.create(
@@ -127,12 +127,12 @@ export const saveStudyToRealm = async (
             examQuestionArr.push(questiontObject);
           });
 
-          mobileVideoLink.forEach(videoItem => {
-            const {id: videoId, mobileVideoLink: videoLink} = videoItem;
+          videoLink.forEach(videoItem => {
+            const {id: videoId, videoLink} = videoItem;
 
             const videoObject = realm.create(LocalObjectDataKeys.VideoLink, {
               id: videoId,
-              mobileVideoLink: videoLink,
+              videoLink,
               isViewed: false,
             });
 
