@@ -16,20 +16,12 @@ import {screenHeight, screenWidth} from '../../../../utils/Data/data';
 const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
   return (
     <SafeAreaView style={style.container}>
-      <ScrollView
-        contentContainerStyle={style.scrollContainer}
-        showsVerticalScrollIndicator={false}>
+      <View style={style.scrollContainer}>
         <View style={style.imgContainer}>
           <Image source={img} style={style.img} resizeMode="contain" />
         </View>
 
         <View style={style.agreementContainer}>
-          <TouchableOpacity
-            touchSoundDisabled
-            onPress={() => setPageCounter(2)}
-            style={style.buttonContainer}>
-            <Text style={style.agreeBtnText}>Agree and continue</Text>
-          </TouchableOpacity>
           <Text style={style.agreementText}>
             By tapping “Agree and continue," you agree to Exam Time’s Terms of
             Service and acknowledge any of its related products and services.
@@ -37,8 +29,14 @@ const PageOne: React.FC<PagesProps> = ({setPageCounter}) => {
             bound by the terms of this agreement. This agreement is legally
             binding between you and Think Hub ET Software Development PLC.
           </Text>
+          <TouchableOpacity
+            touchSoundDisabled
+            onPress={() => setPageCounter(2)}
+            style={style.buttonContainer}>
+            <Text style={style.agreeBtnText}>Agree and continue</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -76,11 +74,10 @@ const style = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    backgroundColor: '#000',
+    backgroundColor: '#00509d',
     paddingVertical: 10,
-    marginBottom: 10,
     overflow: 'hidden',
-    borderRadius: 12,
+    borderRadius: Platform.OS === 'ios' ? 8 : 12,
   },
   agreeBtnText: {
     fontSize: screenWidth * 0.037,
@@ -93,6 +90,7 @@ const style = StyleSheet.create({
     fontFamily: 'PoppinsMedium',
     color: '#66676B',
     paddingHorizontal: 5,
+    marginBottom: 10,
   },
 });
 

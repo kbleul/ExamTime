@@ -9,6 +9,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
 import {useNavContext} from '../../context/bottomNav';
+import {screenHeight} from '../../utils/Data/data';
 //import badgeImg from '../../assets/Images/Profile/1.png';
 
 const ProfileContent = () => {
@@ -97,6 +98,7 @@ const styles = ScaledSheet.create({
     width: '100%',
     backgroundColor: '#F5F5F5',
     overflow: 'hidden',
+    paddingBottom: screenHeight * 0.02,
   },
   nameContainer: {
     width: '100%',

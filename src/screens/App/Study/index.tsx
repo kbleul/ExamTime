@@ -233,7 +233,7 @@ const styles = ScaledSheet.create({
     width: screenWidth,
     backgroundColor: '#F9FCFF',
     paddingTop: screenHeight * 0.045,
-    paddingBottom: screenHeight * 0.048,
+    paddingBottom: screenHeight * 0.06,
     position: 'relative',
   },
   alertContainer: {
