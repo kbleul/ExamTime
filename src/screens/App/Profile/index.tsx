@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     backgroundColor: '#F5F5F5',
-    paddingBottom: screenHeight * 0.012,
   },
   imageBg: {
     height: '35%',
