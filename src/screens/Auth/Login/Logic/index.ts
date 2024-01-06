@@ -110,8 +110,6 @@ export const updateRealmUserData = async (
           .objects(LocalObjectDataKeys.Grade)
           .filtered(`id = "${grade.value.id}"`);
 
-        console.log('newGrade', newGrade);
-
         newUser = realm.create(LocalObjectDataKeys.User, {
           id,
           firstName,
@@ -120,7 +118,7 @@ export const updateRealmUserData = async (
           region: newRegion,
           isVerified: false,
           isActive: true,
-          grade: newGrade,
+          grade: newGrade[0],
           gender,
           email,
           verificationCode: verificationCode ? verificationCode : null,

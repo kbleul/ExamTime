@@ -22,7 +22,6 @@ export const getAllStudies = async (
     let totalPages = 1;
 
     while (pageNumber <= totalPages) {
-      console.log('=========', pageNumber, '---', totalPages);
       try {
         const response = await getStudy({
           token,
