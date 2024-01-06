@@ -90,7 +90,7 @@ const Accordion = ({study}: {study: Study}) => {
 
   return (
     <View>
-      {study.objective && (
+      {study.objective && study.objective !== 'undefined' && (
         <>
           {isHtml(study.objective) ? (
             <RenderHTML

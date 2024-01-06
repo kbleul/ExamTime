@@ -11,30 +11,43 @@ type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[11];
 export const getAllStudies = async (
   getStudy: StudyMutationFn,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
-  token: string | null,
+  token: string,
   realm: Realm,
   Toast: any,
 ) => {
   if (token) {
     checkIsOnline(navigator);
-    try {
-      const response = await getStudy({
-        token,
-      }).unwrap();
-      saveStudyToRealm(realm, response.studies, Toast);
-    } catch (error) {
-      if (
-        error instanceof TypeError &&
-        error.message === 'Network request failed'
-      ) {
-        navigator.navigate('network-error');
-      }
 
-      Toast.show({
-        type: 'error',
-        text1: 'Error fetching studeies',
-      });
-      return false;
+    let pageNumber = 1;
+    let totalPages = 1;
+
+    while (pageNumber <= totalPages) {
+      console.log('=========', pageNumber, '---', totalPages);
+      try {
+        const response = await getStudy({
+          token,
+          pageNumber,
+        }).unwrap();
+
+        ++pageNumber;
+
+        totalPages = response.totalPages;
+
+        saveStudyToRealm(realm, response.studies, Toast);
+      } catch (error) {
+        if (
+          error instanceof TypeError &&
+          error.message === 'Network request failed'
+        ) {
+          navigator.navigate('network-error');
+        }
+        console.log(error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error fetching studeies',
+        });
+        return false;
+      }
     }
   }
 };
@@ -49,10 +62,7 @@ export const saveStudyToRealm = async (
       studies.forEach(study => {
         //check if Study is aleady saved
         const isSaved = realm.objects(Study).filtered(`id = "${study.id}"`);
-        console.log(
-          '-----------------------isSaved------------------------',
-          isSaved,
-        );
+
         if (isSaved.length === 0) {
           const {
             id,
@@ -76,6 +86,12 @@ export const saveStudyToRealm = async (
           const sectionString =
             section && section.section ? section.section : '';
 
+          let savedGrade: Results<
+            RealmObject<DefaultObject, never> & DefaultObject
+          > | null = realm
+            .objects(LocalObjectDataKeys.Grade)
+            .filtered(`id = "${grade.id}"`);
+
           realm.write(async () => {
             const subjectObject = realm.create(
               LocalObjectDataKeys.SingleSubject,
@@ -87,12 +103,14 @@ export const saveStudyToRealm = async (
               },
             );
 
-            const gradeObject = realm.create(LocalObjectDataKeys.Grade, {
-              id: grade.id,
-              grade: grade.grade,
-              createdAt: grade.createdAt,
-              updatedAt: grade.updatedAt,
-            });
+            if (!savedGrade || savedGrade.length === 0) {
+              savedGrade = realm.create(LocalObjectDataKeys.Grade, {
+                id: grade.id,
+                grade: grade.grade,
+                createdAt: grade.createdAt,
+                updatedAt: grade.updatedAt,
+              });
+            }
 
             const examQuestionArr: examQuestionType[] = [];
             const pdfObjArr: pdfType[] = [];
@@ -157,7 +175,7 @@ export const saveStudyToRealm = async (
                     isPublished,
                     createdAt,
                     updatedAt,
-                    grade: gradeObject,
+                    grade: savedGrade[0],
                     subject: subjectObject,
                     year: yearString,
                     unit: unitString,

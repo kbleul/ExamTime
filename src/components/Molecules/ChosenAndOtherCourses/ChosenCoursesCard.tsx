@@ -11,7 +11,7 @@ import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
 
-const getFilteredSavedSubject = (
+const getFilteredSavedStudies = (
   realm: Realm,
   subjectId: string,
   subjectName: string,
@@ -68,10 +68,16 @@ const ChosenCoursesCard: React.FC<{
   }, []);
 
   useEffect(() => {
-    setSavedStudies(
-      getFilteredSavedSubject(realm, subject.id, subject.subject),
-    );
-  }, [subject, realm]);
+    user
+      ? setTimeout(() => {
+          setSavedStudies(
+            getFilteredSavedStudies(realm, subject.id, subject.subject),
+          );
+        }, 4000)
+      : setSavedStudies(
+          getFilteredSavedStudies(realm, subject.id, subject.subject),
+        );
+  }, [subject, realm, user]);
 
   return (
     <>

@@ -9,7 +9,7 @@ import {
   LocalObjectDataKeys,
   LocalStorageDataKeys,
 } from '../../../../utils/Data/data';
-import {UserData} from '../../../../Realm';
+import {User, UserData} from '../../../../Realm';
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
@@ -106,12 +106,11 @@ export const updateRealmUserData = async (
       realm.write(() => {
         const newRegion = realm.create(LocalObjectDataKeys.Region, {...region});
 
-        newGrade = realm.create('Grade', {
-          id: grade.value.id,
-          grade: grade.value.grade,
-          createdAt: grade.value.createdAt,
-          updatedAt: grade.value.updatedAt,
-        });
+        newGrade = realm
+          .objects(LocalObjectDataKeys.Grade)
+          .filtered(`id = "${grade.value.id}"`);
+
+        console.log('newGrade', newGrade);
 
         newUser = realm.create(LocalObjectDataKeys.User, {
           id,

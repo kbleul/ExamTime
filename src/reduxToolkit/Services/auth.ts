@@ -203,11 +203,14 @@ export const api = createApi({
         };
       },
     }),
-    getStudy: build.mutation<{styudies: studyType[]}, {token: string}>({
+    getStudy: build.mutation<
+      {studies: studyType[]},
+      {token: string; pageNumber: number}
+    >({
       query: credentials => {
         return {
-          url: 'study/user/study',
-          method: 'Get',
+          url: `study/user/study?page=${credentials.pageNumber}`,
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${credentials.token}`,
