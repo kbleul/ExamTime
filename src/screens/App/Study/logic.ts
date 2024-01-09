@@ -3,7 +3,7 @@ import RNFS from 'react-native-fs';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
-import {LocalObjectDataKeys} from '../../../utils/Data/data';
+import {LocalObjectDataKeys, NumberConverter} from '../../../utils/Data/data';
 import {Study} from '../../../Realm';
 
 type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[11];
@@ -40,7 +40,7 @@ export const getAllStudies = async (
         ) {
           navigator.navigate('network-error');
         }
-        console.log(error);
+        console.log('\\\\', error);
         Toast.show({
           type: 'error',
           text1: 'Error fetching studeies',
@@ -56,6 +56,7 @@ export const saveStudyToRealm = async (
   studies: studyType[] | [],
   Toast: any,
 ) => {
+  console.log('----============-------------');
   if (studies && studies.length > 0) {
     try {
       studies.forEach(study => {
@@ -63,6 +64,7 @@ export const saveStudyToRealm = async (
         const isSaved = realm.objects(Study).filtered(`id = "${study.id}"`);
 
         if (isSaved.length === 0) {
+          console.log('new studies');
           const {
             id,
             title,
@@ -283,8 +285,27 @@ export const filterStudies = (
     (study: Study) => study.section === selectedSection,
   );
 
-  setViewStudies([...filteredStudies]);
+  const sortedStudies = sortStudies(filteredStudies);
+  setViewStudies([...sortedStudies]);
   setSelectedSection(selectedSection);
+};
+
+const sortStudies = (filteredStudies: ResultsType<Study>) => {
+  return filteredStudies.sort((a, b) => {
+    console.log(a.unit);
+    const nameA = a.unit.split(' ')[1].trim();
+    const nameB = b.unit.split(' ')[1].trim();
+
+    const num1 = NumberConverter.get(nameA);
+    const num2 = NumberConverter.get(nameB);
+    console.log(num1, num2);
+
+    if (num1 && num2) {
+      return num1 - num2;
+    }
+
+    return 0;
+  });
 };
 
 export const calculateStudyProgress = (studyUnits: Study[]) => {

@@ -83,9 +83,10 @@ export const updateRealmUserData = async (
   realm: Realm,
 ) => {
   try {
+    console.log('ppppp', newUserData);
     if (newUserData) {
+      console.log('liftedddddddddddddd');
       const {
-        id,
         firstName,
         lastName,
         phoneNumber,
@@ -100,7 +101,6 @@ export const updateRealmUserData = async (
       const grade = await getObject_from_localStorage(
         LocalStorageDataKeys.userGrade,
       );
-
       let newGrade;
 
       realm.write(() => {
@@ -109,9 +109,10 @@ export const updateRealmUserData = async (
         newGrade = realm
           .objects(LocalObjectDataKeys.Grade)
           .filtered(`id = "${grade.value.id}"`);
+        console.log('graddddddddd', newGrade);
 
         newUser = realm.create(LocalObjectDataKeys.User, {
-          id,
+          id: phoneNumber + firstName,
           firstName,
           lastName,
           phoneNumber,
@@ -126,10 +127,12 @@ export const updateRealmUserData = async (
         });
         newUserData.user = newUser;
         newUserData.token = token;
-        newUserData.grade = newGrade;
+        newUserData.grade = newGrade[0];
       });
+
+      console.log('-----00000000', newUserData.user, newUserData.token);
     }
   } catch (e) {
-    console.log('err', e);
+    console.log('Login err', e);
   }
 };

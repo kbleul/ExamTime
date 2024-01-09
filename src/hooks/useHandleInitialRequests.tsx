@@ -129,7 +129,8 @@ const useHandleInitialRequests = (
       // if (nextAppState === 'background' || nextAppState === 'inactive') {
       const isConnected = await checkIsOnline();
       if (isConnected) {
-        token && getAllStudies(getStudy, navigation, token, realm, Toast);
+        console.log('load');
+        getAllStudies(getStudy, navigation, token, realm, Toast);
 
         if (savedTakenExams.length > 0) {
           // Perform data sync with the database
