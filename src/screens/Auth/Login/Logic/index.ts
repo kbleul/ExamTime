@@ -2,17 +2,23 @@ import {ActionCreatorWithPayload, AnyAction, Dispatch} from '@reduxjs/toolkit';
 import {userType} from '../../../../types';
 import {checkIsOnline} from '../../../../utils/Functions/Helper';
 import {FormData} from '../Types';
-import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
+import {
+  useGetSubjectMutation,
+  useLoginMutation,
+} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
 
 import {
   LocalObjectDataKeys,
   LocalStorageDataKeys,
 } from '../../../../utils/Data/data';
-import {User, UserData} from '../../../../Realm';
-import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
+import {UserData} from '../../../../Realm';
+
+import {setObject_to_localStorage} from '../../../../utils/Functions/Set';
+import {getSubjectsMutation} from '../../../App/Onboarding/Page/logic';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
+type GetSubjectsMutationFn = ReturnType<typeof useGetSubjectMutation>[0];
 
 export const handleLogin = async (
   data: FormData,
@@ -30,8 +36,8 @@ export const handleLogin = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   newUserData: ResultsType<UserData>,
   realm: Realm,
-  IsDefaultPasswordChanged: boolean,
   setChanged: React.Dispatch<React.SetStateAction<boolean>>,
+  getSubject: GetSubjectsMutationFn,
 ) => {
   checkIsOnline(navigator);
 
@@ -40,6 +46,7 @@ export const handleLogin = async (
       phoneNumber: '+251' + data.phoneNumber,
       password: data.password,
     }).unwrap();
+
     dispatch(
       loginSuccess({
         user: response.user,
@@ -49,11 +56,27 @@ export const handleLogin = async (
       }),
     );
 
+    setObject_to_localStorage(
+      LocalStorageDataKeys.userGrade,
+      response.user.grade,
+    );
+
     updateRealmUserData(
       newUserData,
       response.user,
       response.accessToken,
       realm,
+    );
+
+    getSubjectsMutation(
+      getSubject,
+      navigator,
+      realm,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      true,
     );
 
     // Manually reset the controlled inputs
@@ -83,9 +106,7 @@ export const updateRealmUserData = async (
   realm: Realm,
 ) => {
   try {
-    console.log('ppppp', newUserData);
     if (newUserData) {
-      console.log('liftedddddddddddddd');
       const {
         firstName,
         lastName,
@@ -95,12 +116,10 @@ export const updateRealmUserData = async (
         verificationCode,
         region,
         profilePicture,
+        grade,
       } = user;
       let newUser;
 
-      const grade = await getObject_from_localStorage(
-        LocalStorageDataKeys.userGrade,
-      );
       let newGrade;
 
       realm.write(() => {
@@ -108,8 +127,7 @@ export const updateRealmUserData = async (
 
         newGrade = realm
           .objects(LocalObjectDataKeys.Grade)
-          .filtered(`id = "${grade.value.id}"`);
-        console.log('graddddddddd', newGrade);
+          .filtered(`id = "${grade.id}"`);
 
         newUser = realm.create(LocalObjectDataKeys.User, {
           id: phoneNumber + firstName,
@@ -129,8 +147,6 @@ export const updateRealmUserData = async (
         newUserData.token = token;
         newUserData.grade = newGrade[0];
       });
-
-      console.log('-----00000000', newUserData.user, newUserData.token);
     }
   } catch (e) {
     console.log('Login err', e);

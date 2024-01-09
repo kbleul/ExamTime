@@ -62,15 +62,17 @@ const saveGradesToRealm = (grades: gradeType[], realm: Realm) => {
 export const getSubjectsMutation = async (
   getSubject: GetSubjectsMutationFn,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
-  setSubjectsArray: React.Dispatch<React.SetStateAction<subjectType[] | null>>,
   realm: Realm,
+  setSubjectsArray?: React.Dispatch<React.SetStateAction<subjectType[] | null>>,
   setSelectedSubject?: React.Dispatch<React.SetStateAction<
     subjectType | Subject | null
   > | null> | null,
   setIsLoadingSubjectsRealm?: React.Dispatch<React.SetStateAction<boolean>>,
   setRelamSaveStatus?: React.Dispatch<React.SetStateAction<number>>,
+  isLogin?: boolean,
 ) => {
   checkIsOnline(navigator);
+
   try {
     const getSavedGrade = await getObject_from_localStorage(
       LocalStorageDataKeys.userGrade,
@@ -81,7 +83,7 @@ export const getSubjectsMutation = async (
 
     const subjects = response.subjects;
 
-    setSubjectsArray(subjects);
+    setSubjectsArray && setSubjectsArray(subjects);
     setSelectedSubject && setSelectedSubject(subjects[0]);
 
     const downloadedSubjects = setRelamSaveStatus
@@ -93,8 +95,14 @@ export const getSubjectsMutation = async (
           realm,
           downloadedSubjects,
           setIsLoadingSubjectsRealm,
+          isLogin ? isLogin : false,
         )
-      : createRealmSubjectsData(realm, downloadedSubjects);
+      : createRealmSubjectsData(
+          realm,
+          downloadedSubjects,
+          undefined,
+          isLogin ? isLogin : false,
+        );
   } catch (e) {
     console.log(e);
   }

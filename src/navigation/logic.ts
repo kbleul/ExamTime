@@ -23,7 +23,6 @@ export const checkUserStatus = (
                       if > 3 then AuthRoutes
                       else AppRoutes - trial mode
     */
-  console.log(savedUserData[0]);
   if (savedUserData && savedUserData[0]) {
     setShowOnboarding(false);
     if (!savedUserData[0].user && !savedUserData[0].isSubscribed) {

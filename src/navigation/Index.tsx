@@ -20,7 +20,6 @@ const Routes = ({Stack}: any) => {
   const [isAuthRoute, setIsAuthRoute] = useState<boolean | null>(null);
   const {setShowOnboarding} = useOnboardingContext();
 
-  console.log('savedUserData', savedUserData.length);
   useEffect(() => {
     checkUserStatus(savedUserData, setIsAuthRoute, setShowOnboarding, dispatch);
   }, []);

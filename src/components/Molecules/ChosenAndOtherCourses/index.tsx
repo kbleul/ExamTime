@@ -13,16 +13,27 @@ import {useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
 import CustomToast from '../CustomToast';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
 
+const getSubjects = (realm: Realm) => {
+  try {
+    const savedSubjects = realm.objects(Subject);
+    return savedSubjects;
+  } catch (err) {
+    console.log('fetch subjects error', err);
+  }
+};
 const ChosenCourses = ({
   setLoginModalVisible,
 }: {
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
 
-  const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
   const savedGrades = useQuery(Grade, savedgrade => {
     return savedgrade.filtered(`id != "${savedUserData[0].grade.id}"`);
@@ -38,10 +49,21 @@ const ChosenCourses = ({
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
+    const savedSubjects = getSubjects(realm);
     savedSubjects && savedSubjects.length > 0
       ? setSubjectsArray([...savedSubjects])
-      : getSubjectsMutation(getSubject, navigator, setSubjectsArray, realm);
+      : getSubjectsMutation(getSubject, navigator, realm, setSubjectsArray);
   }, []);
+
+  useEffect(() => {
+    const savedSubjects = getSubjects(realm);
+
+    if (user && savedSubjects) {
+      savedSubjects.length > 0
+        ? setSubjectsArray([...savedSubjects])
+        : setSubjectsArray(null);
+    }
+  }, [user]);
 
   const renderItem = ({item, index}: {item: subjectType; index: number}) => {
     return (
@@ -89,7 +111,7 @@ const ChosenCourses = ({
             savedUserData && savedUserData.length > 0
               ? savedUserData[0].selectedSubjects
               : null,
-            subjectsArray,
+            getSubjects(realm),
           )}
           renderItem={index => renderItem(index)}
           horizontal

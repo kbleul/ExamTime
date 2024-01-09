@@ -48,8 +48,8 @@ const Practice = () => {
       : getSubjectsMutation(
           getSubject,
           navigator,
-          setSubjectsArray,
           realm,
+          setSubjectsArray,
           setSelectedSubject,
         );
   }, []);

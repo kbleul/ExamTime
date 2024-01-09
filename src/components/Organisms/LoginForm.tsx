@@ -17,7 +17,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {useLoginMutation} from '../../reduxToolkit/Services/auth';
+import {
+  useGetSubjectMutation,
+  useLoginMutation,
+} from '../../reduxToolkit/Services/auth';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
 import {handleLogin} from '../../screens/Auth/Login/Logic';
 import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
@@ -86,6 +89,8 @@ const LoginForm = () => {
   const realm = useRealm();
   const savedUserData = useQuery(UserData);
   const newUserData = useObject(UserData, savedUserData[0]?._id);
+
+  const [getSubject] = useGetSubjectMutation();
 
   useEffect(() => {
     // Reset the form fields when the component mounts
@@ -182,8 +187,8 @@ const LoginForm = () => {
                 navigator,
                 newUserData,
                 realm,
-                IsDefaultPasswordChanged,
                 setChanged,
+                getSubject,
               ),
             )}>
             Login

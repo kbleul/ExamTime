@@ -129,7 +129,6 @@ const useHandleInitialRequests = (
       // if (nextAppState === 'background' || nextAppState === 'inactive') {
       const isConnected = await checkIsOnline();
       if (isConnected) {
-        console.log('load');
         getAllStudies(getStudy, navigation, token, realm, Toast);
 
         if (savedTakenExams.length > 0) {
