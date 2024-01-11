@@ -62,6 +62,9 @@ export const formStyles = StyleSheet.create({
   inputContainerFlexed: {
     width: '48%',
   },
+  inputContainerGrade: {
+    width: '100%',
+  },
   dropdown: {
     height: 42,
     borderColor: '#8dbaf0',

@@ -24,6 +24,23 @@ const getSubjects = (realm: Realm) => {
     console.log('fetch subjects error', err);
   }
 };
+
+const filterKeys = (realm: Realm): string[] => {
+  const savedUserData = realm.objects(UserData);
+  const filteredArr = PushFavorateToFront(
+    savedUserData && savedUserData.length > 0
+      ? savedUserData[0].selectedSubjects
+      : null,
+    getSubjects(realm),
+  );
+
+  const studyIds: string[] = [];
+
+  filteredArr.forEach(study => studyIds.push(study.id));
+
+  return studyIds;
+};
+
 const ChosenCourses = ({
   setLoginModalVisible,
 }: {
@@ -65,14 +82,13 @@ const ChosenCourses = ({
     }
   }, [user]);
 
-  const renderItem = ({item, index}: {item: subjectType; index: number}) => {
+  const renderItem = ({item, index}: {item: string; index: number}) => {
+    const subject = realm.objects(Subject).filtered(`id = "${item}"`);
     return (
       <View>
-        {item && item.icon && (
+        {subject && subject.length > 0 && subject[0].icon && (
           <ChosenCoursesCard
-            subject={item.subject}
-            subjectId={item.id}
-            bgImage={{uri: item.icon}}
+            subjectId={subject[0].id}
             setLoginModalVisible={setLoginModalVisible}
             timerValue={(index + 1) * 200}
             setShowAlert={setShowAlert}
@@ -106,13 +122,8 @@ const ChosenCourses = ({
 
       {subjectsArray && subjectsArray.length > 0 && (
         <FlatList
-          keyExtractor={(item, index) => item.id + 'my-course' + index}
-          data={PushFavorateToFront(
-            savedUserData && savedUserData.length > 0
-              ? savedUserData[0].selectedSubjects
-              : null,
-            getSubjects(realm),
-          )}
+          keyExtractor={(item, index) => item + 'my-course' + index}
+          data={filterKeys(realm)}
           renderItem={index => renderItem(index)}
           horizontal
           showsHorizontalScrollIndicator={false}

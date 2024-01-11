@@ -48,7 +48,7 @@ const StudyDetails = ({route}) => {
   const [viewStudies, setViewStudies] = useState([...savedStudies]);
   const [showAccordianId, setShowAccordianId] = useState<string | null>(null);
   const [selectedSection, setSelectedSection] = useState(
-    savedStudies[0].section,
+    savedStudies && savedStudies.length > 0 ? savedStudies[0].section : null,
   );
 
   useEffect(() => {
@@ -148,11 +148,7 @@ const SectionMenu = memo(function SectionMenu({
 
   return (
     <View style={menuStyle.container}>
-      <ScrollView
-        style={menuStyle.srollContainer}
-        contentContainerStyle={menuStyle.contentContainer}
-        horizontal
-        showsHorizontalScrollIndicator={false}>
+      <View style={menuStyle.contentContainer}>
         {sectionItems.map((section, index) => (
           <TouchableOpacity
             touchSoundDisabled
@@ -173,7 +169,7 @@ const SectionMenu = memo(function SectionMenu({
             <Text style={menuStyle.buttonText}>{section}</Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </View>
     </View>
   );
 });

@@ -52,6 +52,7 @@ export const handleCreateUser = async (
   createUser: CreateUserMutationFn,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   gender: string | null,
+  grade: string,
   setGenderError: React.Dispatch<React.SetStateAction<string | null>>,
   region: string | null,
   setRegionError: React.Dispatch<React.SetStateAction<string | null>>,
@@ -63,18 +64,15 @@ export const handleCreateUser = async (
   ) {
     checkIsOnline(navigator);
 
-    const userGrade = await getObject_from_localStorage(
-      LocalStorageDataKeys.userGrade,
-    );
-
     try {
       const response = await createUser({
         ...data,
         phoneNumber: '+251' + data.phoneNumber,
         region: region,
         gender: gender?.toUpperCase(),
-        grade: userGrade?.value,
+        grade,
       }).unwrap();
+
       setUnregisteredUser(response.user);
       //  AsyncStorage.removeItem(LocalStorageDataKeys.userGrade);
 

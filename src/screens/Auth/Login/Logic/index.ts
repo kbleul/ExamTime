@@ -12,10 +12,23 @@ import {
   LocalObjectDataKeys,
   LocalStorageDataKeys,
 } from '../../../../utils/Data/data';
-import {UserData} from '../../../../Realm';
+import {
+  Exam,
+  ExamAnswers,
+  ExamQuestion,
+  Pdf,
+  SingleSubject,
+  Study,
+  StudyTips,
+  Subject,
+  UserData,
+  UserExamAnswers,
+  VideoLink,
+} from '../../../../Realm';
 
 import {setObject_to_localStorage} from '../../../../utils/Functions/Set';
 import {getSubjectsMutation} from '../../../App/Onboarding/Page/logic';
+import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type GetSubjectsMutationFn = ReturnType<typeof useGetSubjectMutation>[0];
@@ -56,10 +69,16 @@ export const handleLogin = async (
       }),
     );
 
-    setObject_to_localStorage(
+    let prevGrade = await getObject_from_localStorage(
+      LocalStorageDataKeys.userGrade,
+    );
+
+    await setObject_to_localStorage(
       LocalStorageDataKeys.userGrade,
       response.user.grade,
     );
+
+    await removeRealmData(prevGrade, realm);
 
     updateRealmUserData(
       newUserData,
@@ -96,6 +115,57 @@ export const handleLogin = async (
     }
     console.log(error);
     return false;
+  }
+};
+
+const removeRealmData = async (
+  prevGrade:
+    | {
+        value: any;
+        status: boolean;
+      }
+    | {
+        status: boolean;
+        value?: undefined;
+      },
+  realm: Realm,
+): Promise<void> => {
+  const newgrade = await getObject_from_localStorage(
+    LocalStorageDataKeys.userGrade,
+  );
+
+  if (newgrade.value.id !== prevGrade.value.id) {
+    try {
+      const SingleSubjects = realm.objects(SingleSubject);
+      const subjects = realm.objects(Subject);
+
+      const PDFs = realm.objects(Pdf);
+      const VideoLinks = realm.objects(VideoLink);
+      const AllStudyTips = realm.objects(StudyTips);
+      const studiessaved = realm.objects(Study);
+
+      const ExamQuestions = realm.objects(ExamQuestion);
+      const AllUserExamAnswers = realm.objects(UserExamAnswers);
+      const AllExamAnswers = realm.objects(ExamAnswers);
+      const Exams = realm.objects(Exam);
+
+      realm.write(() => {
+        realm.delete(subjects);
+        realm.delete(SingleSubjects);
+
+        realm.delete(PDFs);
+        realm.delete(VideoLinks);
+        realm.delete(AllStudyTips);
+        realm.delete(studiessaved);
+
+        realm.delete(ExamQuestions);
+        realm.delete(AllUserExamAnswers);
+        realm.delete(AllExamAnswers);
+        realm.delete(Exams);
+      });
+    } catch (err) {
+      console.log('Delete saved study and subjects failed', err);
+    }
   }
 };
 

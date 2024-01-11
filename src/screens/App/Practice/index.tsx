@@ -17,11 +17,14 @@ import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../Onboarding/Page/logic';
 import Loading from '../../../components/Atoms/Loading';
 import {useNavContext} from '../../../context/bottomNav';
+import {RootState} from '../../../reduxToolkit/Store';
+import {useSelector} from 'react-redux';
 
 export let availableHeight = screenHeight - screenHeight * 0.088;
 
 const Practice = () => {
   const navigator = useNavigation();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const {setShowNavigation} = useNavContext();
 
@@ -32,7 +35,7 @@ const Practice = () => {
 
   const [selectedSubject, setSelectedSubject] = useState<
     Subject | subjectType | null
-  >(savedSubjects[0]);
+  >(savedSubjects && savedSubjects.length > 0 ? savedSubjects[0] : null);
   const [selectedExamType, setSelectedExamType] = useState(
     ExamCatagories[0].name,
   );
@@ -52,7 +55,7 @@ const Practice = () => {
           setSubjectsArray,
           setSelectedSubject,
         );
-  }, []);
+  }, [user]);
 
   useFocusEffect(
     useCallback(() => {
@@ -74,18 +77,19 @@ const Practice = () => {
             </View>
 
             <SubjectSelectViewBox
-              SelectedSubject={selectedSubject}
+              SelectedSubjectId={selectedSubject?.id}
               setSelectedSubject={setSelectedSubject}
             />
 
-            <Tips selectedSubject={selectedSubject} />
+            <Tips selectedSubjectId={selectedSubject?.id} />
 
-            <RandomQuestions selectedSubject={selectedSubject} />
+            <RandomQuestions selectedSubjectId={selectedSubject?.id} />
 
             <FullExams
               selectedExamType={selectedExamType}
               setSelectedExamType={setSelectedExamType}
-              selectedSubject={selectedSubject}
+              selectedSubjectId={selectedSubject?.id}
+              // selectedSubject={selectedSubject}
             />
           </ScrollView>
         )}

@@ -41,7 +41,7 @@ const Notification = () => {
             subTitle="Check back after a while."
           />
         ))}
-      {!notification && (
+      {!notification && notifications && (
         <ScrollView
           contentContainerStyle={IndexStyle.ScrollView}
           showsVerticalScrollIndicator={false}>
@@ -77,12 +77,19 @@ const NotificationMsg = ({
   const {updateNotificationStatus} = useNotification();
 
   const handlePress = () => {
-    setNotification(message ? {...message, wasRead: true} : ' ');
+    setNotification(
+      message && message.notification
+        ? {...message.notification, wasRead: true}
+        : ' ',
+    );
 
     if (message.wasRead === false) {
       updateNotificationStatus(message.id);
     }
   };
+
+
+  const notificationObject = message.notification;
   return (
     <TouchableOpacity
       touchSoundDisabled
@@ -94,15 +101,17 @@ const NotificationMsg = ({
             ? [messageStyle.msgText, messageStyle.msgTextViewed]
             : messageStyle.msgText
         }>
-        {message.notification ? message.notification : ' '}
+        {notificationObject.notification
+          ? notificationObject.notification
+          : ' '}
       </Text>
       <Text
         style={
-          message.wasRead
+          notificationObject.wasRead
             ? [messageStyle.dateText, messageStyle.msgTextViewed]
             : messageStyle.dateText
         }>
-        {convertTimestampToRelativeTime(message.createdAt)}
+        {convertTimestampToRelativeTime(notificationObject.createdAt)}
       </Text>
     </TouchableOpacity>
   );

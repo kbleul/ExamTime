@@ -17,7 +17,6 @@ export const getAllStudies = async (
 ) => {
   if (token) {
     checkIsOnline(navigator);
-
     let pageNumber = 1;
     let totalPages = 1;
 

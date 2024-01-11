@@ -10,6 +10,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
+import {getRealmSubject} from '../../../utils/Functions/Get';
 
 const getFilteredSavedStudies = (
   realm: Realm,
@@ -32,27 +33,20 @@ export const onError = (e: Error) => {
 };
 
 const ChosenCoursesCard: React.FC<{
-  subject: any;
-  subjectId?: string;
-  bgImage: any;
+  subjectId: string | null | undefined;
   setLoginModalVisible?: React.Dispatch<React.SetStateAction<boolean>>;
   timerValue?: number;
   setShowAlert?: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({
-  subject,
-  subjectId,
-  bgImage,
-  setLoginModalVisible,
-  timerValue,
-  setShowAlert,
-}) => {
+}> = ({subjectId, setLoginModalVisible, timerValue, setShowAlert}) => {
   const navigator: any = useNavigation();
   const {setShowNavigation} = useNavContext();
-
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
   const {useRealm} = AuthContext;
   const realm = useRealm();
+  console.log('SelectedSubjectId------------', subjectId);
+
+  const subject = getRealmSubject(subjectId, realm);
 
   const [savedStudies, setSavedStudies] = useState([]);
 
@@ -66,18 +60,31 @@ const ChosenCoursesCard: React.FC<{
       }, timerValue);
     }
   }, []);
-
   useEffect(() => {
-    user
-      ? setTimeout(() => {
-          setSavedStudies(
-            getFilteredSavedStudies(realm, subject.id, subject.subject),
+    if (subject && subject.length > 0) {
+      user
+        ? setTimeout(() => {
+            setSavedStudies(
+              subject[0]?.subject &&
+                subject[0]?.subject?.subject &&
+                getFilteredSavedStudies(
+                  realm,
+                  subject[0]?.id,
+                  subject[0]?.subject?.subject,
+                ),
+            );
+          }, 4000)
+        : setSavedStudies(
+            subject[0]?.subject &&
+              subject[0]?.subject?.subject &&
+              getFilteredSavedStudies(
+                realm,
+                subject[0]?.id,
+                subject[0]?.subject?.subject,
+              ),
           );
-        }, 4000)
-      : setSavedStudies(
-          getFilteredSavedStudies(realm, subject.id, subject.subject),
-        );
-  }, [subject, realm, user]);
+    }
+  }, [realm, user, subjectId]);
 
   return (
     <>
@@ -95,10 +102,10 @@ const ChosenCoursesCard: React.FC<{
                 return;
               }
 
-              if (savedStudies.length > 0) {
+              if (savedStudies.length > 0 && subject && subject.length > 0) {
                 navigator.navigate('Study', {
                   screen: 'StudyDetails',
-                  params: {subject: subject},
+                  params: {subject: subject[0]?.subject},
                 });
                 setShowNavigation(false);
                 return;
@@ -111,10 +118,10 @@ const ChosenCoursesCard: React.FC<{
               }
             }
           }}>
-          <RenderSvg bgImage={bgImage.uri} />
+          <RenderSvg bgImage={subject[0].icon ? subject[0].icon : ''} />
 
           <View style={styles.contentContainer}>
-            <Text style={styles.title}>{subject.subject}</Text>
+            <Text style={styles.title}>{subject[0]?.subject?.subject}</Text>
             <Text
               style={
                 subjectId !== undefined

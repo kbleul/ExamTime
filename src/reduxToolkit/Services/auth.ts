@@ -30,8 +30,6 @@ export const api = createApi({
     }),
     createUser: build.mutation<{user: userType}, SignupDataType>({
       query: credentials => {
-        credentials.grade = credentials.grade?.grade;
-
         return {
           url: 'user/create',
           method: 'POST',

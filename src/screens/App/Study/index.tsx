@@ -20,7 +20,6 @@ import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
 import {calculateStudyProgress} from './logic';
 import Toast from 'react-native-toast-message';
-import {subjectType} from '../../../types';
 import Header from '../../../components/Molecules/ChosenAndOtherCourses/Header';
 import {SvgCss} from 'react-native-svg';
 import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/ChosenCoursesCard';
@@ -28,16 +27,39 @@ import LoginModal from '../../../components/Organisms/LoginModal';
 import {useNavContext} from '../../../context/bottomNav';
 import CustomToast from '../../../components/Molecules/CustomToast';
 
+const getSubjects = (realm: Realm) => {
+  try {
+    const savedSubjects = realm.objects(Subject);
+    return savedSubjects;
+  } catch (err) {
+    console.log('fetch subjects error', err);
+  }
+};
+
+const filterKeys = (realm: Realm): string[] => {
+  const savedUserData = realm.objects(UserData);
+  const filteredArr = PushFavorateToFront(
+    savedUserData && savedUserData.length > 0
+      ? savedUserData[0].selectedSubjects
+      : null,
+    getSubjects(realm),
+  );
+
+  const studyIds: string[] = [];
+
+  filteredArr.forEach(study => studyIds.push(study.id));
+
+  return studyIds;
+};
+
 const Index = () => {
   const navigation: any = useNavigation();
   const {setShowNavigation} = useNavContext();
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const {useQuery} = AuthContext;
-
-  const savedSubjects = useQuery(Subject);
-  const savedUserData = useQuery(UserData);
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
@@ -96,10 +118,7 @@ const Index = () => {
         <Header title="Course in progres" />
 
         <FlatList
-          data={PushFavorateToFront(
-            savedUserData[0].selectedSubjects || [],
-            savedSubjects,
-          )}
+          data={filterKeys(realm)}
           renderItem={({item, index}) => (
             <CourseItem
               item={item}
@@ -152,12 +171,18 @@ const CourseItem = ({
   timerValue,
   setShowAlert,
 }: {
-  item: subjectType;
+  item: string;
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   timerValue: number;
   setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const navigator: any = useNavigation();
+
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
+
+  const subject = realm.objects(Subject).filtered(`id = "${item}"`);
+
   const {setShowNavigation} = useNavContext();
 
   const token = useSelector((state: RootState) => state.auth.token);
@@ -167,59 +192,70 @@ const CourseItem = ({
 
   const savedStudies = useQuery(Study, studies => {
     return studies.filtered(
-      `subject.id = "${item.id}" OR subject.subject = "${item.subject.subject}"`,
+      `subject.id = "${subject[0].id}" OR subject.subject = "${subject[0].subject.subject}"`,
     );
   });
 
   const progress = calculateStudyProgress(savedStudies);
 
   return (
-    <TouchableOpacity
-      style={styles.lcontainer}
-      onPress={() => {
-        if (!user || !token) {
-          setLoginModalVisible(true);
-          return;
-        }
+    <>
+      {savedStudies &&
+        savedStudies.length > 0 &&
+        subject &&
+        subject.length > 0 && (
+          <TouchableOpacity
+            style={styles.lcontainer}
+            onPress={() => {
+              if (!user || !token) {
+                setLoginModalVisible(true);
+                return;
+              }
 
-        if (savedStudies.length > 0) {
-          navigator.navigate('StudyDetails', {
-            subject: item.subject,
-          });
+              if (savedStudies.length > 0) {
+                navigator.navigate('StudyDetails', {
+                  subject: subject[0].subject,
+                });
 
-          setShowNavigation(false);
-          return;
-        }
+                setShowNavigation(false);
+                return;
+              }
 
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 3500);
-      }}>
-      <View style={styles.imgContainer}>
-        {item.icon && <RenderIcon timerValue={timerValue} icon={item.icon} />}
-      </View>
-
-      <View style={styles.infoContainer}>
-        <Text style={styles.subject}>{item.subject.subject}</Text>
-        <Text style={styles.units}>{savedStudies.length} lessons . . .</Text>
-      </View>
-
-      <View style={styles.circleContainer}>
-        <AnimatedCircularProgress
-          size={60}
-          width={4}
-          backgroundWidth={2}
-          fill={progress}
-          tintColor="#F0E2A1"
-          backgroundColor="#000"
-          rotation={0}>
-          {fill => (
-            <View style={styles.progressTextContainer}>
-              <Text style={styles.progressText}>{Math.round(fill)}%</Text>
+              setShowAlert(true);
+              setTimeout(() => setShowAlert(false), 3500);
+            }}>
+            <View style={styles.imgContainer}>
+              {subject[0].icon && (
+                <RenderIcon timerValue={timerValue} icon={subject[0].icon} />
+              )}
             </View>
-          )}
-        </AnimatedCircularProgress>
-      </View>
-    </TouchableOpacity>
+
+            <View style={styles.infoContainer}>
+              <Text style={styles.subject}>{subject[0].subject.subject}</Text>
+              <Text style={styles.units}>
+                {savedStudies.length} lessons . . .
+              </Text>
+            </View>
+
+            <View style={styles.circleContainer}>
+              <AnimatedCircularProgress
+                size={60}
+                width={4}
+                backgroundWidth={2}
+                fill={progress}
+                tintColor="#F0E2A1"
+                backgroundColor="#000"
+                rotation={0}>
+                {fill => (
+                  <View style={styles.progressTextContainer}>
+                    <Text style={styles.progressText}>{Math.round(fill)}%</Text>
+                  </View>
+                )}
+              </AnimatedCircularProgress>
+            </View>
+          </TouchableOpacity>
+        )}
+    </>
   );
 };
 

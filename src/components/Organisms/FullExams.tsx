@@ -34,8 +34,8 @@ export const ExamCatagories = [
 const FullExams: React.FC<{
   selectedExamType: string;
   setSelectedExamType: React.Dispatch<React.SetStateAction<string>>;
-  selectedSubject: Subject | subjectType | null;
-}> = ({selectedExamType, setSelectedExamType, selectedSubject}) => {
+  selectedSubjectId: string | null | undefined;
+}> = ({selectedExamType, setSelectedExamType, selectedSubjectId}) => {
   const navigator = useNavigation();
   const {useRealm, useQuery} = AuthContext;
   const realm = useRealm();
@@ -50,6 +50,10 @@ const FullExams: React.FC<{
     );
   });
 
+  const selectedSubject = useQuery(Subject, SubjectItem => {
+    return SubjectItem.filtered(`id = "${selectedSubjectId}"`);
+  });
+
   const [getExams, {isLoading, error}] = useGetExamsMutation();
 
   const [exams, setExams] = useState<examType[] | []>([]);
@@ -60,14 +64,19 @@ const FullExams: React.FC<{
     useState(false);
 
   useEffect(() => {
-    if (selectedSubject) {
+    if (
+      selectedSubject &&
+      selectedSubject.length > 0 &&
+      userData &&
+      userData.length > 0
+    ) {
       if (!savedExams || savedExams.length === 0) {
         getPreviousExams(
           navigator,
           getExams,
           setExams,
-          selectedSubject.subject?.subject || '',
-          userData[0].grade.grade,
+          selectedSubject[0]?.subject?.subject || '',
+          userData[0]?.grade.grade,
           realm,
           ExamCatagories.find(item => item.name === selectedExamType)?.type ||
             '',
@@ -77,7 +86,8 @@ const FullExams: React.FC<{
           examItem =>
             examItem.examType ===
               ExamCatagories.find(item => item.name === selectedExamType)
-                ?.type && examItem.subject?.id === selectedSubject.subject?.id,
+                ?.type &&
+            examItem.subject?.id === selectedSubject[0].subject?.id,
         );
         setExams([...filteredEXams]);
         filteredEXams.length === 0 &&
@@ -114,7 +124,12 @@ const FullExams: React.FC<{
         isLoading={isLoading}
         error={error}
         exams={exams}
-        subject={(selectedSubject && selectedSubject.subject?.subject) || ''}
+        subject={
+          (selectedSubject &&
+            selectedSubject.length > 0 &&
+            selectedSubject[0].subject?.subject) ||
+          ''
+        }
         selectedExamType={selectedExamType}
         setPracticeModeModalVisible={setPracticeModeModalVisible}
         setSelectedExam={setSelectedExam}
