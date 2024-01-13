@@ -7,7 +7,7 @@ import FullExams, {
   ExamCatagories,
 } from '../../../components/Organisms/FullExams';
 import RandomQuestions from '../../../components/Organisms/RandomQuestions';
-import {screenHeight, screenWidth} from '../../../utils/Data/data';
+import {STATUSTYPES, screenHeight, screenWidth} from '../../../utils/Data/data';
 import {AuthContext} from '../../../Realm/model';
 import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
@@ -19,6 +19,8 @@ import Loading from '../../../components/Atoms/Loading';
 import {useNavContext} from '../../../context/bottomNav';
 import {RootState} from '../../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
+import LoginBox from '../../../components/Atoms/LoginBox';
+import {useUserStatus} from '../../../context/userStatus';
 
 export let availableHeight = screenHeight - screenHeight * 0.088;
 
@@ -27,6 +29,7 @@ const Practice = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const {setShowNavigation} = useNavContext();
+  const {userStatus} = useUserStatus();
 
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
@@ -76,21 +79,41 @@ const Practice = () => {
               <Text style={styles.headerSubTitle}>Choose your Subject</Text>
             </View>
 
-            <SubjectSelectViewBox
-              SelectedSubjectId={selectedSubject?.id}
-              setSelectedSubject={setSelectedSubject}
-            />
+            <View style={styles.container}>
+              {userStatus === STATUSTYPES.NotAuthorized && (
+                <LoginBox
+                  title="Your trial period has ended!"
+                  subTitle="Please login or sign up to keep using ExamTime"
+                />
+              )}
 
-            <Tips selectedSubjectId={selectedSubject?.id} />
+              {userStatus === STATUSTYPES.Unsubscribed && (
+                <LoginBox
+                  title="Your free trial period has ended!"
+                  subTitle="Please subscribe to keep using ExamTime"
+                  isSubscribe
+                />
+              )}
 
-            <RandomQuestions selectedSubjectId={selectedSubject?.id} />
+              {userStatus !== STATUSTYPES.NotAuthorized &&
+                userStatus !== STATUSTYPES.Unsubscribed && (
+                  <>
+                    <SubjectSelectViewBox
+                      SelectedSubjectId={selectedSubject?.id}
+                      setSelectedSubject={setSelectedSubject}
+                    />
 
-            <FullExams
-              selectedExamType={selectedExamType}
-              setSelectedExamType={setSelectedExamType}
-              selectedSubjectId={selectedSubject?.id}
-              // selectedSubject={selectedSubject}
-            />
+                    <Tips selectedSubjectId={selectedSubject?.id} />
+                    <RandomQuestions selectedSubjectId={selectedSubject?.id} />
+
+                    <FullExams
+                      selectedExamType={selectedExamType}
+                      setSelectedExamType={setSelectedExamType}
+                      selectedSubjectId={selectedSubject?.id}
+                    />
+                  </>
+                )}
+            </View>
           </ScrollView>
         )}
 

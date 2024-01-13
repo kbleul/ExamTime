@@ -29,6 +29,7 @@ import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
 import {RootState} from '../../reduxToolkit/Store';
 import {screenWidth} from '../../utils/Data/data';
+import {useUserStatus} from '../../context/userStatus';
 
 const schema = yup.object().shape({
   phoneNumber: yup
@@ -73,6 +74,8 @@ const LoginForm = () => {
   const IsDefaultPasswordChanged = useSelector(
     (state: RootState) => state.auth.IsDefaultPasswordChanged,
   );
+
+  const {setUserStatus} = useUserStatus();
 
   const [showPassword, setShowPassword] = useState(true);
   const [rememberMe, setRememberMe] = useState(false);
@@ -189,6 +192,7 @@ const LoginForm = () => {
                 realm,
                 setChanged,
                 getSubject,
+                setUserStatus,
               ),
             )}>
             Login

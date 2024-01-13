@@ -11,6 +11,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {
   LocalObjectDataKeys,
   LocalStorageDataKeys,
+  STATUSTYPES,
 } from '../../../../utils/Data/data';
 import {
   Exam,
@@ -51,6 +52,7 @@ export const handleLogin = async (
   realm: Realm,
   setChanged: React.Dispatch<React.SetStateAction<boolean>>,
   getSubject: GetSubjectsMutationFn,
+  setUserStatus: any,
 ) => {
   checkIsOnline(navigator);
 
@@ -68,6 +70,8 @@ export const handleLogin = async (
         IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
       }),
     );
+
+    setUserStatus(STATUSTYPES.Authorized);
 
     let prevGrade = await getObject_from_localStorage(
       LocalStorageDataKeys.userGrade,
@@ -87,7 +91,7 @@ export const handleLogin = async (
       realm,
     );
 
-    getSubjectsMutation(
+    await getSubjectsMutation(
       getSubject,
       navigator,
       realm,
@@ -98,14 +102,16 @@ export const handleLogin = async (
       true,
     );
 
-    // Manually reset the controlled inputs
-    setChanged && setChanged(prev => !prev);
+    setTimeout(() => {
+      // Manually reset the controlled inputs
+      setChanged && setChanged(prev => !prev);
 
-    response.IsDefaultPasswordChanged
-      ? navigator.getState().routeNames[0] === 'Home'
-        ? navigator.navigate('Home')
-        : navigator.navigate('HomeSection')
-      : navigator.navigate('Password-Reset');
+      response.IsDefaultPasswordChanged
+        ? navigator.getState().routeNames[0] === 'Home'
+          ? navigator.navigate('Home')
+          : navigator.navigate('HomeSection')
+        : navigator.navigate('Password-Reset');
+    }, 3000);
   } catch (error) {
     if (
       error instanceof TypeError &&

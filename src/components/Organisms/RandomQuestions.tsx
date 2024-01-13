@@ -20,6 +20,7 @@ import {
   SliderThumb,
 } from '@gluestack-ui/themed';
 import {AuthContext} from '../../Realm/model';
+import {getRealmSubject} from '../../utils/Functions/Get';
 
 const RandomQuestions = ({
   selectedSubjectId,
@@ -31,10 +32,10 @@ const RandomQuestions = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const {useQuery} = AuthContext;
-  const selectedSubject = useQuery(Subject, SubjectItem => {
-    return SubjectItem.filtered(`id = "${selectedSubjectId}"`);
-  });
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
+
+  const selectedSubject = getRealmSubject(selectedSubjectId, realm);
 
   return (
     <View style={styles.container}>
@@ -69,17 +70,18 @@ const RandomQuestions = ({
           <TouchableOpacity
             touchSoundDisabled
             style={styles.startButton}
+            disabled={isLoading}
             onPress={async () => {
+              console.log('-------------', selectedSubject[0].id);
+
               setIsLoading(true);
 
               let isonline = await checkIsOnline(navigator);
-
               if (isonline) {
                 navigator.navigate('Random-Exam', {
                   selectedSubject: selectedSubject[0],
                   amount: currentAmount,
                 });
-
                 setTimeout(() => setCurrentAmount(10), 1500);
               } else {
                 Toast.show({

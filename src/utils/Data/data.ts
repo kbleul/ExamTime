@@ -18,6 +18,14 @@ type ProfileMenuItems = {
 
 type TopCatagoriesType = string[];
 
+export const STATUSTYPES = {
+  Trial: 'Trial',
+  NotAuthorized: 'NotAuthorized',
+  Authorized: 'Authorized',
+  Subscribed: 'Subscribed',
+  Unsubscribed: 'Unsubscribed',
+};
+
 export const CourseCatagories: TopCatagoriesType = ['Study', 'Challenge'];
 export const TestQustionsCatagories: TopCatagoriesType = [
   'Model Questions',

@@ -3,10 +3,11 @@ import {UserData} from '../Realm';
 import {loginSuccess} from '../reduxToolkit/Features/auth/authSlice';
 import {calculateDateDifference} from '../screens/App/Onboarding/Logic';
 import {AnyAction} from '@reduxjs/toolkit';
+import {STATUSTYPES} from '../utils/Data/data';
 
 export const checkUserStatus = (
   savedUserData: ResultsType<UserData>,
-  setIsAuthRoute: React.Dispatch<React.SetStateAction<boolean | null>>,
+  setUserStatus: React.Dispatch<React.SetStateAction<string | null>>,
   setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>,
   dispatch: Dispatch<AnyAction>,
 ) => {
@@ -25,15 +26,14 @@ export const checkUserStatus = (
     */
   if (savedUserData && savedUserData[0]) {
     setShowOnboarding(false);
-    if (!savedUserData[0].user && !savedUserData[0].isSubscribed) {
-      // realm.write(() => {
-      //   realm.delete(savedUserData[0]);
-      // });
 
+    if (!savedUserData[0].user) {
       const dateDiff = calculateDateDifference(savedUserData[0].initialDate);
-      if (dateDiff > 3) {
+
+      console.log('dateDiff--', dateDiff);
+      if (dateDiff > 2) {
         //trial is over
-        setIsAuthRoute(true);
+        setUserStatus(STATUSTYPES.NotAuthorized);
         return;
       }
     }
@@ -53,8 +53,9 @@ export const checkUserStatus = (
           IsDefaultPasswordChanged: true,
         }),
       );
+      setUserStatus(STATUSTYPES.Authorized);
     }
   }
 
-  setIsAuthRoute(false);
+  setUserStatus(STATUSTYPES.Trial);
 };

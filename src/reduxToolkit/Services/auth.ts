@@ -189,6 +189,7 @@ export const api = createApi({
       }
     >({
       query: credentials => {
+        console.log(credentials);
         return {
           url: 'exam/randomexam',
           body: {
@@ -393,6 +394,17 @@ export const api = createApi({
         };
       },
     }),
+    getTrialStatus: build.mutation<{status: any}, {token: string}>({
+      query: data => {
+        return {
+          url: 'trial-version/user/trialversion',
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -425,4 +437,5 @@ export const {
   useGetNotificationsMutation,
   usePostNotificationStatusMutation,
   useDeleteNotificationStatusMutation,
+  useGetTrialStatusMutation,
 } = api;

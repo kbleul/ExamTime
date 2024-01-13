@@ -11,7 +11,7 @@ import {
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 import {ScaledSheet} from 'react-native-size-matters';
-import {screenHeight, screenWidth} from '../../../utils/Data/data';
+import {STATUSTYPES, screenHeight, screenWidth} from '../../../utils/Data/data';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {Study, Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
@@ -26,6 +26,8 @@ import {onError} from '../../../components/Molecules/ChosenAndOtherCourses/Chose
 import LoginModal from '../../../components/Organisms/LoginModal';
 import {useNavContext} from '../../../context/bottomNav';
 import CustomToast from '../../../components/Molecules/CustomToast';
+import LoginBox from '../../../components/Atoms/LoginBox';
+import {useUserStatus} from '../../../context/userStatus';
 
 const getSubjects = (realm: Realm) => {
   try {
@@ -55,6 +57,9 @@ const filterKeys = (realm: Realm): string[] => {
 const Index = () => {
   const navigation: any = useNavigation();
   const {setShowNavigation} = useNavContext();
+
+  const {userStatus, setUserStatus} = useUserStatus();
+
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -70,6 +75,29 @@ const Index = () => {
       setShowNavigation(true);
     }, []),
   );
+
+  if (userStatus === STATUSTYPES.NotAuthorized) {
+    return (
+      <View style={styles.container}>
+        <LoginBox
+          title="Your trial period has ended!"
+          subTitle="Please login or sign up to keep using ExamTime"
+        />
+      </View>
+    );
+  }
+
+  if (userStatus === STATUSTYPES.Unsubscribed) {
+    return (
+      <View style={styles.container}>
+        <LoginBox
+          title="Your free trial period has ended!"
+          subTitle="Please subscribe to keep using ExamTime"
+          isSubscribe
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

@@ -9,32 +9,28 @@ import {checkUserStatus} from './logic';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../reduxToolkit/Store';
 import {useOnboardingContext} from '../context/onboarding';
+import {useUserStatus} from '../context/userStatus';
 
 const Routes = ({Stack}: any) => {
   const {useQuery} = AuthContext;
   const savedUserData = useQuery(UserData);
 
+  const {userStatus, setUserStatus} = useUserStatus();
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
 
-  const [isAuthRoute, setIsAuthRoute] = useState<boolean | null>(null);
   const {setShowOnboarding} = useOnboardingContext();
 
   useEffect(() => {
-    checkUserStatus(savedUserData, setIsAuthRoute, setShowOnboarding, dispatch);
+    checkUserStatus(savedUserData, setUserStatus, setShowOnboarding, dispatch);
   }, []);
 
   //used as loading check
-  if (isAuthRoute === null) {
+  if (userStatus === null) {
     // Render a loading state or fallback UI while waiting for the checkOnBoarding value
     return <SplashScreen />;
   }
 
-  return isAuthRoute === true && !user ? (
-    <AuthRoutes Stack={Stack} />
-  ) : (
-    <AppRoutes Stack={Stack} />
-  );
+  return <AppRoutes Stack={Stack} />;
 };
 
 export default Routes;

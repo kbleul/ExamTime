@@ -44,7 +44,6 @@ const ChosenCoursesCard: React.FC<{
   const user = useSelector((state: RootState) => state.auth.user);
   const {useRealm} = AuthContext;
   const realm = useRealm();
-  console.log('SelectedSubjectId------------', subjectId);
 
   const subject = getRealmSubject(subjectId, realm);
 
@@ -91,7 +90,7 @@ const ChosenCoursesCard: React.FC<{
       {!isLoadingSVG && (
         <TouchableOpacity
           style={
-            subjectId !== undefined
+            timerValue !== undefined
               ? styles.container
               : [styles.container, styles.containerSecondary]
           }

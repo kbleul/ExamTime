@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-message';
 import {Exam, Subject, UserData} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 import PracticeModeModal from './PracticeModeModal';
+import {getRealmSubject} from '../../utils/Functions/Get';
 
 export const ExamCatagories = [
   {
@@ -50,9 +51,7 @@ const FullExams: React.FC<{
     );
   });
 
-  const selectedSubject = useQuery(Subject, SubjectItem => {
-    return SubjectItem.filtered(`id = "${selectedSubjectId}"`);
-  });
+  const selectedSubject = getRealmSubject(selectedSubjectId, realm);
 
   const [getExams, {isLoading, error}] = useGetExamsMutation();
 
@@ -98,7 +97,7 @@ const FullExams: React.FC<{
           });
       }
     }
-  }, [selectedSubject, getExams, selectedExamType]);
+  }, [selectedSubjectId, getExams, selectedExamType]);
 
   useEffect(() => {
     error &&

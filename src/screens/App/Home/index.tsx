@@ -12,13 +12,24 @@ import HeaderCarousel from '../../../components/Organisms/HeaderCarousel';
 import ChosenCourses from '../../../components/Molecules/ChosenAndOtherCourses';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import useHandleInitialRequests from '../../../hooks/useHandleInitialRequests';
-import {screenHeight, screenWidth} from '../../../utils/Data/data';
+import {STATUSTYPES, screenHeight, screenWidth} from '../../../utils/Data/data';
 import LoginModal from '../../../components/Organisms/LoginModal';
 import Toast from 'react-native-toast-message';
 import {useFocusEffect} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
+import {UserData} from '../../../Realm';
+import {AuthContext} from '../../../Realm/model';
+import {calculateDateDifference} from '../Onboarding/Logic';
+import {useUserStatus} from '../../../context/userStatus';
+import MessageBox from '../../../components/Atoms/MessageBox';
+import LoginBox from '../../../components/Atoms/LoginBox';
 
 const Index = () => {
+  const {useQuery} = AuthContext;
+
+  const savedUserData = useQuery(UserData);
+  const {userStatus, setUserStatus} = useUserStatus();
+
   const [isSyncing, setIsSyncing] = useState(false);
   const {setShowNavigation} = useNavContext();
   useHandleInitialRequests(setIsSyncing);
@@ -29,6 +40,35 @@ const Index = () => {
       setShowNavigation(true);
     }, []),
   );
+
+  if (userStatus === STATUSTYPES.NotAuthorized) {
+    return (
+      <SafeAreaView style={IndexStyle.container}>
+        <TrialHeader type="Dashboard" />
+        <HeaderCarousel />
+
+        <LoginBox
+          title="Your trial period has ended!"
+          subTitle="Please login or sign up to keep using ExamTime"
+        />
+      </SafeAreaView>
+    );
+  }
+
+  if (userStatus === STATUSTYPES.Unsubscribed) {
+    return (
+      <SafeAreaView style={IndexStyle.container}>
+        <TrialHeader type="Dashboard" />
+        <HeaderCarousel />
+
+        <LoginBox
+          title="Your free trial period has ended!"
+          subTitle="Please subscribe to keep using ExamTime"
+          isSubscribe
+        />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={IndexStyle.container}>
