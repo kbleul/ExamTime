@@ -8,16 +8,22 @@ import {useGetTipsMutation} from '../../reduxToolkit/Services/auth';
 import {fetchTips, getRealmSubject} from '../../utils/Functions/Get';
 import {TipType} from '../../types';
 import AllTipsModal from './AllTipsModal';
+import {useNavigation} from '@react-navigation/native';
 
+const getTipsObj = (realm: Realm) => {
+  const tips = realm.objects(StudyTips);
+
+  return tips;
+};
 const Tips: React.FC<{
   selectedSubjectId: string | null | undefined;
 }> = ({selectedSubjectId}) => {
+  const navigator = useNavigation();
+
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
 
   const userData = useQuery(UserData);
-
-  const savedTips = useQuery(StudyTips);
 
   const selectedSubject = getRealmSubject(selectedSubjectId, realm);
 
@@ -28,6 +34,22 @@ const Tips: React.FC<{
   const [getTips] = useGetTipsMutation();
 
   useEffect(() => {
+    const unsubscribe = navigator.addListener('blur', () => {
+      // Your side effects when the screen loses focus
+      console.log('Screen lost focus');
+      setTips(null);
+      setShowTipsModal(false);
+      // Add your side effect code here
+    });
+
+    return () => {
+      // Cleanup the subscription when the component unmounts
+      unsubscribe();
+    };
+  }, [navigator]);
+
+  useEffect(() => {
+    const savedTips = getTipsObj(realm);
     if (
       savedTips.length === 0 &&
       selectedSubject &&
@@ -44,6 +66,8 @@ const Tips: React.FC<{
   }, []);
 
   useEffect(() => {
+    const savedTips = getTipsObj(realm);
+
     if (savedTips) {
       setTips([
         ...savedTips.filter(
@@ -51,7 +75,7 @@ const Tips: React.FC<{
         ),
       ]);
     }
-  }, [selectedSubjectId, savedTips]);
+  }, [selectedSubjectId]);
 
   return (
     <>

@@ -100,18 +100,18 @@ export const handleLogin = async (
       undefined,
       undefined,
       true,
-    );
+    ).finally(() => {
+      setTimeout(() => {
+        // Manually reset the controlled inputs
+        setChanged && setChanged(prev => !prev);
 
-    setTimeout(() => {
-      // Manually reset the controlled inputs
-      setChanged && setChanged(prev => !prev);
-
-      response.IsDefaultPasswordChanged
-        ? navigator.getState().routeNames[0] === 'Home'
-          ? navigator.navigate('Home')
-          : navigator.navigate('HomeSection')
-        : navigator.navigate('Password-Reset');
-    }, 3000);
+        response.IsDefaultPasswordChanged
+          ? navigator.getState().routeNames[0] === 'Home'
+            ? navigator.navigate('Home')
+            : navigator.navigate('HomeSection')
+          : navigator.navigate('Password-Reset');
+      }, 1000);
+    });
   } catch (error) {
     if (
       error instanceof TypeError &&

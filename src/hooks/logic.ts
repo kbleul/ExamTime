@@ -116,15 +116,11 @@ export const checkTrialStatus = async (
       const response: any = await getTrialStatus({
         token,
       }).unwrap();
-
-      if (
-        response &&
-        response.length > 0 &&
-        response[0].remaining.remainingDays
-      ) {
-        if (parseInt(response[0].remaining.remainingDays) <= 0) {
+      console.log(response);
+      if (response && response.length > 0 && response[0].remainingDays) {
+        if (parseInt(response[0].remainingDays) <= 0) {
           setUserStatus(STATUSTYPES.Unsubscribed);
-        } else if (parseInt(response[0].remaining.remainingDays) > 0) {
+        } else if (parseInt(response[0].remainingDays) > 0) {
           setUserStatus(STATUSTYPES.Authorized);
         }
       }

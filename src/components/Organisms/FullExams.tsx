@@ -14,9 +14,9 @@ import {getPreviousExams} from '../../screens/App/Practice/logic';
 import {FetchBaseQueryError} from '@reduxjs/toolkit/dist/query';
 import {SerializedError} from '@reduxjs/toolkit';
 import ShowAllExamsModal from './ShowAllExamsModal';
-import {examType, subjectType} from '../../types';
+import {examType} from '../../types';
 import Toast from 'react-native-toast-message';
-import {Exam, Subject, UserData} from '../../Realm';
+import {Exam, UserData} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 import PracticeModeModal from './PracticeModeModal';
 import {getRealmSubject} from '../../utils/Functions/Get';
@@ -32,6 +32,15 @@ export const ExamCatagories = [
   },
 ];
 
+const getSavedExams = (realm: Realm, selectedExamType: string) => {
+  const type = ExamCatagories.find(
+    item => item.name === selectedExamType,
+  )?.type;
+  const exams = realm.objects(Exam).filtered(`examType ==  "${type}"`);
+
+  return exams;
+};
+
 const FullExams: React.FC<{
   selectedExamType: string;
   setSelectedExamType: React.Dispatch<React.SetStateAction<string>>;
@@ -43,15 +52,15 @@ const FullExams: React.FC<{
 
   const userData = useQuery(UserData);
 
-  const savedExams = useQuery(Exam, savedExamItem => {
-    return savedExamItem.filtered(
-      `examType == "${
-        ExamCatagories.find(item => item.name === selectedExamType)?.type
-      }"`,
-    );
-  });
+  // const savedExams = useQuery(Exam, savedExamItem => {
+  //   return savedExamItem.filtered(
+  //     `examType == "${
+  //       ExamCatagories.find(item => item.name === selectedExamType)?.type
+  //     }"`,
+  //   );
+  // });
 
-  const selectedSubject = getRealmSubject(selectedSubjectId, realm);
+  // const selectedSubject = getRealmSubject(selectedSubjectId, realm);
 
   const [getExams, {isLoading, error}] = useGetExamsMutation();
 
@@ -63,6 +72,8 @@ const FullExams: React.FC<{
     useState(false);
 
   useEffect(() => {
+    const selectedSubject = getRealmSubject(selectedSubjectId, realm);
+    const savedExams = getSavedExams(realm, selectedExamType);
     if (
       selectedSubject &&
       selectedSubject.length > 0 &&
@@ -110,6 +121,22 @@ const FullExams: React.FC<{
             : 'Unable to get exams',
       });
   }, [error]);
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener('blur', () => {
+      // Your side effects when the screen loses focus
+      console.log('Screen lost focus  EXAMSS');
+      setExams([]);
+      setSelectedExam(null);
+      // Add your side effect code here
+    });
+
+    return () => {
+      // Cleanup the subscription when the component unmounts
+      unsubscribe();
+    };
+  }, [navigator]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Full Exams to practice</Text>
@@ -119,20 +146,22 @@ const FullExams: React.FC<{
         setSelectedExamType={setSelectedExamType}
       />
 
-      <Exams
-        isLoading={isLoading}
-        error={error}
-        exams={exams}
-        subject={
-          (selectedSubject &&
-            selectedSubject.length > 0 &&
-            selectedSubject[0].subject?.subject) ||
-          ''
-        }
-        selectedExamType={selectedExamType}
-        setPracticeModeModalVisible={setPracticeModeModalVisible}
-        setSelectedExam={setSelectedExam}
-      />
+      {exams && exams.length > 0 && (
+        <Exams
+          isLoading={isLoading}
+          error={error}
+          exams={exams}
+          subject={
+            (getRealmSubject(selectedSubjectId, realm) &&
+              getRealmSubject(selectedSubjectId, realm).length > 0 &&
+              getRealmSubject(selectedSubjectId, realm)[0].subject?.subject) ||
+            ''
+          }
+          selectedExamType={selectedExamType}
+          setPracticeModeModalVisible={setPracticeModeModalVisible}
+          setSelectedExam={setSelectedExam}
+        />
+      )}
 
       <PracticeModeModal
         practiceModeModalVisible={practiceModeModalVisible}

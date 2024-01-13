@@ -12,7 +12,11 @@ import {AuthContext} from '../../../Realm/model';
 import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../Onboarding/Page/logic';
 import Loading from '../../../components/Atoms/Loading';
@@ -24,6 +28,11 @@ import {useUserStatus} from '../../../context/userStatus';
 
 export let availableHeight = screenHeight - screenHeight * 0.088;
 
+const getSubjects = (realm: Realm) => {
+  const subject = realm.objects(Subject);
+
+  return subject;
+};
 const Practice = () => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -31,10 +40,10 @@ const Practice = () => {
   const {setShowNavigation} = useNavContext();
   const {userStatus} = useUserStatus();
 
-  const {useQuery, useRealm} = AuthContext;
+  const {useRealm} = AuthContext;
   const realm = useRealm();
 
-  const savedSubjects = useQuery(Subject);
+  const savedSubjects = getSubjects(realm);
 
   const [selectedSubject, setSelectedSubject] = useState<
     Subject | subjectType | null
@@ -49,27 +58,51 @@ const Practice = () => {
   const [getSubject, {isLoading}] = useGetSubjectMutation();
 
   useEffect(() => {
-    savedSubjects && savedSubjects.length > 0
-      ? setSubjectsArray([...savedSubjects])
-      : getSubjectsMutation(
-          getSubject,
-          navigator,
-          realm,
-          setSubjectsArray,
-          setSelectedSubject,
-        );
+    const subjectsArray = getSubjects(realm);
+
+    if (subjectsArray && subjectsArray.length > 0) {
+      setSelectedSubject(subjectsArray[0]);
+      setSubjectsArray([...subjectsArray]);
+    } else {
+      getSubjectsMutation(
+        getSubject,
+        navigator,
+        realm,
+        setSubjectsArray,
+        setSelectedSubject,
+      );
+    }
   }, [user]);
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener('blur', () => {
+      // Your side effects when the screen loses focus
+      console.log('Screen lost focus');
+      setSelectedSubject(null);
+      // Add your side effect code here
+    });
+
+    return () => {
+      // Cleanup the subscription when the component unmounts
+      unsubscribe();
+    };
+  }, [navigator]);
 
   useFocusEffect(
     useCallback(() => {
+      const subjectsArray = getSubjects(realm);
+
       setShowNavigation(true);
+      setSubjectsArray([...subjectsArray]);
+      setSelectedSubject(subjectsArray[0]);
     }, []),
   );
 
   return (
     <>
       <SafeAreaView style={[IndexStyle.container, styles.container]}>
-        {savedSubjects && savedSubjects.length > 0 && (
+        {!selectedSubject && <Loading />}
+        {selectedSubject && savedSubjects && savedSubjects.length > 0 && (
           <ScrollView
             style={styles.ScrollView}
             contentContainerStyle={styles.contentContainer}
@@ -106,11 +139,11 @@ const Practice = () => {
                     <Tips selectedSubjectId={selectedSubject?.id} />
                     <RandomQuestions selectedSubjectId={selectedSubject?.id} />
 
-                    <FullExams
+                    {/* <FullExams
                       selectedExamType={selectedExamType}
                       setSelectedExamType={setSelectedExamType}
                       selectedSubjectId={selectedSubject?.id}
-                    />
+                    /> */}
                   </>
                 )}
             </View>

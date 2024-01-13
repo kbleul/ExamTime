@@ -30,7 +30,6 @@ export const checkUserStatus = (
     if (!savedUserData[0].user) {
       const dateDiff = calculateDateDifference(savedUserData[0].initialDate);
 
-      console.log('dateDiff--', dateDiff);
       if (dateDiff > 2) {
         //trial is over
         setUserStatus(STATUSTYPES.NotAuthorized);
