@@ -73,7 +73,7 @@ const Index = () => {
   const navigation: any = useNavigation();
   const {setShowNavigation} = useNavContext();
 
-  const {userStatus, setUserStatus} = useUserStatus();
+  const {userStatus} = useUserStatus();
 
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
@@ -84,6 +84,12 @@ const Index = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(true);
+    }, []),
+  );
 
   if (userStatus === STATUSTYPES.NotAuthorized) {
     return (
@@ -237,13 +243,6 @@ const CourseItem = ({
     useState<ResultsType<Study> | null>(savedStudies);
 
   const progress = calculateStudyProgress(savedStudiesArr);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!savedStudiesArr || savedStudiesArr.length === 0) {
-      }
-    }, []),
-  );
 
   return (
     <>

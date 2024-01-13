@@ -73,6 +73,8 @@ const Practice = () => {
 
   useFocusEffect(
     useCallback(() => {
+      setShowNavigation(true);
+
       let savedSubjectsArray;
 
       try {
