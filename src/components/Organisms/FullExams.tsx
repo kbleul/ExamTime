@@ -125,7 +125,6 @@ const FullExams: React.FC<{
   useEffect(() => {
     const unsubscribe = navigator.addListener('blur', () => {
       // Your side effects when the screen loses focus
-      console.log('Screen lost focus  EXAMSS');
       setExams([]);
       setSelectedExam(null);
       // Add your side effect code here

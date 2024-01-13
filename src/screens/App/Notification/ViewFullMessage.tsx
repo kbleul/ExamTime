@@ -39,7 +39,7 @@ const ViewFullMessage = ({
     } else {
       Toast.show({
         type: 'error',
-        text1: 'Notification deleted unsuccessfully!',
+        text1: 'Delete Notification failed!',
         visibilityTime: 3000,
       });
     }
@@ -70,7 +70,6 @@ const ViewFullMessage = ({
           )}
         </TouchableOpacity>
       </View>
-      <Toast />
     </View>
   );
 };

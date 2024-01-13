@@ -189,7 +189,6 @@ export const api = createApi({
       }
     >({
       query: credentials => {
-        console.log(credentials);
         return {
           url: 'exam/randomexam',
           body: {

@@ -73,7 +73,7 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
             notificationId: id,
           }).unwrap();
 
-          if (response?.message) {
+          if (response) {
             setNotifications([
               ...notifications?.filter(notfItem => notfItem.id !== id),
             ]);
@@ -83,7 +83,7 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
 
           return false;
         } catch (err) {
-          console.log('Error on DELETE notifications ', err);
+          console.log('Error on DELETE notifications ', err, '-- ', id);
           return false;
         }
       }

@@ -28,7 +28,23 @@ import {useNavContext} from '../../../context/bottomNav';
 import CustomToast from '../../../components/Molecules/CustomToast';
 import LoginBox from '../../../components/Atoms/LoginBox';
 import {useUserStatus} from '../../../context/userStatus';
+import {subjectType} from '../../../types';
 
+const getSubjectsByIdSubject = (realm: Realm, subject: subjectType[]) => {
+  const subjectsaved = realm
+    .objects(Subject)
+    .filtered(
+      `subject.id = "${subject[0].id}" OR subject.subject = "${subject[0].subject.subject}"`,
+    );
+
+  return subjectsaved;
+};
+
+const getSubjectsById = (realm: Realm, item: string) => {
+  const subject = realm.objects(Subject).filtered(`id = "${item}"`);
+
+  return subject;
+};
 const getSubjects = (realm: Realm) => {
   try {
     const savedSubjects = realm.objects(Subject);
@@ -50,7 +66,6 @@ const filterKeys = (realm: Realm): string[] => {
   const studyIds: string[] = [];
 
   filteredArr.forEach(study => studyIds.push(study.id));
-
   return studyIds;
 };
 
@@ -69,12 +84,6 @@ const Index = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
-
-  useFocusEffect(
-    useCallback(() => {
-      setShowNavigation(true);
-    }, []),
-  );
 
   if (userStatus === STATUSTYPES.NotAuthorized) {
     return (
@@ -209,7 +218,7 @@ const CourseItem = ({
   const {useRealm} = AuthContext;
   const realm = useRealm();
 
-  const subject = realm.objects(Subject).filtered(`id = "${item}"`);
+  const subject = getSubjectsById(realm, item);
 
   const {setShowNavigation} = useNavContext();
 
@@ -224,65 +233,72 @@ const CourseItem = ({
     );
   });
 
-  const progress = calculateStudyProgress(savedStudies);
+  const [savedStudiesArr, setSavedStudiesArr] =
+    useState<ResultsType<Study> | null>(savedStudies);
+
+  const progress = calculateStudyProgress(savedStudiesArr);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!savedStudiesArr || savedStudiesArr.length === 0) {
+      }
+    }, []),
+  );
 
   return (
     <>
-      {savedStudies &&
-        savedStudies.length > 0 &&
-        subject &&
-        subject.length > 0 && (
-          <TouchableOpacity
-            style={styles.lcontainer}
-            onPress={() => {
-              if (!user || !token) {
-                setLoginModalVisible(true);
-                return;
-              }
+      {subject && subject.length > 0 && (
+        <TouchableOpacity
+          style={styles.lcontainer}
+          onPress={() => {
+            if (!user || !token) {
+              setLoginModalVisible(true);
+              return;
+            }
 
-              if (savedStudies.length > 0) {
-                navigator.navigate('StudyDetails', {
-                  subject: subject[0].subject,
-                });
+            if (getSubjectsByIdSubject(realm, subject).length > 0) {
+              navigator.navigate('StudyDetails', {
+                subject: subject[0].subject,
+              });
 
-                setShowNavigation(false);
-                return;
-              }
+              setShowNavigation(false);
+              return;
+            }
 
-              setShowAlert(true);
-              setTimeout(() => setShowAlert(false), 3500);
-            }}>
-            <View style={styles.imgContainer}>
-              {subject[0].icon && (
-                <RenderIcon timerValue={timerValue} icon={subject[0].icon} />
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3500);
+          }}>
+          <View style={styles.imgContainer}>
+            {subject[0].icon && (
+              <RenderIcon timerValue={timerValue} icon={subject[0].icon} />
+            )}
+          </View>
+
+          <View style={styles.infoContainer}>
+            <Text style={styles.subject}>{subject[0].subject.subject}</Text>
+            <Text style={styles.units}>
+              {savedStudies.length} lessons . . .
+            </Text>
+          </View>
+
+          <View style={styles.circleContainer}>
+            <AnimatedCircularProgress
+              size={60}
+              width={4}
+              backgroundWidth={2}
+              fill={progress}
+              tintColor="#F0E2A1"
+              backgroundColor="#000"
+              rotation={0}>
+              {fill => (
+                <View style={styles.progressTextContainer}>
+                  <Text style={styles.progressText}>{Math.round(fill)}%</Text>
+                </View>
               )}
-            </View>
-
-            <View style={styles.infoContainer}>
-              <Text style={styles.subject}>{subject[0].subject.subject}</Text>
-              <Text style={styles.units}>
-                {savedStudies.length} lessons . . .
-              </Text>
-            </View>
-
-            <View style={styles.circleContainer}>
-              <AnimatedCircularProgress
-                size={60}
-                width={4}
-                backgroundWidth={2}
-                fill={progress}
-                tintColor="#F0E2A1"
-                backgroundColor="#000"
-                rotation={0}>
-                {fill => (
-                  <View style={styles.progressTextContainer}>
-                    <Text style={styles.progressText}>{Math.round(fill)}%</Text>
-                  </View>
-                )}
-              </AnimatedCircularProgress>
-            </View>
-          </TouchableOpacity>
-        )}
+            </AnimatedCircularProgress>
+          </View>
+        </TouchableOpacity>
+      )}
     </>
   );
 };

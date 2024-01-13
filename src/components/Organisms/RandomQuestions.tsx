@@ -72,8 +72,6 @@ const RandomQuestions = ({
             style={styles.startButton}
             disabled={isLoading}
             onPress={async () => {
-              console.log('-------------', selectedSubject[0].id);
-
               setIsLoading(true);
 
               let isonline = await checkIsOnline(navigator);

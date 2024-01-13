@@ -36,7 +36,6 @@ const Tips: React.FC<{
   useEffect(() => {
     const unsubscribe = navigator.addListener('blur', () => {
       // Your side effects when the screen loses focus
-      console.log('Screen lost focus');
       setTips(null);
       setShowTipsModal(false);
       // Add your side effect code here

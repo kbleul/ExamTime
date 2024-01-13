@@ -58,27 +58,10 @@ const Practice = () => {
   const [getSubject, {isLoading}] = useGetSubjectMutation();
 
   useEffect(() => {
-    const subjectsArray = getSubjects(realm);
-
-    if (subjectsArray && subjectsArray.length > 0) {
-      setSelectedSubject(subjectsArray[0]);
-      setSubjectsArray([...subjectsArray]);
-    } else {
-      getSubjectsMutation(
-        getSubject,
-        navigator,
-        realm,
-        setSubjectsArray,
-        setSelectedSubject,
-      );
-    }
-  }, [user]);
-
-  useEffect(() => {
     const unsubscribe = navigator.addListener('blur', () => {
       // Your side effects when the screen loses focus
-      console.log('Screen lost focus');
       setSelectedSubject(null);
+      setSubjectsArray(null);
       // Add your side effect code here
     });
 
@@ -90,19 +73,33 @@ const Practice = () => {
 
   useFocusEffect(
     useCallback(() => {
-      const subjectsArray = getSubjects(realm);
+      let savedSubjectsArray;
 
-      setShowNavigation(true);
-      setSubjectsArray([...subjectsArray]);
-      setSelectedSubject(subjectsArray[0]);
+      try {
+        savedSubjectsArray = getSubjects(realm);
+      } catch (err) {
+        console.log('-------------------', err);
+      }
+
+      if (savedSubjectsArray && savedSubjectsArray.length > 0) {
+        setSelectedSubject(savedSubjectsArray[0]);
+        setSubjectsArray([...savedSubjectsArray]);
+      } else {
+        getSubjectsMutation(
+          getSubject,
+          navigator,
+          realm,
+          setSubjectsArray,
+          setSelectedSubject,
+        );
+      }
     }, []),
   );
 
   return (
     <>
       <SafeAreaView style={[IndexStyle.container, styles.container]}>
-        {!selectedSubject && <Loading />}
-        {selectedSubject && savedSubjects && savedSubjects.length > 0 && (
+        {selectedSubject && subjectsArray && subjectsArray.length > 0 && (
           <ScrollView
             style={styles.ScrollView}
             contentContainerStyle={styles.contentContainer}
@@ -139,11 +136,11 @@ const Practice = () => {
                     <Tips selectedSubjectId={selectedSubject?.id} />
                     <RandomQuestions selectedSubjectId={selectedSubject?.id} />
 
-                    {/* <FullExams
+                    <FullExams
                       selectedExamType={selectedExamType}
                       setSelectedExamType={setSelectedExamType}
                       selectedSubjectId={selectedSubject?.id}
-                    /> */}
+                    />
                   </>
                 )}
             </View>

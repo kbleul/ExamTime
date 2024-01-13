@@ -40,55 +40,46 @@ export const getPreviousExams = async (
 
 const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
   exams.forEach(exam => {
-    try {
-      let {
-        id,
-        examName,
-        examType,
-        duration,
-        passingScore,
-        noOfQuestions,
-        addedQuestions,
-        isPublished,
-        createdAt,
-        updatedAt,
-        examQuestion,
-        grade,
-        subject,
-        year,
-      } = exam;
+    const isExamSaved = realm
+      .objects(LocalObjectDataKeys.Exam)
+      .filtered(`id = "${exam.id}"`);
 
-      const questionsArray: examQuestionType[] = [];
+    if (!isExamSaved || isExamSaved.length === 0) {
+      try {
+        let {
+          id,
+          examName,
+          examType,
+          duration,
+          passingScore,
+          noOfQuestions,
+          addedQuestions,
+          isPublished,
+          createdAt,
+          updatedAt,
+          examQuestion,
+          grade,
+          subject,
+          year,
+        } = exam;
 
-      realm.write(() => {
-        year = year.year;
+        const questionsArray: examQuestionType[] = [];
 
-        const subjectObject = realm.create(LocalObjectDataKeys.SingleSubject, {
-          ...subject,
-        });
-        const gradeObject = realm
-          .objects(LocalObjectDataKeys.Grade)
-          .filtered(`id = "${grade.id}"`);
+        realm.write(() => {
+          year = year.year;
 
-        examQuestion.forEach(question => {
-          let {
-            id: qId,
-            number,
-            questionType,
-            question: questionText,
-            A,
-            B,
-            C,
-            D,
-            answer,
-            description,
-            metadata,
-            createdAt: qCreatedAt,
-            updatedAt: qUpdatedAt,
-          } = question;
-          const questiontObject = realm.create(
-            LocalObjectDataKeys.ExamQuestion,
+          const subjectObject = realm.create(
+            LocalObjectDataKeys.SingleSubject,
             {
+              ...subject,
+            },
+          );
+          const gradeObject = realm
+            .objects(LocalObjectDataKeys.Grade)
+            .filtered(`id = "${grade.id}"`);
+
+          examQuestion.forEach(question => {
+            let {
               id: qId,
               number,
               questionType,
@@ -102,33 +93,51 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
               metadata,
               createdAt: qCreatedAt,
               updatedAt: qUpdatedAt,
-            },
-          );
+            } = question;
+            const questiontObject = realm.create(
+              LocalObjectDataKeys.ExamQuestion,
+              {
+                id: qId,
+                number,
+                questionType,
+                question: questionText,
+                A,
+                B,
+                C,
+                D,
+                answer,
+                description,
+                metadata,
+                createdAt: qCreatedAt,
+                updatedAt: qUpdatedAt,
+              },
+            );
 
-          questionsArray.push(questiontObject);
-        });
+            questionsArray.push(questiontObject);
+          });
 
-        realm.create(LocalObjectDataKeys.Exam, {
-          id,
-          examName,
-          examType,
-          duration,
-          passingScore,
-          noOfQuestions,
-          addedQuestions,
-          isPublished,
-          createdAt,
-          updatedAt,
-          examQuestion: questionsArray,
-          grade: gradeObject[0],
-          subject: subjectObject,
-          year: year,
-          isExamTaken: false,
-          lastTaken: null,
+          realm.create(LocalObjectDataKeys.Exam, {
+            id,
+            examName,
+            examType,
+            duration,
+            passingScore,
+            noOfQuestions,
+            addedQuestions,
+            isPublished,
+            createdAt,
+            updatedAt,
+            examQuestion: questionsArray,
+            grade: gradeObject[0],
+            subject: subjectObject,
+            year: year,
+            isExamTaken: false,
+            lastTaken: null,
+          });
         });
-      });
-    } catch (err) {
-      console.log(err);
+      } catch (err) {
+        console.log(err);
+      }
     }
   });
 };

@@ -15,6 +15,7 @@ import ViewFullMessage from './ViewFullMessage';
 import {useNotification} from '../../../context/notification';
 import {convertTimestampToRelativeTime} from './logic';
 import MessageBox from '../../../components/Atoms/MessageBox';
+import Toast from 'react-native-toast-message';
 
 const Notification = () => {
   const navigator: any = useNavigation();
@@ -63,6 +64,8 @@ const Notification = () => {
           setNotification={setNotification}
         />
       )}
+
+      <Toast />
     </SafeAreaView>
   );
 };
@@ -87,7 +90,6 @@ const NotificationMsg = ({
       updateNotificationStatus(message.id);
     }
   };
-
 
   const notificationObject = message.notification;
   return (

@@ -80,7 +80,6 @@ export const getSubjectsMutation = async (
 
     const grade = getSavedGrade.value.grade;
 
-    console.log('handling login ', grade);
     const response = await getSubject({grade}).unwrap();
 
     const subjects = response.subjects;
