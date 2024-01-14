@@ -1,4 +1,4 @@
-package com.examtime
+package com.exam_time.exam
 
 import android.os.Bundle
 import com.zoontek.rnbootsplash.RNBootSplash

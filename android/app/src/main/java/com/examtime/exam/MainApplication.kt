@@ -1,4 +1,4 @@
-package com.examtime
+package com.exam_time.exam
 import android.app.Application
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication

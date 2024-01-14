@@ -76,13 +76,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.examtime"
+    namespace "com.exam_time.exam"
     defaultConfig {
-        applicationId "com.examtime"
+        applicationId "com.exam_time.exam"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 22
+        versionName "6.0.0"
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
