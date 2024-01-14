@@ -49,10 +49,6 @@ export const saveStudyToRealm = async (
       studies.forEach(study => {
         //check if Study is aleady saved
         const isSaved = realm.objects(Study).filtered(`id = "${study.id}"`);
-        console.log(
-          '-----------------------isSaved------------------------',
-          isSaved,
-        );
         if (isSaved.length === 0) {
           const {
             id,
