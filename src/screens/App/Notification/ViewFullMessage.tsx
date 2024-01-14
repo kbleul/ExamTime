@@ -23,7 +23,7 @@ const ViewFullMessage = ({
   const {deleteNotification} = useNotification();
 
   const [isLoading, setIsLoading] = useState(false);
-
+  console.log('====', notification);
   const handleDelete = async () => {
     setIsLoading(true);
     const response = await deleteNotification(notification.id);
@@ -49,11 +49,13 @@ const ViewFullMessage = ({
   return (
     <View style={styles.container}>
       <Text style={styles.msgText}>
-        {notification.notification ? notification.notification : ' '}
+        {notification.notification
+          ? notification.notification.notification
+          : ' '}
       </Text>
       <View style={styles.msgFooter}>
         <Text style={styles.dateText}>
-          {convertTimestampToRelativeTime(notification.createdAt)}
+          {convertTimestampToRelativeTime(notification.notification.createdAt)}
         </Text>
         <TouchableOpacity
           touchSoundDisabled

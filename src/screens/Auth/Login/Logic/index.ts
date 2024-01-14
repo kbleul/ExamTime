@@ -53,8 +53,11 @@ export const handleLogin = async (
   setChanged: React.Dispatch<React.SetStateAction<boolean>>,
   getSubject: GetSubjectsMutationFn,
   setUserStatus: any,
+  setIsLoaginLoading: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   checkIsOnline(navigator);
+
+  setIsLoaginLoading(true);
 
   try {
     const response = await login({
@@ -101,16 +104,21 @@ export const handleLogin = async (
       undefined,
       true,
     ).finally(() => {
-      // Manually reset the controlled inputs
-      setChanged && setChanged(prev => !prev);
+      setTimeout(() => {
+        setChanged && setChanged(prev => !prev);
 
-      response.IsDefaultPasswordChanged
-        ? navigator.getState().routeNames[0] === 'Home'
-          ? navigator.navigate('Home')
-          : navigator.navigate('HomeSection')
-        : navigator.navigate('Password-Reset');
+        response.IsDefaultPasswordChanged
+          ? navigator.getState().routeNames[0] === 'Home'
+            ? navigator.navigate('Home')
+            : navigator.navigate('HomeSection')
+          : navigator.navigate('Password-Reset');
+
+        setIsLoaginLoading(false);
+      }, 3000);
+      // Manually reset the controlled inputs
     });
   } catch (error) {
+    setIsLoaginLoading(false);
     if (
       error instanceof TypeError &&
       error.message === 'Network request failed'

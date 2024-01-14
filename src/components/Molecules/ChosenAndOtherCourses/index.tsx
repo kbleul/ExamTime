@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 
 import Header from './Header';
@@ -9,7 +9,7 @@ import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {screenHeight} from '../../../utils/Data/data';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
 import CustomToast from '../CustomToast';
@@ -23,6 +23,20 @@ const getSubjects = (realm: Realm) => {
   } catch (err) {
     console.log('fetch subjects error', err);
   }
+};
+
+const getUnitGrades = (savedGrades: ResultsType<Grade>) => {
+  const ids: string[] = [];
+  const newGrades = [];
+
+  savedGrades.forEach((grade: Grade) => {
+    if (!ids.includes(grade.id)) {
+      newGrades.push(grade);
+      ids.push(grade.id);
+    }
+  });
+
+  return newGrades;
 };
 
 const filterKeys = (realm: Realm): string[] => {
@@ -56,6 +70,7 @@ const ChosenCourses = ({
     return savedgrade.filtered(`id != "${savedUserData[0].grade.id}"`);
   });
 
+  console.log(savedGrades.length);
   const navigator = useNavigation();
   const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
     null,
@@ -65,23 +80,14 @@ const ChosenCourses = ({
 
   const [showAlert, setShowAlert] = useState(false);
 
-  useEffect(() => {
-    const savedSubjects = getSubjects(realm);
-    savedSubjects && savedSubjects.length > 0
-      ? setSubjectsArray([...savedSubjects])
-      : getSubjectsMutation(getSubject, navigator, realm, setSubjectsArray);
-  }, []);
-
-  useEffect(() => {
-    const savedSubjects = getSubjects(realm);
-
-    if (user && savedSubjects) {
-      savedSubjects.length > 0
+  useFocusEffect(
+    useCallback(() => {
+      const savedSubjects = getSubjects(realm);
+      savedSubjects && savedSubjects.length > 0
         ? setSubjectsArray([...savedSubjects])
-        : setSubjectsArray(null);
-    }
-  }, [user]);
-
+        : getSubjectsMutation(getSubject, navigator, realm, setSubjectsArray);
+    }, []),
+  );
   const renderItem = ({item, index}: {item: string; index: number}) => {
     const subject = realm.objects(Subject).filtered(`id = "${item}"`);
     return (
@@ -139,7 +145,7 @@ const ChosenCourses = ({
           <FlatList
             keyExtractor={(item, index) => item.id + 'other' + index}
             data={[
-              ...savedGrades,
+              ...getUnitGrades(savedGrades),
               {id: 'drivingLicenseId', grade: 'Driving Licence'},
             ]}
             renderItem={({item, index}) => renderGreadeItem({item, index})}

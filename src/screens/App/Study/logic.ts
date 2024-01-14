@@ -17,6 +17,8 @@ export const getAllStudies = async (
 ) => {
   if (token) {
     checkIsOnline(navigator);
+
+    console.log('getttttttttt');
     let pageNumber = 1;
     let totalPages = 1;
 
@@ -190,6 +192,19 @@ export const saveStudyToRealm = async (
             });
           });
         }
+      });
+
+      const uniqueIds = new Set();
+      const allStudies = realm.objects(Study);
+
+      realm.write(() => {
+        allStudies.forEach(study => {
+          if (!uniqueIds.has(study.id)) {
+            uniqueIds.add(study.id);
+          } else {
+            realm.delete(study);
+          }
+        });
       });
     } catch (err) {
       console.log(err);

@@ -80,11 +80,14 @@ const NotificationMsg = ({
   const {updateNotificationStatus} = useNotification();
 
   const handlePress = () => {
-    setNotification(
-      message && message.notification
-        ? {...message.notification, wasRead: true}
-        : ' ',
-    );
+    console.log(message);
+
+    if (message && message.notification) {
+      const notifimsg = {...message.notification, wasRead: true};
+      setNotification({...message, notification: {...notifimsg}});
+    } else {
+      setNotification(' ');
+    }
 
     if (message.wasRead === false) {
       updateNotificationStatus(message.id);

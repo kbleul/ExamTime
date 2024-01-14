@@ -17,18 +17,11 @@ import LoginModal from '../../../components/Organisms/LoginModal';
 import Toast from 'react-native-toast-message';
 import {useFocusEffect} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
-import {UserData} from '../../../Realm';
-import {AuthContext} from '../../../Realm/model';
-import {calculateDateDifference} from '../Onboarding/Logic';
 import {useUserStatus} from '../../../context/userStatus';
-import MessageBox from '../../../components/Atoms/MessageBox';
 import LoginBox from '../../../components/Atoms/LoginBox';
 
 const Index = () => {
-  const {useQuery} = AuthContext;
-
-  const savedUserData = useQuery(UserData);
-  const {userStatus, setUserStatus} = useUserStatus();
+  const {userStatus} = useUserStatus();
 
   const [isSyncing, setIsSyncing] = useState(false);
   const {setShowNavigation} = useNavContext();

@@ -27,7 +27,6 @@ import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import {FormData} from '../../screens/Auth/Login/Types';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
-import {RootState} from '../../reduxToolkit/Store';
 import {screenWidth} from '../../utils/Data/data';
 import {useUserStatus} from '../../context/userStatus';
 
@@ -71,9 +70,6 @@ const LoginForm = () => {
   });
 
   const navigator = useNavigation();
-  const IsDefaultPasswordChanged = useSelector(
-    (state: RootState) => state.auth.IsDefaultPasswordChanged,
-  );
 
   const {setUserStatus} = useUserStatus();
 
@@ -83,10 +79,12 @@ const LoginForm = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
 
+  const [isLoginLoading, setIsLoaginLoading] = useState(false);
+
   const [changed, setChanged] = useState(false);
 
   const dispatch = useDispatch();
-  const [login, {isLoading, isError, error}] = useLoginMutation();
+  const [login, {isLoading, error}] = useLoginMutation();
 
   const {useRealm, useQuery, useObject} = AuthContext;
   const realm = useRealm();
@@ -175,13 +173,17 @@ const LoginForm = () => {
       </View>
 
       {error && <Text style={formStyles.error}>{error?.data?.message}</Text>}
-      <TouchableOpacity touchSoundDisabled style={styles.submitContainer}>
-        {isLoading ? (
+      <TouchableOpacity
+        touchSoundDisabled
+        style={styles.submitContainer}
+        disabled={isLoading || isLoginLoading ? true : false}>
+        {isLoading || isLoginLoading ? (
           <ActivityIndicator color={'#FFF'} />
         ) : (
           <Text
             style={styles.submitBtnText}
-            onPress={handleSubmit((data, e) =>
+            onPress={handleSubmit((data, e) => {
+              console.log('clicked');
               handleLogin(
                 data,
                 dispatch,
@@ -193,8 +195,9 @@ const LoginForm = () => {
                 setChanged,
                 getSubject,
                 setUserStatus,
-              ),
-            )}>
+                setIsLoaginLoading,
+              );
+            })}>
             Login
           </Text>
         )}
