@@ -15,6 +15,7 @@ import Config from 'react-native-config';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
 import {userType} from '../../types';
 import {screenWidth} from '../../utils/Data/data';
+import {checkIsOnline} from '../../utils/Functions/Helper';
 
 type FormData = {
   phoneNumber: string;
@@ -63,28 +64,32 @@ const ForgotPasswordForm: React.FC<{
     setSubmitError(null);
 
     try {
-      const url = `${Config.API_URL}user/forgotpassword`;
+      const isOnline = await checkIsOnline(navigator);
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phoneNumber: `+251${data.phoneNumber}`,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(
-          `Send code failed. Please try again ${data.phoneNumber}`,
-        );
+      if (isOnline) {
+        const url = `${Config.API_URL}user/forgotpassword`;
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phoneNumber: `+251${data.phoneNumber}`,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error(
+            `Send code failed. Please try again ${data.phoneNumber}`,
+          );
+        }
+
+        const responseData = await response.json();
+        setIsLoading(false);
+        setSubmitError(null);
+        setUser(responseData.user);
+        setStepCounter(prev => ++prev);
       }
-
-      const responseData = await response.json();
-      setIsLoading(false);
-      setSubmitError(null);
-      setUser(responseData.user);
-      setStepCounter(prev => ++prev);
     } catch (error: any) {
       setIsLoading(false);
       if (
@@ -92,7 +97,6 @@ const ForgotPasswordForm: React.FC<{
         (error.message === 'Network request failed' ||
           error.message === 'AbortError')
       ) {
-        navigator.navigate('network-error');
         return;
       }
 

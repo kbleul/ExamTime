@@ -118,7 +118,6 @@ const useHandleInitialRequests = (
     return exam.filtered('isExamTaken = true');
   });
   const savedExamAnswers = useQuery(ExamAnswers);
-  const savedStudies = useQuery(Study);
 
   const userData = useQuery(UserData);
 
@@ -130,9 +129,7 @@ const useHandleInitialRequests = (
       // if (nextAppState === 'background' || nextAppState === 'inactive') {
       const isConnected = await checkIsOnline();
       if (isConnected) {
-        if (!savedStudies || savedStudies.length === 0) {
-          getAllStudies(getStudy, navigation, token, realm, Toast);
-        }
+        getAllStudies(getStudy, navigation, token, realm, Toast);
 
         if (savedTakenExams.length > 0) {
           // Perform data sync with the database

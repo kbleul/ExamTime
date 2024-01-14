@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {
   BackHandler,
   SafeAreaView,
@@ -19,6 +19,16 @@ import UnitCardWithAccordion from '../../../components/Organisms/UnitCardWithAcc
 import {useNavContext} from '../../../context/bottomNav';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 
+const fectSavedStudies = (realm: Realm, subject: any) => {
+  const savedStudies = realm
+    .objects(Study)
+    .filtered(
+      `subject.id = "${subject.id}" OR subject.subject = "${subject.subject}"`,
+    );
+
+  return savedStudies;
+};
+
 const StudyDetails = ({route}) => {
   const navigationState = useNavigationState(state => state);
   const currentScreen = navigationState.routes[navigationState.index].name;
@@ -28,14 +38,13 @@ const StudyDetails = ({route}) => {
 
   const navigator: any = useNavigation();
 
-  const {useQuery} = AuthContext;
+  const {useRealm} = AuthContext;
 
-  const savedStudies = useQuery(Study, studies => {
-    return studies.filtered(
-      `subject.id = "${subject.id}" OR subject.subject = "${subject.subject}"`,
-    );
-  });
-
+  const realm = useRealm();
+  const savedStudies = useMemo(
+    () => fectSavedStudies(realm, subject),
+    [subject, realm],
+  );
   const [viewStudies, setViewStudies] = useState([...savedStudies]);
   const [showAccordianId, setShowAccordianId] = useState<string | null>(null);
   const [selectedSection, setSelectedSection] = useState(
@@ -59,7 +68,7 @@ const StudyDetails = ({route}) => {
         setViewStudies,
         setSelectedSection,
       );
-  }, []);
+  }, [subject]);
 
   useEffect(() => {
     const backAction = () => {
