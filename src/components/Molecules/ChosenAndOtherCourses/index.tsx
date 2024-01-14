@@ -70,7 +70,6 @@ const ChosenCourses = ({
     return savedgrade.filtered(`id != "${savedUserData[0].grade.id}"`);
   });
 
-  console.log(savedGrades.length);
   const navigator = useNavigation();
   const [subjectsArray, setSubjectsArray] = useState<subjectType[] | null>(
     null,

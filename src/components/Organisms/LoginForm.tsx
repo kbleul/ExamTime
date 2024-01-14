@@ -183,7 +183,6 @@ const LoginForm = () => {
           <Text
             style={styles.submitBtnText}
             onPress={handleSubmit((data, e) => {
-              console.log('clicked');
               handleLogin(
                 data,
                 dispatch,

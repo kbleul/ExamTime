@@ -23,7 +23,6 @@ const ViewFullMessage = ({
   const {deleteNotification} = useNotification();
 
   const [isLoading, setIsLoading] = useState(false);
-  console.log('====', notification);
   const handleDelete = async () => {
     setIsLoading(true);
     const response = await deleteNotification(notification.id);

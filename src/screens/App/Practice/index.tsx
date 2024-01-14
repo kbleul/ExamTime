@@ -80,7 +80,7 @@ const Practice = () => {
       try {
         savedSubjectsArray = getSubjects(realm);
       } catch (err) {
-        console.log('-------------------', err);
+        console.log('--->', err);
       }
 
       if (savedSubjectsArray && savedSubjectsArray.length > 0) {
