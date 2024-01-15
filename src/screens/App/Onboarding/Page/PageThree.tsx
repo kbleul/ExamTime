@@ -53,8 +53,8 @@ const PageThree: React.FC<PagesCounterType> = ({
     getSubjectsMutation(
       getSubject,
       navigator,
-      setSubjectsArray,
       realm,
+      setSubjectsArray,
       null,
       setIsLoadingSubjectsRealm,
       setRelamSaveStatus,

@@ -19,7 +19,7 @@ const tagsStylesQuestion = {
     textAlign: 'left',
     width: screenWidth * 0.9,
     marginLeft: screenWidth * 0.025,
-    fontFamily: 'PoppinsBold',
+    fontFamily: 'PoppinsSemiBold',
     fontWeight: 600,
     textTransform: 'capitalize',
     fontSize: screenWidth * 0.036,
@@ -28,6 +28,18 @@ const tagsStylesQuestion = {
     borderColor: '#E1E1E1',
     borderRadius: 10,
     padding: 10,
+  },
+  li: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.8,
+    marginLeft: screenWidth * 0.025,
+    fontFamily: 'PoppinsSemiBold',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    fontSize: screenWidth * 0.036,
+    padding: 2,
   },
   img: {
     width: screenWidth * 0.8,
@@ -90,7 +102,7 @@ const Accordion = ({study}: {study: Study}) => {
 
   return (
     <View>
-      {study.objective && (
+      {study.objective && study.objective !== 'undefined' && (
         <>
           {isHtml(study.objective) ? (
             <RenderHTML

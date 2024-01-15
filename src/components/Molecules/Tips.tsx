@@ -2,22 +2,30 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {AuthContext} from '../../Realm/model';
-import {StudyTips, Subject, UserData} from '../../Realm';
+import {StudyTips, UserData} from '../../Realm';
 
 import {useGetTipsMutation} from '../../reduxToolkit/Services/auth';
-import {fetchTips} from '../../utils/Functions/Get';
-import {TipType, subjectType} from '../../types';
+import {fetchTips, getRealmSubject} from '../../utils/Functions/Get';
+import {TipType} from '../../types';
 import AllTipsModal from './AllTipsModal';
+import {useNavigation} from '@react-navigation/native';
 
+const getTipsObj = (realm: Realm) => {
+  const tips = realm.objects(StudyTips);
+
+  return tips;
+};
 const Tips: React.FC<{
-  selectedSubject: Subject | subjectType | null;
-}> = ({selectedSubject}) => {
+  selectedSubjectId: string | null | undefined;
+}> = ({selectedSubjectId}) => {
+  const navigator = useNavigation();
+
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
 
   const userData = useQuery(UserData);
 
-  const savedTips = useQuery(StudyTips);
+  const selectedSubject = getRealmSubject(selectedSubjectId, realm);
 
   const [tips, setTips] = useState<TipType[] | null>(null);
 
@@ -26,26 +34,47 @@ const Tips: React.FC<{
   const [getTips] = useGetTipsMutation();
 
   useEffect(() => {
-    if (savedTips.length === 0 && selectedSubject) {
+    const unsubscribe = navigator.addListener('blur', () => {
+      // Your side effects when the screen loses focus
+      setTips(null);
+      setShowTipsModal(false);
+      // Add your side effect code here
+    });
+
+    return () => {
+      // Cleanup the subscription when the component unmounts
+      unsubscribe();
+    };
+  }, [navigator]);
+
+  useEffect(() => {
+    const savedTips = getTipsObj(realm);
+    if (
+      savedTips.length === 0 &&
+      selectedSubject &&
+      selectedSubject.length > 0
+    ) {
       fetchTips(
         getTips,
         realm,
         userData[0]?.grade ? userData[0].grade.id || null : null,
         setTips,
-        selectedSubject,
+        selectedSubject[0],
       );
     }
   }, []);
 
   useEffect(() => {
+    const savedTips = getTipsObj(realm);
+
     if (savedTips) {
       setTips([
         ...savedTips.filter(
-          tip => tip?.subject?.id === selectedSubject?.subject?.id,
+          tip => tip?.subject?.id === selectedSubject[0]?.subject?.id,
         ),
       ]);
     }
-  }, [selectedSubject, savedTips]);
+  }, [selectedSubjectId]);
 
   return (
     <>
@@ -60,7 +89,7 @@ const Tips: React.FC<{
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.tipTitle}>
-              No tips found for {selectedSubject?.subject?.subject}
+              No tips found for {selectedSubject[0]?.subject?.subject}
             </Text>
             <Text style={styles.tipText}>Try anonther subject</Text>
           </View>

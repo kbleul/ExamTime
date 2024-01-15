@@ -10,13 +10,15 @@ import {
   useGetExamAnswersMutation,
   useGetStudyMutation,
   useGetTipsMutation,
+  useGetTrialStatusMutation,
   usePostExamResultsMutation,
 } from '../reduxToolkit/Services/auth';
 import {answersType} from '../screens/App/PracticeQuestion';
 import {getAllStudies} from '../screens/App/Study/logic';
 import {useNavigation} from '@react-navigation/native';
-import {getExamAnswersFromDB} from './logic';
+import {checkTrialStatus, getExamAnswersFromDB} from './logic';
 import {fetchTips} from '../utils/Functions/Get';
+import {useUserStatus} from '../context/userStatus';
 
 export type newAnswerType = {
   [id: string]: {
@@ -108,12 +110,15 @@ const useHandleInitialRequests = (
 
   const [postExamResults] = usePostExamResultsMutation();
   const [getExamAnswers] = useGetExamAnswersMutation();
+
   const [getStudy] = useGetStudyMutation();
+  const [getTrialStatus] = useGetTrialStatusMutation();
 
   const {useQuery, useRealm} = AuthContext;
 
   const realm = useRealm();
 
+  const {setUserStatus} = useUserStatus();
   const savedTakenExams = useQuery(Exam, exam => {
     return exam.filtered('isExamTaken = true');
   });
@@ -130,6 +135,8 @@ const useHandleInitialRequests = (
       const isConnected = await checkIsOnline();
       if (isConnected) {
         getAllStudies(getStudy, navigation, token, realm, Toast);
+
+        checkTrialStatus(getTrialStatus, token ? token : '', setUserStatus);
 
         if (savedTakenExams.length > 0) {
           // Perform data sync with the database
@@ -159,7 +166,6 @@ const useHandleInitialRequests = (
         }
       }
     };
-    // };
 
     user && token && handleSync();
     // AppState.addEventListener('change', handleSync);

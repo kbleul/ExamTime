@@ -6,60 +6,78 @@ import {Subject} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 import {subjectType} from '../../types';
 
+const getSavedSubjects = (
+  realm: Realm,
+  selectedSubjectId: string | null | undefined,
+): string[] | [] => {
+  let savedSubjects = realm.objects(Subject);
+
+  const savedSubjectsIds: string[] = [];
+
+  savedSubjects.forEach(item => {
+    item.id !== selectedSubjectId && savedSubjectsIds.push(item.id);
+  });
+
+  return savedSubjectsIds;
+};
+
 const SubjectSelectViewBox: React.FC<{
-  SelectedSubject: Subject | subjectType | null;
+  SelectedSubjectId: string | null | undefined;
   setSelectedSubject: React.Dispatch<
     React.SetStateAction<subjectType | Subject | null>
   >;
-}> = ({SelectedSubject, setSelectedSubject}) => {
-  const {useQuery} = AuthContext;
-  const savedSubjects = useQuery(Subject);
+}> = ({SelectedSubjectId, setSelectedSubject}) => {
+  const {useQuery, useRealm} = AuthContext;
+  const SelectedSubject = useQuery(Subject, SubjectItem => {
+    return SubjectItem.filtered(`id = "${SelectedSubjectId}"`);
+  });
 
+  const realm = useRealm();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 500);
-  }, [SelectedSubject]);
+  }, [SelectedSubjectId]);
 
-  const renderItem = ({item}: {item: any}) => (
-    <View style={styles.renderStyle}>
-      {SelectedSubject && (
-        <SubjectsButton
-          title={item.subject.subject}
-          updateSelectedSubject={() => {
-            setIsLoading(true);
-            setSelectedSubject(item);
-          }}
-          SelectedSubject={SelectedSubject.id}
-          itemId={item.id}
-        />
-      )}
-    </View>
-  );
+  const renderItem = ({item}: {item: string}) => {
+    const selectedSubject = realm.objects(Subject).filtered(`id = "${item}"`);
 
+    return (
+      <View style={styles.renderStyle}>
+        {SelectedSubjectId &&
+          selectedSubject &&
+          selectedSubject.length > 0 &&
+          selectedSubject[0]?.subject && (
+            <SubjectsButton
+              title={selectedSubject[0]?.subject.subject}
+              updateSelectedSubject={() => {
+                setIsLoading(true);
+                setSelectedSubject(selectedSubject[0]);
+              }}
+              SelectedSubjectId={SelectedSubjectId}
+              itemId={selectedSubject[0].id}
+            />
+          )}
+      </View>
+    );
+  };
   return (
     <View style={styles.subjectsContainer}>
       <View style={styles.subjectsImgContainer}>
-        {SelectedSubject && SelectedSubject.icon && (
-          <ChosenCoursesCard
-            subject={SelectedSubject?.subject}
-            bgImage={{uri: SelectedSubject.icon}}
-            isLoadingSubjects={isLoading}
-          />
+        {SelectedSubject && SelectedSubject[0] && SelectedSubject[0].icon && (
+          <ChosenCoursesCard subjectId={SelectedSubjectId} />
         )}
         <Text style={styles.dot}>1</Text>
       </View>
 
       <View style={styles.subjectsButtonContaier}>
-        {SelectedSubject && (
+        {SelectedSubject && SelectedSubject.length > 0 && (
           <FlatList
-            data={savedSubjects.filter(
-              subject => subject.id !== SelectedSubject.id,
-            )}
+            data={getSavedSubjects(realm, SelectedSubjectId)}
             renderItem={renderItem}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item}
             contentContainerStyle={styles.listContaier}
             style={styles.listContaier}
             numColumns={2} // Set the number of columns to 2 for a 2-column layout
@@ -73,14 +91,14 @@ const SubjectSelectViewBox: React.FC<{
 const SubjectsButton: React.FC<{
   title: string;
   updateSelectedSubject: () => void;
-  SelectedSubject: string;
+  SelectedSubjectId: string;
   itemId: string;
-}> = ({title, updateSelectedSubject, SelectedSubject, itemId}) => {
+}> = ({title, updateSelectedSubject, SelectedSubjectId, itemId}) => {
   return (
     <TouchableOpacity
       touchSoundDisabled
       style={
-        SelectedSubject === itemId
+        SelectedSubjectId === itemId
           ? [styles.subjectsButton, styles.subjectsButtonActive]
           : styles.subjectsButton
       }

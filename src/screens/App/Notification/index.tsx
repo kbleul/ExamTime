@@ -15,6 +15,7 @@ import ViewFullMessage from './ViewFullMessage';
 import {useNotification} from '../../../context/notification';
 import {convertTimestampToRelativeTime} from './logic';
 import MessageBox from '../../../components/Atoms/MessageBox';
+import Toast from 'react-native-toast-message';
 
 const Notification = () => {
   const navigator: any = useNavigation();
@@ -41,7 +42,7 @@ const Notification = () => {
             subTitle="Check back after a while."
           />
         ))}
-      {!notification && (
+      {!notification && notifications && (
         <ScrollView
           contentContainerStyle={IndexStyle.ScrollView}
           showsVerticalScrollIndicator={false}>
@@ -63,6 +64,8 @@ const Notification = () => {
           setNotification={setNotification}
         />
       )}
+
+      <Toast />
     </SafeAreaView>
   );
 };
@@ -77,12 +80,19 @@ const NotificationMsg = ({
   const {updateNotificationStatus} = useNotification();
 
   const handlePress = () => {
-    setNotification(message ? {...message, wasRead: true} : ' ');
+    if (message && message.notification) {
+      const notifimsg = {...message.notification, wasRead: true};
+      setNotification({...message, notification: {...notifimsg}});
+    } else {
+      setNotification(' ');
+    }
 
     if (message.wasRead === false) {
       updateNotificationStatus(message.id);
     }
   };
+
+  const notificationObject = message.notification;
   return (
     <TouchableOpacity
       touchSoundDisabled
@@ -94,15 +104,17 @@ const NotificationMsg = ({
             ? [messageStyle.msgText, messageStyle.msgTextViewed]
             : messageStyle.msgText
         }>
-        {message.notification ? message.notification : ' '}
+        {notificationObject.notification
+          ? notificationObject.notification
+          : ' '}
       </Text>
       <Text
         style={
-          message.wasRead
+          notificationObject.wasRead
             ? [messageStyle.dateText, messageStyle.msgTextViewed]
             : messageStyle.dateText
         }>
-        {convertTimestampToRelativeTime(message.createdAt)}
+        {convertTimestampToRelativeTime(notificationObject.createdAt)}
       </Text>
     </TouchableOpacity>
   );

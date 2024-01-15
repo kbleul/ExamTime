@@ -213,6 +213,8 @@ export const DeleteUserAccount = async (
 
     removeRealmUserData(realm, savedUserData);
   } catch (error) {
+    dispatch(logoutSuccess());
+
     if (
       error instanceof TypeError &&
       error.message === 'Network request failed'

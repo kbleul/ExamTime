@@ -1,7 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {userType} from '../../types';
 import Config from 'react-native-config';
-import {Credentials} from 'realm/dist/bundle';
 
 type ExamParamsType = {
   page?: number;

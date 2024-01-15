@@ -49,6 +49,7 @@ const style = StyleSheet.create({
     height: screenHeight,
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: screenWidth * 0.03,
   },
   imgContainer: {
     width: '100%',

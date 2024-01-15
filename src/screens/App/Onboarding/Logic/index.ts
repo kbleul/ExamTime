@@ -1,4 +1,3 @@
-import {NavigationProp} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   LocalObjectDataKeys,
@@ -8,6 +7,7 @@ import {
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
 import {subjectType} from '../../../../types';
+import {UserData} from '../../../../Realm';
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -91,7 +91,24 @@ export const createRealmSubjectsData = async (
     | React.Dispatch<React.SetStateAction<boolean>>
     | null
     | undefined,
+  isLogin?: boolean,
 ) => {
+  const savedSubjects = realm.objects(LocalObjectDataKeys.Subject);
+  const userData: any = realm.objects(LocalObjectDataKeys.UserData);
+  //remove previous saved subjects
+
+  try {
+    realm.write(() => {
+      realm.delete(savedSubjects);
+
+      if (isLogin) {
+        userData[0].selectedSubjects = [];
+      }
+    });
+  } catch (err) {
+    console.log('Remove previous saved subjects', err);
+  }
+
   try {
     subjects.forEach(subject => {
       const {
@@ -126,6 +143,6 @@ export const createRealmSubjectsData = async (
     });
     setIsLoadingSubjectsRealm && setIsLoadingSubjectsRealm(false);
   } catch (err) {
-    console.log(err);
+    console.log('Error saving new subjects', err);
   }
 };

@@ -22,10 +22,6 @@ export const menuStyle = StyleSheet.create({
   container: {
     height: 60,
   },
-  srollContainer: {
-    width: screenWidth,
-    marginBottom: 1,
-  },
   contentContainer: {
     flexDirection: 'row',
     justifyContent: 'center',

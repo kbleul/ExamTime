@@ -3,7 +3,7 @@ import RNFS from 'react-native-fs';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
-import {LocalObjectDataKeys} from '../../../utils/Data/data';
+import {LocalObjectDataKeys, NumberConverter} from '../../../utils/Data/data';
 import {Study} from '../../../Realm';
 
 type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[11];
@@ -11,30 +11,41 @@ type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[11];
 export const getAllStudies = async (
   getStudy: StudyMutationFn,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
-  token: string | null,
+  token: string,
   realm: Realm,
   Toast: any,
 ) => {
   if (token) {
     checkIsOnline(navigator);
-    try {
-      const response = await getStudy({
-        token,
-      }).unwrap();
-      saveStudyToRealm(realm, response.studies, Toast);
-    } catch (error) {
-      if (
-        error instanceof TypeError &&
-        error.message === 'Network request failed'
-      ) {
-        navigator.navigate('network-error');
-      }
 
-      Toast.show({
-        type: 'error',
-        text1: 'Error fetching studeies',
-      });
-      return false;
+    let pageNumber = 1;
+    let totalPages = 1;
+
+    while (pageNumber <= totalPages) {
+      try {
+        const response = await getStudy({
+          token,
+          pageNumber,
+        }).unwrap();
+
+        ++pageNumber;
+
+        totalPages = response.totalPages;
+
+        saveStudyToRealm(realm, response.studies, Toast);
+      } catch (error) {
+        if (
+          error instanceof TypeError &&
+          error.message === 'Network request failed'
+        ) {
+          navigator.navigate('network-error');
+        }
+        Toast.show({
+          type: 'error',
+          text1: 'Error fetching studeies',
+        });
+        return false;
+      }
     }
   }
 };
@@ -49,6 +60,7 @@ export const saveStudyToRealm = async (
       studies.forEach(study => {
         //check if Study is aleady saved
         const isSaved = realm.objects(Study).filtered(`id = "${study.id}"`);
+
         if (isSaved.length === 0) {
           const {
             id,
@@ -72,6 +84,12 @@ export const saveStudyToRealm = async (
           const sectionString =
             section && section.section ? section.section : '';
 
+          let savedGrade: Results<
+            RealmObject<DefaultObject, never> & DefaultObject
+          > | null = realm
+            .objects(LocalObjectDataKeys.Grade)
+            .filtered(`id = "${grade.id}"`);
+
           realm.write(async () => {
             const subjectObject = realm.create(
               LocalObjectDataKeys.SingleSubject,
@@ -83,12 +101,14 @@ export const saveStudyToRealm = async (
               },
             );
 
-            const gradeObject = realm.create(LocalObjectDataKeys.Grade, {
-              id: grade.id,
-              grade: grade.grade,
-              createdAt: grade.createdAt,
-              updatedAt: grade.updatedAt,
-            });
+            if (!savedGrade || savedGrade.length === 0) {
+              savedGrade = realm.create(LocalObjectDataKeys.Grade, {
+                id: grade.id,
+                grade: grade.grade,
+                createdAt: grade.createdAt,
+                updatedAt: grade.updatedAt,
+              });
+            }
 
             const examQuestionArr: examQuestionType[] = [];
             const pdfObjArr: pdfType[] = [];
@@ -153,7 +173,7 @@ export const saveStudyToRealm = async (
                     isPublished,
                     createdAt,
                     updatedAt,
-                    grade: gradeObject,
+                    grade: savedGrade[0],
                     subject: subjectObject,
                     year: yearString,
                     unit: unitString,
@@ -171,6 +191,19 @@ export const saveStudyToRealm = async (
             });
           });
         }
+      });
+
+      const uniqueIds = new Set();
+      const allStudies = realm.objects(Study);
+
+      realm.write(() => {
+        allStudies.forEach(study => {
+          if (!uniqueIds.has(study.id)) {
+            uniqueIds.add(study.id);
+          } else {
+            realm.delete(study);
+          }
+        });
       });
     } catch (err) {
       console.log(err);
@@ -262,8 +295,25 @@ export const filterStudies = (
     (study: Study) => study.section === selectedSection,
   );
 
-  setViewStudies([...filteredStudies]);
+  const sortedStudies = sortStudies(filteredStudies);
+  setViewStudies([...sortedStudies]);
   setSelectedSection(selectedSection);
+};
+
+const sortStudies = (filteredStudies: ResultsType<Study>) => {
+  return filteredStudies.sort((a, b) => {
+    const nameA = a.unit.split(' ')[1].trim();
+    const nameB = b.unit.split(' ')[1].trim();
+
+    const num1 = NumberConverter.get(nameA);
+    const num2 = NumberConverter.get(nameB);
+
+    if (num1 && num2) {
+      return num1 - num2;
+    }
+
+    return 0;
+  });
 };
 
 export const calculateStudyProgress = (studyUnits: Study[]) => {

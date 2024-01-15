@@ -18,6 +18,22 @@ import {
 } from '../../reduxToolkit/Services/auth';
 import {fetchRegions, handleCreateUser} from '../../screens/Auth/Signup/Logic';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
+import {AuthContext} from '../../Realm/model';
+import {Grade} from '../../Realm';
+
+const getGrades = (savedGrades: Results<Grade>): {grade: string}[] => {
+  const uniqueArray = [];
+  const uniqueNames: any = {};
+
+  for (const gradeObj of savedGrades) {
+    const name = gradeObj.grade;
+    if (!uniqueNames[name]) {
+      uniqueArray.push(gradeObj);
+      uniqueNames[name] = true;
+    }
+  }
+  return uniqueArray;
+};
 const schema = yup.object().shape({
   firstName: yup
     .string()
@@ -81,6 +97,8 @@ const SignupForm: React.FC<seterProps> = ({
 
   const [gender, setGender] = useState<string | null>(null);
   const [region, setRegion] = useState<string | null>(null);
+  const [grade, setGrade] = useState<string | null>(null);
+
   const [genderError, setGenderError] = useState<string | null>(null);
   const [regionError, setRegionError] = useState<string | null>(null);
 
@@ -92,6 +110,10 @@ const SignupForm: React.FC<seterProps> = ({
     getRegions,
     {isLoading: isLoadingRegions, isError: isErrorRegion, error: errorRegion},
   ] = useGetRegionsMutation();
+
+  const {useQuery} = AuthContext;
+
+  const savedGrades = useQuery(Grade);
 
   useEffect(() => {
     fetchRegions(getRegions, setRegionsListItems, navigator);
@@ -184,6 +206,49 @@ const SignupForm: React.FC<seterProps> = ({
           <Text style={formStyles.error}>{errors.email.message} *</Text>
         ) : (
           <Text style={formStyles.error}>{''}</Text>
+        )}
+      </View>
+
+      <View style={formStyles.inputContainerGrade}>
+        <View style={formStyles.inputContainer}>
+          <Text style={formStyles.label}>Grade </Text>
+
+          <Dropdown
+            style={[
+              formStyles.dropdown,
+              isFocusRegion && {borderColor: 'blue'},
+            ]}
+            placeholderStyle={formStyles.placeholderStyle}
+            selectedTextStyle={formStyles.selectedTextStyle}
+            inputSearchStyle={formStyles.inputSearchStyle}
+            itemTextStyle={formStyles.itemListStyle}
+            iconStyle={formStyles.iconStyle}
+            data={[...getGrades(savedGrades)]}
+            search
+            maxHeight={300}
+            labelField="grade"
+            valueField="grade"
+            placeholder={!isFocusRegion ? 'Select Grade' : '...'}
+            searchPlaceholder="Search grades"
+            value={grade}
+            onFocus={() => setIsFocusRegion(true)}
+            onBlur={() => setIsFocusRegion(false)}
+            onChange={item => {
+              setGrade(item.grade);
+              setIsFocusRegion(false);
+            }}
+          />
+
+          {!grade ? (
+            <Text style={formStyles.error}>Grade is required *</Text>
+          ) : (
+            <Text style={formStyles.error}>{''}</Text>
+          )}
+        </View>
+
+        {error && <Text style={formStyles.error}>{error?.data?.message}</Text>}
+        {errorRegion && (
+          <Text style={formStyles.error}>{errorRegion?.data?.message}</Text>
         )}
       </View>
 
@@ -284,6 +349,7 @@ const SignupForm: React.FC<seterProps> = ({
               createUser,
               navigator,
               gender,
+              grade,
               setGenderError,
               region,
               setRegionError,

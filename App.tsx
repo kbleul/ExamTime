@@ -14,6 +14,7 @@ import {StatusBar} from 'react-native';
 import NavProvider from './src/context/bottomNav';
 import Routes from './src/navigation/Index';
 import OnboardingProvider from './src/context/onboarding';
+import UserStatusProvider from './src/context/userStatus';
 
 function App(): React.JSX.Element {
   const {RealmProvider} = AuthContext;
@@ -29,15 +30,17 @@ function App(): React.JSX.Element {
         <GluestackUIProvider config={config.theme}>
           <Provider store={store}>
             <OnboardingProvider>
-              <NavProvider>
-                <StatusBar
-                  barStyle="dark-content"
-                  hidden={false}
-                  backgroundColor="#F9FCFF"
-                  translucent={true}
-                />
-                <Routes Stack={Stack} />
-              </NavProvider>
+              <UserStatusProvider>
+                <NavProvider>
+                  <StatusBar
+                    barStyle="dark-content"
+                    hidden={false}
+                    backgroundColor="#F9FCFF"
+                    translucent={true}
+                  />
+                  <Routes Stack={Stack} />
+                </NavProvider>
+              </UserStatusProvider>
             </OnboardingProvider>
           </Provider>
         </GluestackUIProvider>

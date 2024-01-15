@@ -79,6 +79,8 @@ const RandomQuestionsView = ({route}: {route: any}) => {
           setCurrentViewExam(response?.randomQuestions);
           setExam(response?.randomQuestions);
 
+          setShowNavigation(false);
+
           const backAction = () => {
             isLoading || error
               ? navigator.navgate('Practice')
@@ -90,13 +92,14 @@ const RandomQuestionsView = ({route}: {route: any}) => {
 
           return () => backHandler && backHandler.remove();
         } catch (err: any) {
+          console.log(err);
           backHandler && backHandler.remove();
         }
       }
     };
 
     getExam();
-  }, [error]);
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -131,9 +134,8 @@ const RandomQuestionsView = ({route}: {route: any}) => {
     }
   }, [showFullPage]);
 
-  useEffect(() => {
-    setShowNavigation(false);
-  }, []);
+  // useEffect(() => {
+  // }, []);
 
   const filterUnansweredQuestions = () => {
     if (exam) {

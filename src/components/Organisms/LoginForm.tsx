@@ -17,15 +17,18 @@ import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {useLoginMutation} from '../../reduxToolkit/Services/auth';
+import {
+  useGetSubjectMutation,
+  useLoginMutation,
+} from '../../reduxToolkit/Services/auth';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
 import {handleLogin} from '../../screens/Auth/Login/Logic';
 import {loginSuccess} from '../../reduxToolkit/Features/auth/authSlice';
 import {FormData} from '../../screens/Auth/Login/Types';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
-import {RootState} from '../../reduxToolkit/Store';
 import {screenWidth} from '../../utils/Data/data';
+import {useUserStatus} from '../../context/userStatus';
 
 const schema = yup.object().shape({
   phoneNumber: yup
@@ -67,9 +70,8 @@ const LoginForm = () => {
   });
 
   const navigator = useNavigation();
-  const IsDefaultPasswordChanged = useSelector(
-    (state: RootState) => state.auth.IsDefaultPasswordChanged,
-  );
+
+  const {setUserStatus} = useUserStatus();
 
   const [showPassword, setShowPassword] = useState(true);
   const [rememberMe, setRememberMe] = useState(false);
@@ -77,15 +79,19 @@ const LoginForm = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
 
+  const [isLoginLoading, setIsLoaginLoading] = useState(false);
+
   const [changed, setChanged] = useState(false);
 
   const dispatch = useDispatch();
-  const [login, {isLoading, isError, error}] = useLoginMutation();
+  const [login, {isLoading, error}] = useLoginMutation();
 
   const {useRealm, useQuery, useObject} = AuthContext;
   const realm = useRealm();
   const savedUserData = useQuery(UserData);
   const newUserData = useObject(UserData, savedUserData[0]?._id);
+
+  const [getSubject] = useGetSubjectMutation();
 
   useEffect(() => {
     // Reset the form fields when the component mounts
@@ -167,13 +173,16 @@ const LoginForm = () => {
       </View>
 
       {error && <Text style={formStyles.error}>{error?.data?.message}</Text>}
-      <TouchableOpacity touchSoundDisabled style={styles.submitContainer}>
-        {isLoading ? (
+      <TouchableOpacity
+        touchSoundDisabled
+        style={styles.submitContainer}
+        disabled={isLoading || isLoginLoading ? true : false}>
+        {isLoading || isLoginLoading ? (
           <ActivityIndicator color={'#FFF'} />
         ) : (
           <Text
             style={styles.submitBtnText}
-            onPress={handleSubmit((data, e) =>
+            onPress={handleSubmit((data, e) => {
               handleLogin(
                 data,
                 dispatch,
@@ -182,10 +191,12 @@ const LoginForm = () => {
                 navigator,
                 newUserData,
                 realm,
-                IsDefaultPasswordChanged,
                 setChanged,
-              ),
-            )}>
+                getSubject,
+                setUserStatus,
+                setIsLoaginLoading,
+              );
+            })}>
             Login
           </Text>
         )}

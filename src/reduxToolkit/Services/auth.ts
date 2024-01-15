@@ -30,8 +30,6 @@ export const api = createApi({
     }),
     createUser: build.mutation<{user: userType}, SignupDataType>({
       query: credentials => {
-        credentials.grade = credentials.grade?.grade;
-
         return {
           url: 'user/create',
           method: 'POST',
@@ -203,11 +201,14 @@ export const api = createApi({
         };
       },
     }),
-    getStudy: build.mutation<{styudies: studyType[]}, {token: string}>({
+    getStudy: build.mutation<
+      {studies: studyType[]},
+      {token: string; pageNumber: number}
+    >({
       query: credentials => {
         return {
-          url: 'study/user/study',
-          method: 'Get',
+          url: `study/user/study?page=${credentials.pageNumber}`,
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${credentials.token}`,
@@ -392,6 +393,17 @@ export const api = createApi({
         };
       },
     }),
+    getTrialStatus: build.mutation<{status: any}, {token: string}>({
+      query: data => {
+        return {
+          url: 'trial-version/user/trialversion',
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -424,4 +436,5 @@ export const {
   useGetNotificationsMutation,
   usePostNotificationStatusMutation,
   useDeleteNotificationStatusMutation,
+  useGetTrialStatusMutation,
 } = api;

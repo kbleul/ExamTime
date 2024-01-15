@@ -18,6 +18,14 @@ type ProfileMenuItems = {
 
 type TopCatagoriesType = string[];
 
+export const STATUSTYPES = {
+  Trial: 'Trial',
+  NotAuthorized: 'NotAuthorized',
+  Authorized: 'Authorized',
+  Subscribed: 'Subscribed',
+  Unsubscribed: 'Unsubscribed',
+};
+
 export const CourseCatagories: TopCatagoriesType = ['Study', 'Challenge'];
 export const TestQustionsCatagories: TopCatagoriesType = [
   'Model Questions',
@@ -187,3 +195,108 @@ export const gradesImages: {[key: number]: any} = {
   7: img4,
   100: img5,
 };
+
+export const NumberConverter = new Map();
+
+NumberConverter.set('One', 1);
+NumberConverter.set('Two', 2);
+NumberConverter.set('Three', 3);
+NumberConverter.set('Four', 4);
+NumberConverter.set('Five', 5);
+NumberConverter.set('Six', 6);
+NumberConverter.set('Seven', 7);
+NumberConverter.set('Eight', 8);
+NumberConverter.set('Nine', 9);
+NumberConverter.set('Ten', 10);
+NumberConverter.set('Eleven', 11);
+NumberConverter.set('Twelve', 12);
+NumberConverter.set('Thirteen', 13);
+NumberConverter.set('Fourteen', 14);
+NumberConverter.set('Fifteen', 15);
+NumberConverter.set('Sixteen', 16);
+NumberConverter.set('Seventeen', 17);
+NumberConverter.set('Eighteen', 18);
+NumberConverter.set('Nineteen', 19);
+NumberConverter.set('Twenty', 20);
+NumberConverter.set('Twenty One', 21);
+NumberConverter.set('Twenty Two', 22);
+NumberConverter.set('Twenty Three', 23);
+NumberConverter.set('Twenty Four', 24);
+NumberConverter.set('Twenty Five', 25);
+NumberConverter.set('Twenty Six', 26);
+NumberConverter.set('Twenty Seven', 27);
+NumberConverter.set('Twenty Eight', 28);
+NumberConverter.set('Twenty Nine', 29);
+NumberConverter.set('Thirty', 30);
+NumberConverter.set('Thirty One', 31);
+NumberConverter.set('Thirty Two', 32);
+NumberConverter.set('Thirty Three', 33);
+NumberConverter.set('Thirty Four', 34);
+NumberConverter.set('Thirty Five', 35);
+NumberConverter.set('Thirty Six', 36);
+NumberConverter.set('Thirty Seven', 37);
+NumberConverter.set('Thirty Eight', 38);
+NumberConverter.set('Thirty Nine', 39);
+NumberConverter.set('Forty', 40);
+NumberConverter.set('Forty One', 41);
+NumberConverter.set('Forty Two', 42);
+NumberConverter.set('Forty Three', 43);
+NumberConverter.set('Forty Four', 44);
+NumberConverter.set('Forty Five', 45);
+NumberConverter.set('Forty Six', 46);
+NumberConverter.set('Forty Seven', 47);
+NumberConverter.set('Forty Eight', 48);
+NumberConverter.set('Forty Nine', 49);
+NumberConverter.set('Fifty', 50);
+NumberConverter.set('Fifty One', 51);
+NumberConverter.set('Fifty Two', 52);
+NumberConverter.set('Fifty Three', 53);
+NumberConverter.set('Fifty Four', 54);
+NumberConverter.set('Fifty Five', 55);
+NumberConverter.set('Fifty Six', 56);
+NumberConverter.set('Fifty Seven', 57);
+NumberConverter.set('Fifty Eight', 58);
+NumberConverter.set('Fifty Nine', 59);
+NumberConverter.set('Sixty', 60);
+NumberConverter.set('Sixty One', 61);
+NumberConverter.set('Sixty Two', 62);
+NumberConverter.set('Sixty Three', 63);
+NumberConverter.set('Sixty Four', 64);
+NumberConverter.set('Sixty Five', 65);
+NumberConverter.set('Sixty Six', 66);
+NumberConverter.set('Sixty Seven', 67);
+NumberConverter.set('Sixty Eight', 68);
+NumberConverter.set('Sixty Nine', 69);
+NumberConverter.set('Seventy', 70);
+NumberConverter.set('Seventy One', 71);
+NumberConverter.set('Seventy Two', 72);
+NumberConverter.set('Seventy Three', 73);
+NumberConverter.set('Seventy Four', 74);
+NumberConverter.set('Seventy Five', 75);
+NumberConverter.set('Seventy Six', 76);
+NumberConverter.set('Seventy Seven', 77);
+NumberConverter.set('Seventy Eight', 78);
+NumberConverter.set('Seventy Nine', 79);
+NumberConverter.set('Eighty', 80);
+NumberConverter.set('Eighty One', 81);
+NumberConverter.set('Eighty Two', 82);
+NumberConverter.set('Eighty Three', 83);
+NumberConverter.set('Eighty Four', 84);
+NumberConverter.set('Eighty Five', 85);
+NumberConverter.set('Eighty Six', 86);
+NumberConverter.set('Eighty Seven', 87);
+NumberConverter.set('Eighty Eight', 88);
+NumberConverter.set('Eighty Eight', 88);
+NumberConverter.set('Eighty Nine', 89);
+
+NumberConverter.set('Ninety', 90);
+NumberConverter.set('Ninety One', 91);
+NumberConverter.set('Ninety Two', 92);
+NumberConverter.set('Ninety Three', 93);
+NumberConverter.set('Ninety Four', 94);
+NumberConverter.set('Ninety Five', 95);
+NumberConverter.set('Ninety Six', 96);
+NumberConverter.set('Ninety Seven', 97);
+NumberConverter.set('Ninety Eight', 98);
+NumberConverter.set('Ninety Nine', 99);
+NumberConverter.set('One Hundred', 100);

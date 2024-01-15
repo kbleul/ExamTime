@@ -19,82 +19,93 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from '@gluestack-ui/themed';
-import {subjectType} from '../../types';
+import {AuthContext} from '../../Realm/model';
+import {getRealmSubject} from '../../utils/Functions/Get';
 
 const RandomQuestions = ({
-  selectedSubject,
+  selectedSubjectId,
 }: {
-  selectedSubject: Subject | subjectType | null;
+  selectedSubjectId: string | null | undefined;
 }) => {
   const navigator: any = useNavigation();
   const [currentAmount, setCurrentAmount] = useState(10);
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
+
+  const selectedSubject = getRealmSubject(selectedSubjectId, realm);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Random Questions</Text>
 
-      <View style={styles.sliderContainer}>
-        <View style={styles.sliderSubContainer}>
-          <View style={styles.sliderWrapper}>
-            <Slider
-              step={10}
-              sliderTrackHeight={4}
-              value={currentAmount}
-              maxValue={100}
-              minValue={0}
-              onChange={v => {
-                setCurrentAmount(v);
-              }}>
-              <SliderTrack>
-                <SliderFilledTrack bg="#1E90FF" />
-              </SliderTrack>
-              <SliderThumb bg="#1E90FF" />
-            </Slider>
-          </View>
+      {selectedSubject && selectedSubject.length > 0 && (
+        <View style={styles.sliderContainer}>
+          <View style={styles.sliderSubContainer}>
+            <View style={styles.sliderWrapper}>
+              <Slider
+                step={10}
+                sliderTrackHeight={4}
+                value={currentAmount}
+                maxValue={100}
+                minValue={0}
+                onChange={v => {
+                  setCurrentAmount(v);
+                }}>
+                <SliderTrack>
+                  <SliderFilledTrack bg="#1E90FF" />
+                </SliderTrack>
+                <SliderThumb bg="#1E90FF" />
+              </Slider>
+            </View>
 
-          <View style={styles.sliderTextContainer}>
-            <Text style={styles.sliderText}>10 minimum</Text>
-            <Text style={styles.sliderText}>{currentAmount}</Text>
-            <Text style={styles.sliderText}>100 max</Text>
+            <View style={styles.sliderTextContainer}>
+              <Text style={styles.sliderText}>10 minimum</Text>
+              <Text style={styles.sliderText}>{currentAmount}</Text>
+              <Text style={styles.sliderText}>100 max</Text>
+            </View>
           </View>
+          <TouchableOpacity
+            touchSoundDisabled
+            style={styles.startButton}
+            disabled={isLoading}
+            onPress={async () => {
+              setIsLoading(true);
+
+              let isonline = await checkIsOnline(navigator);
+              if (isonline) {
+                navigator.navigate('Random-Exam', {
+                  selectedSubject: selectedSubject[0],
+                  amount: currentAmount,
+                });
+                setTimeout(() => setCurrentAmount(10), 1500);
+              } else {
+                Toast.show({
+                  type: 'error',
+                  text1: 'Fetch random exams failed.',
+                  text2: 'Network Error',
+                });
+              }
+
+              setIsLoading(false);
+            }}>
+            {isLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.startButtonText}>Start</Text>
+            )}
+            {!isLoading && (
+              <AntDesign
+                name="right"
+                color="white"
+                size={screenWidth * 0.035}
+              />
+            )}
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          touchSoundDisabled
-          style={styles.startButton}
-          onPress={async () => {
-            setIsLoading(true);
-
-            let isonline = await checkIsOnline(navigator);
-
-            if (isonline) {
-              navigator.navigate('Random-Exam', {
-                selectedSubject: selectedSubject,
-                amount: currentAmount,
-              });
-
-              setTimeout(() => setCurrentAmount(10), 1500);
-            } else {
-              Toast.show({
-                type: 'error',
-                text1: 'Fetch random exams failed.',
-                text2: 'Network Error',
-              });
-            }
-
-            setIsLoading(false);
-          }}>
-          {isLoading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.startButtonText}>Start</Text>
-          )}
-          {!isLoading && (
-            <AntDesign name="right" color="white" size={screenWidth * 0.035} />
-          )}
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 };

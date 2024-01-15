@@ -50,7 +50,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       </Text>
 
       <View style={HeaderStyle.container}>
-        {trialDayCounter !== null && !isSubscribed && (
+        {trialDayCounter !== null && !isSubscribed && !user && (
           <View style={HeaderStyle.leftContainer}>
             <Text style={HeaderStyle.leftContainer_text}>
               {trialDayCounter < 0 ? 0 : trialDayCounter} days left

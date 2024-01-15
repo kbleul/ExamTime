@@ -115,3 +115,11 @@ export const saveTipsToRealm = (tips: any, realm: Realm) => {
     });
   }
 };
+
+export const getRealmSubject = (
+  subjectId: string | null | undefined,
+  realm: Realm,
+) => {
+  const subject = realm.objects(Subject).filtered(`id = "${subjectId}"`);
+  return subject;
+};

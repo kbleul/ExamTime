@@ -1,9 +1,13 @@
 import {Exam, UserExamAnswers} from '../Realm';
-import {useGetExamAnswersMutation} from '../reduxToolkit/Services/auth';
+import {
+  useGetExamAnswersMutation,
+  useGetTrialStatusMutation,
+} from '../reduxToolkit/Services/auth';
 import {examType} from '../types';
-import {LocalObjectDataKeys} from '../utils/Data/data';
+import {LocalObjectDataKeys, STATUSTYPES} from '../utils/Data/data';
 
 type ExamAnswersMutationFn = ReturnType<typeof useGetExamAnswersMutation>[0];
+type getTrialMutationFn = ReturnType<typeof useGetTrialStatusMutation>[0];
 
 type responseType = {
   id: string;
@@ -98,6 +102,29 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
           });
         } catch (err) {}
       }
+    }
+  }
+};
+
+export const checkTrialStatus = async (
+  getTrialStatus: getTrialMutationFn,
+  token: string,
+  setUserStatus: any,
+) => {
+  if (token) {
+    try {
+      const response: any = await getTrialStatus({
+        token,
+      }).unwrap();
+      if (response && response.length > 0 && response[0].remainingDays) {
+        if (parseInt(response[0].remainingDays) <= 0) {
+          setUserStatus(STATUSTYPES.Unsubscribed);
+        } else if (parseInt(response[0].remainingDays) > 0) {
+          setUserStatus(STATUSTYPES.Authorized);
+        }
+      }
+    } catch (error) {
+      console.error('Error checking trial version status. ', error);
     }
   }
 };

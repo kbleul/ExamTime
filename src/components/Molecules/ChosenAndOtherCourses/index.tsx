@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 
 import Header from './Header';
@@ -9,20 +9,62 @@ import {AuthContext} from '../../../Realm/model';
 import {subjectType} from '../../../types';
 import {PushFavorateToFront} from '../../../utils/Functions/Helper';
 import {screenHeight} from '../../../utils/Data/data';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
 import CustomToast from '../CustomToast';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
+
+const getSubjects = (realm: Realm) => {
+  try {
+    const savedSubjects = realm.objects(Subject);
+    return savedSubjects;
+  } catch (err) {
+    console.log('fetch subjects error', err);
+  }
+};
+
+const getUnitGrades = (savedGrades: ResultsType<Grade>) => {
+  const ids: string[] = [];
+  const newGrades = [];
+
+  savedGrades.forEach((grade: Grade) => {
+    if (!ids.includes(grade.id)) {
+      newGrades.push(grade);
+      ids.push(grade.id);
+    }
+  });
+
+  return newGrades;
+};
+
+const filterKeys = (realm: Realm): string[] => {
+  const savedUserData = realm.objects(UserData);
+  const filteredArr = PushFavorateToFront(
+    savedUserData && savedUserData.length > 0
+      ? savedUserData[0].selectedSubjects
+      : null,
+    getSubjects(realm),
+  );
+
+  const studyIds: string[] = [];
+
+  filteredArr.forEach(study => studyIds.push(study.id));
+
+  return studyIds;
+};
 
 const ChosenCourses = ({
   setLoginModalVisible,
 }: {
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
 
-  const savedSubjects = useQuery(Subject);
   const savedUserData = useQuery(UserData);
   const savedGrades = useQuery(Grade, savedgrade => {
     return savedgrade.filtered(`id != "${savedUserData[0].grade.id}"`);
@@ -37,20 +79,21 @@ const ChosenCourses = ({
 
   const [showAlert, setShowAlert] = useState(false);
 
-  useEffect(() => {
-    savedSubjects && savedSubjects.length > 0
-      ? setSubjectsArray([...savedSubjects])
-      : getSubjectsMutation(getSubject, navigator, setSubjectsArray, realm);
-  }, []);
-
-  const renderItem = ({item, index}: {item: subjectType; index: number}) => {
+  useFocusEffect(
+    useCallback(() => {
+      const savedSubjects = getSubjects(realm);
+      savedSubjects && savedSubjects.length > 0
+        ? setSubjectsArray([...savedSubjects])
+        : getSubjectsMutation(getSubject, navigator, realm, setSubjectsArray);
+    }, []),
+  );
+  const renderItem = ({item, index}: {item: string; index: number}) => {
+    const subject = realm.objects(Subject).filtered(`id = "${item}"`);
     return (
       <View>
-        {item && item.icon && (
+        {subject && subject.length > 0 && subject[0].icon && (
           <ChosenCoursesCard
-            subject={item.subject}
-            subjectId={item.id}
-            bgImage={{uri: item.icon}}
+            subjectId={subject[0].id}
             setLoginModalVisible={setLoginModalVisible}
             timerValue={(index + 1) * 200}
             setShowAlert={setShowAlert}
@@ -84,13 +127,8 @@ const ChosenCourses = ({
 
       {subjectsArray && subjectsArray.length > 0 && (
         <FlatList
-          keyExtractor={(item, index) => item.id + 'my-course' + index}
-          data={PushFavorateToFront(
-            savedUserData && savedUserData.length > 0
-              ? savedUserData[0].selectedSubjects
-              : null,
-            subjectsArray,
-          )}
+          keyExtractor={(item, index) => item + 'my-course' + index}
+          data={filterKeys(realm)}
           renderItem={index => renderItem(index)}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -106,7 +144,7 @@ const ChosenCourses = ({
           <FlatList
             keyExtractor={(item, index) => item.id + 'other' + index}
             data={[
-              ...savedGrades,
+              ...getUnitGrades(savedGrades),
               {id: 'drivingLicenseId', grade: 'Driving Licence'},
             ]}
             renderItem={({item, index}) => renderGreadeItem({item, index})}

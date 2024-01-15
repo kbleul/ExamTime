@@ -7,7 +7,9 @@ import {useDispatch} from 'react-redux';
 import {removeRealmUserData} from '../../utils/Functions/Helper';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
-import {screenWidth} from '../../utils/Data/data';
+import {STATUSTYPES, screenWidth} from '../../utils/Data/data';
+import {useUserStatus} from '../../context/userStatus';
+import {calculateDateDifference} from '../../screens/App/Onboarding/Logic';
 
 const LogoutAlertBox: React.FC<{
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +20,8 @@ const LogoutAlertBox: React.FC<{
 
   const savedUserData = useQuery(UserData);
 
+  const {setUserStatus} = useUserStatus();
+
   const navigator = useNavigation();
   const [removeDtata, setRemoveData] = useState(false);
 
@@ -25,6 +29,9 @@ const LogoutAlertBox: React.FC<{
     dispatch(logoutSuccess());
     removeRealmUserData(realm, savedUserData);
     setShowLogoutDialog(false);
+    calculateDateDifference(savedUserData[0].initialDate) > 2
+      ? setUserStatus(STATUSTYPES.NotAuthorized)
+      : setUserStatus(STATUSTYPES.Trial);
 
     navigator.navigate('HomeSection');
   };
