@@ -1,8 +1,6 @@
 import React, {memo} from 'react';
 import Onboarding from '../screens/App/Onboarding/index';
-
 import {screenHeight, screenWidth} from '../utils/Data/data';
-
 import NotificationProvider from '../context/notification';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -10,7 +8,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import {StyleSheet, View} from 'react-native';
 import {useNavContext} from '../context/bottomNav';
 import {useOnboardingContext} from '../context/onboarding';

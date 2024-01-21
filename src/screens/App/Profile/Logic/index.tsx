@@ -1,5 +1,3 @@
-// utils/profileUtils.ts
-
 import {useDispatch} from 'react-redux';
 import {loginSuccess} from '../../../../reduxToolkit/Features/auth/authSlice';
 import {useChangeProfileMutation} from '../../../../reduxToolkit/Services/auth';

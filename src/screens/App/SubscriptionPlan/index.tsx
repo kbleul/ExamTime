@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
-
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
@@ -93,19 +92,19 @@ const Index: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.scrollContainer}>
-        <View style={styles.backicon}>
-          <BackWithItem type="SubscriptionPlan" isTrial={false} />
+        {/* <View style={styles.backicon}>
+          <BackWithItem type="Subscription Plan" isTrial={false} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>
             Upgrade to a subscription plan to access a world of benefits and
             take your experience to the next level.
           </Text>
-        </View>
+        </View> */}
 
-        <View style={styles.HorizontalList}>
+        {/* <View style={styles.HorizontalList}>
           <SubscriptionPlanCards data={data} pagination={true} />
-        </View>
+        </View> */}
       </View>
     </View>
   );
