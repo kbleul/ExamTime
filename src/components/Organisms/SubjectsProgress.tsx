@@ -33,6 +33,8 @@ const SubjectsProgress = () => {
         gradientColor="#58ECC9"
         frontColor={'#EBAAA8'}
         yAxisSide={yAxisSides.RIGHT}
+        yAxisTextStyle={{color: '#9196A2'}}
+        xAxisLabelTextStyle={{color: '#9196A2'}}
         maxValue={100}
         spacing={30}
         isAnimated

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 
@@ -7,8 +7,11 @@ import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import FontAwesome5Brands from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {handleShareApp} from '../../utils/Functions/Helper/Share';
+import ExamHistoryModal from './ExamHistoryModal';
 
 const HistoryScores = () => {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerTitle}>Scores</Text>
@@ -27,9 +30,16 @@ const HistoryScores = () => {
           <Text style={styles.topContainerText2}>High Score</Text>
           <Text style={styles.topContainerText2}>Chemistry 2014</Text>
 
-          <TouchableOpacity touchSoundDisabled style={styles.viewBtn}>
+          <TouchableOpacity
+            touchSoundDisabled
+            style={styles.viewBtn}
+            onPress={() => setOpenModal(true)}>
             <Text style={styles.viewBtnText}>View all</Text>
-            <AntDesign name="right" size={screenWidth * 0.03} color="#fff" />
+            <AntDesign
+              name="right"
+              size={screenWidth * 0.025}
+              style={styles.icon}
+            />
           </TouchableOpacity>
         </View>
 
@@ -82,6 +92,8 @@ const HistoryScores = () => {
           </View>
         </View>
       </View>
+
+      <ExamHistoryModal openModal={openModal} setOpenModal={setOpenModal} />
     </View>
   );
 };
@@ -95,7 +107,8 @@ const styles = StyleSheet.create({
     fontSize: screenWidth * 0.045, //28
     color: '#000',
     lineHeight: screenHeight * 0.045, //34
-    marginTop: screenWidth * 0.015,
+    marginTop: screenWidth * 0.01,
+    paddingTop: screenWidth * 0.015,
   },
   subSubsontainer: {
     marginTop: screenHeight * 0.0045,
@@ -197,6 +210,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+  },
+  icon: {
+    color: '#fff',
+    paddingBottom: 2,
   },
 });
 
