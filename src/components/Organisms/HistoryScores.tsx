@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import FontAwesome5Brands from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome5Brands from 'react-native-vector-icons/FontAwesome5';
 import {handleShareApp} from '../../utils/Functions/Helper/Share';
 import ExamHistoryModal from './ExamHistoryModal';
+import HistoryExamHighScore from './HistoryExamHighScore';
 
 const HistoryScores = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -17,31 +17,7 @@ const HistoryScores = () => {
       <Text style={styles.headerTitle}>Scores</Text>
 
       <View style={styles.subSubsontainer}>
-        <View style={styles.examsScores}>
-          <View style={styles.topContainer}>
-            <Text style={styles.topContainerText}>70</Text>
-            <MaterialIcons
-              name="bolt"
-              color="#EDC94F"
-              size={screenWidth * 0.06}
-            />
-          </View>
-
-          <Text style={styles.topContainerText2}>High Score</Text>
-          <Text style={styles.topContainerText2}>Chemistry 2014</Text>
-
-          <TouchableOpacity
-            touchSoundDisabled
-            style={styles.viewBtn}
-            onPress={() => setOpenModal(true)}>
-            <Text style={styles.viewBtnText}>View all</Text>
-            <AntDesign
-              name="right"
-              size={screenWidth * 0.025}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </View>
+        <HistoryExamHighScore setOpenModal={setOpenModal} />
 
         <View style={styles.rightBox}>
           <View style={styles.challengeScore}>
@@ -53,7 +29,7 @@ const HistoryScores = () => {
                 size={60}
                 width={4}
                 backgroundWidth={2}
-                fill={40}
+                fill={0}
                 tintColor="#F0E2A1"
                 backgroundColor="#000"
                 rotation={0}>
@@ -116,46 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  examsScores: {
-    width: '35%',
-    height: screenHeight * 0.21,
-    backgroundColor: '#364158',
-    borderRadius: 12,
-    overflow: 'hidden',
-    paddingHorizontal: screenWidth * 0.05,
-    paddingVertical: screenWidth * 0.02,
-    justifyContent: 'space-between',
-  },
-  topContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    gap: screenWidth * 0.02,
-  },
-  topContainerText: {
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.05, //28
-    color: '#fff',
-  },
-  topContainerText2: {
-    fontFamily: 'PoppinsRegular',
-    fontSize: screenWidth * 0.032, //28
-    color: '#fff',
-  },
-  viewBtn: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FF7A00',
-    width: '100%',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  viewBtnText: {
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.03, //28
-    color: '#fff',
-  },
+
   rightBox: {
     width: '60%',
     marginLeft: '5%',
@@ -210,10 +147,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-  },
-  icon: {
-    color: '#fff',
-    paddingBottom: 2,
   },
 });
 
