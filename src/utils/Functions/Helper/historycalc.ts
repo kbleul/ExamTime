@@ -1,13 +1,21 @@
-import {Exam, ExamAnswers} from '../../../Realm';
+import {Exam, ExamAnswers, Study, Subject} from '../../../Realm';
 import {answersType} from '../../../screens/App/PracticeQuestion';
+import {calculateStudyProgress} from '../../../screens/App/Study/logic';
 
-export const getHighScoreExam = (
-  realm: Realm,
-): {
+type getHighScoreReturnType = {
   exam: Exam;
   userAnswer: answersType[];
   score: number;
-} | null => {
+} | null;
+
+type getAllStudyProgressType =
+  | []
+  | {
+      value: number;
+      label: string;
+    }[];
+
+export const getHighScoreExam = (realm: Realm): getHighScoreReturnType => {
   const exams = realm.objects(Exam).filtered('isExamTaken = true');
 
   let highScoreExam = null;
@@ -60,4 +68,39 @@ const calculateUserAnswer = (
   const percentage = (correctAnswers / examQuestionsLength) * 100;
 
   return percentage;
+};
+
+export const getAllStudiesProgress = (
+  realm: Realm,
+): getAllStudyProgressType => {
+  let studyProgress: {
+    value: number;
+    label: string;
+  }[] = [];
+  const savedSubjects = realm.objects(Subject);
+
+  for (const subject of savedSubjects) {
+    const savedStudies = realm
+      .objects(Study)
+      .filtered(
+        `subject.id = "${subject ? subject.id : 0}" OR subject.subject = "${
+          subject.subject?.subject
+        }"`,
+      );
+
+    const progress = calculateStudyProgress([...savedStudies]);
+    console.log(subject.subject.subject);
+    const subjectName = subject.subject
+      ? subject.subject.subject.slice(0, 3)
+      : null;
+
+    if (subjectName) {
+      studyProgress.push({
+        label: subjectName,
+        value: progress,
+      });
+    }
+  }
+
+  return studyProgress;
 };

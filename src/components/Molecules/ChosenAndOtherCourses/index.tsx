@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 
 import Header from './Header';
@@ -13,8 +13,6 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
 import CustomToast from '../CustomToast';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../reduxToolkit/Store';
 
 const getSubjects = (realm: Realm) => {
   try {
@@ -60,8 +58,6 @@ const ChosenCourses = ({
 }: {
   setLoginModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const user = useSelector((state: RootState) => state.auth.user);
-
   const {useQuery, useRealm} = AuthContext;
   const realm = useRealm();
 
