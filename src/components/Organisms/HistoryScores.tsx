@@ -5,11 +5,10 @@ import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5Brands from 'react-native-vector-icons/FontAwesome5';
-import {handleShareApp} from '../../utils/Functions/Helper/Share';
 import ExamHistoryModal from './ExamHistoryModal';
 import HistoryExamHighScore from './HistoryExamHighScore';
 
-const HistoryScores = () => {
+const HistoryScores = ({takeSheenShot}: {takeSheenShot: () => void}) => {
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -47,17 +46,17 @@ const HistoryScores = () => {
             </Text>
 
             <View style={styles.shareContainer}>
-              <TouchableOpacity touchSoundDisabled onPress={handleShareApp}>
+              <TouchableOpacity touchSoundDisabled onPress={takeSheenShot}>
                 <FontAwesome5Brands
                   name="facebook"
                   color={'#1877F2'}
                   size={34}
                 />
               </TouchableOpacity>
-              <TouchableOpacity touchSoundDisabled onPress={handleShareApp}>
+              <TouchableOpacity touchSoundDisabled onPress={takeSheenShot}>
                 <AntDesign name="instagram" color={'red'} size={32} />
               </TouchableOpacity>
-              <TouchableOpacity touchSoundDisabled onPress={handleShareApp}>
+              <TouchableOpacity touchSoundDisabled onPress={takeSheenShot}>
                 <FontAwesome5Brands
                   name="telegram"
                   color={'#2AABEE'}

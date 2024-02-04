@@ -1,4 +1,6 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
+import ViewShot from 'react-native-view-shot';
+
 import {StyleSheet, Text, View} from 'react-native';
 
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
@@ -7,9 +9,19 @@ import {useNavContext} from '../../../context/bottomNav';
 import HistoryStatus from '../../../components/Organisms/HistoryStatus';
 import SubjectsProgress from '../../../components/Organisms/SubjectsProgress';
 import HistoryScores from '../../../components/Organisms/HistoryScores';
+import ViewHistoryScreenShotModal from '../../../components/Organisms/ViewHistoryScreenShotModal';
 
 const History = () => {
+  const ref: any = useRef();
+
   const {setShowNavigation} = useNavContext();
+
+  const [capturedImageURI, setCapturedImageURI] = useState<any>(null);
+
+  const onCapture = useCallback((uri: any) => {
+    console.log('do something with ', uri);
+    setCapturedImageURI(uri);
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -19,16 +31,27 @@ const History = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>History</Text>
-        <Text style={styles.welcomeText}>Here is the overall Progress!</Text>
-      </View>
+      <ViewShot ref={ref} onCapture={onCapture} captureMode="mount">
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerTitle}>History</Text>
+          <Text style={styles.welcomeText}>Here is the overall Progress!</Text>
+        </View>
 
-      <HistoryStatus />
+        <HistoryStatus />
 
-      <SubjectsProgress />
+        <SubjectsProgress />
 
-      <HistoryScores />
+        <HistoryScores
+          takeSheenShot={() =>
+            ref && ref.current && ref.current && ref.current.capture()
+          }
+        />
+
+        <ViewHistoryScreenShotModal
+          screenShotImage={capturedImageURI}
+          setScreenShotImage={setCapturedImageURI}
+        />
+      </ViewShot>
     </View>
   );
 };

@@ -47,7 +47,7 @@ const SubjectsStats = () => {
                 {topAndBottom.top.value}%
               </Text>
             </View>
-            <Text style={subjectsStyles.text2}>{topAndBottom.top.label}</Text>
+            <Text style={subjectsStyles.text2}>{topAndBottom.top.name}</Text>
           </View>
           <View style={subjectsStyles.subjectsSubContainer}>
             <View style={subjectsStyles.subjectsPercentage}>
@@ -56,9 +56,7 @@ const SubjectsStats = () => {
                 {topAndBottom.bottom.value}%
               </Text>
             </View>
-            <Text style={subjectsStyles.text2}>
-              {topAndBottom.bottom.label}
-            </Text>
+            <Text style={subjectsStyles.text2}>{topAndBottom.bottom.name}</Text>
           </View>
         </View>
       )}
@@ -125,11 +123,11 @@ const subjectsStyles = StyleSheet.create({
   },
   text2: {
     fontFamily: 'PoppinsMedium',
-    fontSize: screenWidth * 0.038,
+    fontSize: screenWidth * 0.035,
     color: '#85949F',
     lineHeight: screenWidth * 0.04,
     width: '100%',
-    paddingLeft: screenWidth * 0.053,
+    paddingLeft: screenWidth * 0.01,
     paddingTop: screenWidth * 0.015,
   },
 });

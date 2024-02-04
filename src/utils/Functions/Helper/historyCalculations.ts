@@ -13,16 +13,19 @@ type getAllStudyProgressType =
   | {
       value: number;
       label: string;
+      name: string;
     }[];
 
 type getTopAndBottomStudyProgressType = null | {
   top: {
     label: string;
     value: number;
+    name: string;
   };
   bottom: {
     label: string;
     value: number;
+    name: string;
   };
 };
 
@@ -87,6 +90,7 @@ export const getAllStudiesProgress = (
   let studyProgress: {
     value: number;
     label: string;
+    name: string;
   }[] = [];
   const savedSubjects = realm.objects(Subject);
 
@@ -107,10 +111,11 @@ export const getAllStudiesProgress = (
       studyProgress.push({
         label: subjectName,
         value: progress,
+        name: subject.subject ? subject.subject.subject : '',
       });
     }
   }
-  console.log(studyProgress);
+
   return studyProgress;
 };
 
@@ -123,10 +128,12 @@ export const getTopAndBottomStudyProgress = (
     top: {
       label: string;
       value: number;
+      name: string;
     };
     bottom: {
       label: string;
       value: number;
+      name: string;
     };
   } = null;
 
