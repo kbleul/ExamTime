@@ -15,6 +15,17 @@ type getAllStudyProgressType =
       label: string;
     }[];
 
+type getTopAndBottomStudyProgressType = null | {
+  top: {
+    label: string;
+    value: number;
+  };
+  bottom: {
+    label: string;
+    value: number;
+  };
+};
+
 export const getHighScoreExam = (realm: Realm): getHighScoreReturnType => {
   const exams = realm.objects(Exam).filtered('isExamTaken = true');
 
@@ -87,9 +98,7 @@ export const getAllStudiesProgress = (
           subject.subject?.subject
         }"`,
       );
-
     const progress = calculateStudyProgress([...savedStudies]);
-    console.log(subject.subject.subject);
     const subjectName = subject.subject
       ? subject.subject.subject.slice(0, 3)
       : null;
@@ -101,6 +110,70 @@ export const getAllStudiesProgress = (
       });
     }
   }
-
+  console.log(studyProgress);
   return studyProgress;
+};
+
+export const getTopAndBottomStudyProgress = (
+  realm: Realm,
+): getTopAndBottomStudyProgressType => {
+  const studiesProgress = getAllStudiesProgress(realm);
+
+  let top_bottom_study_progress: null | {
+    top: {
+      label: string;
+      value: number;
+    };
+    bottom: {
+      label: string;
+      value: number;
+    };
+  } = null;
+
+  for (const studyProgress of studiesProgress) {
+    if (top_bottom_study_progress === null) {
+      top_bottom_study_progress = {
+        top: {
+          ...studyProgress,
+        },
+        bottom: {
+          ...studiesProgress[studiesProgress.length - 1],
+        },
+      };
+      continue;
+    }
+
+    if (
+      top_bottom_study_progress &&
+      studyProgress.value > top_bottom_study_progress.top.value
+    ) {
+      top_bottom_study_progress = {
+        top: {...studyProgress},
+        bottom: {...top_bottom_study_progress.bottom},
+      };
+      continue;
+    }
+
+    if (
+      top_bottom_study_progress !== null &&
+      studyProgress.value < top_bottom_study_progress.bottom.value
+    ) {
+      top_bottom_study_progress = {
+        top: {...top_bottom_study_progress.top},
+        bottom: {...studyProgress},
+      };
+    }
+  }
+
+  return top_bottom_study_progress;
+};
+
+export const getAggrgategaStudiesProgress = (realm: Realm) => {
+  const studyProgress = getAllStudiesProgress(realm);
+
+  const totalProgress = studyProgress.reduce((acc, study) => {
+    return acc + study.value;
+  }, 0);
+
+  return totalProgress / studyProgress.length;
 };

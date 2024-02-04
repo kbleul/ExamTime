@@ -2,12 +2,11 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {BarChart, yAxisSides} from 'react-native-gifted-charts';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
-import {getAllStudiesProgress} from '../../utils/Functions/Helper/historycalc';
+import {getAllStudiesProgress} from '../../utils/Functions/Helper/historyCalculations';
 import {AuthContext} from '../../Realm/model';
 
 const SubjectsProgress = () => {
   const {useRealm} = AuthContext;
-
   const realm = useRealm();
 
   const studyProgress = getAllStudiesProgress(realm);

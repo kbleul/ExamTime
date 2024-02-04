@@ -3,14 +3,24 @@ import {StyleSheet, Text, View} from 'react-native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicatorsHistory';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {
+  getAggrgategaStudiesProgress,
+  getTopAndBottomStudyProgress,
+} from '../../utils/Functions/Helper/historyCalculations';
+import {AuthContext} from '../../Realm/model';
 
 const HistoryStatus = () => {
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
+  getTopAndBottomStudyProgress(realm);
   return (
     <View style={styles.container}>
       <Text style={styles.headerTitle}>Status</Text>
 
       <View style={styles.statusContainer}>
-        <CircleProgressIndicator progress={50} />
+        <CircleProgressIndicator
+          progress={getAggrgategaStudiesProgress(realm)}
+        />
         <View style={styles.statusTextContainer}>
           <Text style={styles.statusHeaderTexts}>Level up your knowledge.</Text>
           <Text style={styles.statusHeaderTexts}>Unlock new achievements!</Text>
@@ -23,23 +33,36 @@ const HistoryStatus = () => {
 };
 
 const SubjectsStats = () => {
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
+  const topAndBottom = getTopAndBottomStudyProgress(realm);
   return (
-    <View style={subjectsStyles.subjectsContainer}>
-      <View style={subjectsStyles.subjectsSubContainer}>
-        <View style={subjectsStyles.subjectsPercentage}>
-          <AntDesign name="arrowup" size={20} color="green" />
-          <Text style={subjectsStyles.text1}>25%</Text>
+    <>
+      {topAndBottom && (
+        <View style={subjectsStyles.subjectsContainer}>
+          <View style={subjectsStyles.subjectsSubContainer}>
+            <View style={subjectsStyles.subjectsPercentage}>
+              <AntDesign name="arrowup" size={20} color="green" />
+              <Text style={subjectsStyles.text1}>
+                {topAndBottom.top.value}%
+              </Text>
+            </View>
+            <Text style={subjectsStyles.text2}>{topAndBottom.top.label}</Text>
+          </View>
+          <View style={subjectsStyles.subjectsSubContainer}>
+            <View style={subjectsStyles.subjectsPercentage}>
+              <AntDesign name="arrowup" size={20} color="red" />
+              <Text style={subjectsStyles.text1}>
+                {topAndBottom.bottom.value}%
+              </Text>
+            </View>
+            <Text style={subjectsStyles.text2}>
+              {topAndBottom.bottom.label}
+            </Text>
+          </View>
         </View>
-        <Text style={subjectsStyles.text2}>Chemistry</Text>
-      </View>
-      <View style={subjectsStyles.subjectsSubContainer}>
-        <View style={subjectsStyles.subjectsPercentage}>
-          <AntDesign name="arrowup" size={20} color="red" />
-          <Text style={subjectsStyles.text1}>40%</Text>
-        </View>
-        <Text style={subjectsStyles.text2}>Subject</Text>
-      </View>
-    </View>
+      )}
+    </>
   );
 };
 
@@ -98,7 +121,7 @@ const subjectsStyles = StyleSheet.create({
     fontSize: screenWidth * 0.05,
     color: 'black',
     lineHeight: screenWidth * 0.055,
-    paddingTop: screenHeight * 0.002,
+    paddingTop: screenHeight * 0.008,
   },
   text2: {
     fontFamily: 'PoppinsMedium',
@@ -106,7 +129,7 @@ const subjectsStyles = StyleSheet.create({
     color: '#85949F',
     lineHeight: screenWidth * 0.04,
     width: '100%',
-    paddingLeft: screenWidth * 0.015,
+    paddingLeft: screenWidth * 0.053,
     paddingTop: screenWidth * 0.015,
   },
 });

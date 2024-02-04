@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {AuthContext} from '../../Realm/model';
-import {getHighScoreExam} from '../../utils/Functions/Helper/historycalc';
+import {getHighScoreExam} from '../../utils/Functions/Helper/historyCalculations';
 
 const HistoryExamHighScore = ({
   setOpenModal,
