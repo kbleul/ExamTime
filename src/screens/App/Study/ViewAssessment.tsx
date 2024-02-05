@@ -15,7 +15,6 @@ import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
 import Question from '../../../components/Molecules/Question';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
-import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import {answersType, filterUnanswered} from '../PracticeQuestion';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import {examQuestionType} from '../../../types';
@@ -40,7 +39,6 @@ const ViewAssessment = ({route}) => {
     ...questions,
   ]);
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
-  const [showSideNav, setShowSideNav] = useState(false);
   const [showFullPage, setShowFullPage] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState<answersType[] | null>(null);
@@ -180,8 +178,6 @@ const ViewAssessment = ({route}) => {
               ? [IndexStyle.container, styles.container]
               : IndexStyle.container
           }>
-          {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
-
           <ViewQuestionHeader
             title={`Assessment Questions ${selectedSubject}`}
             setShowFullPage={setShowFullPage}

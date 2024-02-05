@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Question from '../../../components/Molecules/Question';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
-import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
@@ -204,8 +203,6 @@ const RandomQuestionsView = ({route}: {route: any}) => {
                 ]
               : [IndexStyle.container, exitExamModalVisible && styles.overlay]
           }>
-          {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
-
           <ViewQuestionHeader
             title={`Random Questions ${selectedSubject?.subject?.subject}`}
             setShowFullPage={setShowFullPage}
