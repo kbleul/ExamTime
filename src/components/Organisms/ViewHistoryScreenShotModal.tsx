@@ -15,7 +15,13 @@ import {
   deleteShareImage,
   handleShareImage,
 } from '../../utils/Functions/Helper/Share';
-import {style} from '../../screens/App/Study/styles';
+
+const META = {
+  title: 'Share Screenshoot',
+  message:
+    'Checkout my progress on ExamTime. Download the app and join me now. \n\n https://play.google.com/store/apps/details?id=com.exam_time.exam',
+};
+
 const ViewHistoryScreenShotModal: React.FC<{
   screenShotImage: any;
   setScreenShotImage: React.Dispatch<React.SetStateAction<any>>;
@@ -60,12 +66,7 @@ const ViewHistoryScreenShotModal: React.FC<{
             <View style={styles.shareContainer}>
               <TouchableOpacity
                 touchSoundDisabled
-                onPress={() =>
-                  handleShareImage(screenShotImage, {
-                    title: 'Share Screenshoot',
-                    message: 'Sharing image with friends and family !',
-                  })
-                }>
+                onPress={() => handleShareImage(screenShotImage, META)}>
                 <FontAwesome5Brands
                   name="facebook"
                   color={'#1877F2'}
@@ -74,22 +75,12 @@ const ViewHistoryScreenShotModal: React.FC<{
               </TouchableOpacity>
               <TouchableOpacity
                 touchSoundDisabled
-                onPress={() =>
-                  handleShareImage(screenShotImage, {
-                    title: 'Share Screenshoot',
-                    message: 'Sharing image with friends and family !',
-                  })
-                }>
+                onPress={() => handleShareImage(screenShotImage, META)}>
                 <AntDesign name="instagram" color={'red'} size={32} />
               </TouchableOpacity>
               <TouchableOpacity
                 touchSoundDisabled
-                onPress={() =>
-                  handleShareImage(screenShotImage, {
-                    title: 'Share Screenshoot',
-                    message: 'Sharing image with friends and family !',
-                  })
-                }>
+                onPress={() => handleShareImage(screenShotImage, META)}>
                 <FontAwesome5Brands
                   name="telegram"
                   color={'#2AABEE'}
@@ -98,12 +89,7 @@ const ViewHistoryScreenShotModal: React.FC<{
               </TouchableOpacity>
               <TouchableOpacity
                 touchSoundDisabled
-                onPress={() =>
-                  handleShareImage(screenShotImage, {
-                    title: 'Share Screenshoot',
-                    message: 'Sharing image with friends and family !',
-                  })
-                }>
+                onPress={() => handleShareImage(screenShotImage, META)}>
                 <AntDesign name="link" size={32} color={'#000'} />
               </TouchableOpacity>
             </View>

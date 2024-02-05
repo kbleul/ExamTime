@@ -1,5 +1,5 @@
-import React, {useCallback, useRef, useState} from 'react';
-import ViewShot from 'react-native-view-shot';
+import React, {useCallback, useState} from 'react';
+import {captureScreen} from 'react-native-view-shot';
 
 import {StyleSheet, Text, View} from 'react-native';
 
@@ -12,16 +12,21 @@ import HistoryScores from '../../../components/Organisms/HistoryScores';
 import ViewHistoryScreenShotModal from '../../../components/Organisms/ViewHistoryScreenShotModal';
 
 const History = () => {
-  const ref: any = useRef();
-
   const {setShowNavigation} = useNavContext();
 
   const [capturedImageURI, setCapturedImageURI] = useState<any>(null);
 
-  const onCapture = useCallback((uri: any) => {
-    console.log('do something with ', uri);
-    setCapturedImageURI(uri);
-  }, []);
+  const onCapture = async () => {
+    captureScreen({
+      format: 'png',
+      quality: 0.9,
+    }).then(
+      uri => {
+        setCapturedImageURI(uri);
+      },
+      error => console.error('Oops, snapshot failed', error),
+    );
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -30,8 +35,8 @@ const History = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <ViewShot ref={ref} onCapture={onCapture} captureMode="mount">
+    <View style={styles.mainWrapper}>
+      <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerTitle}>History</Text>
           <Text style={styles.welcomeText}>Here is the overall Progress!</Text>
@@ -41,26 +46,24 @@ const History = () => {
 
         <SubjectsProgress />
 
-        <HistoryScores
-          takeSheenShot={() =>
-            ref && ref.current && ref.current && ref.current.capture()
-          }
-        />
+        <HistoryScores takeSheenShot={onCapture} />
 
         <ViewHistoryScreenShotModal
           screenShotImage={capturedImageURI}
           setScreenShotImage={setCapturedImageURI}
         />
-      </ViewShot>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mainWrapper: {
     flex: 1,
     width: screenWidth,
     backgroundColor: '#F9FCFF',
+  },
+  container: {
     paddingTop: screenHeight * 0.045,
     paddingHorizontal: 20,
   },

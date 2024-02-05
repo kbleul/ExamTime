@@ -11,8 +11,8 @@ const CircleProgressIndicator = ({progress}: {progress: number}) => {
       width={8}
       backgroundWidth={8}
       fill={progress}
-      tintColor="#D9D9D9"
-      backgroundColor="#4CD5C5"
+      tintColor="#4CD5C5"
+      backgroundColor="#D9D9D9"
       rotation={180}>
       {fill => (
         <View style={styles.circleTextContainer}>
