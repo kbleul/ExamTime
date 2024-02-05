@@ -1,10 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Animated, {useAnimatedStyle, withSpring} from 'react-native-reanimated';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {scale} from 'react-native-size-matters';
+import {useNavigation} from '@react-navigation/native';
 
 interface SubCardProps {
   item: any;
@@ -15,6 +15,8 @@ interface SubCardProps {
 }
 
 const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
+  const navigator: any = useNavigation();
+
   const activeColor = '#FAFAFA'; // Color when card is active
   const inactiveColor = 'white';
   const activeColorBorder = '#ED7218'; // Color when card is active
@@ -77,7 +79,9 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
           })}
         </View>
         <View style={[styles.Button]}>
-          <TouchableOpacity style={[styles.listofPackagesBottom]}>
+          <TouchableOpacity
+            style={[styles.listofPackagesBottom]}
+            onPress={() => navigator.navigate('chapa-payment')}>
             <Text style={styles.listofPackagesBottomtext}>
               {item.current ? 'Current Plan' : 'Upgrade Now'}
             </Text>
