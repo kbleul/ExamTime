@@ -84,6 +84,7 @@ android {
         versionCode 23
         versionName "6.0.1"
         vectorDrawables.useSupportLibrary = true
+        resConfigs "en", "US"
     }
     signingConfigs {
         debug {
