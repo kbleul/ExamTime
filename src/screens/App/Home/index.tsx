@@ -19,13 +19,21 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
 import {useUserStatus} from '../../../context/userStatus';
 import LoginBox from '../../../components/Atoms/LoginBox';
+import UpdateModal from '../../../components/Organisms/UpdateModal';
 
 const Index = () => {
   const {userStatus} = useUserStatus();
 
   const [isSyncing, setIsSyncing] = useState(false);
+  const [updateModalVisible, setUpdateModalVisible] = useState(false);
+
   const {setShowNavigation} = useNavContext();
-  useHandleInitialRequests(setIsSyncing);
+  useHandleInitialRequests(
+    setIsSyncing,
+    updateModalVisible,
+    setUpdateModalVisible,
+  );
+
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   useFocusEffect(
@@ -80,6 +88,8 @@ const Index = () => {
         loginModalVisible={loginModalVisible}
         setLoginModalVisible={setLoginModalVisible}
       />
+
+      <UpdateModal updateModalVisible={updateModalVisible} />
       <Toast />
     </SafeAreaView>
   );

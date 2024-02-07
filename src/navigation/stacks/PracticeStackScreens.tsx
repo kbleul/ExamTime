@@ -9,6 +9,7 @@ import ExamReview from '../../screens/App/PracticeQuestion/ExamReview';
 import ExamResult from '../../screens/App/PracticeQuestion/ExamResult';
 import ViewAssessment from '../../screens/App/Study/ViewAssessment';
 import RandomQuestionsView from '../../screens/App/PracticeQuestion/RandomQuestionsView';
+import ChapaWebView from '../../screens/App/Payment/ChapaWebView';
 
 const PracticeStackScreens = () => {
   const PracticeStack = createStackNavigator();
@@ -51,6 +52,11 @@ const PracticeStackScreens = () => {
       <PracticeStack.Screen
         name="network-error"
         component={NetworkError}
+        options={{headerShown: false}}
+      />
+      <PracticeStack.Screen
+        name="chapa-payment"
+        component={ChapaWebView}
         options={{headerShown: false}}
       />
     </PracticeStack.Navigator>

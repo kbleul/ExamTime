@@ -151,7 +151,7 @@ export const FrameThree: React.FC<{
   btnText: string;
   btnTextTwo?: string;
   issubscribe?: boolean;
-  setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowAlert?: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({title, text, btnText, btnTextTwo, issubscribe, setShowAlert}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -179,7 +179,7 @@ export const FrameThree: React.FC<{
             touchSoundDisabled
             onPress={() => {
               if (issubscribe) {
-                setShowAlert(true);
+                setShowAlert && setShowAlert(true);
               } else {
                 setShowNavigation(false);
                 navigator.navigate('Login');

@@ -22,6 +22,14 @@ const tagsStylesQuestion = {
     fontSize: 16,
     lineHeight: 25,
   },
+  li: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.65,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+  },
   img: {
     width: screenWidth * 0.8,
     marginTop: 5,
@@ -29,6 +37,14 @@ const tagsStylesQuestion = {
 };
 const tagsStylesChoice = {
   p: {
+    whiteSpace: 'normal',
+    color: '#000',
+    textAlign: 'left',
+    width: screenWidth * 0.65,
+    fontFamily: 'PoppinsRegular',
+    fontSize: 16,
+  },
+  li: {
     whiteSpace: 'normal',
     color: '#000',
     textAlign: 'left',
@@ -91,7 +107,13 @@ const Question: React.FC<{
                   <TouchableOpacity
                     touchSoundDisabled
                     style={styles.readParagraphBtn}
-                    onPress={() => setDirection(question.metadata)}>
+                    onPress={() =>
+                      setDirection(
+                        isHtml(question.metadata ? question.metadata : '')
+                          ? question.metadata
+                          : `<p>${question.metadata}</p>`,
+                      )
+                    }>
                     <Text style={styles.readParagraphText}>Directions</Text>
                   </TouchableOpacity>
                 )}
@@ -120,7 +142,13 @@ const Question: React.FC<{
                   <TouchableOpacity
                     touchSoundDisabled
                     style={styles.readParagraphBtn}
-                    onPress={() => setDirection(question.description)}>
+                    onPress={() =>
+                      setDirection(
+                        isHtml(question.description)
+                          ? question.description
+                          : `<p>${question.description}</p>`,
+                      )
+                    }>
                     <Text style={styles.readParagraphText}>Explanation</Text>
                   </TouchableOpacity>
                 )}

@@ -1,11 +1,13 @@
 import React, {useEffect} from 'react';
-import Toast from 'react-native-toast-message';
+import {Platform} from 'react-native';
 
+import Toast from 'react-native-toast-message';
+import {checkVersion} from 'react-native-check-version';
 import {useSelector} from 'react-redux';
 import {RootState} from '../reduxToolkit/Store';
 import {checkIsOnline} from '../utils/Functions/Helper';
 import {AuthContext} from '../Realm/model';
-import {Exam, ExamAnswers, Study, UserData} from '../Realm';
+import {Exam, ExamAnswers, UserData} from '../Realm';
 import {
   useGetExamAnswersMutation,
   useGetStudyMutation,
@@ -101,6 +103,8 @@ export const syncDataToDB = async (
 
 const useHandleInitialRequests = (
   setIsSyncing: React.Dispatch<React.SetStateAction<boolean>>,
+  updateModalVisible: boolean,
+  setUpdateModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   const navigation: any = useNavigation();
 
@@ -129,6 +133,18 @@ const useHandleInitialRequests = (
   const [getTips] = useGetTipsMutation();
 
   useEffect(() => {
+    const checkVersionStatus = async () => {
+      const data = await checkVersion({
+        platform: 'android',
+        bundleId: 'com.exam_time.exam',
+        currentVersion: '6.0.1',
+      });
+
+      if (data.needsUpdate) {
+        setUpdateModalVisible(true);
+      }
+    };
+
     const handleSync = async () => {
       // App is going to background or about to be terminated
       // if (nextAppState === 'background' || nextAppState === 'inactive') {
@@ -167,7 +183,9 @@ const useHandleInitialRequests = (
       }
     };
 
+    Platform.OS === 'android' && checkVersionStatus();
     user && token && handleSync();
+
     // AppState.addEventListener('change', handleSync);
   }, [user, token]);
 };
