@@ -3,7 +3,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import FontAwesome5Brands from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {StyleSheet, Text, View} from 'react-native';
-import {handleShare} from '../../utils/Functions/Helper';
+import {handleShareApp} from '../../utils/Functions/Helper/Share';
 
 function ShareApp() {
   return (
@@ -11,19 +11,19 @@ function ShareApp() {
       <Text style={styles.text}>Share the app</Text>
 
       <View style={styles.iconContainer}>
-        <TouchableOpacity touchSoundDisabled onPress={handleShare}>
+        <TouchableOpacity touchSoundDisabled onPress={handleShareApp}>
           <FontAwesome5Brands name="facebook" color={'#1877F2'} size={34} />
         </TouchableOpacity>
-        <TouchableOpacity touchSoundDisabled onPress={handleShare}>
+        <TouchableOpacity touchSoundDisabled onPress={handleShareApp}>
           <AntDesign name="instagram" color={'red'} size={32} />
         </TouchableOpacity>
-        <TouchableOpacity touchSoundDisabled onPress={handleShare}>
+        <TouchableOpacity touchSoundDisabled onPress={handleShareApp}>
           <FontAwesome5Brands name="telegram" color={'#2AABEE'} size={32} />
         </TouchableOpacity>
-        <TouchableOpacity touchSoundDisabled onPress={handleShare}>
+        <TouchableOpacity touchSoundDisabled onPress={handleShareApp}>
           <FontAwesome5Brands name="discord" color={'#5865F2'} size={32} />
         </TouchableOpacity>
-        <TouchableOpacity touchSoundDisabled onPress={handleShare}>
+        <TouchableOpacity touchSoundDisabled onPress={handleShareApp}>
           <AntDesign name="link" size={32} color={'#000'} />
         </TouchableOpacity>
       </View>

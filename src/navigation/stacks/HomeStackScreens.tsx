@@ -22,6 +22,7 @@ import ChallengeSection from '../../screens/App/Challenge/index';
 import UserGuide from '../../screens/App/UserGuide';
 
 import {ProfileMenuItemsAuth} from '../../utils/Data/data';
+import ChapaWebView from '../../screens/App/Payment/ChapaWebView';
 
 const HomeStackScreens = () => {
   const HomeStack = createStackNavigator();
@@ -124,6 +125,11 @@ const HomeStackScreens = () => {
       <HomeStack.Screen
         name={ProfileMenuItemsAuth['User Guide'].navigate}
         component={UserGuide}
+        options={{headerShown: false}}
+      />
+      <HomeStack.Screen
+        name="chapa-payment"
+        component={ChapaWebView}
         options={{headerShown: false}}
       />
     </HomeStack.Navigator>

@@ -11,7 +11,6 @@ import {
 import Question from '../../../components/Molecules/Question';
 import ExamTimer from '../../../components/Molecules/ExamTimer';
 import ViewQuestionHeader from '../../../components/Molecules/ViewQuestionHeader';
-import ExamSideNav from '../../../components/Organisms/ExamSideNav';
 import ExamLeaveModal from '../../../components/Organisms/ExamLeaveModal';
 import {IndexStyle} from '../../../styles/Theme/IndexStyle';
 import ExamNavigateButtons from '../../../components/Molecules/ExamNavigateButtons';
@@ -85,7 +84,6 @@ const PracticeQuestion = ({route}: {route: any}) => {
 
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
 
-  const [showSideNav, setShowSideNav] = useState(false);
   const [showFullPage, setShowFullPage] = useState(false);
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -246,8 +244,6 @@ const PracticeQuestion = ({route}: {route: any}) => {
             ]
           : [IndexStyle.container, exitExamModalVisible && styles.overlay]
       }>
-      {showSideNav && <ExamSideNav setShowSideNav={setShowSideNav} />}
-
       <ViewQuestionHeader
         title={exam.examName}
         setShowFullPage={setShowFullPage}

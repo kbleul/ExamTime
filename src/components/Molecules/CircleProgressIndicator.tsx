@@ -1,7 +1,6 @@
 import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {scale} from 'react-native-size-matters';
 
 const CircleProgressIndicator = ({progress}: {progress: number}) => {
@@ -15,23 +14,9 @@ const CircleProgressIndicator = ({progress}: {progress: number}) => {
       backgroundColor="#FFE48F"
       rotation={0}>
       {fill => (
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <Text
-            style={{
-              fontSize: scale(24),
-              fontFamily: 'PoppinsMedium',
-              color: 'white',
-            }}>
-            {Math.round(fill)}%
-          </Text>
-          <Text
-            style={{
-              fontSize: scale(7),
-              fontFamily: 'PoppinsRegular',
-              color: 'white',
-            }}>
-            Complated
-          </Text>
+        <View style={styles.circleTextContainer}>
+          <Text style={styles.centerText}>{Math.round(fill)}%</Text>
+          <Text style={styles.centerTextSecondary}>Completed</Text>
         </View>
       )}
     </AnimatedCircularProgress>
@@ -39,18 +24,19 @@ const CircleProgressIndicator = ({progress}: {progress: number}) => {
 };
 
 const styles = StyleSheet.create({
-  circleContainer: {
-    position: 'relative',
-    width: screenWidth * 0.2,
-    height: screenWidth * 0.2,
+  circleTextContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   centerText: {
+    fontFamily: 'PoppinsMedium',
+    fontSize: scale(24),
+    color: 'white',
+  },
+  centerTextSecondary: {
     fontFamily: 'PoppinsRegular',
-    fontSize: screenHeight * 0.018,
-    fontWeight: 'bold',
-    color: 'black',
+    fontSize: scale(7),
+    color: 'white',
   },
 });
 

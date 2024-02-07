@@ -124,7 +124,7 @@ const styles = ScaledSheet.create({
   },
   activity: {
     fontFamily: 'PoppinsRegular',
-    fontSize: '12@ms',
+    fontSize: '11.5@ms',
     color: '#000',
   },
   badge: {

@@ -17,7 +17,7 @@ const getFilteredSavedStudies = (
   subjectId: string,
   subjectName: string,
 ): ResultsType<Study> => {
-  const savedUserExamAnswers = realm
+  const savedStudies = realm
     .objects(Study)
     .filtered(
       `subject.id = "${
@@ -25,7 +25,7 @@ const getFilteredSavedStudies = (
       }" OR subject.subject = "${subjectName}"`,
     );
 
-  return savedUserExamAnswers;
+  return savedStudies;
 };
 
 export const onError = (e: Error) => {
