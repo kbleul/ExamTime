@@ -11,7 +11,10 @@ import TopIndicator from '../../../../components/Molecules/TopIndicator';
 import {AuthContext} from '../../../../Realm/model';
 
 import {subjectType} from '../../../../types';
-import {useGetSubjectMutation} from '../../../../reduxToolkit/Services/auth';
+import {
+  useCreteGuestUserMutation,
+  useGetSubjectMutation,
+} from '../../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from './logic';
 import Loading from '../../../../components/Atoms/Loading';
 import Toast from 'react-native-toast-message';
@@ -39,6 +42,8 @@ const PageThree: React.FC<PagesCounterType> = ({
 
   const [IsLoadingSubjects, setIsLoadingSubjects] = useState(false);
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
+
+  const [createGuest] = useCreteGuestUserMutation();
 
   const [IsLoadingSubjectsRealm, setIsLoadingSubjectsRealm] = useState(true);
   const [relamSaveStatus, setRelamSaveStatus] = useState(-1);
@@ -138,6 +143,7 @@ const PageThree: React.FC<PagesCounterType> = ({
                         selectedSubjects ? [...selectedSubjects] : [],
                         setIsLoadingSubjects,
                         setShowOnboarding,
+                        createGuest,
                       )
                     }
                     isActive={!IsLoadingSubjects}

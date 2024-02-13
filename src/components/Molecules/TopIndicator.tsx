@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,6 +6,7 @@ import {AuthContext} from '../../Realm/model';
 import {screenWidth} from '../../utils/Data/data';
 import {PagesCounterType} from '../../screens/App/Onboarding/Page/types';
 import {useOnboardingContext} from '../../context/onboarding';
+import {useCreteGuestUserMutation} from '../../reduxToolkit/Services/auth';
 const TopIndicator: React.FC<
   PagesCounterType & {
     IsLoadingSubjectsRealm?: boolean;
@@ -19,9 +19,9 @@ const TopIndicator: React.FC<
   setIsLoadingSubjects,
 }) => {
   const {setShowOnboarding} = useOnboardingContext();
-  const navigator = useNavigation();
   const {useRealm} = AuthContext;
   const realm = useRealm();
+  const [createGuest] = useCreteGuestUserMutation();
 
   return (
     <View style={style.container}>
@@ -36,9 +36,9 @@ const TopIndicator: React.FC<
             createRealmUserData(
               realm,
               [],
-              navigator,
               setIsLoadingSubjects,
               setShowOnboarding,
+              createGuest,
             )
           }>
           <Text style={style.text}>Skip</Text>

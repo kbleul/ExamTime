@@ -12,11 +12,7 @@ import {AuthContext} from '../../../Realm/model';
 import {Subject} from '../../../Realm';
 import Toast from 'react-native-toast-message';
 import {subjectType} from '../../../types';
-import {
-  useFocusEffect,
-  useIsFocused,
-  useNavigation,
-} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../Onboarding/Page/logic';
 import Loading from '../../../components/Atoms/Loading';

@@ -404,6 +404,18 @@ export const api = createApi({
         };
       },
     }),
+    creteGuestUser: build.mutation<
+      any,
+      {grade: string; deviceId: string | number[]}
+    >({
+      query: data => {
+        return {
+          url: '/user/createguest/',
+          body: {grade: data.grade, deviceId: data.deviceId},
+          method: 'POST',
+        };
+      },
+    }),
   }),
 });
 
@@ -437,4 +449,5 @@ export const {
   usePostNotificationStatusMutation,
   useDeleteNotificationStatusMutation,
   useGetTrialStatusMutation,
+  useCreteGuestUserMutation,
 } = api;

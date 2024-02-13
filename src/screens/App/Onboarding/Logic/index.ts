@@ -7,7 +7,11 @@ import {
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
 import {subjectType} from '../../../../types';
+import {useCreteGuestUserMutation} from '../../../../reduxToolkit/Services/auth';
+import uuid from 'react-native-uuid';
 import {UserData} from '../../../../Realm';
+
+type CreateGuestMutationFn = ReturnType<typeof useCreteGuestUserMutation>[0];
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -56,6 +60,7 @@ export const createRealmUserData = async (
   selectedSubjects: string[] | [],
   setIsLoadingSubjects: React.Dispatch<React.SetStateAction<boolean>>,
   setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>,
+  creteGuestUser: CreateGuestMutationFn,
 ) => {
   try {
     setIsLoadingSubjects(true);
@@ -78,6 +83,8 @@ export const createRealmUserData = async (
     });
 
     setShowOnboarding(false);
+
+    await createGuestUserUniqueId(creteGuestUser, grade.value.grade, realm);
   } catch (err) {
     console.log(err);
     setIsLoadingSubjects(false);
@@ -144,5 +151,36 @@ export const createRealmSubjectsData = async (
     setIsLoadingSubjectsRealm && setIsLoadingSubjectsRealm(false);
   } catch (err) {
     console.log('Error saving new subjects', err);
+  }
+};
+
+const createGuestUserUniqueId = async (
+  creteGuestUser: CreateGuestMutationFn,
+  grade: string,
+  realm: Realm,
+) => {
+  const userData = realm.objects(UserData);
+
+  try {
+    const deviceId = uuid.v4();
+    const response: any = await creteGuestUser({grade, deviceId}).unwrap();
+
+    if (response.totalTrialTime) {
+      const totalTrialTime = parseInt(response.totalTrialTime.split(' ')[0]);
+
+      realm.write(() => {
+        userData[0].deviceId = deviceId.toString();
+        userData[0].allowedTrialDays = totalTrialTime;
+
+        console.log(userData[0]);
+      });
+
+      try {
+      } catch (err) {
+        console.log('Error saving deviceid for userdata', err);
+      }
+    }
+  } catch (e) {
+    console.log('Error on create guest user', e);
   }
 };

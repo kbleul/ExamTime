@@ -63,7 +63,13 @@ const ChosenCourses = ({
 
   const savedUserData = useQuery(UserData);
   const savedGrades = useQuery(Grade, savedgrade => {
-    return savedgrade.filtered(`id != "${savedUserData[0].grade.id}"`);
+    return savedgrade.filtered(
+      `id != "${
+        savedUserData && savedUserData[0] && savedUserData[0].grade
+          ? savedUserData[0].grade.id
+          : 'null'
+      }"`,
+    );
   });
 
   const navigator = useNavigation();

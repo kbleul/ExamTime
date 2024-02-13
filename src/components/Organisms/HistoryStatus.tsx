@@ -116,19 +116,19 @@ const subjectsStyles = StyleSheet.create({
   },
   text1: {
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.05,
+    fontSize: screenWidth * 0.04,
     color: 'black',
-    lineHeight: screenWidth * 0.055,
-    paddingTop: screenHeight * 0.008,
+    lineHeight: screenWidth * 0.045,
+    paddingTop: screenHeight * 0.005,
   },
   text2: {
     fontFamily: 'PoppinsMedium',
-    fontSize: screenWidth * 0.035,
+    fontSize: screenWidth * 0.034,
     color: '#85949F',
     lineHeight: screenWidth * 0.04,
     width: '100%',
     paddingLeft: screenWidth * 0.01,
-    paddingTop: screenWidth * 0.015,
+    paddingTop: screenWidth * 0.013,
   },
 });
 export default HistoryStatus;

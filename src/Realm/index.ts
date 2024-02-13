@@ -30,23 +30,27 @@ class Grade extends Realm.Object {
 }
 class UserData extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
+  deviceId: string | null = null;
   token: string | null = null;
   grade: gradeType | null = null;
   initialDate: string = '';
   isSubscribed: boolean = false;
   user: userType | null = null; // Define the user property as a reference to the User object.
   selectedSubjects?: string[] | [];
+  allowedTrialDays: number | null = null;
 
   static schema: Realm.ObjectSchema = {
     name: 'UserData',
     properties: {
       _id: 'objectId',
+      deviceId: 'string?',
       token: 'string?',
       grade: 'Grade?',
       initialDate: 'string?',
       isSubscribed: 'bool',
       user: 'User?', // Link the 'user' property to the 'User' object.
       selectedSubjects: 'string[]',
+      allowedTrialDays: 'int?',
     },
     primaryKey: '_id',
   };
