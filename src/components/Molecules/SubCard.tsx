@@ -5,6 +5,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
 import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 interface SubCardProps {
   item: any;
@@ -16,6 +18,7 @@ interface SubCardProps {
 
 const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
   const navigator: any = useNavigation();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const activeColor = '#FAFAFA'; // Color when card is active
   const inactiveColor = 'white';
@@ -59,7 +62,7 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
         </View>
 
         <View style={styles.PackgeListsConatiner}>
-          {item.packages.map((packageItem, index) => {
+          {item.packages.map((packageItem: any, index: number) => {
             const {available, packagesname} = packageItem;
             return (
               <View
@@ -70,8 +73,13 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
                   alignItems: 'center',
                   justifyContent: 'flex-start',
                 }}>
-                <View style={styles.cIcon}>
-                  <AntDesign name="check" size={15} color="white" />
+                <View
+                  style={
+                    available
+                      ? [styles.cIcon, styles.cIconActive]
+                      : styles.cIcon
+                  }>
+                  <AntDesign name="check" size={15} color={'white'} />
                 </View>
                 <Text style={styles.listofPackagesText}>{packagesname}</Text>
               </View>
@@ -81,10 +89,12 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
         <View style={[styles.Button]}>
           <TouchableOpacity
             style={[styles.listofPackagesBottom]}
-            onPress={() => navigator.navigate('chapa-payment')}>
-            <Text style={styles.listofPackagesBottomtext}>
-              {item.current ? 'Current Plan' : 'Upgrade Now'}
-            </Text>
+            onPress={
+              () => (!user ? navigator.navigate('Login') : handlePayment())
+
+              // navigator.navigate('chapa-payment')
+            }>
+            <Text style={styles.listofPackagesBottomtext}>'Buy Now</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -184,6 +194,7 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.05,
     textAlign: 'left',
+    textTransform: 'uppercase',
   },
   cdivider: {
     justifyContent: 'center',
@@ -202,11 +213,13 @@ const styles = StyleSheet.create({
   cIcon: {
     width: scale(15),
     height: scale(15),
-    // padding:1,
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#B9B8C5',
+  },
+  cIconActive: {
+    backgroundColor: 'green',
   },
 });
 export default SubCard;

@@ -7,11 +7,17 @@ import {
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
 import {subjectType} from '../../../../types';
-import {useCreteGuestUserMutation} from '../../../../reduxToolkit/Services/auth';
+import {
+  useCreteGuestUserMutation,
+  useGetStudyMutation,
+} from '../../../../reduxToolkit/Services/auth';
 import uuid from 'react-native-uuid';
 import {UserData} from '../../../../Realm';
+import {getAllStudies} from '../../Study/logic';
+import {ToastProps} from 'react-native-toast-message';
 
 type CreateGuestMutationFn = ReturnType<typeof useCreteGuestUserMutation>[0];
+type GetStudyMutationFn = ReturnType<typeof useGetStudyMutation>[0];
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -61,6 +67,9 @@ export const createRealmUserData = async (
   setIsLoadingSubjects: React.Dispatch<React.SetStateAction<boolean>>,
   setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>,
   creteGuestUser: CreateGuestMutationFn,
+  getStudy: GetStudyMutationFn,
+  navigator: any,
+  Toast: (props: ToastProps) => JSX.Element,
 ) => {
   try {
     setIsLoadingSubjects(true);
@@ -79,12 +88,21 @@ export const createRealmUserData = async (
         isSubscribed: false,
         user: null,
         selectedSubjects: [...selectedSubjects],
+        allowedTrialDays: 0,
+        guestUserToken: null,
       });
     });
 
-    setShowOnboarding(false);
+    const guestUserToken: string | null = await createGuestUserUniqueId(
+      creteGuestUser,
+      grade.value.grade,
+      realm,
+    );
 
-    await createGuestUserUniqueId(creteGuestUser, grade.value.grade, realm);
+    guestUserToken &&
+      (await getAllStudies(getStudy, navigator, guestUserToken, realm, Toast));
+    console.log('token -----------> ', guestUserToken);
+    setShowOnboarding(false);
   } catch (err) {
     console.log(err);
     setIsLoadingSubjects(false);
@@ -145,6 +163,7 @@ export const createRealmSubjectsData = async (
           grade,
           subject: subjectObject,
           progress: 0,
+          guestUserToken: null,
         });
       });
     });
@@ -158,7 +177,7 @@ const createGuestUserUniqueId = async (
   creteGuestUser: CreateGuestMutationFn,
   grade: string,
   realm: Realm,
-) => {
+): Promise<string | null> => {
   const userData = realm.objects(UserData);
 
   try {
@@ -166,21 +185,25 @@ const createGuestUserUniqueId = async (
     const response: any = await creteGuestUser({grade, deviceId}).unwrap();
 
     if (response.totalTrialTime) {
-      const totalTrialTime = parseInt(response.totalTrialTime.split(' ')[0]);
-
-      realm.write(() => {
-        userData[0].deviceId = deviceId.toString();
-        userData[0].allowedTrialDays = totalTrialTime;
-
-        console.log(userData[0]);
-      });
+      const totalTrialTime: number = response.totalTrialTime;
 
       try {
+        realm.write(() => {
+          userData[0].deviceId = deviceId.toString();
+          userData[0].allowedTrialDays = totalTrialTime;
+          userData[0].guestUserToken = response.accessToken;
+        });
+
+        return response.accessToken;
       } catch (err) {
         console.log('Error saving deviceid for userdata', err);
+        return null;
       }
     }
+
+    return null;
   } catch (e) {
     console.log('Error on create guest user', e);
+    return null;
   }
 };

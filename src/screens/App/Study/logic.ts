@@ -3,10 +3,14 @@ import RNFS from 'react-native-fs';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
-import {LocalObjectDataKeys, NumberConverter} from '../../../utils/Data/data';
+import {
+  LocalObjectDataKeys,
+  NumberConverter,
+  STATUSTYPES,
+} from '../../../utils/Data/data';
 import {Study} from '../../../Realm';
 
-type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[11];
+type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[0];
 
 export const getAllStudies = async (
   getStudy: StudyMutationFn,
@@ -18,6 +22,14 @@ export const getAllStudies = async (
   if (token) {
     checkIsOnline(navigator);
 
+    const savedStudies = realm.objects(Study);
+
+    if (savedStudies && savedStudies.length > 0) {
+      realm.write(() => {
+        realm.delete(savedStudies);
+      });
+    }
+
     let pageNumber = 1;
     let totalPages = 1;
 
@@ -27,7 +39,7 @@ export const getAllStudies = async (
           token,
           pageNumber,
         }).unwrap();
-
+        console.log('studies', response);
         ++pageNumber;
 
         totalPages = response.totalPages;
@@ -42,8 +54,9 @@ export const getAllStudies = async (
         }
         Toast.show({
           type: 'error',
-          text1: 'Error fetching studeies',
+          text1: 'Error fetching studies',
         });
+        console.log('======>', error);
         return false;
       }
     }

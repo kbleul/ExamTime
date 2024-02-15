@@ -1,7 +1,11 @@
 import React from 'react';
 import MessageBox from './MessageBox';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {
+  ProfileMenuItemsAuth,
+  screenHeight,
+  screenWidth,
+} from '../../utils/Data/data';
 import {useNavigation} from '@react-navigation/native';
 
 const LoginBox = ({
@@ -21,7 +25,14 @@ const LoginBox = ({
 
       <View style={styles.formBox}>
         {isSubscribe && (
-          <TouchableOpacity style={styles.button} touchSoundDisabled>
+          <TouchableOpacity
+            style={styles.button}
+            touchSoundDisabled
+            onPress={() =>
+              navigator.navigate('ProfileSection', {
+                screen: ProfileMenuItemsAuth['Subscription Plan'].navigate,
+              })
+            }>
             <Text style={styles.buttonText}>Subscribe</Text>
           </TouchableOpacity>
         )}

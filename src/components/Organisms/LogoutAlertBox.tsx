@@ -29,7 +29,8 @@ const LogoutAlertBox: React.FC<{
     dispatch(logoutSuccess());
     removeRealmUserData(realm, savedUserData);
     setShowLogoutDialog(false);
-    calculateDateDifference(savedUserData[0].initialDate) > 2
+    calculateDateDifference(savedUserData[0].initialDate) >
+    savedUserData[0].allowedTrialDays
       ? setUserStatus(STATUSTYPES.NotAuthorized)
       : setUserStatus(STATUSTYPES.Trial);
 

@@ -74,7 +74,7 @@ export const handleLogin = async (
       }),
     );
 
-    setUserStatus(STATUSTYPES.Authorized);
+    setUserStatus(STATUSTYPES.AuthorizedTrial);
 
     let prevGrade = await getObject_from_localStorage(
       LocalStorageDataKeys.userGrade,

@@ -13,6 +13,7 @@ import {AuthContext} from '../../../../Realm/model';
 import {subjectType} from '../../../../types';
 import {
   useCreteGuestUserMutation,
+  useGetStudyMutation,
   useGetSubjectMutation,
 } from '../../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from './logic';
@@ -42,6 +43,7 @@ const PageThree: React.FC<PagesCounterType> = ({
 
   const [IsLoadingSubjects, setIsLoadingSubjects] = useState(false);
   const [getSubject, {isLoading, error}] = useGetSubjectMutation();
+  const [getStudy] = useGetStudyMutation();
 
   const [createGuest] = useCreteGuestUserMutation();
 
@@ -144,6 +146,9 @@ const PageThree: React.FC<PagesCounterType> = ({
                         setIsLoadingSubjects,
                         setShowOnboarding,
                         createGuest,
+                        getStudy,
+                        navigator,
+                        Toast,
                       )
                     }
                     isActive={!IsLoadingSubjects}

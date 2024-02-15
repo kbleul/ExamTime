@@ -75,7 +75,7 @@ export const fetchTips = async (
         return;
       }
     } catch (error) {
-      console.error(error);
+      console.error('error getting tips', error);
     }
   }
 };

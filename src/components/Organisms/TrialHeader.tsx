@@ -37,7 +37,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       const createdAt = savedUserData[0].initialDate;
 
       const remainingDays = calculateDateDifference(createdAt);
-      setTrialDayCounter(allowedTrialDays - remainingDays);
+      setTrialDayCounter(savedUserData[0].allowedTrialDays - remainingDays);
     };
 
     getTrialDay();

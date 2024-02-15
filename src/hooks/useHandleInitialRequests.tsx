@@ -131,7 +131,6 @@ const useHandleInitialRequests = (
   const userData = useQuery(UserData);
 
   const [getTips] = useGetTipsMutation();
-
   useEffect(() => {
     const checkVersionStatus = async () => {
       const data = await checkVersion({

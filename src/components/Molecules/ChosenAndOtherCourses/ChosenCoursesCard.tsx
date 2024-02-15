@@ -96,10 +96,10 @@ const ChosenCoursesCard: React.FC<{
           }
           onPress={() => {
             if (subjectId) {
-              if (!user || !token) {
-                setLoginModalVisible && setLoginModalVisible(true);
-                return;
-              }
+              // if (!user || !token) {
+              //   setLoginModalVisible && setLoginModalVisible(true);
+              //   return;
+              // }
 
               if (savedStudies.length > 0 && subject && subject.length > 0) {
                 navigator.navigate('Study', {

@@ -21,9 +21,9 @@ type TopCatagoriesType = string[];
 export const STATUSTYPES = {
   Trial: 'Trial',
   NotAuthorized: 'NotAuthorized',
-  Authorized: 'Authorized',
-  Subscribed: 'Subscribed',
+  AuthorizedTrial: 'AuthorizedTrial',
   Unsubscribed: 'Unsubscribed',
+  Subscribed: 'Subscribed',
 };
 
 export const CourseCatagories: TopCatagoriesType = ['Study', 'Challenge'];

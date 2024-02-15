@@ -250,10 +250,10 @@ const CourseItem = ({
         <TouchableOpacity
           style={styles.lcontainer}
           onPress={() => {
-            if (!user || !token) {
-              setLoginModalVisible(true);
-              return;
-            }
+            // if (!user || !token) {
+            //   setLoginModalVisible(true);
+            //   return;
+            // }
 
             if (getSubjectsByIdSubject(realm, subject).length > 0) {
               navigator.navigate('StudyDetails', {

@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
-import AuthRoutes from './Auth';
 import AppRoutes from './App';
 import {UserData} from '../Realm';
 import {AuthContext} from '../Realm/model';
 import SplashScreen from '../screens/Shared/SplashScreen';
 import {checkUserStatus} from './logic';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../reduxToolkit/Store';
+import {useDispatch} from 'react-redux';
+
 import {useOnboardingContext} from '../context/onboarding';
 import {useUserStatus} from '../context/userStatus';
 

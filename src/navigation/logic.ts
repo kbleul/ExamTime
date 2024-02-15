@@ -30,7 +30,7 @@ export const checkUserStatus = (
     if (!savedUserData[0].user) {
       const dateDiff = calculateDateDifference(savedUserData[0].initialDate);
 
-      if (dateDiff > 2) {
+      if (dateDiff > savedUserData[0].allowedTrialDays) {
         //trial is over
         setUserStatus(STATUSTYPES.NotAuthorized);
         return;
@@ -52,7 +52,7 @@ export const checkUserStatus = (
           IsDefaultPasswordChanged: true,
         }),
       );
-      setUserStatus(STATUSTYPES.Authorized);
+      setUserStatus(STATUSTYPES.AuthorizedTrial);
     }
   }
 

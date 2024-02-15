@@ -15,6 +15,8 @@ import {
   usePostNotificationStatusMutation,
 } from '../reduxToolkit/Services/auth';
 import {checkIsOnline} from '../utils/Functions/Helper';
+import {STATUSTYPES} from '../utils/Data/data';
+import {useUserStatus} from './userStatus';
 
 interface NotificationType {
   notifications: any[] | null;
@@ -42,6 +44,7 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
 
   const [notifications, setNotifications] = useState<any[] | null>(null);
   const [hasNewNotification, setHasNewNotification] = useState(false);
+  const {setUserStatus} = useUserStatus();
 
   const fetchNotification = useCallback(async () => {
     const isOnline = await checkIsOnline();
@@ -58,8 +61,15 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
           setNotifications(null);
           setHasNewNotification(false);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.log('Error on GET notifications ', err);
+        if (
+          err.data.error === 'Unauthorized' &&
+          err.data.message.includes('expired') &&
+          err.status === 401
+        ) {
+          setUserStatus(STATUSTYPES.Unsubscribed);
+        }
       }
     }
   }, [token, getNotifications]);

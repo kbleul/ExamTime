@@ -6,7 +6,12 @@ import {AuthContext} from '../../Realm/model';
 import {screenWidth} from '../../utils/Data/data';
 import {PagesCounterType} from '../../screens/App/Onboarding/Page/types';
 import {useOnboardingContext} from '../../context/onboarding';
-import {useCreteGuestUserMutation} from '../../reduxToolkit/Services/auth';
+import {
+  useCreteGuestUserMutation,
+  useGetStudyMutation,
+} from '../../reduxToolkit/Services/auth';
+import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 const TopIndicator: React.FC<
   PagesCounterType & {
     IsLoadingSubjectsRealm?: boolean;
@@ -18,10 +23,13 @@ const TopIndicator: React.FC<
   IsLoadingSubjectsRealm,
   setIsLoadingSubjects,
 }) => {
+  const navigator = useNavigation();
+
   const {setShowOnboarding} = useOnboardingContext();
   const {useRealm} = AuthContext;
   const realm = useRealm();
   const [createGuest] = useCreteGuestUserMutation();
+  const [getStudy] = useGetStudyMutation();
 
   return (
     <View style={style.container}>
@@ -39,6 +47,9 @@ const TopIndicator: React.FC<
               setIsLoadingSubjects,
               setShowOnboarding,
               createGuest,
+              getStudy,
+              navigator,
+              Toast,
             )
           }>
           <Text style={style.text}>Skip</Text>

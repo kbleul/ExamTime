@@ -385,7 +385,7 @@ export const api = createApi({
     >({
       query: data => {
         return {
-          url: '/notification/user/delete/' + data.notificationId,
+          url: 'notification/user/delete/' + data.notificationId,
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${data.token}`,
@@ -410,9 +410,17 @@ export const api = createApi({
     >({
       query: data => {
         return {
-          url: '/user/createguest/',
+          url: 'user/createguest/',
           body: {grade: data.grade, deviceId: data.deviceId},
           method: 'POST',
+        };
+      },
+    }),
+    getSubscriptionPackages: build.mutation<{}, {}>({
+      query: () => {
+        return {
+          url: 'payment/user/subscriptionpackage',
+          method: 'GET',
         };
       },
     }),
@@ -450,4 +458,5 @@ export const {
   useDeleteNotificationStatusMutation,
   useGetTrialStatusMutation,
   useCreteGuestUserMutation,
+  useGetSubscriptionPackagesMutation,
 } = api;

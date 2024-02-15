@@ -17,8 +17,6 @@ import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../Onboarding/Page/logic';
 import Loading from '../../../components/Atoms/Loading';
 import {useNavContext} from '../../../context/bottomNav';
-import {RootState} from '../../../reduxToolkit/Store';
-import {useSelector} from 'react-redux';
 import LoginBox from '../../../components/Atoms/LoginBox';
 import {useUserStatus} from '../../../context/userStatus';
 
@@ -31,7 +29,6 @@ const getSubjects = (realm: Realm) => {
 };
 const Practice = () => {
   const navigator = useNavigation();
-  const user = useSelector((state: RootState) => state.auth.user);
 
   const {setShowNavigation} = useNavContext();
   const {userStatus} = useUserStatus();

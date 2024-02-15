@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import {screenHeight, screenWidth} from '../../utils/Data/data';
+import {STATUSTYPES, screenHeight, screenWidth} from '../../utils/Data/data';
 import {useGetExamsMutation} from '../../reduxToolkit/Services/exams';
 
 import {useNavigation} from '@react-navigation/native';
@@ -20,6 +20,8 @@ import {Exam, UserData} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 import PracticeModeModal from './PracticeModeModal';
 import {getRealmSubject} from '../../utils/Functions/Get';
+import LoginBox from '../Atoms/LoginBox';
+import {useUserStatus} from '../../context/userStatus';
 
 export const ExamCatagories = [
   {
@@ -50,17 +52,9 @@ const FullExams: React.FC<{
   const {useRealm, useQuery} = AuthContext;
   const realm = useRealm();
 
+  const {userStatus} = useUserStatus();
+
   const userData = useQuery(UserData);
-
-  // const savedExams = useQuery(Exam, savedExamItem => {
-  //   return savedExamItem.filtered(
-  //     `examType == "${
-  //       ExamCatagories.find(item => item.name === selectedExamType)?.type
-  //     }"`,
-  //   );
-  // });
-
-  // const selectedSubject = getRealmSubject(selectedSubjectId, realm);
 
   const [getExams, {isLoading, error}] = useGetExamsMutation();
 
@@ -80,7 +74,10 @@ const FullExams: React.FC<{
       userData &&
       userData.length > 0
     ) {
-      if (!savedExams || savedExams.length === 0) {
+      if (
+        (!savedExams || savedExams.length === 0) &&
+        userStatus === STATUSTYPES.Subscribed
+      ) {
         getPreviousExams(
           navigator,
           getExams,
@@ -100,7 +97,8 @@ const FullExams: React.FC<{
             examItem.subject?.id === selectedSubject[0].subject?.id,
         );
         setExams([...filteredEXams]);
-        filteredEXams.length === 0 &&
+        userStatus === STATUSTYPES.Subscribed &&
+          filteredEXams.length === 0 &&
           Toast.show({
             type: 'error',
             text1: 'No exams found that match your grade and subject',
@@ -159,6 +157,14 @@ const FullExams: React.FC<{
           selectedExamType={selectedExamType}
           setPracticeModeModalVisible={setPracticeModeModalVisible}
           setSelectedExam={setSelectedExam}
+        />
+      )}
+
+      {userStatus !== STATUSTYPES.Subscribed && (
+        <LoginBox
+          title="Subscribe to Exam Time"
+          subTitle="Subscribe to get access to all previous and modal exams"
+          isSubscribe
         />
       )}
 

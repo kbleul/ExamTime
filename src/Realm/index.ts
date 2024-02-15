@@ -37,7 +37,8 @@ class UserData extends Realm.Object {
   isSubscribed: boolean = false;
   user: userType | null = null; // Define the user property as a reference to the User object.
   selectedSubjects?: string[] | [];
-  allowedTrialDays: number | null = null;
+  allowedTrialDays: number = 0;
+  guestUserToken: string | null = null;
 
   static schema: Realm.ObjectSchema = {
     name: 'UserData',
@@ -50,7 +51,8 @@ class UserData extends Realm.Object {
       isSubscribed: 'bool',
       user: 'User?', // Link the 'user' property to the 'User' object.
       selectedSubjects: 'string[]',
-      allowedTrialDays: 'int?',
+      allowedTrialDays: 'int',
+      guestUserToken: 'string?',
     },
     primaryKey: '_id',
   };

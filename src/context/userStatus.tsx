@@ -1,6 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {useContext, createContext, useState} from 'react';
+import {STATUSTYPES} from '../utils/Data/data';
+import {calculateDateDifference} from '../screens/App/Onboarding/Logic';
+import {useQuery} from '@realm/react';
+import {UserData} from '../Realm';
+import {AuthContext} from '../Realm/model';
+import {useSelector} from 'react-redux';
+import {RootState} from '../reduxToolkit/Store';
 
 interface UserStatusType {
   userStatus: string | null;
@@ -17,7 +24,23 @@ export function useUserStatus() {
 }
 
 const UserStatusProvider = ({children}: {children: React.ReactNode}) => {
-  const [userStatus, setUserStatus] = useState<string | null>(null);
+  const [userStatus, setUserStatus] = useState<string | null>(
+    STATUSTYPES.Trial,
+  );
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const {useQuery} = AuthContext;
+  const savedUserData = useQuery(UserData);
+
+  useEffect(() => {
+    if (!user && savedUserData && savedUserData.length > 0) {
+      const createdAt = savedUserData[0].initialDate;
+
+      const remainingDays = calculateDateDifference(createdAt);
+      savedUserData[0].allowedTrialDays - remainingDays <= 0 &&
+        setUserStatus(STATUSTYPES.NotAuthorized);
+    }
+  }, []);
 
   return (
     <UserStatusContext.Provider

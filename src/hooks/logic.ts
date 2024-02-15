@@ -116,16 +116,22 @@ export const checkTrialStatus = async (
       const response: any = await getTrialStatus({
         token,
       }).unwrap();
-      console.log('=============>', response);
       if (response && response.length > 0 && response[0].remainingDays) {
         if (parseInt(response[0].remainingDays) <= 0) {
           setUserStatus(STATUSTYPES.Unsubscribed);
         } else if (parseInt(response[0].remainingDays) > 0) {
-          setUserStatus(STATUSTYPES.Authorized);
+          setUserStatus(STATUSTYPES.AuthorizedTrial);
         }
       }
     } catch (error) {
       console.error('Error checking trial version status. ', error);
+      if (
+        error.data.error === 'Unauthorized' &&
+        error.data.message.includes('expired') &&
+        error.status === 401
+      ) {
+        setUserStatus(STATUSTYPES.Unsubscribed);
+      }
     }
   }
 };
