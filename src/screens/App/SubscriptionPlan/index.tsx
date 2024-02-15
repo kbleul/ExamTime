@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 
 import BackWithItem from '../../../components/Organisms/BackWithItem';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../reduxToolkit/Store';
+
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
 import {screenHeight} from '../../../utils/Data/data';
 import {useGetSubscriptionPackagesMutation} from '../../../reduxToolkit/Services/auth';
 import Loading from '../../../components/Atoms/Loading';
 
 const Index: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
   const [getSubscriptionPackages, {isLoading, error}] =
     useGetSubscriptionPackagesMutation();
 
@@ -22,9 +20,10 @@ const Index: React.FC = () => {
         const packages: any[] = await getSubscriptionPackages({}).unwrap();
 
         if (packages && packages.length > 0) {
-          const newPackagesList = [];
+          const newPackagesList: any[] = [];
           packages.forEach(packageItem => {
             const newPackage = {
+              id: packageItem.id,
               key: '1',
               planname: packageItem.subscriptionPlan,
               price: packageItem.price,

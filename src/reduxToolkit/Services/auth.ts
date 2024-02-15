@@ -424,6 +424,21 @@ export const api = createApi({
         };
       },
     }),
+    initiateChapaPayment: build.mutation<
+      {},
+      {packageId: string; token: string}
+    >({
+      query: data => {
+        return {
+          url: 'payment/initializepaymentbychapa',
+          method: 'POST',
+          body: {subscriptionPackageId: data.packageId},
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -459,4 +474,5 @@ export const {
   useGetTrialStatusMutation,
   useCreteGuestUserMutation,
   useGetSubscriptionPackagesMutation,
+  useInitiateChapaPaymentMutation,
 } = api;

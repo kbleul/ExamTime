@@ -7,6 +7,7 @@ import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
+import {useInitiateChapaPaymentMutation} from '../../reduxToolkit/Services/auth';
 
 interface SubCardProps {
   item: any;
@@ -19,6 +20,10 @@ interface SubCardProps {
 const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
   const navigator: any = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  const [initiateChapaPayment, {isLoading, error}] =
+    useInitiateChapaPaymentMutation();
 
   const activeColor = '#FAFAFA'; // Color when card is active
   const inactiveColor = 'white';
@@ -41,6 +46,35 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
         : withSpring(inactiveColor),
     };
   });
+
+  const handlePayment = async (packageId: string) => {
+    console.log(packageId);
+    if (token) {
+      try {
+        const resonse: any = await initiateChapaPayment({
+          packageId,
+          token,
+        }).unwrap();
+
+        if (
+          resonse &&
+          resonse.data &&
+          resonse.textReference &&
+          resonse.data.checkout_url
+        ) {
+          console.log(resonse.data);
+
+          navigator.navigate('chapa-payment', {
+            checkout_url: resonse.data.checkout_url,
+            textReference: resonse.textReference,
+          });
+        }
+      } catch (err) {
+        console.log('Error initializing payment with chapa', err);
+      }
+    }
+  };
+
   if (!item.planname) {
     return <View style={{width: spacer}} key={index} />;
   }
@@ -90,7 +124,8 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
           <TouchableOpacity
             style={[styles.listofPackagesBottom]}
             onPress={
-              () => (!user ? navigator.navigate('Login') : handlePayment())
+              () =>
+                !user ? navigator.navigate('Login') : handlePayment(item.id)
 
               // navigator.navigate('chapa-payment')
             }>
