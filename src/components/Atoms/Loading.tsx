@@ -4,14 +4,14 @@ import {ActivityIndicator, StyleSheet} from 'react-native';
 
 const Loading = () => {
   return (
-    <View style={style.loadingCOntainer}>
+    <View style={style.loadingContainer}>
       <ActivityIndicator color="#1E90FF" size={30} />
     </View>
   );
 };
 
 const style = StyleSheet.create({
-  loadingCOntainer: {
+  loadingContainer: {
     paddingVertical: 50,
     justifyContent: 'center',
     alignItems: 'center',

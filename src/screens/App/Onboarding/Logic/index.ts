@@ -101,7 +101,6 @@ export const createRealmUserData = async (
 
     guestUserToken &&
       (await getAllStudies(getStudy, navigator, guestUserToken, realm, Toast));
-    console.log('token -----------> ', guestUserToken);
     setShowOnboarding(false);
   } catch (err) {
     console.log(err);

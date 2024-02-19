@@ -439,6 +439,20 @@ export const api = createApi({
         };
       },
     }),
+    verifyChapaPayment: build.mutation<
+      {},
+      {textReference: string; token: string}
+    >({
+      query: data => {
+        return {
+          url: `payment/verifypaymentbychapa/${data.textReference}`,
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -475,4 +489,5 @@ export const {
   useCreteGuestUserMutation,
   useGetSubscriptionPackagesMutation,
   useInitiateChapaPaymentMutation,
+  useVerifyChapaPaymentMutation,
 } = api;

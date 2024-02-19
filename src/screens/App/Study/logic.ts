@@ -35,11 +35,10 @@ export const getAllStudies = async (
 
     while (pageNumber <= totalPages) {
       try {
-        const response = await getStudy({
+        const response: any = await getStudy({
           token,
           pageNumber,
         }).unwrap();
-        console.log('studies', response);
         ++pageNumber;
 
         totalPages = response.totalPages;

@@ -149,7 +149,7 @@ const useHandleInitialRequests = (
       // if (nextAppState === 'background' || nextAppState === 'inactive') {
       const isConnected = await checkIsOnline();
       if (isConnected) {
-        getAllStudies(getStudy, navigation, token, realm, Toast);
+        token && getAllStudies(getStudy, navigation, token, realm, Toast);
 
         checkTrialStatus(getTrialStatus, token ? token : '', setUserStatus);
 

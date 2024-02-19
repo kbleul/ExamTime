@@ -22,6 +22,8 @@ import PracticeModeModal from './PracticeModeModal';
 import {getRealmSubject} from '../../utils/Functions/Get';
 import LoginBox from '../Atoms/LoginBox';
 import {useUserStatus} from '../../context/userStatus';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reduxToolkit/Store';
 
 export const ExamCatagories = [
   {
@@ -51,6 +53,7 @@ const FullExams: React.FC<{
   const navigator = useNavigation();
   const {useRealm, useQuery} = AuthContext;
   const realm = useRealm();
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const {userStatus} = useUserStatus();
 
@@ -76,7 +79,8 @@ const FullExams: React.FC<{
     ) {
       if (
         (!savedExams || savedExams.length === 0) &&
-        userStatus === STATUSTYPES.Subscribed
+        userStatus === STATUSTYPES.Subscribed &&
+        token
       ) {
         getPreviousExams(
           navigator,
@@ -87,6 +91,7 @@ const FullExams: React.FC<{
           realm,
           ExamCatagories.find(item => item.name === selectedExamType)?.type ||
             '',
+          token,
         );
       } else {
         const filteredEXams: any[] = savedExams.filter(

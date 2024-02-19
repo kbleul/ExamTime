@@ -48,7 +48,6 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
   });
 
   const handlePayment = async (packageId: string) => {
-    console.log(packageId);
     if (token) {
       try {
         const resonse: any = await initiateChapaPayment({
@@ -62,8 +61,6 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
           resonse.textReference &&
           resonse.data.checkout_url
         ) {
-          console.log(resonse.data);
-
           navigator.navigate('chapa-payment', {
             checkout_url: resonse.data.checkout_url,
             textReference: resonse.textReference,

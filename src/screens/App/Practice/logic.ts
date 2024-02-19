@@ -14,27 +14,40 @@ export const getPreviousExams = async (
   grade: string | null,
   realm: Realm,
   selectedExamType: string,
+  token: string | null,
 ) => {
-  try {
-    checkIsOnline(navigator);
-    const response: any = await getExams({
-      params: {
-        grade: grade ? grade : undefined,
-        subject,
-      },
-    }).unwrap();
+  if (token) {
+    try {
+      checkIsOnline(navigator);
 
-    setExams([
-      ...response?.exams.filter(
-        (exam: examTsType) =>
-          exam.subject.subject === subject &&
-          exam.examType === selectedExamType,
-      ),
-    ]);
+      let pageNumber = 1;
+      let totalPages = 1;
 
-    saveExamsToRealmDB(response.exams, realm);
-  } catch (err) {
-    console.log('-', err);
+      while (pageNumber <= totalPages) {
+        const response: any = await getExams({
+          params: {
+            grade: grade ? grade : undefined,
+            subject,
+            token,
+          },
+        }).unwrap();
+
+        ++pageNumber;
+        totalPages = response.totalPages;
+
+        setExams([
+          ...response?.exams.filter(
+            (exam: examTsType) =>
+              exam.subject.subject === subject &&
+              exam.examType === selectedExamType,
+          ),
+        ]);
+
+        saveExamsToRealmDB(response.exams, realm);
+      }
+    } catch (err) {
+      console.log('-exams', err);
+    }
   }
 };
 

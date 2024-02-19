@@ -2,6 +2,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import Config from 'react-native-config';
 
 type ExamParamsType = {
+  token: string;
   page?: number;
   limit?: number;
   examName?: string;
@@ -16,11 +17,13 @@ const createUrlWithParams = (url: string, params: ExamParamsType) => {
   let loopCounter = 0;
 
   Object.keys(params).forEach((key: string) => {
-    loopCounter === 0
-      ? (newUrl += `?${key}=${params[key]}`)
-      : (newUrl += `&${key}=${params[key]}`);
+    if (key !== 'token') {
+      loopCounter === 0
+        ? (newUrl += `?${key}=${params[key]}`)
+        : (newUrl += `&${key}=${params[key]}`);
 
-    ++loopCounter;
+      ++loopCounter;
+    }
   });
   return newUrl;
 };
@@ -40,32 +43,10 @@ export const api = createApi({
             grade: credentials.params.grade,
           }),
           method: 'GET',
-        };
-      },
-    }),
-    getRandomExam: build.mutation<
-      {},
-      {
-        grade: string;
-        subject: string;
-        noOfQuestions: number;
-      }
-    >({
-      query: credentials => {
-        return {
-          url: 'exam/randomexam',
-          body: {
-            subject: credentials.subject,
-            grade: credentials.grade,
-            noOfQuestions: credentials.noOfQuestions,
-            unit: '',
-          },
           headers: {
             'Content-Type': 'application/json',
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ODY3MWRlYS1jZmQ3LTQ2M2MtOTAzZi01YmQ4NjFkMjMwN2QiLCJpYXQiOjE2OTkyNzI4MTZ9.riBXZdA0Cny8OGybmCyG4xRJZTlVxUmS6taG0t9ADQg',
+            Authorization: `Bearer ${credentials.params.token}`,
           },
-          method: 'POST',
         };
       },
     }),

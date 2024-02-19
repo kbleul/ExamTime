@@ -34,6 +34,10 @@ const UserStatusProvider = ({children}: {children: React.ReactNode}) => {
 
   useEffect(() => {
     if (!user && savedUserData && savedUserData.length > 0) {
+      if (savedUserData[0].isSubscribed) {
+        setUserStatus(STATUSTYPES.Subscribed);
+        return;
+      }
       const createdAt = savedUserData[0].initialDate;
 
       const remainingDays = calculateDateDifference(createdAt);

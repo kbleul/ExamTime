@@ -80,20 +80,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: screenWidth * 0.06,
-    marginTop: screenHeight * 0.002,
   },
   statusTextContainer: {
     width: '60%',
   },
   statusHeaderTexts: {
     fontFamily: 'PoppinsRegular',
-    fontSize: screenWidth * 0.04,
+    fontSize: screenWidth * 0.036,
     color: '#868B98',
   },
   subjects: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: screenHeight * 0.06,
+    marginTop: screenHeight * 0.055,
   },
 });
 
