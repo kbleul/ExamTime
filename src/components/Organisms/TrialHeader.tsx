@@ -50,7 +50,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       </Text>
 
       <View style={HeaderStyle.container}>
-        {trialDayCounter !== null && !isSubscribed && !user && (
+        {/* {trialDayCounter !== null && !isSubscribed && !user && (
           <View style={HeaderStyle.leftContainer}>
             <Text style={HeaderStyle.leftContainer_text}>
               {trialDayCounter < 0 ? 0 : trialDayCounter} days left
@@ -61,7 +61,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
               size={screenWidth * 0.05}
             />
           </View>
-        )}
+        )} */}
         <View style={HeaderStyle.subContainer}>
           <TouchableOpacity
             style={HeaderStyle.notificationBtn}

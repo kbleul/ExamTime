@@ -15,12 +15,14 @@ import NavProvider from './src/context/bottomNav';
 import Routes from './src/navigation/Index';
 import OnboardingProvider from './src/context/onboarding';
 import UserStatusProvider from './src/context/userStatus';
+import {requestUserPermission} from './src/utils/PushNotification';
 
 function App(): React.JSX.Element {
   const {RealmProvider} = AuthContext;
 
   useEffect(() => {
     BootSplash.hide({fade: true});
+    requestUserPermission();
   }, []);
 
   const Stack = createStackNavigator();

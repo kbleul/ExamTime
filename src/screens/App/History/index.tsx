@@ -1,8 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {captureScreen} from 'react-native-view-shot';
-
 import {StyleSheet, Text, View} from 'react-native';
-
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {useFocusEffect} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
@@ -13,7 +11,6 @@ import ViewHistoryScreenShotModal from '../../../components/Organisms/ViewHistor
 
 const History = () => {
   const {setShowNavigation} = useNavContext();
-
   const [capturedImageURI, setCapturedImageURI] = useState<any>(null);
 
   const onCapture = async () => {

@@ -5,7 +5,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 
-
 type BackWithItemsType = {
   type: string;
   isTrial?: boolean;
@@ -21,7 +20,7 @@ const BackWithItem: React.FC<BackWithItemsType> = ({type, isTrial}) => {
         <Ionicons name="chevron-back-outline" color="#000" size={24} />
         <Text style={styles.typeText}>{type}</Text>
       </TouchableOpacity>
-      {isTrial && (
+      {/* {isTrial && (
         <View style={styles.leftContainer}>
           <Text style={styles.leftContainer_text}>2 days left</Text>
           <MaterialCommunityIcons
@@ -30,7 +29,7 @@ const BackWithItem: React.FC<BackWithItemsType> = ({type, isTrial}) => {
             size={20}
           />
         </View>
-      )}
+      )} */}
     </View>
   );
 };

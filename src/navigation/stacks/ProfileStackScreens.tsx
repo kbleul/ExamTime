@@ -1,10 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-
 import {ProfileMenuItemsAuth} from '../../utils/Data/data';
-
 import NetworkError from '../../screens/Shared/NetworkError';
-
 import Profile from '../../screens/App/Profile/index';
 import ContactUs from '../../screens/App/ContactUs/index';
 import FAQ from '../../screens/App/FAQ/index';
@@ -31,11 +28,11 @@ const ProfileStackScreens = () => {
         options={{headerShown: false}}
       />
 
-      <ProfileStack.Screen
+      {/* <ProfileStack.Screen
         name={ProfileMenuItemsAuth['Subscription Plan'].navigate}
         component={SubscriptionPlan}
         options={{headerShown: false}}
-      />
+      /> */}
 
       <ProfileStack.Screen
         name={ProfileMenuItemsAuth['Contact Us'].navigate}
