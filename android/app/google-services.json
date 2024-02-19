@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "958893942054",
+    "project_id": "fetena-12350",
+    "storage_bucket": "fetena-12350.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958893942054:android:c44c4dc039d972d929cde7",
+        "android_client_info": {
+          "package_name": "com.exam_time.exam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "958893942054-84u934oj809hfk9j6h01vedr5q3hadpo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.exam_time.exam",
+            "certificate_hash": "3122341020c9a00a1da98f72de00d2bd9048a82c"
+          }
+        },
+        {
+          "client_id": "958893942054-gsn8v9e66n1g32snt0vnvvtav9v0hj0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.exam_time.exam",
+            "certificate_hash": "4b6b189f3348d0830003c9c1cd8750091fa08f2d"
+          }
+        },
+        {
+          "client_id": "958893942054-vrc232hrkq3am27e45n5sg7hemt4k43j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.exam_time.exam",
+            "certificate_hash": "3030d00f2268bd035435bbd0c06bdf76f6282417"
+          }
+        },
+        {
+          "client_id": "958893942054-edpt5invqahsms41ch5j2h22fodujrg8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzuQWHD6c_Eko4YSwGVMXBF5NEuF9jW4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "958893942054-edpt5invqahsms41ch5j2h22fodujrg8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "958893942054-0t22uen8giab6mtfa52hm67u4b8be01d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fetena"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

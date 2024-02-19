@@ -1,5 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
-import {PermissionsAndroid, Platform} from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 export async function requestUserPermission() {
   let fcmToken;
@@ -18,7 +18,7 @@ export async function requestUserPermission() {
   if (enabled) {
     fcmToken = await getFCMToken();
   } else {
-    console.log('User has disabled notification permissions');
+    console.log('User has disabled notification permissions', authStatus);
   }
   return fcmToken;
 }
@@ -34,26 +34,27 @@ async function getFCMToken() {
 
   const fcmToken = await messaging().getToken();
 
-  try {
-    const token = ''; // IMPORTANT
-    const baseUrl = '';
 
-    //let's assume the endpoinnt to update device token is auth/device-token`
-    let response = await fetch(`${baseUrl}/auth/device-token`, {
-      method: 'PATCH',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json;charset=utf-8',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({token: fcmToken}),
-    });
+  // try {
+  //   const token = ''; // IMPORTANT
+  //   const baseUrl = '';
 
-    const result = await response.json();
-    return result;
-  } catch (e) {
-    console.error('Error fetching data:', error);
-  }
+  //   //let's assume the endpoinnt to update device token is auth/device-token`
+  //   let response = await fetch(`${baseUrl}/auth/device-token`, {
+  //     method: 'PATCH',
+  //     headers: {
+  //       accept: 'application/json',
+  //       'content-type': 'application/json;charset=utf-8',
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     body: JSON.stringify({ token: fcmToken }),
+  //   });
+
+  //   const result = await response.json();
+  //   return result;
+  // } catch (e) {
+  //   console.error('Error fetching data:', error);
+  // }
 
   return fcmToken;
 }
