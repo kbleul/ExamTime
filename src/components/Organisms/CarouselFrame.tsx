@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Image,
   ImageBackground,
@@ -27,6 +27,8 @@ import {screenWidth} from '../../utils/Data/data';
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
 import Config from 'react-native-config';
 import {useNavContext} from '../../context/bottomNav';
+import {getAggrgategaStudiesProgress} from '../../utils/Functions/Helper/historyCalculations';
+import {AuthContext} from '../../Realm/model';
 
 const CarouselFrame: React.FC<{
   index: number;
@@ -126,7 +128,10 @@ export const FrameTwo: React.FC<{
   img: any;
   text: string;
   progrss: number;
-}> = ({title, img, text, progrss}) => {
+}> = ({title, img, text}) => {
+  const {useRealm} = AuthContext;
+  const realm = useRealm();
+
   return (
     <View style={frameTwostyles.mainContainer}>
       <ImageBackground
@@ -139,7 +144,9 @@ export const FrameTwo: React.FC<{
             <Text style={frameTwostyles.secondText}>{text}</Text>
           </View>
         </View>
-        <CircleProgressIndicator progress={progrss} />
+        <CircleProgressIndicator
+          progress={getAggrgategaStudiesProgress(realm)}
+        />
       </ImageBackground>
     </View>
   );
