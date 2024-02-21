@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid, Platform } from 'react-native';
 
@@ -33,6 +34,16 @@ async function getFCMToken() {
   }
 
   const fcmToken = await messaging().getToken();
+
+  const savedFirebaseToken = await AsyncStorage.getItem('fireBaseToken');
+
+  if (!savedFirebaseToken || savedFirebaseToken !== fcmToken) {
+    AsyncStorage.setItem('fireBaseToken', fcmToken)
+  }
+
+  console.log("fireBaseToken ---- > ", fcmToken)
+
+
 
 
   // try {

@@ -180,8 +180,14 @@ const createGuestUserUniqueId = async (
   const userData = realm.objects(UserData);
 
   try {
+    const savedFirebaseToken = await AsyncStorage.getItem('fireBaseToken');
+
     const deviceId = uuid.v4();
-    const response: any = await creteGuestUser({grade, deviceId}).unwrap();
+    const response: any = await creteGuestUser({
+      grade,
+      deviceId,
+      fireBaseToken: savedFirebaseToken ? savedFirebaseToken : '',
+    }).unwrap();
 
     if (response.totalTrialTime) {
       const totalTrialTime: number = response.totalTrialTime;

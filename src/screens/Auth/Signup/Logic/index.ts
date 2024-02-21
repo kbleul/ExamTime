@@ -1,4 +1,8 @@
-import {useLoginMutation} from '../../../../reduxToolkit/Services/auth';
+import {
+  useChangePasswordMutation,
+  useCreatePasswordMutation,
+  useLoginMutation,
+} from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
 import {
   ChangePasswordFormDataType,
@@ -14,12 +18,13 @@ import {
   getObject_from_localStorage,
   get_from_localStorage,
 } from '../../../../utils/Functions/Get';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[1];
 type VerifyCodeMutationFnMutationFn = ReturnType<typeof useLoginMutation>[2];
 type ResendCodeMutationFn = ReturnType<typeof useLoginMutation>[3];
-type CreatePasswordMutationFn = ReturnType<typeof useLoginMutation>[4];
-type ChangePasswordMutationFn = ReturnType<typeof useLoginMutation>[6];
+type CreatePasswordMutationFn = ReturnType<typeof useCreatePasswordMutation>[0];
+type ChangePasswordMutationFn = ReturnType<typeof useChangePasswordMutation>[0];
 type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[7];
 
 export const fetchRegions = async (
@@ -213,9 +218,11 @@ export const changeUserPassword = async (
 ) => {
   try {
     checkIsOnline(navigator);
+    const savedFirebaseToken = await AsyncStorage.getItem('fireBaseToken');
 
     await changePassword({
       ...data,
+      fireBaseToken: savedFirebaseToken ? savedFirebaseToken : '',
     }).unwrap();
 
     navigator.navigate('signup-success');

@@ -73,6 +73,7 @@ export type ChangePasswordFormDataType = {
   token: string;
   currentPassword: string;
   newPassword: string;
+  fireBaseToken?: string;
 };
 
 export type regionItemsType = {

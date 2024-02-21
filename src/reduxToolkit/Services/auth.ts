@@ -83,6 +83,7 @@ export const api = createApi({
           body: {
             currentPassword: data.currentPassword,
             newPassword: data.newPassword,
+            fireBaseToken: data.fireBaseToken,
           },
         };
       },
@@ -406,12 +407,16 @@ export const api = createApi({
     }),
     creteGuestUser: build.mutation<
       any,
-      {grade: string; deviceId: string | number[]}
+      {grade: string; deviceId: string | number[]; fireBaseToken: string}
     >({
       query: data => {
         return {
           url: 'user/createguest/',
-          body: {grade: data.grade, deviceId: data.deviceId},
+          body: {
+            grade: data.grade,
+            deviceId: data.deviceId,
+            fireBaseToken: data.fireBaseToken,
+          },
           method: 'POST',
         };
       },
