@@ -3,7 +3,7 @@ import {Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import {allowedTrialDays, screenWidth} from '../../utils/Data/data';
+import {screenWidth} from '../../utils/Data/data';
 import {calculateDateDifference} from '../../screens/App/Onboarding/Logic';
 import {HeaderStyle} from '../../styles/Theme/HeaderBox';
 import {AuthContext} from '../../Realm/model';
@@ -50,7 +50,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       </Text>
 
       <View style={HeaderStyle.container}>
-        {/* {trialDayCounter !== null && !isSubscribed && !user && (
+        {trialDayCounter !== null && !isSubscribed && (
           <View style={HeaderStyle.leftContainer}>
             <Text style={HeaderStyle.leftContainer_text}>
               {trialDayCounter < 0 ? 0 : trialDayCounter} days left
@@ -61,7 +61,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
               size={screenWidth * 0.05}
             />
           </View>
-        )} */}
+        )}
         <View style={HeaderStyle.subContainer}>
           <TouchableOpacity
             style={HeaderStyle.notificationBtn}

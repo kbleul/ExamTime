@@ -52,7 +52,11 @@ export const checkUserStatus = (
           IsDefaultPasswordChanged: true,
         }),
       );
-      setUserStatus(STATUSTYPES.AuthorizedTrial);
+      setUserStatus(
+        savedUserData[0].isSubscribed
+          ? STATUSTYPES.Subscribed
+          : STATUSTYPES.AuthorizedTrial,
+      );
     }
   }
 

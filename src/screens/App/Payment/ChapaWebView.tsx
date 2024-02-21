@@ -55,7 +55,6 @@ const ChapaWebView = ({route}: {route: any}) => {
             });
           }
 
-          console.log('-------->', savedUserData[0].isSubscribed);
           getAllStudies(getStudy, navigator, token, realm, Toast);
 
           navigator.navigate('HomeSection', {

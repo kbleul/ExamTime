@@ -122,7 +122,7 @@ const useHandleInitialRequests = (
 
   const realm = useRealm();
 
-  const {setUserStatus} = useUserStatus();
+  const {userStatus, setUserStatus} = useUserStatus();
   const savedTakenExams = useQuery(Exam, exam => {
     return exam.filtered('isExamTaken = true');
   });
@@ -151,7 +151,12 @@ const useHandleInitialRequests = (
       if (isConnected) {
         token && getAllStudies(getStudy, navigation, token, realm, Toast);
 
-        checkTrialStatus(getTrialStatus, token ? token : '', setUserStatus);
+        checkTrialStatus(
+          getTrialStatus,
+          token ? token : '',
+          setUserStatus,
+          userStatus,
+        );
 
         if (savedTakenExams.length > 0) {
           // Perform data sync with the database
