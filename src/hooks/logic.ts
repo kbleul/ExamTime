@@ -110,13 +110,19 @@ export const checkTrialStatus = async (
   getTrialStatus: getTrialMutationFn,
   token: string,
   setUserStatus: any,
+  userStatus: any,
 ) => {
   if (token) {
     try {
       const response: any = await getTrialStatus({
         token,
       }).unwrap();
-      if (response && response.length > 0 && response[0].remainingDays) {
+      if (
+        response &&
+        response.length > 0 &&
+        response[0].remainingDays &&
+        userStatus !== STATUSTYPES.Subscribed
+      ) {
         if (parseInt(response[0].remainingDays) <= 0) {
           setUserStatus(STATUSTYPES.Unsubscribed);
         } else if (parseInt(response[0].remainingDays) > 0) {

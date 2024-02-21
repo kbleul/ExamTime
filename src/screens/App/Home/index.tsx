@@ -42,6 +42,8 @@ const Index = () => {
     }, []),
   );
 
+  console.log('==================> ', userStatus);
+
   if (userStatus === STATUSTYPES.NotAuthorized) {
     return (
       <SafeAreaView style={IndexStyle.container}>

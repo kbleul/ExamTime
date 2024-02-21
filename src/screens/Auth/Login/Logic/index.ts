@@ -60,10 +60,31 @@ export const handleLogin = async (
   setIsLoaginLoading(true);
 
   try {
-    const response = await login({
+    const response: any = await login({
       phoneNumber: '+251' + data.phoneNumber,
       password: data.password,
     }).unwrap();
+
+    console.log(
+      'response ==============> ',
+      response,
+      response?.subscriptionStatus,
+    );
+
+    if (response && response?.user?.subscriptionStatus === 'success') {
+      console.log('true ==============> ', response);
+
+      const savedUserData = realm.objects(UserData);
+
+      if (savedUserData && savedUserData.length > 0) {
+        realm.write(() => {
+          savedUserData[0].isSubscribed = true;
+          setUserStatus(STATUSTYPES.Subscribed);
+        });
+      }
+    } else {
+      setUserStatus(STATUSTYPES.AuthorizedTrial);
+    }
 
     dispatch(
       loginSuccess({
@@ -73,8 +94,6 @@ export const handleLogin = async (
         IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
       }),
     );
-
-    setUserStatus(STATUSTYPES.AuthorizedTrial);
 
     let prevGrade = await getObject_from_localStorage(
       LocalStorageDataKeys.userGrade,
