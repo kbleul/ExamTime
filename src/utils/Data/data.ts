@@ -34,11 +34,11 @@ export const TestQustionsCatagories: TopCatagoriesType = [
 ];
 
 export const ProfileMenuItems: ProfileMenuItems = {
-  // 'Subscription Plan': {
-  //   name: 'Subscription Plan',
-  //   color: '#008E97',
-  //   navigate: 'SubscriptionPlan',
-  // },
+  'Subscription Plan': {
+    name: 'Subscription Plan',
+    color: '#008E97',
+    navigate: 'SubscriptionPlan',
+  },
   'About Us': {
     name: 'About Us',
     color: '#f5c02f',

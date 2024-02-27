@@ -38,6 +38,7 @@ export type SignupDataType = {
   gender: 'Male' | 'Female';
   region: string;
   grade: string;
+  fireBaseToken: string;
 };
 
 export type LoginDataType = {

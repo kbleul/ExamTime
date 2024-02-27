@@ -165,11 +165,10 @@ const FullExams: React.FC<{
         />
       )}
 
-      {userStatus !== STATUSTYPES.Subscribed && (
+      {!token && (
         <LoginBox
-          title="Subscribe to Exam Time"
-          subTitle="Subscribe to get access to all previous and modal exams"
-          isSubscribe
+          title="Signup to Exam Time"
+          subTitle="Signup or login to get access to all previous and modal exams"
         />
       )}
 

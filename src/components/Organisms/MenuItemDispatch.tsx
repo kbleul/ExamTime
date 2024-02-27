@@ -14,10 +14,10 @@ const MenuItemDispatch: React.FC<{itemName: string}> = ({itemName}) => {
     case user ? ProfileMenuItemsAuth.Profile.name : 'Profile':
       return <SimpleLineIcons name="user" size={18} color="white" />;
 
-    // case user
-    //   ? ProfileMenuItemsAuth['Subscription Plan'].name
-    //   : ProfileMenuItems['Subscription Plan'].name:
-    //   return <SimpleLineIcons name="badge" size={18} color="white" />;
+    case user
+      ? ProfileMenuItemsAuth['Subscription Plan'].name
+      : ProfileMenuItems['Subscription Plan'].name:
+      return <SimpleLineIcons name="badge" size={18} color="white" />;
 
     case user
       ? ProfileMenuItemsAuth['About Us'].name

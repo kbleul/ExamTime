@@ -22,8 +22,7 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
 
-  const [initiateChapaPayment, {isLoading, error}] =
-    useInitiateChapaPaymentMutation();
+  const [initiateChapaPayment] = useInitiateChapaPaymentMutation();
 
   const activeColor = '#FAFAFA'; // Color when card is active
   const inactiveColor = 'white';
@@ -120,13 +119,10 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
         <View style={[styles.Button]}>
           <TouchableOpacity
             style={[styles.listofPackagesBottom]}
-            onPress={
-              () =>
-                !user ? navigator.navigate('Login') : handlePayment(item.id)
-
-              // navigator.navigate('chapa-payment')
+            onPress={() =>
+              !user ? navigator.navigate('Login') : handlePayment(item.id)
             }>
-            <Text style={styles.listofPackagesBottomtext}>'Buy Now</Text>
+            <Text style={styles.listofPackagesBottomtext}>Buy Now</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>

@@ -10,6 +10,7 @@ import ProfileEditIndex from '../../screens/App/Profile/ProfileEditIndex';
 import SubscriptionPlan from '../../screens/App/SubscriptionPlan/index';
 import Aboutus from '../../screens/App/Aboutus/index';
 import ChapaWebView from '../../screens/App/Payment/ChapaWebView';
+import Login from '../../screens/Auth/Login/Login';
 
 const ProfileStackScreens = () => {
   const ProfileStack = createStackNavigator();
@@ -28,11 +29,11 @@ const ProfileStackScreens = () => {
         options={{headerShown: false}}
       />
 
-      {/* <ProfileStack.Screen
+      <ProfileStack.Screen
         name={ProfileMenuItemsAuth['Subscription Plan'].navigate}
         component={SubscriptionPlan}
         options={{headerShown: false}}
-      /> */}
+      />
 
       <ProfileStack.Screen
         name={ProfileMenuItemsAuth['Contact Us'].navigate}
@@ -58,6 +59,11 @@ const ProfileStackScreens = () => {
       <ProfileStack.Screen
         name="network-error"
         component={NetworkError}
+        options={{headerShown: false}}
+      />
+      <ProfileStack.Screen
+        name="Login"
+        component={Login}
         options={{headerShown: false}}
       />
       <ProfileStack.Screen

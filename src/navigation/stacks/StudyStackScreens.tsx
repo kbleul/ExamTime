@@ -13,6 +13,7 @@ import StudySection from '../../screens/App/Study/index';
 import ChallengeSection from '../../screens/App/Challenge/index';
 import NetworkError from '../../screens/Shared/NetworkError';
 import ChapaWebView from '../../screens/App/Payment/ChapaWebView';
+import Login from '../../screens/Auth/Login/Login';
 
 const StudyStackScreens = () => {
   const StudyStack = createStackNavigator();
@@ -77,6 +78,11 @@ const StudyStackScreens = () => {
       <StudyStack.Screen
         name="network-error"
         component={NetworkError}
+        options={{headerShown: false}}
+      />
+      <StudyStack.Screen
+        name="Login"
+        component={Login}
         options={{headerShown: false}}
       />
       <StudyStack.Screen

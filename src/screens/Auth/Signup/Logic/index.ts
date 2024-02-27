@@ -16,12 +16,12 @@ import {checkIsOnline} from '../../../../utils/Functions/Helper';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[1];
-type VerifyCodeMutationFnMutationFn = ReturnType<typeof useLoginMutation>[2];
-type ResendCodeMutationFn = ReturnType<typeof useLoginMutation>[3];
+type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[0];
+type VerifyCodeMutationFnMutationFn = ReturnType<typeof useLoginMutation>[0];
+type ResendCodeMutationFn = ReturnType<typeof useLoginMutation>[0];
 type CreatePasswordMutationFn = ReturnType<typeof useCreatePasswordMutation>[0];
 type ChangePasswordMutationFn = ReturnType<typeof useChangePasswordMutation>[0];
-type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[7];
+type GetRegionsMutationFn = ReturnType<typeof useLoginMutation>[0];
 
 export const fetchRegions = async (
   getRegions: GetRegionsMutationFn,
@@ -66,12 +66,15 @@ export const handleCreateUser = async (
     checkIsOnline(navigator);
 
     try {
+      const savedFirebaseToken = await AsyncStorage.getItem('fireBaseToken');
+
       const response = await createUser({
         ...data,
         phoneNumber: '+251' + data.phoneNumber,
         region: region,
         gender: gender?.toUpperCase(),
         grade,
+        fireBaseToken: savedFirebaseToken ? savedFirebaseToken : '',
       }).unwrap();
 
       setUnregisteredUser(response.user);
