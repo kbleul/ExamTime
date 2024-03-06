@@ -1,4 +1,5 @@
 import {Exam, UserExamAnswers} from '../Realm';
+import {logoutSuccess} from '../reduxToolkit/Features/auth/authSlice';
 import {
   useGetExamAnswersMutation,
   useGetTrialStatusMutation,
@@ -111,6 +112,8 @@ export const checkTrialStatus = async (
   token: string,
   setUserStatus: any,
   userStatus: any,
+  navigation: any,
+  dispatch: any,
 ) => {
   if (token) {
     try {
@@ -129,14 +132,16 @@ export const checkTrialStatus = async (
           setUserStatus(STATUSTYPES.AuthorizedTrial);
         }
       }
-    } catch (error) {
-      console.error('Error checking trial version status. ', error);
-      if (
-        error.data.error === 'Unauthorized' &&
-        error.data.message.includes('expired') &&
-        error.status === 401
-      ) {
-        setUserStatus(STATUSTYPES.Unsubscribed);
+    } catch (error: any) {
+      console.error(
+        'Error checking trial version status. ',
+        error.data.tokenExpired || error.status === 401,
+        error,
+      );
+      if (error.data.tokenExpired || error.status === 401) {
+        dispatch(logoutSuccess());
+
+        navigation.navigate('Login');
       }
     }
   }

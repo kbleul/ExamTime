@@ -43,7 +43,9 @@ const LoginBox = ({
               style={styles.button}
               touchSoundDisabled
               onPress={() => {
-                navigator.navigate('Login');
+                navigator.navigate('HomeSection', {
+                  screen: 'Login',
+                });
               }}>
               <Text style={styles.buttonText}>Login </Text>
             </TouchableOpacity>
@@ -51,7 +53,9 @@ const LoginBox = ({
               style={[styles.button, styles.buttonSecondary]}
               touchSoundDisabled
               onPress={() => {
-                navigator.navigate('Signup');
+                navigator.navigate('HomeSection', {
+                  screen: 'Signup',
+                });
               }}>
               <Text style={styles.buttonText}>Register </Text>
             </TouchableOpacity>

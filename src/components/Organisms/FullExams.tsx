@@ -24,6 +24,7 @@ import LoginBox from '../Atoms/LoginBox';
 import {useUserStatus} from '../../context/userStatus';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
+import AllExamsModal from '../Molecules/AllExamsModal';
 
 export const ExamCatagories = [
   {
@@ -68,6 +69,8 @@ const FullExams: React.FC<{
   const [practiceModeModalVisible, setPracticeModeModalVisible] =
     useState(false);
 
+  const [showFullExam, setShowFullExam] = useState(false);
+
   useEffect(() => {
     const selectedSubject = getRealmSubject(selectedSubjectId, realm);
     const savedExams = getSavedExams(realm, selectedExamType);
@@ -77,11 +80,7 @@ const FullExams: React.FC<{
       userData &&
       userData.length > 0
     ) {
-      if (
-        (!savedExams || savedExams.length === 0) &&
-        userStatus === STATUSTYPES.Subscribed &&
-        token
-      ) {
+      if ((!savedExams || savedExams.length === 0) && token) {
         getPreviousExams(
           navigator,
           getExams,
@@ -141,7 +140,16 @@ const FullExams: React.FC<{
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Full Exams to practice</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>Full Exams to practice</Text>
+        {exams && exams.length > 4 && (
+          <TouchableOpacity
+            touchSoundDisabled
+            onPress={() => setShowFullExam(true)}>
+            <Text style={[styles.title, styles.smallText]}>View all</Text>
+          </TouchableOpacity>
+        )}
+      </View>
 
       <Buttons
         selectedExamType={selectedExamType}
@@ -172,6 +180,13 @@ const FullExams: React.FC<{
         />
       )}
 
+      <AllExamsModal
+        exams={exams}
+        showModalsModal={showFullExam}
+        setShowModalsModal={setShowFullExam}
+        setPracticeModeModalVisible={setPracticeModeModalVisible}
+        setSelectedExam={setSelectedExam}
+      />
       <PracticeModeModal
         practiceModeModalVisible={practiceModeModalVisible}
         setPracticeModeModalVisible={setPracticeModeModalVisible}
@@ -289,10 +304,18 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     marginHorizontal: 5,
   },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   title: {
     color: '#008E97',
     fontFamily: 'PoppinsSemiBold',
     fontSize: screenWidth * 0.04,
+  },
+  smallText: {
+    fontSize: screenWidth * 0.032,
   },
 });
 

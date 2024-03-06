@@ -47,7 +47,6 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
   });
 
   const handlePayment = async (packageId: string) => {
-    console.log('yess', packageId);
     if (token) {
       try {
         const resonse: any = await initiateChapaPayment({

@@ -3,7 +3,7 @@ import {Platform} from 'react-native';
 
 import Toast from 'react-native-toast-message';
 import {checkVersion} from 'react-native-check-version';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../reduxToolkit/Store';
 import {checkIsOnline} from '../utils/Functions/Helper';
 import {AuthContext} from '../Realm/model';
@@ -127,6 +127,7 @@ const useHandleInitialRequests = (
     return exam.filtered('isExamTaken = true');
   });
   const savedExamAnswers = useQuery(ExamAnswers);
+  const dispatch = useDispatch();
 
   const userData = useQuery(UserData);
 
@@ -156,6 +157,8 @@ const useHandleInitialRequests = (
           token ? token : '',
           setUserStatus,
           userStatus,
+          navigation,
+          dispatch,
         );
 
         if (savedTakenExams.length > 0) {

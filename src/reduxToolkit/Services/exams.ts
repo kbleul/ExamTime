@@ -6,13 +6,23 @@ type ExamParamsType = {
   page?: number;
   limit?: number;
   examName?: string;
-  grade?: string;
-  subject: string;
+  grade: string;
+  subject?: string;
   year?: string;
   [key: string]: number | string | undefined;
 };
 
-const createUrlWithParams = (url: string, params: ExamParamsType) => {
+type CreateUrlType = {
+  page?: number;
+  limit?: number;
+  examName?: string;
+  grade: string;
+  subject?: string;
+  year?: string;
+  [key: string]: number | string | undefined;
+};
+
+const createUrlWithParams = (url: string, params: CreateUrlType) => {
   let newUrl = url;
   let loopCounter = 0;
 
@@ -25,6 +35,8 @@ const createUrlWithParams = (url: string, params: ExamParamsType) => {
       ++loopCounter;
     }
   });
+
+  console.log('url-->', newUrl, '=======', params);
   return newUrl;
 };
 
@@ -41,6 +53,7 @@ export const api = createApi({
         return {
           url: createUrlWithParams('exam/publishedexams', {
             grade: credentials.params.grade,
+            page: credentials.params.page,
           }),
           method: 'GET',
           headers: {
@@ -53,4 +66,4 @@ export const api = createApi({
   }),
 });
 
-export const {useGetExamsMutation, useGetRandomExamMutation} = api;
+export const {useGetExamsMutation} = api;

@@ -3,6 +3,7 @@ import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetExamsMutation} from '../../../reduxToolkit/Services/exams';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
 import {examQuestionType, examType as examTsType} from '../../../types';
+import Config from 'react-native-config';
 
 type GetRegionsMutationFn = ReturnType<typeof useGetExamsMutation>[0];
 
@@ -19,31 +20,58 @@ export const getPreviousExams = async (
   if (token) {
     try {
       checkIsOnline(navigator);
-
+      console.log('triggered');
       let pageNumber = 1;
       let totalPages = 1;
 
       while (pageNumber <= totalPages) {
-        const response: any = await getExams({
-          params: {
-            grade: grade ? grade : undefined,
-            subject,
-            token,
-          },
-        }).unwrap();
+        try {
+          console.log('started');
+          const response: any = await getExams({
+            params: {
+              grade: grade ? grade : '',
+              subject,
+              page: pageNumber,
+              token,
+            },
+          }).unwrap();
+          console.log('====================>', {
+            total: response.totalPages,
+            totalcount: response.totalCount,
+            length: response.exams.length,
+          });
 
-        ++pageNumber;
-        totalPages = response.totalPages;
+          console.log('====================>', {
+            pageNumber,
+            totalPages,
+          });
+          ++pageNumber;
+          totalPages = response.totalPages;
 
-        setExams([
-          ...response?.exams.filter(
-            (exam: examTsType) =>
-              exam.subject.subject === subject &&
-              exam.examType === selectedExamType,
-          ),
-        ]);
+          setExams(prev => {
+            const newExams = response?.exams.filter(
+              (exam: examTsType) =>
+                exam.subject.subject === subject &&
+                exam.examType === selectedExamType,
+            );
 
-        saveExamsToRealmDB(response.exams, realm);
+            const tempArr = [];
+
+            newExams.forEach((exam: any) => {
+              const temp = prev.find(prevExam => prevExam.id === exam.id);
+
+              if (!temp) {
+                tempArr.push(exam);
+              }
+            });
+
+            return newExams;
+          });
+
+          saveExamsToRealmDB(response.exams, realm);
+        } catch (err) {
+          console.log('error fetching', err);
+        }
       }
     } catch (err) {
       console.log('-exams', err);
@@ -128,7 +156,7 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
 
             questionsArray.push(questiontObject);
           });
-
+          console.log('----------x-----------x---------x');
           realm.create(LocalObjectDataKeys.Exam, {
             id,
             examName,
