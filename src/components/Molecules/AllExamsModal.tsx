@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  FlatList,
   ImageBackground,
   Modal,
   StyleSheet,

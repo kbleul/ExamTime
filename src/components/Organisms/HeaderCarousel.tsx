@@ -10,7 +10,6 @@ import {
   handleCarouselScroll,
 } from '../../utils/Functions/Helper/index';
 import CarouselFrame from './CarouselFrame';
-import Toast from 'react-native-toast-message';
 import CustomToast from '../Molecules/CustomToast';
 
 interface Item {

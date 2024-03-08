@@ -23,18 +23,24 @@ import {
   frameThreestyles,
   frameFourstyles,
 } from '../../styles/Theme/FramesStyle';
-import {screenWidth} from '../../utils/Data/data';
+import {
+  ProfileMenuItemsAuth,
+  STATUSTYPES,
+  screenWidth,
+} from '../../utils/Data/data';
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
 import Config from 'react-native-config';
 import {useNavContext} from '../../context/bottomNav';
 import {getAggrgategaStudiesProgress} from '../../utils/Functions/Helper/historyCalculations';
 import {AuthContext} from '../../Realm/model';
+import {useUserStatus} from '../../context/userStatus';
 
 const CarouselFrame: React.FC<{
   index: number;
   setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({index, setShowAlert}) => {
   const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <>
       {user && (
@@ -163,6 +169,7 @@ export const FrameThree: React.FC<{
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
   const {setShowNavigation} = useNavContext();
+  const {userStatus} = useUserStatus();
 
   return (
     <>
@@ -181,19 +188,26 @@ export const FrameThree: React.FC<{
                 ]
               : frameThreestyles.adsBtnContainer
           }>
-          <TouchableOpacity
-            style={frameThreestyles.adsBtns}
-            touchSoundDisabled
-            onPress={() => {
-              if (issubscribe) {
-                setShowAlert && setShowAlert(true);
-              } else {
-                setShowNavigation(false);
-                navigator.navigate('Login');
-              }
-            }}>
-            <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>
-          </TouchableOpacity>
+          {issubscribe && userStatus === STATUSTYPES.Subscribed ? (
+            <></>
+          ) : (
+            <TouchableOpacity
+              style={frameThreestyles.adsBtns}
+              touchSoundDisabled
+              onPress={() => {
+                if (issubscribe) {
+                  // setShowAlert && setShowAlert(true);
+                  navigator.navigate(
+                    ProfileMenuItemsAuth['Subscription Plan'].navigate,
+                  );
+                } else {
+                  setShowNavigation(false);
+                  navigator.navigate('Login');
+                }
+              }}>
+              <Text style={frameThreestyles.adsBtnsText}>{btnText}</Text>
+            </TouchableOpacity>
+          )}
           {!user && (
             <TouchableOpacity
               style={[

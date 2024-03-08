@@ -451,7 +451,6 @@ const styles = StyleSheet.create({
   },
   choiceContainerContent: {
     flexGrow: 1,
-    // paddingBottom: 35,
   },
   submitBtn: {
     paddingHorizontal: 15,

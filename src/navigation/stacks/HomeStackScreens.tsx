@@ -23,6 +23,7 @@ import UserGuide from '../../screens/App/UserGuide';
 
 import {ProfileMenuItemsAuth} from '../../utils/Data/data';
 import ChapaWebView from '../../screens/App/Payment/ChapaWebView';
+import SubscriptionPlanCards from '../../components/Organisms/SubscriptionPlanCards';
 
 const HomeStackScreens = () => {
   const HomeStack = createStackNavigator();
@@ -130,6 +131,12 @@ const HomeStackScreens = () => {
       <HomeStack.Screen
         name="chapa-payment"
         component={ChapaWebView}
+        options={{headerShown: false}}
+      />
+
+      <HomeStack.Screen
+        name={ProfileMenuItemsAuth['Subscription Plan'].navigate}
+        component={SubscriptionPlanCards}
         options={{headerShown: false}}
       />
     </HomeStack.Navigator>
