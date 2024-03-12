@@ -69,10 +69,18 @@ export const unitCardStyles = StyleSheet.create({
     width: '70%',
     position: 'relative',
   },
-  textTitle: {
+  textTitleSubject: {
     color: '#1e90ff',
     fontFamily: 'PoppinsMedium',
     fontSize: screenWidth * 0.042,
+    textTransform: 'capitalize',
+    height: screenWidth * 0.06,
+    overflow: 'hidden',
+  },
+  textTitle: {
+    color: '#1e90ff',
+    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.036,
     textTransform: 'capitalize',
     height: screenWidth * 0.06,
     overflow: 'hidden',

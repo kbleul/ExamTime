@@ -14,6 +14,7 @@ type GetChallengesMutationFn = ReturnType<typeof useGetChallengesMutation>[0];
 export const fetchChallenges = async (
   getChallenges: GetChallengesMutationFn,
   token: string | null,
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   realm: Realm,
   savedChallengeId: string | null,
@@ -30,6 +31,8 @@ export const fetchChallenges = async (
         if (challnges.length > 0 && challnges[0].id !== savedChallengeId) {
           saveChallengeToRealm(response.challenges, realm);
         }
+
+        setIsPending(false);
       }
     } catch (err) {
       console.log('Error getting challenges', err);
@@ -164,9 +167,9 @@ export const parseDate = (dateString: string | null) => {
   const date = new Date(dateString);
 
   const currentDate = new Date();
-  console.log({dateString, date, currentDate});
 
-  const day = date.toLocaleString('default', {weekday: 'short'}).slice(0, 3);
+  let day = date.toLocaleString('default', {weekday: 'short'});
+
   const dateValue = date.getDate();
 
   const isActive = date.getDate() === currentDate.getDate();

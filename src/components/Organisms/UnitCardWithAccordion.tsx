@@ -77,10 +77,13 @@ const UnitCardWithAccordion = ({
           <AntDesign name="menuunfold" size={40} color="#EEEAFF" />
         </View>
         <View style={unitCardStyles.textContainer}>
-          {/* <Text style={unitCardStyles.textTitle}>{study.subject?.subject}</Text> */}
-
           <Text style={unitCardStyles.textTitle}>
-            {showSubject && study.subject?.subject + ' '} {study.unit}
+            {showSubject && (
+              <Text style={unitCardStyles.textTitleSubject}>
+                {study.subject?.subject + ' | '}
+              </Text>
+            )}
+            {study.unit}
           </Text>
           <Text style={unitCardStyles.textSubTitle}>{study.title}</Text>
         </View>

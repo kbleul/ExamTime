@@ -21,6 +21,7 @@ const Index = () => {
   const navigator: any = useNavigation();
   const token = useSelector((state: RootState) => state.auth.token);
 
+  const [isPending, setIsPending] = useState(true);
   const [getChallenges, {isLoading}] = useGetChallengesMutation();
   const {useRealm, useQuery} = AuthContext;
   const savedChallenges = useQuery(Challange);
@@ -32,14 +33,22 @@ const Index = () => {
       ? fetchChallenges(
           getChallenges,
           token,
+          setIsPending,
           navigator,
           realm,
           savedChallenges[0].id,
         )
-      : fetchChallenges(getChallenges, token, navigator, realm, null);
+      : fetchChallenges(
+          getChallenges,
+          token,
+          setIsPending,
+          navigator,
+          realm,
+          null,
+        );
   }, []);
 
-  if (isLoading) {
+  if (isLoading || isPending) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
         <Loading />
@@ -89,8 +98,7 @@ const Index = () => {
         <WeeksScreen />
         <WeekDaysScreen />
 
-        {/*
-        <ChallangeStudies /> */}
+        <ChallangeStudies />
       </ScrollView>
     </View>
   );
@@ -106,8 +114,6 @@ const ChallangeStudies = () => {
       day?.scheduledDate && compareDayToCurrentDay(day?.scheduledDate) === true,
   );
 
-  console.log('challengeday_length', challengeDay);
-
   const savedChallengeStudies = useQuery(Study, study => {
     const singleChallengeParams = challengeDay?.singleChallenge.map(
       challenge => {
@@ -119,7 +125,6 @@ const ChallangeStudies = () => {
       },
     );
     const queryCondition = singleChallengeParams?.join(' OR ');
-    console.log({queryCondition});
     const unknown = 'unknown';
 
     return study.filtered(
@@ -128,7 +133,6 @@ const ChallangeStudies = () => {
         : `unit = "${unknown}" AND section = "${unknown}" AND subject.subject = "${unknown}"`,
     );
   });
-  console.log(' =============> ', savedChallengeStudies.length);
 
   const [showAccordianId, setShowAccordianId] = useState<string | null>(null);
 
