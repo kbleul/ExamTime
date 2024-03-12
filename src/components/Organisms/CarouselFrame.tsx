@@ -40,6 +40,7 @@ const CarouselFrame: React.FC<{
   setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({index, setShowAlert}) => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const {userStatus} = useUserStatus();
 
   return (
     <>
@@ -64,7 +65,18 @@ const CarouselFrame: React.FC<{
               setShowAlert={setShowAlert}
             />
           )}
-          {index === 3 && <FrameFour text="How to use the app" />}
+          {index === 3 &&
+            (userStatus === STATUSTYPES.Subscribed ? (
+              <FrameTwo
+                title="Overall progress"
+                img={frameBlueImg}
+                text="Your overall progress is composed of the subjects you have studied
+           and all the exams you have taken."
+                progrss={0}
+              />
+            ) : (
+              <FrameFour text="How to use the app" />
+            ))}
         </View>
       )}
 

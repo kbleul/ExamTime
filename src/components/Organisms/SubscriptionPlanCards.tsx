@@ -12,9 +12,11 @@ import Pagination from '../Atoms/Pagination';
 const SubscriptionPlanCards = ({
   data,
   pagination,
+  userSubscribedStatus,
 }: {
   data: any;
   pagination: boolean;
+  userSubscribedStatus: string | null;
 }) => {
   const scrollViewRef = useAnimatedRef(null);
   const [newData, setNewData] = useState([
@@ -60,6 +62,7 @@ const SubscriptionPlanCards = ({
               x={x}
               size={SIZE}
               spacer={SPACER}
+              userSubscribedStatus={userSubscribedStatus}
             />
           );
         })}

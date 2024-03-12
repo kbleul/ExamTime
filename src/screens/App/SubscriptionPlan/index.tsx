@@ -4,20 +4,47 @@ import {Text, View, StyleSheet} from 'react-native';
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 
 import SubscriptionPlanCards from '../../../components/Organisms/SubscriptionPlanCards';
-import {screenHeight} from '../../../utils/Data/data';
-import {useGetSubscriptionPackagesMutation} from '../../../reduxToolkit/Services/auth';
+import {STATUSTYPES, screenHeight} from '../../../utils/Data/data';
+import {
+  useGetSubscriptionPackagesMutation,
+  useGetUserSubscriptionMutation,
+} from '../../../reduxToolkit/Services/auth';
 import Loading from '../../../components/Atoms/Loading';
+import {useUserStatus} from '../../../context/userStatus';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
 
 const Index: React.FC = () => {
-  const [getSubscriptionPackages, {isLoading, error}] =
-    useGetSubscriptionPackagesMutation();
+  const token = useSelector((state: RootState) => state.auth.token);
+  const {userStatus} = useUserStatus();
 
+  const [userSubscribedStatus, setUserSubscribedStatus] = useState<
+    null | string
+  >(null);
+
+  const [getSubscriptionPackages, {isLoading}] =
+    useGetSubscriptionPackagesMutation();
+  const [getUserSubscription, {isLoading: isLoadingUserSubscription}] =
+    useGetUserSubscriptionMutation();
   const [data, setPackge] = useState<null | any[]>(null);
 
   useEffect(() => {
     const getPackages = async () => {
       try {
         const packages: any[] = await getSubscriptionPackages({}).unwrap();
+
+        if (token && userStatus === STATUSTYPES.Subscribed) {
+          const usersubscriptions: any = await getUserSubscription({
+            token,
+          }).unwrap();
+          if (
+            usersubscriptions &&
+            usersubscriptions.subscriptionPackage &&
+            usersubscriptions.subscriptionPackage.id
+          ) {
+            setUserSubscribedStatus(usersubscriptions.subscriptionPackage.id);
+          }
+        }
 
         if (packages && packages.length > 0) {
           const newPackagesList: any[] = [];
@@ -67,7 +94,7 @@ const Index: React.FC = () => {
     getPackages();
   }, []);
 
-  if (isLoading) {
+  if (isLoading || isLoadingUserSubscription) {
     return (
       <View style={styles.container}>
         <View style={styles.scrollContainer}>
@@ -92,7 +119,11 @@ const Index: React.FC = () => {
           </View>
 
           <View style={styles.HorizontalList}>
-            <SubscriptionPlanCards data={data} pagination={true} />
+            <SubscriptionPlanCards
+              data={data}
+              pagination={true}
+              userSubscribedStatus={userSubscribedStatus}
+            />
           </View>
         </View>
       )}

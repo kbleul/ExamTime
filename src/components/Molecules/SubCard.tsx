@@ -15,9 +15,17 @@ interface SubCardProps {
   index: number;
   size: number;
   spacer: number;
+  userSubscribedStatus: string | null;
 }
 
-const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
+const SubCard: React.FC<SubCardProps> = ({
+  item,
+  x,
+  index,
+  size,
+  spacer,
+  userSubscribedStatus,
+}) => {
   const navigator: any = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
@@ -121,8 +129,11 @@ const SubCard: React.FC<SubCardProps> = ({item, x, index, size, spacer}) => {
             style={[styles.listofPackagesBottom]}
             onPress={() =>
               !user ? navigator.navigate('Login') : handlePayment(item.id)
-            }>
-            <Text style={styles.listofPackagesBottomtext}>Buy Now</Text>
+            }
+            disabled={userSubscribedStatus === item.id}>
+            <Text style={styles.listofPackagesBottomtext}>
+              {userSubscribedStatus === item.id ? 'Current Plan' : 'Buy Now'}
+            </Text>
           </TouchableOpacity>
         </View>
       </Animated.View>

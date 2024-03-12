@@ -458,6 +458,17 @@ export const api = createApi({
         };
       },
     }),
+    getUserSubscription: build.mutation<{}, {token: string}>({
+      query: data => {
+        return {
+          url: 'payment/user/subscription',
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -495,4 +506,5 @@ export const {
   useGetSubscriptionPackagesMutation,
   useInitiateChapaPaymentMutation,
   useVerifyChapaPaymentMutation,
+  useGetUserSubscriptionMutation,
 } = api;
