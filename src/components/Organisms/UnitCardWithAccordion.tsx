@@ -51,10 +51,12 @@ const UnitCardWithAccordion = ({
   study,
   showAccordianId,
   setShowAccordianId,
+  showSubject,
 }: {
   study: Study;
   showAccordianId: string | null;
   setShowAccordianId: React.Dispatch<React.SetStateAction<string | null>>;
+  showSubject?: boolean;
 }) => {
   const [showContent, setShowContent] = useState(false);
   return (
@@ -75,7 +77,11 @@ const UnitCardWithAccordion = ({
           <AntDesign name="menuunfold" size={40} color="#EEEAFF" />
         </View>
         <View style={unitCardStyles.textContainer}>
-          <Text style={unitCardStyles.textTitle}>{study.unit}</Text>
+          {/* <Text style={unitCardStyles.textTitle}>{study.subject?.subject}</Text> */}
+
+          <Text style={unitCardStyles.textTitle}>
+            {showSubject && study.subject?.subject + ' '} {study.unit}
+          </Text>
           <Text style={unitCardStyles.textSubTitle}>{study.title}</Text>
         </View>
         <View style={unitCardStyles.downBtn}>

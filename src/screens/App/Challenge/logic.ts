@@ -160,10 +160,11 @@ export const parseDate = (dateString: string | null) => {
   if (!dateString) {
     return null;
   }
-  console.log({dateString});
+
   const date = new Date(dateString);
 
   const currentDate = new Date();
+  console.log({dateString, date, currentDate});
 
   const day = date.toLocaleString('default', {weekday: 'short'}).slice(0, 3);
   const dateValue = date.getDate();
@@ -278,4 +279,25 @@ export const calculateWeeks = (challengeDay: ChallangeDayType[] | []) => {
     }
   }
   return weeks;
+};
+
+export const getDaysOfArray = (
+  challengeDays: [] | ChallangeDayType[],
+  weeksArr: {
+    id: number;
+    isActive: boolean;
+  }[],
+) => {
+  let daysArray: ChallangeDayType[] = [];
+  if (weeksArr.length === 1) {
+    daysArray = [...challengeDays].splice(weeksArr.length * 7 - 7, 7);
+  } else {
+    weeksArr.forEach((week, index: number) => {
+      if (week.isActive) {
+        daysArray = [...challengeDays].splice(index * 7, 7);
+      }
+    });
+  }
+
+  return daysArray;
 };

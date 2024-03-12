@@ -5,7 +5,10 @@ import DayBlock from '../Molecules/DayBlock';
 import scale from '../../utils/Functions/Scale';
 import {AuthContext} from '../../Realm/model';
 import {Challange} from '../../Realm';
-import {calculateWeeks} from '../../screens/App/Challenge/logic';
+import {
+  calculateWeeks,
+  getDaysOfArray,
+} from '../../screens/App/Challenge/logic';
 
 const WeekDaysScreen: React.FC = () => {
   const {useQuery} = AuthContext;
@@ -17,11 +20,7 @@ const WeekDaysScreen: React.FC = () => {
       ? calculateWeeks(savedChallenge[0].challengeDay)
       : [];
   }, [savedChallenge]);
-
-  const daysArray = [...savedChallenge[0].challengeDay].splice(
-    weeks.length * 7 - 7,
-    7,
-  );
+  const daysArray = getDaysOfArray(savedChallenge[0].challengeDay, weeks);
 
   return (
     <>
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: screenWidth * 0.03,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     width: '100%',
   },
 });

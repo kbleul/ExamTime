@@ -50,12 +50,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E90FF',
     borderRadius: screenWidth * 0.01,
     overflow: 'hidden',
+    marginHorizontal: screenWidth * 0.0155,
   },
   inActiveweekDaysContainer: {
     paddingTop: screenHeight * 0.012,
     paddingBottom: screenHeight * 0.014,
     alignItems: 'center',
     justifyContent: 'center',
+    marginHorizontal: screenWidth * 0.0155,
   },
   ActiveweekText: {
     textAlign: 'center',

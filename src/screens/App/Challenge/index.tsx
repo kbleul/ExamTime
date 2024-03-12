@@ -87,10 +87,10 @@ const Index = () => {
         </View>
 
         <WeeksScreen />
-
         <WeekDaysScreen />
 
-        <ChallangeStudies />
+        {/*
+        <ChallangeStudies /> */}
       </ScrollView>
     </View>
   );
@@ -106,20 +106,29 @@ const ChallangeStudies = () => {
       day?.scheduledDate && compareDayToCurrentDay(day?.scheduledDate) === true,
   );
 
+  console.log('challengeday_length', challengeDay);
+
   const savedChallengeStudies = useQuery(Study, study => {
     const singleChallengeParams = challengeDay?.singleChallenge.map(
       challenge => {
         const unit = challenge.unit;
         const section = challenge.section;
         const subject = challenge.subject?.subject;
+
         return `unit = "${unit}" AND section = "${section}" AND subject.subject = "${subject}"`;
       },
     );
-
     const queryCondition = singleChallengeParams?.join(' OR ');
+    console.log({queryCondition});
+    const unknown = 'unknown';
 
-    return study.filtered(queryCondition ? queryCondition : '');
+    return study.filtered(
+      queryCondition
+        ? queryCondition
+        : `unit = "${unknown}" AND section = "${unknown}" AND subject.subject = "${unknown}"`,
+    );
   });
+  console.log(' =============> ', savedChallengeStudies.length);
 
   const [showAccordianId, setShowAccordianId] = useState<string | null>(null);
 
@@ -144,6 +153,7 @@ const ChallangeStudies = () => {
           study={study}
           showAccordianId={showAccordianId}
           setShowAccordianId={setShowAccordianId}
+          showSubject={true}
         />
       ))}
     </View>
