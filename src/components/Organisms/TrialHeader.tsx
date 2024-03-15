@@ -3,7 +3,7 @@ import {Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import {screenWidth} from '../../utils/Data/data';
+import {STATUSTYPES, screenWidth} from '../../utils/Data/data';
 import {calculateDateDifference} from '../../screens/App/Onboarding/Logic';
 import {HeaderStyle} from '../../styles/Theme/HeaderBox';
 import {AuthContext} from '../../Realm/model';
@@ -14,16 +14,14 @@ import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
 import {useNotification} from '../../context/notification';
 import LoginModal from './LoginModal';
+import {useUserStatus} from '../../context/userStatus';
 
 const TrialHeader: React.FC<{type: string}> = ({type}) => {
   const navigator: any = useNavigation();
 
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
-
-  const isSubscribed = useSelector(
-    (state: RootState) => state.auth.isSubscribed,
-  );
+  const {userStatus} = useUserStatus();
 
   const {notifications, hasNewNotification} = useNotification();
   const {useQuery} = AuthContext;
@@ -50,18 +48,19 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       </Text>
 
       <View style={HeaderStyle.container}>
-        {trialDayCounter !== null && !isSubscribed && (
-          <View style={HeaderStyle.leftContainer}>
-            <Text style={HeaderStyle.leftContainer_text}>
-              {trialDayCounter < 0 ? 0 : trialDayCounter} days left
-            </Text>
-            <MaterialCommunityIcons
-              name="timer-sand-complete"
-              color="#E2725B"
-              size={screenWidth * 0.05}
-            />
-          </View>
-        )}
+        {trialDayCounter !== null &&
+          userStatus === STATUSTYPES.Unsubscribed && (
+            <View style={HeaderStyle.leftContainer}>
+              <Text style={HeaderStyle.leftContainer_text}>
+                {trialDayCounter < 0 ? 0 : trialDayCounter} days left
+              </Text>
+              <MaterialCommunityIcons
+                name="timer-sand-complete"
+                color="#E2725B"
+                size={screenWidth * 0.05}
+              />
+            </View>
+          )}
         <View style={HeaderStyle.subContainer}>
           <TouchableOpacity
             style={HeaderStyle.notificationBtn}

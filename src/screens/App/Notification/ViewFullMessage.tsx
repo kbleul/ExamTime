@@ -49,7 +49,8 @@ const ViewFullMessage = ({
     <View style={styles.container}>
       <Text style={styles.msgText}>
         {notification.notification
-          ? notification.notification.notification
+          ? notification.notification.notification +
+            'sadhasjkdhajsdhasjkdhasjkhdasjkdhasjkdhasjkdasjncasjnfaksdajdfkasndjkashdjkashdash'
           : ' '}
       </Text>
       <View style={styles.msgFooter}>

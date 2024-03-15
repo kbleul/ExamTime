@@ -1,5 +1,5 @@
 import {StyleSheet, View, useWindowDimensions} from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -75,7 +75,7 @@ const SubscriptionPlanCards = ({
 
 const styles = StyleSheet.create({
   Cards: {
-    height: screenHeight * 0.62,
+    height: screenHeight * 0.74,
   },
 });
 export default SubscriptionPlanCards;

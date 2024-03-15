@@ -38,7 +38,7 @@ const Notification = () => {
       {!notifications ||
         (notifications?.length === 0 && (
           <MessageBox
-            title="No notifications to show right now!"
+            title="There are no notifications to show right now!"
             subTitle="Check back after a while."
           />
         ))}
@@ -86,7 +86,6 @@ const NotificationMsg = ({
     } else {
       setNotification(' ');
     }
-
     if (message.wasRead === false) {
       updateNotificationStatus(message.id);
     }

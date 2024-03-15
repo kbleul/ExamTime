@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image,
   ImageBackground,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -56,27 +57,21 @@ const CarouselFrame: React.FC<{
               progrss={0}
             />
           )}
-          {index === 2 && (
-            <FrameThree
-              title="Become a member"
-              text="Elevate learning. Join our community, expand your knowledge."
-              btnText="Subscribe"
-              issubscribe={true}
-              setShowAlert={setShowAlert}
-            />
-          )}
-          {index === 3 &&
+          {index === 2 &&
             (userStatus === STATUSTYPES.Subscribed ? (
-              <FrameTwo
-                title="Overall progress"
-                img={frameBlueImg}
-                text="Your overall progress is composed of the subjects you have studied
-           and all the exams you have taken."
-                progrss={0}
-              />
+              <View style={wrapperStyle.wrapper}>
+                <FrameOne />
+              </View>
             ) : (
-              <FrameFour text="How to use the app" />
+              <FrameThree
+                title="Become a member"
+                text="Elevate learning. Join our community, expand your knowledge."
+                btnText="Subscribe"
+                issubscribe
+              />
             ))}
+
+          {index === 3 && <FrameFour text="How to use the app" />}
         </View>
       )}
 
@@ -177,7 +172,7 @@ export const FrameThree: React.FC<{
   btnTextTwo?: string;
   issubscribe?: boolean;
   setShowAlert?: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({title, text, btnText, btnTextTwo, issubscribe, setShowAlert}) => {
+}> = ({title, text, btnText, btnTextTwo, issubscribe}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
   const {setShowNavigation} = useNavContext();
@@ -209,9 +204,7 @@ export const FrameThree: React.FC<{
               onPress={() => {
                 if (issubscribe) {
                   // setShowAlert && setShowAlert(true);
-                  navigator.navigate(
-                    ProfileMenuItemsAuth['Subscription Plan'].navigate,
-                  );
+                  navigator.navigate('SubscriptionPlan');
                 } else {
                   setShowNavigation(false);
                   navigator.navigate('Login');
@@ -263,5 +256,12 @@ export const FrameFour: React.FC<{
     </ImageBackground>
   );
 };
+
+const wrapperStyle = StyleSheet.create({
+  wrapper: {
+    marginLeft: 16,
+    marginRight: 5.1,
+  },
+});
 
 export default CarouselFrame;

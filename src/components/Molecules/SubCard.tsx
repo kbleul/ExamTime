@@ -95,9 +95,6 @@ const SubCard: React.FC<SubCardProps> = ({
             <Text style={styles.PriceDate}>{item.duration}</Text>
           </View>
         </View>
-        <View style={styles.cdivider}>
-          <View style={styles.divider} />
-        </View>
 
         <View style={styles.PackgeListsConatiner}>
           {item.packages.map((packageItem: any, index: number) => {
@@ -143,7 +140,8 @@ const SubCard: React.FC<SubCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     width: screenWidth * 0.65,
-    height: screenHeight * 0.56,
+    height: screenHeight * 0.7,
+    paddingRight: 4,
     borderRadius: 5,
     overflow: 'hidden',
     borderWidth: 1,
@@ -206,7 +204,7 @@ const styles = StyleSheet.create({
   CardHeaderText: {
     padding: screenWidth * 0.01,
     marginHorizontal: screenWidth * 0.04,
-    marginVertical: screenWidth * 0.04,
+    marginVertical: screenWidth * 0.03,
   },
   PackgeListsConatiner: {
     padding: screenWidth * 0.01,
@@ -219,7 +217,7 @@ const styles = StyleSheet.create({
   PriceName: {
     color: 'black',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.08,
+    fontSize: screenWidth * 0.06,
     textAlign: 'center',
   },
   PriceDate: {
@@ -235,20 +233,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     textTransform: 'uppercase',
   },
-  cdivider: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  divider: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '80%',
-    marginVertical: screenHeight * 0.011,
-    marginHorizontal: screenWidth * 0.01,
-    height: 2,
-    backgroundColor: '#F3F3F4',
-  },
+
   cIcon: {
     width: scale(15),
     height: scale(15),

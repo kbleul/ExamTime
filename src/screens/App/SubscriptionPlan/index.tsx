@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
 
 import BackWithItem from '../../../components/Organisms/BackWithItem';
 
@@ -60,30 +60,38 @@ const Index: React.FC = () => {
               packages: [
                 {
                   available: true,
-                  packagesname: 'All Studies',
+                  packagesname: 'All Subjects',
                 },
                 {
                   available: true,
-                  packagesname: 'All Exams',
+                  packagesname: '6 years of previous exams with explanations.',
                 },
                 {
                   available: true,
-                  packagesname: 'All challenges',
+                  packagesname: 'Short Notes with the New Curriculum',
                 },
                 {
                   available: true,
-                  packagesname: 'All videos and pdfs materials ',
+                  packagesname: 'Video Lessons',
                 },
                 {
                   available: true,
-                  packagesname: 'Unlimited random exam questions',
+                  packagesname: 'Unlimited Random Questions',
+                },
+                {
+                  available: true,
+                  packagesname: 'Study Challenges',
+                },
+                {
+                  available: true,
+                  packagesname:
+                    'Buy now for an exceptional learning experience!',
                 },
               ],
             };
 
             newPackagesList.push(newPackage);
           });
-
           setPackge([...newPackagesList]);
         }
       } catch (err) {
@@ -105,11 +113,11 @@ const Index: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {data && data.length > 0 && (
         <View style={styles.scrollContainer}>
           <View style={styles.backicon}>
-            <BackWithItem type="SubscriptionPlan" isTrial={false} />
+            <BackWithItem type="Subscription Plan" isTrial={false} />
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.text}>
@@ -127,7 +135,7 @@ const Index: React.FC = () => {
           </View>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({

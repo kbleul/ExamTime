@@ -15,7 +15,7 @@ const HistoryStatus = () => {
   getTopAndBottomStudyProgress(realm);
   return (
     <View style={styles.container}>
-      <Text style={styles.headerTitle}>Status</Text>
+      <Text style={styles.headerTitle}>Study Status</Text>
 
       <View style={styles.statusContainer}>
         <CircleProgressIndicator

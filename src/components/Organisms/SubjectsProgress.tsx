@@ -12,7 +12,7 @@ const SubjectsProgress = () => {
   const studyProgress = getAllStudiesProgress(realm);
   return (
     <View style={styles.container}>
-      <Text style={styles.headerTitle}>Progress on subjects</Text>
+      <Text style={styles.headerTitle}>Progress on studies</Text>
 
       <BarChart
         barWidth={12}

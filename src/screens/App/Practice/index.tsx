@@ -108,7 +108,7 @@ const Practice = () => {
               {userStatus === STATUSTYPES.NotAuthorized && (
                 <LoginBox
                   title="Your trial period has ended!"
-                  subTitle="Please login or sign up to keep using ExamTime"
+                  subTitle="Please login or create an account to use the app's functions."
                 />
               )}
 

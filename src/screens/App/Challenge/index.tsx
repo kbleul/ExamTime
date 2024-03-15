@@ -60,8 +60,8 @@ const Index = () => {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
         <MessageBox
-          title="No challenges posted yet!"
-          subTitle="More challeges comming soon"
+          title="No challenges have been posted yet!"
+          subTitle="More challenges are coming soon."
         />
         <TouchableOpacity
           touchSoundDisabled
@@ -82,7 +82,7 @@ const Index = () => {
           style={styles.headerContainerTop}
           onPress={() => navigator.goBack()}>
           <AntDesign name="left" size={screenWidth * 0.05} color="#000" />
-          <Text style={styles.headerTitle}>Challenge Path</Text>
+          <Text style={styles.headerTitle}>Challenge phase</Text>
         </TouchableOpacity>
 
         <View style={styles.Headercontainer}>
@@ -140,7 +140,7 @@ const ChallangeStudies = () => {
     return (
       <MessageBox
         title="Today is your rest day !"
-        subTitle="Relax and comeback stronger for next days challenge."
+        subTitle="Power down tonight, power up with Exam Time tomorrow! Study smarter, not longer."
       />
     );
   }

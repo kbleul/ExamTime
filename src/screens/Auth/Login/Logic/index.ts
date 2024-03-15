@@ -88,7 +88,8 @@ export const handleLogin = async (
       loginSuccess({
         user: response.user,
         token: response.accessToken,
-        isSubscribed: false,
+        isSubscribed:
+          response?.user?.subscriptionStatus === 'success' ? true : false,
         IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
       }),
     );

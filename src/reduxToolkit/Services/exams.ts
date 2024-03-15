@@ -36,7 +36,6 @@ const createUrlWithParams = (url: string, params: CreateUrlType) => {
     }
   });
 
-  console.log('url-->', newUrl, '=======', params);
   return newUrl;
 };
 

@@ -13,7 +13,7 @@ const HistoryScores = ({takeSheenShot}: {takeSheenShot: () => void}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerTitle}>Scores</Text>
+      <Text style={styles.headerTitle}>Exam Scores</Text>
 
       <View style={styles.subSubsontainer}>
         <HistoryExamHighScore setOpenModal={setOpenModal} />

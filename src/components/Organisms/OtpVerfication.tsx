@@ -162,7 +162,9 @@ const VerificationCodeForm: React.FC<seterProps> = ({
         <Text style={OPTStyles.erroerText}>Incorred code</Text>
       )}
       <View style={styles.timerContainer}>
-        {timer < 1 ? (
+        {timer >= 1 && <Text style={styles.timer}>{timer} seconds</Text>}
+
+        {!isCorrectCode.current && (
           <TouchableOpacity
             style={styles.resendButton}
             touchSoundDisabled
@@ -181,8 +183,6 @@ const VerificationCodeForm: React.FC<seterProps> = ({
             }>
             <Text style={styles.resendText}>Resend code</Text>
           </TouchableOpacity>
-        ) : (
-          <Text style={styles.timer}>{timer} seconds</Text>
         )}
       </View>
     </View>
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   timerContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 40,

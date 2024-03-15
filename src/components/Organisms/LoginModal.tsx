@@ -37,7 +37,7 @@ const LoginModal: React.FC<{
           />
 
           <Text style={styles.modalText}>
-            Please login or create an account all functions on the app
+            Please login or create an account to use the app's functions.
           </Text>
 
           <View style={styles.optionsContainer}>
