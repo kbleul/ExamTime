@@ -20,13 +20,11 @@ export const getPreviousExams = async (
   if (token) {
     try {
       checkIsOnline(navigator);
-      console.log('triggered');
       let pageNumber = 1;
       let totalPages = 1;
 
       while (pageNumber <= totalPages) {
         try {
-          console.log('started');
           const response: any = await getExams({
             params: {
               grade: grade ? grade : '',
@@ -35,16 +33,7 @@ export const getPreviousExams = async (
               token,
             },
           }).unwrap();
-          console.log('====================>', {
-            total: response.totalPages,
-            totalcount: response.totalCount,
-            length: response.exams.length,
-          });
 
-          console.log('====================>', {
-            pageNumber,
-            totalPages,
-          });
           ++pageNumber;
           totalPages = response.totalPages;
 
@@ -156,7 +145,6 @@ const saveExamsToRealmDB = (exams: examTsType[], realm: Realm) => {
 
             questionsArray.push(questiontObject);
           });
-          console.log('----------x-----------x---------x');
           realm.create(LocalObjectDataKeys.Exam, {
             id,
             examName,

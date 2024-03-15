@@ -21,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 import {checkTrialStatus, getExamAnswersFromDB} from './logic';
 import {fetchTips} from '../utils/Functions/Get';
 import {useUserStatus} from '../context/userStatus';
+import {checkAndUpdateFCMToken} from '../utils/PushNotification';
 
 export type newAnswerType = {
   [id: string]: {
@@ -187,6 +188,10 @@ const useHandleInitialRequests = (
         } else {
           getExamAnswersFromDB(getExamAnswers, token, realm);
         }
+
+        console.log('asdkjaskldjaskda');
+
+        checkAndUpdateFCMToken(token);
       }
     };
 

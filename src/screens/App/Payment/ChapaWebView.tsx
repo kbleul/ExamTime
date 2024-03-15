@@ -27,7 +27,7 @@ const ChapaWebView = ({route}: {route: any}) => {
   const {setUserStatus} = useUserStatus();
   const [verifyChapaPayment, {isLoading}] = useVerifyChapaPaymentMutation();
 
-  const [getStudy, {isLoading: isLoadingStudies}] = useGetStudyMutation();
+  const [getStudy] = useGetStudyMutation();
 
   const {checkout_url, textReference} = route.params;
   const verifyChapa = async () => {

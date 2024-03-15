@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid, Platform } from 'react-native';
+import Config from 'react-native-config';
 
 export async function requestUserPermission() {
   let fcmToken;
@@ -38,34 +39,75 @@ async function getFCMToken() {
   const savedFirebaseToken = await AsyncStorage.getItem('fireBaseToken');
 
   if (!savedFirebaseToken || savedFirebaseToken !== fcmToken) {
-    AsyncStorage.setItem('fireBaseToken', fcmToken)
+    AsyncStorage.setItem('fireBaseToken', fcmToken);
   }
 
-  console.log("fireBaseToken ---- > ", fcmToken)
+  return fcmToken;
+}
+
+
+export async function checkAndUpdateFCMToken(token) {
+  await messaging().registerDeviceForRemoteMessages();
+
+
+  const fcmToken = await messaging().getToken();
+
+  const savedFirebaseToken = await AsyncStorage.getItem('fireBaseToken');
+
+  if (!savedFirebaseToken || savedFirebaseToken !== fcmToken) {
+    AsyncStorage.setItem('fireBaseToken', fcmToken);
+
+    if (savedFirebaseToken !== fcmToken) {
+      try {
+
+        //let's assume the endpoinnt to update device token is auth/device-token`
+        let response = await fetch(`${Config.API_URL}/user/updatefirebasetoken`, {
+          method: 'PUT',
+          headers: {
+            accept: 'application/json',
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ fireBaseToken: fcmToken }),
+        });
+
+        console.log("response ==============", response)
+
+        const result = await response.json();
+        console.log("response ==============", result)
+
+        return result;
+      } catch (e) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+
+  }
 
 
 
+  try {
+    //let's assume the endpoinnt to update device token is auth/device-token`
+    let response = await fetch(`${Config.API_URL}user/updatefirebasetoken`, {
+      method: 'PUT',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ fireBaseToken: fcmToken }),
+    });
 
-  // try {
-  //   const token = ''; // IMPORTANT
-  //   const baseUrl = '';
 
-  //   //let's assume the endpoinnt to update device token is auth/device-token`
-  //   let response = await fetch(`${baseUrl}/auth/device-token`, {
-  //     method: 'PATCH',
-  //     headers: {
-  //       accept: 'application/json',
-  //       'content-type': 'application/json;charset=utf-8',
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify({ token: fcmToken }),
-  //   });
+    const result = await response.json();
 
-  //   const result = await response.json();
-  //   return result;
-  // } catch (e) {
-  //   console.error('Error fetching data:', error);
-  // }
+    return result;
+  } catch (e) {
+    console.error('Error fetching data:', error);
+  }
+
+
 
   return fcmToken;
 }

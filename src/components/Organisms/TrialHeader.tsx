@@ -35,6 +35,7 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       const createdAt = savedUserData[0].initialDate;
 
       const remainingDays = calculateDateDifference(createdAt);
+
       setTrialDayCounter(savedUserData[0].allowedTrialDays - remainingDays);
     };
 
@@ -48,19 +49,18 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
       </Text>
 
       <View style={HeaderStyle.container}>
-        {trialDayCounter !== null &&
-          userStatus === STATUSTYPES.Unsubscribed && (
-            <View style={HeaderStyle.leftContainer}>
-              <Text style={HeaderStyle.leftContainer_text}>
-                {trialDayCounter < 0 ? 0 : trialDayCounter} days left
-              </Text>
-              <MaterialCommunityIcons
-                name="timer-sand-complete"
-                color="#E2725B"
-                size={screenWidth * 0.05}
-              />
-            </View>
-          )}
+        {trialDayCounter !== null && userStatus !== STATUSTYPES.Subscribed && (
+          <View style={HeaderStyle.leftContainer}>
+            <Text style={HeaderStyle.leftContainer_text}>
+              {trialDayCounter < 0 ? 0 : trialDayCounter} days left
+            </Text>
+            <MaterialCommunityIcons
+              name="timer-sand-complete"
+              color="#E2725B"
+              size={screenWidth * 0.05}
+            />
+          </View>
+        )}
         <View style={HeaderStyle.subContainer}>
           <TouchableOpacity
             style={HeaderStyle.notificationBtn}

@@ -65,12 +65,6 @@ export const handleLogin = async (
       password: data.password,
     }).unwrap();
 
-    console.log(
-      '---------------->',
-      response.user?.subscriptionStatus,
-      '=====>',
-      response?.user?.subscriptionStatus === 'success',
-    );
     if (response && response?.user?.subscriptionStatus === 'success') {
       const savedUserData = realm.objects(UserData);
 
@@ -81,7 +75,7 @@ export const handleLogin = async (
         });
       }
     } else {
-      setUserStatus(STATUSTYPES.AuthorizedTrial);
+      setUserStatus(STATUSTYPES.NotAuthorized);
     }
 
     dispatch(
