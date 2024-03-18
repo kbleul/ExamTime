@@ -1,6 +1,9 @@
 import {NavigationProp} from '@react-navigation/native';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
-import {useGetChallengesMutation} from '../../../reduxToolkit/Services/auth';
+import {
+  useGetChallengesMutation,
+  useSaveChallengeProgressMutation,
+} from '../../../reduxToolkit/Services/auth';
 import {ChallangeDayType, ChallangeType, singleChallenge} from '../../../types';
 import {
   Challange,
@@ -10,6 +13,9 @@ import {
 } from '../../../Realm';
 
 type GetChallengesMutationFn = ReturnType<typeof useGetChallengesMutation>[0];
+type saveChallengeProgressFn = ReturnType<
+  typeof useSaveChallengeProgressMutation
+>[0];
 
 export const fetchChallenges = async (
   getChallenges: GetChallengesMutationFn,
@@ -18,6 +24,7 @@ export const fetchChallenges = async (
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   realm: Realm,
   savedChallengeId: string | null,
+  saveChallengeProgress: saveChallengeProgressFn,
 ) => {
   if (token) {
     try {
@@ -29,6 +36,9 @@ export const fetchChallenges = async (
       if (challnges) {
         if (challnges.length > 0 && challnges[0].id !== savedChallengeId) {
           saveChallengeToRealm(response.challenges, realm);
+        } else {
+          //save challenge progress to DB
+          updateProgress(token, saveChallengeProgress, realm);
         }
 
         setIsPending(false);
@@ -36,6 +46,39 @@ export const fetchChallenges = async (
     } catch (err) {
       console.log('Error getting challenges', err);
     }
+  }
+};
+
+const updateProgress = async (
+  token: string,
+  saveChallengeProgress: saveChallengeProgressFn,
+  realm: Realm,
+) => {
+  try {
+    const savedChallenge = realm.objects(Challange);
+
+    if (!savedChallenge || savedChallenge.length < 0) {
+      return;
+    }
+
+    const challengeProgress = Math.round(savedChallenge[0].progress);
+
+    let progress = 0;
+    if (challengeProgress >= 0 && challengeProgress <= 100) {
+      progress = challengeProgress;
+    } else if (challengeProgress > 100) {
+      progress = 100;
+    }
+
+    const res = await saveChallengeProgress({
+      token,
+      challengeId: savedChallenge[0].id,
+      progress,
+    }).unwrap();
+
+    console.log(res);
+  } catch (err) {
+    console.log('Error saving challenges progress', err);
   }
 };
 

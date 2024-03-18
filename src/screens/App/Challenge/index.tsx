@@ -10,7 +10,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import UnitCardWithAccordion from '../../../components/Organisms/UnitCardWithAccordion';
 import {Challange, Study} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
-import {useGetChallengesMutation} from '../../../reduxToolkit/Services/auth';
+import {
+  useGetChallengesMutation,
+  useSaveChallengeProgressMutation,
+} from '../../../reduxToolkit/Services/auth';
 import {compareDayToCurrentDay, fetchChallenges} from './logic';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
@@ -23,6 +26,8 @@ const Index = () => {
 
   const [isPending, setIsPending] = useState(true);
   const [getChallenges, {isLoading}] = useGetChallengesMutation();
+  const [saveChallengeProgress] = useSaveChallengeProgressMutation();
+
   const {useRealm, useQuery} = AuthContext;
   const savedChallenges = useQuery(Challange);
 
@@ -37,6 +42,7 @@ const Index = () => {
           navigator,
           realm,
           savedChallenges[0].id,
+          saveChallengeProgress,
         )
       : fetchChallenges(
           getChallenges,
@@ -45,6 +51,7 @@ const Index = () => {
           navigator,
           realm,
           null,
+          saveChallengeProgress,
         );
   }, []);
 

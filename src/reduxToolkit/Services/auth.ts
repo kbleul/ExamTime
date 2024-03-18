@@ -352,6 +352,25 @@ export const api = createApi({
         };
       },
     }),
+    saveChallengeProgress: build.mutation<
+      {result: any},
+      {token: string; challengeId: string; progress: number}
+    >({
+      query: credentials => {
+        return {
+          url: 'challange/userchallengestatus',
+          body: {
+            challengeId: credentials.challengeId,
+            challengeStatus: credentials.progress,
+          },
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
+        };
+      },
+    }),
     getNotifications: build.mutation<{userNotifications: any}, {token: string}>(
       {
         query: credentials => {
@@ -498,6 +517,7 @@ export const {
   useGetContactMutation,
   useGetFeedBackMutation,
   useGetChallengesMutation,
+  useSaveChallengeProgressMutation,
   useGetNotificationsMutation,
   usePostNotificationStatusMutation,
   useDeleteNotificationStatusMutation,
