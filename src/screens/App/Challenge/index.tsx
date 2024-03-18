@@ -92,7 +92,7 @@ const Index = () => {
               help you achieve your study goals!
             </Text>
           </View>
-          <CircleProgressIndicator progress={0} />
+          <CircleProgressIndicator progress={savedChallenges[0].progress} />
         </View>
 
         <WeeksScreen />
@@ -158,6 +158,7 @@ const ChallangeStudies = () => {
           showAccordianId={showAccordianId}
           setShowAccordianId={setShowAccordianId}
           showSubject={true}
+          isChallenge={true}
         />
       ))}
     </View>

@@ -3,12 +3,8 @@ import RNFS from 'react-native-fs';
 import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetStudyMutation} from '../../../reduxToolkit/Services/auth';
 import {examQuestionType, pdfType, studyType, videoType} from '../../../types';
-import {
-  LocalObjectDataKeys,
-  NumberConverter,
-  STATUSTYPES,
-} from '../../../utils/Data/data';
-import {Study} from '../../../Realm';
+import {LocalObjectDataKeys, NumberConverter} from '../../../utils/Data/data';
+import {Challange, Study} from '../../../Realm';
 
 type StudyMutationFn = ReturnType<typeof useGetStudyMutation>[0];
 
@@ -368,4 +364,66 @@ export const calculate_and_Assign_UnitProgress = (
   } catch (e) {
     console.log('Error updating progress,  ', e);
   }
+};
+
+export const calculate_and_Assign_ChallangeProgress = (
+  realm: Realm,
+  itemId: string,
+) => {
+  const savedChallenges = realm.objects(Challange);
+
+  if (!savedChallenges || savedChallenges.length <= 0) {
+    return;
+  }
+
+  if (savedChallenges[0].finishedItems.includes(itemId)) {
+    return;
+  }
+
+  let totalChallangeAmount = 0;
+
+  const unknown = 'unknown';
+
+  savedChallenges[0].challengeDay.forEach(challengeDay => {
+    const singleChallengeParams = challengeDay.singleChallenge.map(
+      singleChallenge => {
+        const unit = singleChallenge.unit;
+        const section = singleChallenge.section;
+        const subject = singleChallenge.subject?.subject;
+
+        return `(unit = "${unit}" AND section = "${section}" AND subject.subject = "${subject}")`;
+      },
+    );
+
+    const queryCondition = singleChallengeParams.join(' OR ');
+
+    const study = realm
+      .objects(Study)
+      .filtered(
+        queryCondition
+          ? queryCondition
+          : `(unit = "${unknown}" AND section = "${unknown}" AND subject.subject = "${unknown}")`,
+      );
+
+    console.log('studylength', study.length);
+
+    study.forEach(item => {
+      console.log({pdf: item.pdf.length, vid: item.videoLink.length});
+      totalChallangeAmount =
+        totalChallangeAmount + item.pdf.length + item.videoLink.length;
+    });
+  });
+  realm.write(() => {
+    const percentage = 100 / totalChallangeAmount;
+    console.log('===progress===', percentage);
+
+    savedChallenges[0].progress = savedChallenges[0].progress + percentage;
+
+    savedChallenges[0].finishedItems = [
+      ...savedChallenges[0].finishedItems,
+      itemId,
+    ];
+  });
+
+  console.log('===totalChallangeAmount===', totalChallangeAmount);
 };

@@ -393,6 +393,8 @@ class Challange extends Realm.Object {
   createdAt: string = '';
   updatedAt: string = '';
   challengeDay: ChallangeDayType[] | [] = [];
+  progress: number = 0;
+  finishedItems: string[] | [] = [];
 
   static schema = {
     name: 'Challange',
@@ -403,6 +405,8 @@ class Challange extends Realm.Object {
       createdAt: 'string',
       updatedAt: 'string',
       challengeDay: 'ChallangeDay[]',
+      progress: 'double',
+      finishedItems: 'string[]',
     },
   };
 }

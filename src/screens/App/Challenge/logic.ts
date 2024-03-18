@@ -27,7 +27,6 @@ export const fetchChallenges = async (
       const challnges = response.challenges ? response.challenges : null;
 
       if (challnges) {
-        //only save challenge if the challenge is d/t than the saved challenge
         if (challnges.length > 0 && challnges[0].id !== savedChallengeId) {
           saveChallengeToRealm(response.challenges, realm);
         }
@@ -62,6 +61,8 @@ const saveChallengeToRealm = (challenges: ChallangeType[], realm: Realm) => {
           createdAt: challenge.createdAt,
           updatedAt: challenge.updatedAt,
           challengeDay: newChallengeDayArr,
+          progress: 0,
+          fetchChallenges: [],
         });
       });
     } catch (err) {

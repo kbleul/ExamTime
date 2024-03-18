@@ -15,7 +15,10 @@ import {screenWidth} from '../../../utils/Data/data';
 import {videoType} from '../../../types';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
-import {calculate_and_Assign_UnitProgress} from './logic';
+import {
+  calculate_and_Assign_ChallangeProgress,
+  calculate_and_Assign_UnitProgress,
+} from './logic';
 import {useNavContext} from '../../../context/bottomNav';
 
 const getYoutubeVidId = (videosLink: string) => {
@@ -24,7 +27,16 @@ const getYoutubeVidId = (videosLink: string) => {
     : null;
 };
 
-const saveProgress = (study: Study, videoId: string, realm: Realm) => {
+const saveProgress = (
+  study: Study,
+  videoId: string,
+  realm: Realm,
+  isChallenge: boolean,
+) => {
+  if (isChallenge) {
+    calculate_and_Assign_ChallangeProgress(realm, videoId);
+    return;
+  }
   if (study?.videoLink.length > 0) {
     const videoIndex = study?.videoLink.findIndex(v => v.id === videoId);
 
@@ -43,7 +55,7 @@ const ViewVideo = ({route}) => {
   const currentScreen = navigationState.routes[navigationState.index].name;
   const {setShowNavigation} = useNavContext();
 
-  const {videos, selectedVideoIndex, studyId} = route.params;
+  const {videos, selectedVideoIndex, studyId, isChallenge} = route.params;
   const navigator: any = useNavigation();
 
   const {useRealm, useQuery} = AuthContext;
@@ -56,18 +68,21 @@ const ViewVideo = ({route}) => {
 
   const youtubeVideoId = getYoutubeVidId(videos[displayedVideo].videoLink);
 
-  console.log({videos, selectedVideoIndex, studyId, youtubeVideoId});
-
   const handlePress = (index: number, videoId: string) => {
     if (index !== displayedVideo) {
       setDisplayedVideo(index);
-      saveProgress(savedStudy[0], videoId, realm);
+      saveProgress(savedStudy[0], videoId, realm, isChallenge);
     }
   };
 
   useEffect(() => {
     setTimeout(() => {
-      saveProgress(savedStudy[0], videos[selectedVideoIndex].id, realm);
+      saveProgress(
+        savedStudy[0],
+        videos[selectedVideoIndex].id,
+        realm,
+        isChallenge,
+      );
     }, 2000);
   }, []);
 

@@ -24,11 +24,7 @@ import {
   frameThreestyles,
   frameFourstyles,
 } from '../../styles/Theme/FramesStyle';
-import {
-  ProfileMenuItemsAuth,
-  STATUSTYPES,
-  screenWidth,
-} from '../../utils/Data/data';
+import {STATUSTYPES, screenWidth} from '../../utils/Data/data';
 import CircleProgressIndicator from '../Molecules/CircleProgressIndicator';
 import Config from 'react-native-config';
 import {useNavContext} from '../../context/bottomNav';
@@ -43,10 +39,6 @@ const CarouselFrame: React.FC<{
   const user = useSelector((state: RootState) => state.auth.user);
   const {userStatus} = useUserStatus();
 
-  // console.log(
-  //   '========================================================================',
-  //   userStatus,
-  // );
   return (
     <>
       {user && (

@@ -123,6 +123,7 @@ const StudyDetails = ({route}) => {
                 study={study}
                 showAccordianId={showAccordianId}
                 setShowAccordianId={setShowAccordianId}
+                isChallenge={false}
               />
             ))}
           </>

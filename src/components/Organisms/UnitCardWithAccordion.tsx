@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Study} from '../../Realm';
+import {Challange, Study} from '../../Realm';
 import {Text, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -11,6 +11,7 @@ import {accordiontyles, unitCardStyles} from '../../screens/App/Study/styles';
 import {screenWidth} from '../../utils/Data/data';
 import {isHtml} from '../../utils/Functions/Helper';
 import RenderHTML from 'react-native-render-html';
+import {AuthContext} from '../../Realm/model';
 
 const tagsStylesQuestion = {
   p: {
@@ -52,11 +53,13 @@ const UnitCardWithAccordion = ({
   showAccordianId,
   setShowAccordianId,
   showSubject,
+  isChallenge,
 }: {
   study: Study;
   showAccordianId: string | null;
   setShowAccordianId: React.Dispatch<React.SetStateAction<string | null>>;
   showSubject?: boolean;
+  isChallenge: boolean;
 }) => {
   const [showContent, setShowContent] = useState(false);
   return (
@@ -100,14 +103,23 @@ const UnitCardWithAccordion = ({
         </View>
       </TouchableOpacity>
       {showContent && study.id === showAccordianId && (
-        <Accordion study={study} />
+        <Accordion study={study} isChallenge={isChallenge} />
       )}
     </View>
   );
 };
 
-const Accordion = ({study}: {study: Study}) => {
+const Accordion = ({
+  study,
+  isChallenge,
+}: {
+  study: Study;
+  isChallenge: boolean;
+}) => {
   const navigator: any = useNavigation();
+  const {useQuery} = AuthContext;
+
+  const savedChallenges = useQuery(Challange);
 
   return (
     <View>
@@ -159,7 +171,11 @@ const Accordion = ({study}: {study: Study}) => {
             touchSoundDisabled
             style={accordiontyles.assessmentBtn}
             onPress={() =>
-              navigator.navigate('ViewPdf', {pdf: study.pdf, studyId: study.id})
+              navigator.navigate('ViewPdf', {
+                pdf: study.pdf,
+                studyId: study.id,
+                isChallenge,
+              })
             }>
             <View
               style={[
@@ -167,11 +183,23 @@ const Accordion = ({study}: {study: Study}) => {
                 accordiontyles.assessmentIconBg,
               ]}
             />
-            <Feather
-              name={study.pdf[0].isViewed ? 'check-square' : 'square'}
-              size={24}
-              style={accordiontyles.square}
-            />
+            {isChallenge ? (
+              <Feather
+                name={
+                  savedChallenges[0].finishedItems.includes(study.pdf[0].id)
+                    ? 'check-square'
+                    : 'square'
+                }
+                size={24}
+                style={accordiontyles.square}
+              />
+            ) : (
+              <Feather
+                name={study.pdf[0].isViewed ? 'check-square' : 'square'}
+                size={24}
+                style={accordiontyles.square}
+              />
+            )}
             <Text style={accordiontyles.assessmentTitle}>Unit Review Note</Text>
           </TouchableOpacity>
         </View>
@@ -189,6 +217,7 @@ const Accordion = ({study}: {study: Study}) => {
                     videos: study.videoLink,
                     selectedVideoIndex: index,
                     studyId: study.id,
+                    isChallenge,
                   })
                 }>
                 <Text style={accordiontyles.videoText}>
@@ -198,11 +227,23 @@ const Accordion = ({study}: {study: Study}) => {
                   <Entypo name="controller-play" size={30} color="#fff" />
                 </View>
               </TouchableOpacity>
-              <Feather
-                name={link.isViewed ? 'check-square' : 'square'}
-                size={24}
-                style={accordiontyles.square}
-              />
+              {isChallenge ? (
+                <Feather
+                  name={
+                    savedChallenges[0].finishedItems.includes(link.id)
+                      ? 'check-square'
+                      : 'square'
+                  }
+                  size={24}
+                  style={accordiontyles.square}
+                />
+              ) : (
+                <Feather
+                  name={link.isViewed ? 'check-square' : 'square'}
+                  size={24}
+                  style={accordiontyles.square}
+                />
+              )}
             </View>
           ))}
         </View>

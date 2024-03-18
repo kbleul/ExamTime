@@ -12,7 +12,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {AuthContext} from '../../../Realm/model';
 import {Study} from '../../../Realm';
-import {calculate_and_Assign_UnitProgress} from './logic';
+import {
+  calculate_and_Assign_ChallangeProgress,
+  calculate_and_Assign_UnitProgress,
+} from './logic';
 import {useNavContext} from '../../../context/bottomNav';
 
 const ViewPdf = ({route}) => {
@@ -20,7 +23,7 @@ const ViewPdf = ({route}) => {
   const currentScreen = navigationState.routes[navigationState.index].name;
   const {setShowNavigation} = useNavContext();
 
-  const {pdf, studyId} = route.params;
+  const {pdf, studyId, isChallenge} = route.params;
   const navigator: any = useNavigation();
 
   const {useRealm, useQuery} = AuthContext;
@@ -38,6 +41,14 @@ const ViewPdf = ({route}) => {
   };
 
   const saveProgress = useCallback((page: number, numberOfPages: number) => {
+    if (isChallenge && page > numberOfPages / 2) {
+      calculate_and_Assign_ChallangeProgress(
+        realm,
+        savedStudy[0].pdf[pdfCounter].id,
+      );
+      return;
+    }
+
     if (
       page > numberOfPages / 2 &&
       savedStudy[0].pdf[pdfCounter].isViewed === false
