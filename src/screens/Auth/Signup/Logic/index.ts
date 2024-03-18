@@ -2,6 +2,7 @@ import {
   useChangePasswordMutation,
   useCreatePasswordMutation,
   useLoginMutation,
+  useVerifyCodeMutation,
 } from '../../../../reduxToolkit/Services/auth';
 import {NavigationProp} from '@react-navigation/native';
 import {
@@ -17,7 +18,9 @@ import {checkIsOnline} from '../../../../utils/Functions/Helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[0];
-type VerifyCodeMutationFnMutationFn = ReturnType<typeof useLoginMutation>[0];
+type VerifyCodeMutationFnMutationFn = ReturnType<
+  typeof useVerifyCodeMutation
+>[0];
 type ResendCodeMutationFn = ReturnType<typeof useLoginMutation>[0];
 type CreatePasswordMutationFn = ReturnType<typeof useCreatePasswordMutation>[0];
 type ChangePasswordMutationFn = ReturnType<typeof useChangePasswordMutation>[0];
@@ -107,48 +110,36 @@ const validate_Gender_and_Region = (
   return true;
 };
 
-//verify otp
-
-const checkCode = (code: string, unregisteredUser: userType | null) => {
-  if (unregisteredUser?.verificationCode?.toString() === code) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 export const handleVerfiyCode = async (
   data: OTPDataType,
   isCorrectCode: React.MutableRefObject<boolean>,
   verifyCode: VerifyCodeMutationFnMutationFn,
   navigator: NavigationProp<ReactNavigation.RootParamList>,
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>,
-  unregisteredUser: userType | null,
   setUnregisteredUser: React.Dispatch<React.SetStateAction<userType | null>>,
 ) => {
-  if (checkCode(data.code, unregisteredUser)) {
-    isCorrectCode.current = true;
-    checkIsOnline(navigator);
+  isCorrectCode.current = true;
+  checkIsOnline(navigator);
 
-    try {
-      const response = await verifyCode({
-        ...data,
-      }).unwrap();
+  try {
+    const response = await verifyCode({
+      ...data,
+    }).unwrap();
 
-      setUnregisteredUser(response.user);
-      setCurrentStep(prev => ++prev);
-    } catch (error) {
-      if (
-        error instanceof TypeError &&
-        error.message === 'Network request failed'
-      ) {
-        navigator.navigate('network-error');
-      }
+    console.log('code ==============> ', data);
+    console.log('red ==============> ', response);
+
+    setUnregisteredUser(response.user);
+    setCurrentStep(prev => ++prev);
+  } catch (error) {
+    if (
+      error instanceof TypeError &&
+      error.message === 'Network request failed'
+    ) {
+      navigator.navigate('network-error');
+      return;
     }
-  } else {
-    if (isCorrectCode.current) {
-      isCorrectCode.current = false;
-    }
+    isCorrectCode.current = false;
   }
 };
 

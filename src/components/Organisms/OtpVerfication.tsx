@@ -22,6 +22,7 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   unregisteredUser,
   isReset,
 }) => {
+  console.log(unregisteredUser);
   const navigator = useNavigation();
   const [verifyCode, {isLoading, error}] = useVerifyCodeMutation();
   const [resendCode, {isLoading: isLoadingResend, error: errorResend}] =
@@ -56,11 +57,15 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   };
 
   const checkIfFUll = (arr: string[]) => {
+    console.log('isfull');
     const hasEmpty = arr.some((i: string) => i === '');
 
     const optValue =
       OtpValues[0] + OtpValues[1] + OtpValues[2] + OtpValues[3] + OtpValues[4];
+
     if (!hasEmpty && optValue !== sentOtp.current) {
+      console.log('isfull', optValue);
+
       sentOtp.current = optValue;
       handleVerfiyCode(
         {
@@ -72,7 +77,6 @@ const VerificationCodeForm: React.FC<seterProps> = ({
         verifyCode,
         navigator,
         setCurrentStep,
-        unregisteredUser,
         setUnregisteredUser,
       );
     }
@@ -104,6 +108,10 @@ const VerificationCodeForm: React.FC<seterProps> = ({
     const interval = setInterval(() => {
       setTimer(prev => --prev);
     }, 1000);
+
+    if (timer <= 1 || !isCorrectCode.current) {
+      clearInterval(interval);
+    }
 
     setTimeout(() => {
       clearInterval(interval);
@@ -162,7 +170,9 @@ const VerificationCodeForm: React.FC<seterProps> = ({
         <Text style={OPTStyles.erroerText}>Incorred code</Text>
       )}
       <View style={styles.timerContainer}>
-        {timer >= 1 && <Text style={styles.timer}>{timer} seconds</Text>}
+        {timer >= 1 && isCorrectCode.current && (
+          <Text style={styles.timer}>{timer} seconds</Text>
+        )}
 
         {!isCorrectCode.current && (
           <TouchableOpacity
@@ -219,7 +229,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   resendButton: {
-    marginTop: 40,
+    marginTop: 10,
   },
   resendText: {
     fontFamily: 'Montserrat-SemiBold',

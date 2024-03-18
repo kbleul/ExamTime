@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 
 import BackWithItem from '../../../components/Organisms/BackWithItem';
@@ -13,8 +13,12 @@ import Loading from '../../../components/Atoms/Loading';
 import {useUserStatus} from '../../../context/userStatus';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
+import {useFocusEffect} from '@react-navigation/native';
+import {useNavContext} from '../../../context/bottomNav';
 
 const Index: React.FC = () => {
+  const {setShowNavigation} = useNavContext();
+
   const token = useSelector((state: RootState) => state.auth.token);
   const {userStatus} = useUserStatus();
 
@@ -27,6 +31,12 @@ const Index: React.FC = () => {
   const [getUserSubscription, {isLoading: isLoadingUserSubscription}] =
     useGetUserSubscriptionMutation();
   const [data, setPackge] = useState<null | any[]>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowNavigation(true);
+    }, []),
+  );
 
   useEffect(() => {
     const getPackages = async () => {
@@ -113,9 +123,11 @@ const Index: React.FC = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       {data && data.length > 0 && (
-        <View style={styles.scrollContainer}>
+        <ScrollView
+          style={styles.scrollContainer}
+          contentContainerStyle={styles.scrollContainer}>
           <View style={styles.backicon}>
             <BackWithItem type="Subscription Plan" isTrial={false} />
           </View>
@@ -133,9 +145,9 @@ const Index: React.FC = () => {
               userSubscribedStatus={userSubscribedStatus}
             />
           </View>
-        </View>
+        </ScrollView>
       )}
-    </ScrollView>
+    </View>
   );
 };
 const styles = StyleSheet.create({
@@ -152,8 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   scrollContainer: {
-    flexGrow: 1,
-    marginTop: screenHeight * 0.045,
+    height: screenHeight + 2,
+    marginTop: screenHeight * 0.035,
   },
   text: {
     color: '#222E50',

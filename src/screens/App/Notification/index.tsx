@@ -106,6 +106,8 @@ const NotificationMsg = ({
         {notificationObject.notification
           ? notificationObject.notification
           : ' '}
+        There are no notifications to show right now!There are no notifications
+        to show right now!There are no notifications to show right now!
       </Text>
       <Text
         style={
@@ -155,9 +157,9 @@ const messageStyle = StyleSheet.create({
   msgText: {
     fontFamily: 'PoppinsMedium',
     fontSize: screenWidth * 0.04,
+    maxHeight: screenWidth * 0.057,
     color: '#000',
     width: '65%',
-    maxHeight: screenWidth * 0.045,
     overflow: 'hidden',
   },
   msgTextViewed: {

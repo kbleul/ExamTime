@@ -27,7 +27,7 @@ export default function Signup() {
         showsVerticalScrollIndicator={false}>
         <View style={styles.topHeader}>
           {currentStep === 1 && (
-            <TouchableOpacity onPress={() => navigator.navigate('Login')}>
+            <TouchableOpacity onPress={() => navigator.goBack()}>
               <Ionicons name="chevron-back-outline" color="#000" size={28} />
             </TouchableOpacity>
           )}

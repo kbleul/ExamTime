@@ -206,7 +206,6 @@ export const DeleteUserAccount = async (
       password,
       token,
     }).unwrap();
-    dispatch(logoutSuccess());
     setShowLastPrompt(false);
     setShowLDeleteDialog(false);
 
@@ -218,6 +217,7 @@ export const DeleteUserAccount = async (
     });
 
     removeRealmUserData(realm, savedUserData);
+    dispatch(logoutSuccess());
   } catch (error) {
     dispatch(logoutSuccess());
 

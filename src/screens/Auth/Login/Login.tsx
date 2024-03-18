@@ -33,7 +33,7 @@ export default function Login() {
             ? [styles.subContainer, styles.subContainerSecondary]
             : styles.subContainer
         }>
-        <LoginHeader navigate={() => navigator.navigate('Home')} />
+        <LoginHeader navigate={() => navigator.goBack()} />
 
         {dateDiff >= 3 && (
           <Text style={styles.note}>

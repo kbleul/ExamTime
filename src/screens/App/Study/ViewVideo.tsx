@@ -24,14 +24,6 @@ const getYoutubeVidId = (videosLink: string) => {
     : null;
 };
 
-const createPlaylist = (videos: videoType[]) => {
-  const playlistVidsArr = videos.map((video: videoType) =>
-    getYoutubeVidId(video.videoLink),
-  );
-
-  return playlistVidsArr.filter(vid => vid !== null);
-};
-
 const saveProgress = (study: Study, videoId: string, realm: Realm) => {
   if (study?.videoLink.length > 0) {
     const videoIndex = study?.videoLink.findIndex(v => v.id === videoId);
@@ -62,11 +54,9 @@ const ViewVideo = ({route}) => {
 
   const [displayedVideo, setDisplayedVideo] = useState(selectedVideoIndex);
 
-  const playlistVids = useMemo(() => {
-    return createPlaylist(videos);
-  }, [videos]);
-
   const youtubeVideoId = getYoutubeVidId(videos[displayedVideo].videoLink);
+
+  console.log({videos, selectedVideoIndex, studyId, youtubeVideoId});
 
   const handlePress = (index: number, videoId: string) => {
     if (index !== displayedVideo) {
@@ -121,12 +111,7 @@ const ViewVideo = ({route}) => {
         <View>
           <View style={styles.videoContainer}>
             <ActivityIndicator style={styles.loading} />
-            <YoutubePlayer
-              height={230}
-              play={false}
-              videoId={youtubeVideoId}
-              playList={[...playlistVids]}
-            />
+            <YoutubePlayer height={230} play={false} videoId={youtubeVideoId} />
           </View>
 
           <View style={styles.videosList}>
