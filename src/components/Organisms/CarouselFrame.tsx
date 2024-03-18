@@ -43,6 +43,10 @@ const CarouselFrame: React.FC<{
   const user = useSelector((state: RootState) => state.auth.user);
   const {userStatus} = useUserStatus();
 
+  // console.log(
+  //   '========================================================================',
+  //   userStatus,
+  // );
   return (
     <>
       {user && (

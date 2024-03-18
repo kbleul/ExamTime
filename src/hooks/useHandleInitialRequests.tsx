@@ -189,8 +189,6 @@ const useHandleInitialRequests = (
           getExamAnswersFromDB(getExamAnswers, token, realm);
         }
 
-        console.log('asdkjaskldjaskda');
-
         checkAndUpdateFCMToken(token);
       }
     };

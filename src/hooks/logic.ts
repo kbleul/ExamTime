@@ -127,9 +127,19 @@ export const checkTrialStatus = async (
         userStatus !== STATUSTYPES.Subscribed
       ) {
         if (parseInt(response[0].remainingDays) <= 0) {
-          setUserStatus(STATUSTYPES.Unsubscribed);
+          setUserStatus((prev: string) => {
+            console.log('prev', prev);
+            return prev === STATUSTYPES.Subscribed
+              ? STATUSTYPES.Subscribed
+              : STATUSTYPES.Unsubscribed;
+          });
         } else if (parseInt(response[0].remainingDays) > 0) {
-          setUserStatus(STATUSTYPES.AuthorizedTrial);
+          setUserStatus((prev: string) => {
+            console.log('prev', prev);
+            return prev === STATUSTYPES.Subscribed
+              ? STATUSTYPES.Subscribed
+              : STATUSTYPES.AuthorizedTrial;
+          });
         }
       }
     } catch (error: any) {

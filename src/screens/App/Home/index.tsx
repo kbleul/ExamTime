@@ -28,6 +28,8 @@ const Index = () => {
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
 
   const {setShowNavigation} = useNavContext();
+
+  console.log({userStatus});
   useHandleInitialRequests(
     setIsSyncing,
     updateModalVisible,
