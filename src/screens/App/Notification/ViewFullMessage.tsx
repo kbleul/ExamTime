@@ -49,13 +49,12 @@ const ViewFullMessage = ({
     <View style={styles.container}>
       <Text style={styles.msgText}>
         {notification.notification
-          ? notification.notification.notification +
-            'sadhasjkdhajsdhasjkdhasjkhdasjkdhasjkdhasjkdasjncasjnfaksdajdfkasndjkashdjkashdash'
+          ? notification.notification.notification
           : ' '}
       </Text>
       <View style={styles.msgFooter}>
         <Text style={styles.dateText}>
-          {convertTimestampToRelativeTime(notification.notification.createdAt)}
+          {convertTimestampToRelativeTime(notification.createdAt)}
         </Text>
         <TouchableOpacity
           touchSoundDisabled

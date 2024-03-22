@@ -1,8 +1,8 @@
 import {Dimensions} from 'react-native';
-import img1 from '../../assets/Images/onboarding/1.png';
-import img2 from '../../assets/Images/onboarding/2.png';
-import img3 from '../../assets/Images/onboarding/3.png';
-import img4 from '../../assets/Images/onboarding/4.png';
+import img1 from '../../assets/Images/onboarding/3.png';
+import img2 from '../../assets/Images/onboarding/4.png';
+import img3 from '../../assets/Images/onboarding/1.png';
+import img4 from '../../assets/Images/onboarding/2.png';
 import img5 from '../../assets/Images/courses/car.png';
 
 export const screenWidth = Dimensions.get('window').width;

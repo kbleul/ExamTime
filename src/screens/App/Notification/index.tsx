@@ -115,7 +115,9 @@ const NotificationMsg = ({
             ? [messageStyle.dateText, messageStyle.msgTextViewed]
             : messageStyle.dateText
         }>
-        {convertTimestampToRelativeTime(notificationObject.createdAt)}
+        {convertTimestampToRelativeTime(
+          message.createdAt ? message.createdAt : notificationObject.createdAt,
+        )}
       </Text>
     </TouchableOpacity>
   );
