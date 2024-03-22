@@ -54,7 +54,11 @@ const ViewFullMessage = ({
       </Text>
       <View style={styles.msgFooter}>
         <Text style={styles.dateText}>
-          {convertTimestampToRelativeTime(notification.createdAt)}
+          {convertTimestampToRelativeTime(
+            notification.createdAt
+              ? notification.createdAt
+              : notification.notification.createdAt,
+          )}
         </Text>
         <TouchableOpacity
           touchSoundDisabled
