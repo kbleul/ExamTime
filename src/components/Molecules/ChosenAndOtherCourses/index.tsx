@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 
 import Header from './Header';
-import ChosenCoursesCard from './ChosenCoursesCard';
+import ChosenCoursesCard, {getFilteredSavedStudies} from './ChosenCoursesCard';
 import OtherCoursesCard from './OtherCoursesCard';
 import {Grade, Subject, UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
@@ -13,6 +13,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useGetSubjectMutation} from '../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from '../../../screens/App/Onboarding/Page/logic';
 import CustomToast from '../CustomToast';
+import {getRealmSubject} from '../../../utils/Functions/Get';
 
 const getSubjects = (realm: Realm) => {
   try {
@@ -91,6 +92,22 @@ const ChosenCourses = ({
   );
   const renderItem = ({item, index}: {item: string; index: number}) => {
     const subject = realm.objects(Subject).filtered(`id = "${item}"`);
+
+    const studyLength =
+      subject[0] && subject[0].subject
+        ? getFilteredSavedStudies(realm, item, subject[0].subject?.subject)
+        : [];
+
+    console.log(
+      'studyLength ===========>   ',
+      studyLength.length,
+      ' -- ',
+      subject[0].subject?.subject,
+    );
+
+    if (studyLength.length === 0) {
+      return;
+    }
     return (
       <View>
         {subject && subject.length > 0 && subject[0].icon && (

@@ -271,7 +271,7 @@ const SignupForm: React.FC<seterProps> = ({
             labelField="label"
             valueField="value"
             placeholder={!isFocusGender ? 'Select gender' : '...'}
-            searchPlaceholder="Search..."
+            search={false}
             value={gender}
             onFocus={() => setIsFocusGender(true)}
             onBlur={() => setIsFocusGender(false)}

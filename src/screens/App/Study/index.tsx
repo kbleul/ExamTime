@@ -228,9 +228,6 @@ const CourseItem = ({
 
   const {setShowNavigation} = useNavContext();
 
-  const token = useSelector((state: RootState) => state.auth.token);
-  const user = useSelector((state: RootState) => state.auth.user);
-
   const {useQuery} = AuthContext;
 
   const savedStudies = useQuery(Study, studies => {
@@ -243,6 +240,10 @@ const CourseItem = ({
     useState<ResultsType<Study> | null>(savedStudies);
 
   const progress = calculateStudyProgress(savedStudiesArr);
+
+  if (savedStudies.length === 0) {
+    return;
+  }
 
   return (
     <>

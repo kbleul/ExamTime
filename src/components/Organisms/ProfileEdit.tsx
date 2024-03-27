@@ -20,7 +20,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {updateRealmUserData} from '../../screens/Auth/Login/Logic';
 import {AuthContext} from '../../Realm/model';
 import {UserData} from '../../Realm';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {passwordSchema} from '../../utils/Functions/Helper/PasswordSchema';
 import {regionItemsType} from '../../types';
 import TextHeading from '../Atoms/TextHeading';
@@ -57,15 +57,16 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const newUserData = useObject(UserData, savedUserData[0]?._id);
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
-  console.log('=======>', user.gender);
   const [fullName, setFullName] = useState(
     (user?.firstName || '') + ' ' + (user?.lastName || ''),
   );
   const [phone, setPhone] = useState(user?.phoneNumber ?? '');
   const [grade, setGrade] = useState(user?.grade?.grade ?? '');
   const [showPassword, setShowPassword] = useState(true);
-  const [changeProfile] = useChangeProfileMutation();
-  const [changeProfilePicture] = useChangeProfilePictureMutation();
+  const [changeProfile, {isLoading: isLoadingProfile}] =
+    useChangeProfileMutation();
+  const [changeProfilePicture, {isLoading: isLoadingPicture}] =
+    useChangeProfilePictureMutation();
   const [updatePassword, {isLoading: isLoaingChangePassword}] =
     useChangePasswordMutation();
   const [getGrade] = useGetGradeMutation();
@@ -310,7 +311,10 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
           {/* back Icon and DoneTExt Container */}
           <View style={styles.backIconandDoneTExtContainer}>
             <BackButton onPress={handleGoBack} />
-            <DoneButton onPress={handleUpdateProfile} />
+            <DoneButton
+              onPress={handleUpdateProfile}
+              isLoading={isLoadingProfile || isLoadingPicture}
+            />
           </View>
           {/* Profile Update Forms */}
           <View style={styles.topFormContainer}>

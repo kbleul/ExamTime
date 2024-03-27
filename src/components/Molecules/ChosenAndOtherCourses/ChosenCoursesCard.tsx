@@ -12,7 +12,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useNavContext} from '../../../context/bottomNav';
 import {getRealmSubject} from '../../../utils/Functions/Get';
 
-const getFilteredSavedStudies = (
+export const getFilteredSavedStudies = (
   realm: Realm,
   subjectId: string,
   subjectName: string,

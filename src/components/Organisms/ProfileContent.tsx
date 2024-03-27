@@ -10,7 +10,6 @@ import {RootState} from '../../reduxToolkit/Store';
 import {useNavigation} from '@react-navigation/native';
 import {useNavContext} from '../../context/bottomNav';
 import {screenHeight} from '../../utils/Data/data';
-//import badgeImg from '../../assets/Images/Profile/1.png';
 
 const ProfileContent = () => {
   const user = useSelector((state: RootState) => state.auth.user);

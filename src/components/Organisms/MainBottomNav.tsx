@@ -1,9 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
@@ -112,7 +111,6 @@ const MainBottomNav = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Profile')}
           style={style.buttonWrapper}>
-         
           {currentScreen === 'Profile' || currentScreen === 'Profile-Edit' ? (
             <View style={style.dot} />
           ) : (
