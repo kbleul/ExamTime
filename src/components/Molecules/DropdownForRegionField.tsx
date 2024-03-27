@@ -25,14 +25,14 @@ const DropdownForRegionField: React.FC<DropdownForRegionFieldProps> = ({
   regionError,
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={dropDownStyle.container}>
       <Dropdown
-        style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
-        itemTextStyle={styles.itemListStyle}
-        iconStyle={styles.iconStyle}
+        style={dropDownStyle.dropdown}
+        placeholderStyle={dropDownStyle.placeholderStyle}
+        selectedTextStyle={dropDownStyle.selectedTextStyle}
+        inputSearchStyle={dropDownStyle.inputSearchStyle}
+        itemTextStyle={dropDownStyle.itemListStyle}
+        iconStyle={dropDownStyle.iconStyle}
         data={regionsListItems}
         search
         maxHeight={300}
@@ -54,7 +54,7 @@ const DropdownForRegionField: React.FC<DropdownForRegionFieldProps> = ({
   );
 };
 
-const styles = ScaledSheet.create({
+export const dropDownStyle = ScaledSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: 'white',

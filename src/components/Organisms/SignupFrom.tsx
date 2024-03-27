@@ -71,7 +71,7 @@ const schema = yup.object().shape({
   email: yup.string().email('Invalid email address'),
 });
 
-const genderOptions = [
+export const genderOptions = [
   {label: 'Male', value: 'Male'},
   {label: 'Female', value: 'Female'},
 ];
@@ -267,7 +267,6 @@ const SignupForm: React.FC<seterProps> = ({
             itemTextStyle={formStyles.itemListStyle}
             iconStyle={formStyles.iconStyle}
             data={genderOptions}
-            search
             maxHeight={300}
             labelField="label"
             valueField="value"

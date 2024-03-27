@@ -26,13 +26,17 @@ import {regionItemsType} from '../../types';
 import TextHeading from '../Atoms/TextHeading';
 import NameInput from '../Molecules/NameInput';
 import PhoneInputWithPrefix from '../Molecules/PhoneInputWithPrefix';
-import DropdownForRegionField from '../Molecules/DropdownForRegionField';
+import DropdownForRegionField, {
+  dropDownStyle,
+} from '../Molecules/DropdownForRegionField';
 import BackButton from '../Atoms/BackButton';
 import DoneButton from '../Atoms/DoneButton';
 import PasswordField from '../Molecules/PasswordField';
 import ChangePasswordButton from '../Atoms/ChangePasswordButton';
 import {screenWidth} from '../../utils/Data/data';
 import Config from 'react-native-config';
+import {Dropdown} from 'react-native-element-dropdown';
+import {genderOptions} from './SignupFrom';
 
 const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const dispatch = useDispatch();
@@ -53,7 +57,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const newUserData = useObject(UserData, savedUserData[0]?._id);
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
-
+  console.log('=======>', user.gender);
   const [fullName, setFullName] = useState(
     (user?.firstName || '') + ' ' + (user?.lastName || ''),
   );
@@ -69,6 +73,12 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
   const [region, setRegion] = useState<string | null>(
     user?.region?.region || null,
   );
+
+  const [gender, setGender] = useState<string | null>(
+    user?.gender ? (user?.gender === 'MALE' ? 'Male' : 'Female') : null,
+  );
+  const [isFocusGender, setIsFocusGender] = useState(false);
+
   const [regionError, setRegionError] = useState<string | null>(null);
   const [regionsListItems, setRegionsListItems] = useState<
     regionItemsType[] | []
@@ -87,7 +97,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             : fullName.split(' ')[fullName.split(' ').length - 1],
         phoneNumber: phone,
         grade: grade,
-        gender: user?.gender ?? '',
+        gender: gender ? (gender === 'Male' ? 'MALE' : 'FEMALE') : '',
         region: region,
       };
 
@@ -193,7 +203,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
       } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Error updating profile data!',
+          text1: 'Error updating profile infromation!',
           text2: `${error}`,
           visibilityTime: 4000,
         });
@@ -288,6 +298,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
     };
     fetchGradeData(); // Call the fetch function
   }, []);
+
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -322,9 +333,32 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
               isLoadingRegions={isLoadingRegions}
               regionError={regionError}
             />
+
+            <View style={dropDownStyle.container}>
+              <Dropdown
+                style={dropDownStyle.dropdown}
+                placeholderStyle={dropDownStyle.placeholderStyle}
+                selectedTextStyle={dropDownStyle.selectedTextStyle}
+                inputSearchStyle={dropDownStyle.inputSearchStyle}
+                itemTextStyle={dropDownStyle.itemListStyle}
+                iconStyle={dropDownStyle.iconStyle}
+                data={genderOptions}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocusGender ? 'Select gender' : '...'}
+                searchPlaceholder="Search..."
+                value={gender}
+                onFocus={() => setIsFocusGender(true)}
+                onBlur={() => setIsFocusGender(false)}
+                onChange={item => {
+                  setGender(item.value);
+                  setIsFocusGender(false);
+                }}
+              />
+            </View>
           </View>
 
-          {/* password update  */}
           <Formik
             initialValues={{password: '', newPassword: '', confirmPassword: ''}}
             validationSchema={schema}
