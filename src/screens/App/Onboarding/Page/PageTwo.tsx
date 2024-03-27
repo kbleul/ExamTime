@@ -22,21 +22,32 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
   const [getGrades, {isLoading, error}] = useGetGradeMutation();
   const [gradesArray, setGradesArray] = useState<gradeType[] | null>(null);
 
+  const [fetchTrialCounter, setFetchTrialCounter] = useState(0);
+
   const {useRealm} = AuthContext;
 
   const realm = useRealm();
 
   useEffect(() => {
+    setFetchTrialCounter(prev => ++prev);
     getGradesMutation(getGrades, navigator, setGradesArray, realm);
   }, []);
 
   useEffect(() => {
-    error &&
-      Toast.show({
-        type: 'error',
-        text1: 'Failed to get availble grades.',
-        text2: error?.data ? `${error?.data.message}` : 'Please try again',
-      });
+    if (error) {
+      if (fetchTrialCounter < 5) {
+        setFetchTrialCounter(prev => ++prev);
+        getGradesMutation(getGrades, navigator, setGradesArray, realm);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed to get availble grades.',
+          text2: error?.data
+            ? `${error?.data.message}`
+            : 'Please check your internet connection and try again',
+        });
+      }
+    }
   }, [error]);
 
   const saveGrade = async (grade: gradeType) => {
