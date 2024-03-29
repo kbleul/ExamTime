@@ -22,7 +22,6 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   unregisteredUser,
   isReset,
 }) => {
-  console.log(unregisteredUser);
   const navigator = useNavigation();
   const [verifyCode, {isLoading, error}] = useVerifyCodeMutation();
   const [resendCode, {isLoading: isLoadingResend, error: errorResend}] =
@@ -57,15 +56,12 @@ const VerificationCodeForm: React.FC<seterProps> = ({
   };
 
   const checkIfFUll = (arr: string[]) => {
-    console.log('isfull');
     const hasEmpty = arr.some((i: string) => i === '');
 
     const optValue =
       OtpValues[0] + OtpValues[1] + OtpValues[2] + OtpValues[3] + OtpValues[4];
 
     if (!hasEmpty && optValue !== sentOtp.current) {
-      console.log('isfull', optValue);
-
       sentOtp.current = optValue;
       handleVerfiyCode(
         {

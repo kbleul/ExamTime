@@ -71,10 +71,8 @@ export async function checkAndUpdateFCMToken(token) {
           body: JSON.stringify({ fireBaseToken: fcmToken }),
         });
 
-        console.log("response ==============", response)
 
         const result = await response.json();
-        console.log("response ==============", result)
 
         return result;
       } catch (e) {

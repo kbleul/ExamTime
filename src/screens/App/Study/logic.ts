@@ -415,7 +415,6 @@ export const calculate_and_Assign_ChallangeProgress = (
   });
   realm.write(() => {
     const percentage = 100 / totalChallangeAmount;
-    console.log('===progress===', percentage);
 
     savedChallenges[0].progress = savedChallenges[0].progress + percentage;
 
@@ -424,6 +423,4 @@ export const calculate_and_Assign_ChallangeProgress = (
       itemId,
     ];
   });
-
-  console.log('===totalChallangeAmount===', totalChallangeAmount);
 };

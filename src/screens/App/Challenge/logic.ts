@@ -75,8 +75,6 @@ const updateProgress = async (
       challengeId: savedChallenge[0].id,
       progress,
     }).unwrap();
-
-    console.log(res);
   } catch (err) {
     console.log('Error saving challenges progress', err);
   }

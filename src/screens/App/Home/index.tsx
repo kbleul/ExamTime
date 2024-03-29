@@ -29,7 +29,6 @@ const Index = () => {
 
   const {setShowNavigation} = useNavContext();
 
-  console.log({userStatus});
   useHandleInitialRequests(
     setIsSyncing,
     updateModalVisible,

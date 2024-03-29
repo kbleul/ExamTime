@@ -128,14 +128,12 @@ export const checkTrialStatus = async (
       ) {
         if (parseInt(response[0].remainingDays) <= 0) {
           setUserStatus((prev: string) => {
-            console.log('prev', prev);
             return prev === STATUSTYPES.Subscribed
               ? STATUSTYPES.Subscribed
               : STATUSTYPES.Unsubscribed;
           });
         } else if (parseInt(response[0].remainingDays) > 0) {
           setUserStatus((prev: string) => {
-            console.log('prev', prev);
             return prev === STATUSTYPES.Subscribed
               ? STATUSTYPES.Subscribed
               : STATUSTYPES.AuthorizedTrial;

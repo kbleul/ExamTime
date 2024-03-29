@@ -126,9 +126,6 @@ export const handleVerfiyCode = async (
       ...data,
     }).unwrap();
 
-    console.log('code ==============> ', data);
-    console.log('red ==============> ', response);
-
     setUnregisteredUser(response.user);
     setCurrentStep(prev => ++prev);
   } catch (error) {

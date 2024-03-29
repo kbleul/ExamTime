@@ -98,12 +98,7 @@ const ChosenCourses = ({
         ? getFilteredSavedStudies(realm, item, subject[0].subject?.subject)
         : [];
 
-    console.log(
-      'studyLength ===========>   ',
-      studyLength.length,
-      ' -- ',
-      subject[0].subject?.subject,
-    );
+   
 
     if (studyLength.length === 0) {
       return;
