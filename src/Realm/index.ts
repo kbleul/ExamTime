@@ -39,6 +39,8 @@ class UserData extends Realm.Object {
   selectedSubjects?: string[] | [];
   allowedTrialDays: number = 0;
   guestUserToken: string | null = null;
+  loggedOutUser: userType | null = null; //saved data for loggedout user without deleting data
+  loggedOutUserToken: string | null = null;
 
   static schema: Realm.ObjectSchema = {
     name: 'UserData',
@@ -53,6 +55,8 @@ class UserData extends Realm.Object {
       selectedSubjects: 'string[]',
       allowedTrialDays: 'int',
       guestUserToken: 'string?',
+      loggedOutUser: 'User?',
+      loggedOutUserToken: 'string?',
     },
     primaryKey: '_id',
   };
@@ -93,6 +97,7 @@ class User extends Realm.Object {
   email: string | null = null;
   verificationCode: string | null = null;
   profilePicture: string | null = null;
+  subscriptionStatus: string | null = '';
 
   static schema: Realm.ObjectSchema = {
     name: 'User',
@@ -109,6 +114,7 @@ class User extends Realm.Object {
       email: 'string?',
       verificationCode: 'string?',
       profilePicture: 'string?',
+      subscriptionStatus: 'string?',
     },
   };
 }

@@ -55,9 +55,53 @@ export const handleLogin = async (
   setUserStatus: any,
   setIsLoaginLoading: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
-  checkIsOnline(navigator);
+  const isOnline = await checkIsOnline();
+
+  console.log('-isOnline--->', isOnline);
 
   setIsLoaginLoading(true);
+
+  const savedUserData = realm.objects(UserData);
+
+  if (
+    !isOnline &&
+    savedUserData &&
+    savedUserData.length > 0 &&
+    savedUserData[0].loggedOutUser &&
+    savedUserData[0].loggedOutUserToken
+  ) {
+    const user = savedUserData[0].loggedOutUser;
+    console.log({
+      savedPhone: user?.phoneNumber,
+      inputPhone: '+251' + data.phoneNumber,
+    });
+    if (user?.phoneNumber === '+251' + data.phoneNumber) {
+      user?.subscriptionStatus === 'success' &&
+        realm.write(() => {
+          savedUserData[0].isSubscribed = true;
+          setUserStatus(STATUSTYPES.Subscribed);
+        });
+
+      dispatch(
+        loginSuccess({
+          user: user,
+          token: savedUserData[0].loggedOutUserToken,
+          isSubscribed: user?.subscriptionStatus === 'success' ? true : false,
+          IsDefaultPasswordChanged: true,
+        }),
+      );
+
+      navigator.getState().routeNames[0] === 'Home'
+        ? navigator.navigate('Home')
+        : navigator.navigate('HomeSection');
+
+      setIsLoaginLoading(false);
+
+      return;
+    }
+  }
+
+  await checkIsOnline(navigator);
 
   try {
     const response: any = await login({
@@ -65,17 +109,17 @@ export const handleLogin = async (
       password: data.password,
     }).unwrap();
 
-    if (response && response?.user?.subscriptionStatus === 'success') {
-      const savedUserData = realm.objects(UserData);
-
-      if (savedUserData && savedUserData.length > 0) {
-        realm.write(() => {
-          savedUserData[0].isSubscribed = true;
-          setUserStatus(STATUSTYPES.Subscribed);
-        });
+    if (response) {
+      if (response?.user?.subscriptionStatus === 'success') {
+        if (savedUserData && savedUserData.length > 0) {
+          realm.write(() => {
+            savedUserData[0].isSubscribed = true;
+            setUserStatus(STATUSTYPES.Subscribed);
+          });
+        }
+      } else {
+        setUserStatus(STATUSTYPES.NotAuthorized);
       }
-    } else {
-      setUserStatus(STATUSTYPES.NotAuthorized);
     }
 
     dispatch(

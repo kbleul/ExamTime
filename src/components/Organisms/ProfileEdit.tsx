@@ -154,8 +154,15 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
 
       try {
         const result = await changeProfile({token, profileData});
-
         if (result?.data && result.data.user && user) {
+          console.log('result ======> ', result);
+
+          Toast.show({
+            type: 'success',
+            text1: 'success',
+            text2: 'Profile updated successfuly',
+            visibilityTime: 4000,
+          });
           dispatch(
             loginSuccess({
               user: {
@@ -182,13 +189,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             token,
             realm,
           );
-
-          Toast.show({
-            type: 'success',
-            text1: 'success',
-            text2: 'Profile updated successfuly',
-            visibilityTime: 4000,
-          });
         } else {
           Toast.show({
             type: 'error',
@@ -202,6 +202,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
         setPhone('');
         setGrade('');
       } catch (error) {
+        console.log('Error updating profile infromation! ====> ', error);
         Toast.show({
           type: 'error',
           text1: 'Error updating profile infromation!',

@@ -23,11 +23,11 @@ const LogoutAlertBox: React.FC<{
   const {setUserStatus} = useUserStatus();
 
   const navigator = useNavigation();
-  const [removeDtata, setRemoveData] = useState(false);
+  const [removeData, setRemoveData] = useState(false);
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
-    removeRealmUserData(realm, savedUserData);
+    removeRealmUserData(realm, savedUserData, removeData);
     setShowLogoutDialog(false);
     calculateDateDifference(savedUserData[0].initialDate) >
     savedUserData[0].allowedTrialDays
@@ -44,7 +44,7 @@ const LogoutAlertBox: React.FC<{
         <TouchableOpacity
           touchSoundDisabled
           onPress={() => setRemoveData(prev => !prev)}>
-          {removeDtata ? (
+          {removeData ? (
             <Feather name="check-square" color="black" size={24} />
           ) : (
             <Feather name="square" color="black" size={24} />

@@ -21,6 +21,7 @@ export type userType = {
   email: string | null;
   verificationCode?: string;
   profilePicture: string | null;
+  subscriptionStatus: string | null;
 };
 
 export type seterProps = {

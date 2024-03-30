@@ -8,11 +8,15 @@ import {
 } from 'react-native';
 import {Platform} from 'react-native';
 import {
+  Challange,
   Exam,
   ExamAnswers,
+  Pdf,
+  Study,
   Subject,
   UserData,
   UserExamAnswers,
+  VideoLink,
 } from '../../../Realm';
 import {Dispatch} from 'react';
 import {ActionCreatorWithPayload, AnyAction} from '@reduxjs/toolkit';
@@ -28,54 +32,32 @@ type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type DeleteAccountMutationFn = ReturnType<typeof useDeleteAccountMutation>[0];
 
 export const checkIsOnline = async (navigator?: any) => {
-  if (Platform.OS === 'ios') {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => {
-        controller.abort();
-      }, 5000); // Set a timeout of 5 seconds
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      controller.abort();
+    }, 5000); // Set a timeout of 5 seconds
 
-      const response = await fetch('https://www.google.com', {
-        method: 'HEAD',
-        signal: controller.signal,
-      });
+    const response = await fetch('https://www.google.com', {
+      method: 'HEAD',
+      signal: controller.signal,
+    });
 
-      clearTimeout(timeout); // Clear the timeout if the request completes within 5 seconds
+    clearTimeout(timeout); // Clear the timeout if the request completes within 5 seconds
 
-      if (response.status === 200) {
-        return true;
-      } else {
-        console.log('Failed to reach the internet server');
-        navigator && navigator.navigate('network-error');
-        return false;
-      }
-    } catch (error) {
-      console.log({error});
+    if (response.status === 200) {
+      return true;
+    } else {
       console.log('Failed to reach the internet server');
-
       navigator && navigator.navigate('network-error');
       return false;
     }
-  } else if (Platform.OS === 'android') {
-    try {
-      const state = await NetInfo.fetch();
+  } catch (error) {
+    console.log({error});
+    console.log('Failed to reach the internet server');
 
-      if (!state.isConnected || !state.isInternetReachable) {
-        navigator && navigator.navigate('network-error');
-        console.log('Failed to reach the internet server');
-
-        return false;
-      } else if (state.isConnected && state.isInternetReachable) {
-        return true;
-      }
-    } catch (error) {
-      console.log({error});
-      console.log('Failed to reach the internet server');
-
-      // Handle any errors (e.g., request timeout)
-      navigator && navigator.navigate('network-error');
-      return false; // Assume offline on error
-    }
+    navigator && navigator.navigate('network-error');
+    return false;
   }
 };
 
@@ -108,29 +90,27 @@ export const getItemLayout = (
 export const removeRealmUserData = async (
   realm: Realm,
   savedUserData: ResultsType<UserData>,
+  removeAllData: boolean,
 ) => {
-  const savedExamsAnswers = realm.objects(ExamAnswers);
-  const savedUserExamAnswers = realm.objects(UserExamAnswers);
-
-  const savedExam = realm.objects(Exam);
-
   if (savedUserData && savedUserData.length > 0) {
-    // const {_id, initialDate, isSubscribed, selectedSubjects, grade} =
-    //   savedUserData[0];
-
     try {
       realm.write(() => {
-        realm.delete(savedExamsAnswers);
-        realm.delete(savedUserExamAnswers);
-
-        for (const exam of savedExam) {
-          exam.isExamTaken = false;
-        }
+        const token = savedUserData[0].token;
+        const userData = savedUserData[0].user;
 
         savedUserData[0].token = null;
         savedUserData[0].isSubscribed = false;
         savedUserData[0].user = null;
-        savedUserData[0].selectedSubjects = [];
+
+        if (!removeAllData) {
+          savedUserData[0].loggedOutUser = userData;
+          savedUserData[0].loggedOutUserToken = token;
+
+          deleteAllSavedRealmData(realm, savedUserData);
+        } else {
+          savedUserData[0].loggedOutUser = null;
+          savedUserData[0].loggedOutUserToken = null;
+        }
       });
     } catch (e) {
       console.log('err', e);
@@ -138,6 +118,58 @@ export const removeRealmUserData = async (
   }
 };
 
+export const deleteAllSavedRealmData = (
+  realm: Realm,
+  savedUserData: ResultsType<UserData>,
+) => {
+  const savedExamsAnswers = realm.objects(ExamAnswers);
+  const savedUserExamAnswers = realm.objects(UserExamAnswers);
+
+  const savedExam = realm.objects(Exam);
+
+  const savedPdf = realm.objects(Pdf);
+  const savedvideo = realm.objects(VideoLink);
+  const savedSubject = realm.objects(Subject);
+
+  const savedStudies = realm.objects(Study);
+  const savedChallanges = realm.objects(Challange);
+
+  if (savedUserData && savedUserData.length > 0) {
+    try {
+      realm.delete(savedExamsAnswers);
+      realm.delete(savedUserExamAnswers);
+
+      for (const exam of savedExam) {
+        exam.isExamTaken = false;
+        exam.lastTaken = null;
+      }
+
+      for (const pdf of savedPdf) {
+        pdf.isViewed = false;
+      }
+
+      for (const video of savedvideo) {
+        video.isViewed = false;
+      }
+
+      for (const study of savedStudies) {
+        study.progress = 0;
+        study.userExamAnswers = [];
+      }
+
+      for (const challenge of savedChallanges) {
+        challenge.progress = 0;
+        challenge.finishedItems = [];
+      }
+
+      for (const study of savedSubject) {
+        study.progress = 0;
+      }
+    } catch (e) {
+      console.log('err', e);
+    }
+  }
+};
 export const verifyPassword = async (
   data: FormData,
   dispatch: Dispatch<AnyAction>,
@@ -216,7 +248,7 @@ export const DeleteUserAccount = async (
       visibilityTime: 4000,
     });
 
-    removeRealmUserData(realm, savedUserData);
+    removeRealmUserData(realm, savedUserData, true);
     dispatch(logoutSuccess());
   } catch (error) {
     dispatch(logoutSuccess());
