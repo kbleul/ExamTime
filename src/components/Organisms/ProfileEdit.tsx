@@ -190,6 +190,7 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             realm,
           );
         } else {
+          console.log('res=======>ult', result);
           Toast.show({
             type: 'error',
             text1: 'Error updating profile data!',

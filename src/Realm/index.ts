@@ -62,6 +62,9 @@ class UserData extends Realm.Object {
   };
 }
 
+
+
+
 class Region extends Realm.Object {
   id: string = '';
   region: string = '';

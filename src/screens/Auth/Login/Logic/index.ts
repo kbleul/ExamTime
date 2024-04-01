@@ -62,7 +62,7 @@ export const handleLogin = async (
   setIsLoaginLoading(true);
 
   const savedUserData = realm.objects(UserData);
-
+  console.log('loggedout ---> ', savedUserData[0].loggedOutUserToken);
   if (
     !isOnline &&
     savedUserData &&
@@ -91,6 +91,10 @@ export const handleLogin = async (
         }),
       );
 
+      realm.write(() => {
+        savedUserData[0].token = savedUserData[0].loggedOutUserToken;
+        savedUserData[0].user = user;
+      });
       navigator.getState().routeNames[0] === 'Home'
         ? navigator.navigate('Home')
         : navigator.navigate('HomeSection');
