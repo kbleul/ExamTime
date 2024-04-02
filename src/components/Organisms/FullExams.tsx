@@ -5,6 +5,8 @@ import {
   View,
   TouchableOpacity,
   ImageBackground,
+  ScrollView,
+  FlatList,
 } from 'react-native';
 import {STATUSTYPES, screenHeight, screenWidth} from '../../utils/Data/data';
 import {useGetExamsMutation} from '../../reduxToolkit/Services/exams';
@@ -214,58 +216,129 @@ const Exams: React.FC<{
   setPracticeModeModalVisible,
   setSelectedExam,
 }) => {
+  console.log('length ===> ', exams.length);
   const [showAllExams, setShowAllExams] = useState(false);
-  return (
-    <View style={examsStyle.container}>
-      {!isLoading &&
-        !error &&
-        exams.length > 0 &&
-        exams.map((exam, index) => (
-          <TouchableOpacity
-            key={exam.id + 'full-exam' + index}
-            touchSoundDisabled
-            style={examsStyle.imgContainer}
-            onPress={() => {
-              //  navigator.navigate('Exam-View', {exam});
-              setPracticeModeModalVisible(true);
-              setSelectedExam(exam);
-            }}>
-            <ImageBackground
-              style={examsStyle.imageBG}
-              source={
-                (index + 1) % 2 !== 0
-                  ? (index + 1) % 3 === 0
-                    ? require('../../assets/Images//Practice/exam_yellow.png')
-                    : require('../../assets/Images//Practice/exam_blue.png')
-                  : require('../../assets/Images//Practice/exam_green.png')
-              } // Replace with the correct path to your image
-              resizeMode="cover"
-            />
-            <Text style={examsStyle.buttonText}>
-              {exam?.year?.year ? exam?.year?.year : exam.year}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      {isLoading &&
-        Array.from({length: 5}).map((_, index: number) => (
-          <View
-            key={index + 'exam_loading'}
-            style={[examsStyle.imgContainer, examsStyle.imgContainerLoading]}
-          />
-        ))}
 
-      {exams.length === 0 && (
-        <Text style={examsStyle.noExam}>
-          No {selectedExamType} exams available{' '}
-          {subject !== '' && `for ${subject}`}
+  const renderItem = ({item}: {exam: examType}) => {
+    return (
+      <TouchableOpacity
+        touchSoundDisabled
+        style={examsStyle.imgContainer}
+        onPress={() => {
+          //  navigator.navigate('Exam-View', {exam});
+          setPracticeModeModalVisible(true);
+          setSelectedExam(item);
+        }}>
+        <ImageBackground
+          style={examsStyle.imageBG}
+          source={require('../../assets/Images//Practice/exam_green.png')} // Replace with the correct path to your image
+          resizeMode="cover"
+        />
+        <Text style={examsStyle.buttonText}>
+          {item?.year?.year ? item?.year?.year : item.year}
         </Text>
-      )}
-      <ShowAllExamsModal
-        exitExamModalVisible={showAllExams}
-        setExitExamModalVisible={setShowAllExams}
-        exams={exams}
-      />
-    </View>
+      </TouchableOpacity>
+    );
+  };
+  return (
+    // <ScrollView
+    //   horizontal
+    //   contentContainerStyle={examsStyle.container}
+    //   style={examsStyle.containerStyle}>
+    //   {!isLoading &&
+    //     !error &&
+    //     exams.length > 0 &&
+    //     exams.map((exam, index) => {
+    //       console.log('inedx', index);
+    //       return (
+    //         <TouchableOpacity
+    //           key={exam.id + 'full-exam' + index}
+    //           touchSoundDisabled
+    //           style={examsStyle.imgContainer}
+    //           onPress={() => {
+    //             //  navigator.navigate('Exam-View', {exam});
+    //             setPracticeModeModalVisible(true);
+    //             setSelectedExam(exam);
+    //           }}>
+    //           <ImageBackground
+    //             style={examsStyle.imageBG}
+    //             source={
+    //               (index + 1) % 2 !== 0
+    //                 ? (index + 1) % 3 === 0
+    //                   ? require('../../assets/Images//Practice/exam_yellow.png')
+    //                   : require('../../assets/Images//Practice/exam_blue.png')
+    //                 : require('../../assets/Images//Practice/exam_green.png')
+    //             } // Replace with the correct path to your image
+    //             resizeMode="cover"
+    //           />
+    //           <Text style={examsStyle.buttonText}>
+    //             {exam?.year?.year ? exam?.year?.year : exam.year}
+    //           </Text>
+    //         </TouchableOpacity>
+    //       );
+    //     })}
+
+    //   {!isLoading &&
+    //     !error &&
+    //     exams.length > 0 &&
+    //     exams.map((exam, index) => {
+    //       console.log('inedx', index);
+    //       return (
+    //         <TouchableOpacity
+    //           key={exam.id + 'full-exam' + index}
+    //           touchSoundDisabled
+    //           style={examsStyle.imgContainer}
+    //           onPress={() => {
+    //             //  navigator.navigate('Exam-View', {exam});
+    //             setPracticeModeModalVisible(true);
+    //             setSelectedExam(exam);
+    //           }}>
+    //           <ImageBackground
+    //             style={examsStyle.imageBG}
+    //             source={
+    //               (index + 1) % 2 !== 0
+    //                 ? (index + 1) % 3 === 0
+    //                   ? require('../../assets/Images//Practice/exam_yellow.png')
+    //                   : require('../../assets/Images//Practice/exam_blue.png')
+    //                 : require('../../assets/Images//Practice/exam_green.png')
+    //             } // Replace with the correct path to your image
+    //             resizeMode="cover"
+    //           />
+    //           <Text style={examsStyle.buttonText}>
+    //             {exam?.year?.year ? exam?.year?.year : exam.year}
+    //           </Text>
+    //         </TouchableOpacity>
+    //       );
+    //     })}
+
+    //   {isLoading &&
+    //     Array.from({length: 5}).map((_, index: number) => (
+    //       <View
+    //         key={index + 'exam_loading'}
+    //         style={[examsStyle.imgContainer, examsStyle.imgContainerLoading]}
+    //       />
+    //     ))}
+
+    //   {exams.length === 0 && (
+    //     <Text style={examsStyle.noExam}>
+    //       No {selectedExamType} exams available{' '}
+    //       {subject !== '' && `for ${subject}`}
+    //     </Text>
+    //   )}
+    //   <ShowAllExamsModal
+    //     exitExamModalVisible={showAllExams}
+    //     setExitExamModalVisible={setShowAllExams}
+    //     exams={exams}
+    //   />
+    // </ScrollView>
+
+    <FlatList
+      keyExtractor={(item, index) => item.id + 'tip' + index}
+      data={[...exams]}
+      renderItem={renderItem}
+      showsHorizontalScrollIndicator
+      horizontal
+    />
   );
 };
 
@@ -354,20 +427,24 @@ const buttonStyles = StyleSheet.create({
 });
 
 export const examsStyle = StyleSheet.create({
+  containerStyle: {
+    width: 450,
+  },
   container: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    paddingHorizontal: '3%',
+    width: 350,
+    borderWidth: 1,
   },
   imgContainer: {
-    width: '18%',
+    width: 50,
     height: screenHeight * 0.1,
     marginTop: screenWidth * 0.02,
     maxHeight: 100,
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
-    marginRight: '3%',
+    marginRight: 5,
   },
   imgContainerLoading: {
     backgroundColor: '#f5f5f5',
@@ -380,13 +457,13 @@ export const examsStyle = StyleSheet.create({
     color: 'white',
   },
   imageBG: {
-    width: '100%',
-    height: '100%',
+    width: 100,
+    height: 100,
   },
   noExam: {
     paddingVertical: 10,
     textAlign: 'center',
-    width: '100%',
+    width: 100,
   },
 });
 

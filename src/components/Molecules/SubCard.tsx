@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Animated, {useAnimatedStyle, withSpring} from 'react-native-reanimated';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {screenHeight, screenWidth} from '../../utils/Data/data';
@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {useInitiateChapaPaymentMutation} from '../../reduxToolkit/Services/auth';
+import PaymentsModal from '../Organisms/PaymentsModal';
 
 interface SubCardProps {
   item: any;
@@ -30,6 +31,7 @@ const SubCard: React.FC<SubCardProps> = ({
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
 
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [initiateChapaPayment] = useInitiateChapaPaymentMutation();
 
   const activeColor = '#FAFAFA'; // Color when card is active
@@ -56,23 +58,23 @@ const SubCard: React.FC<SubCardProps> = ({
 
   const handlePayment = async (packageId: string) => {
     if (token) {
+      setPaymentModalOpen(true);
       try {
-        const resonse: any = await initiateChapaPayment({
-          packageId,
-          token,
-        }).unwrap();
-
-        if (
-          resonse &&
-          resonse.data &&
-          resonse.textReference &&
-          resonse.data.checkout_url
-        ) {
-          navigator.navigate('chapa-payment', {
-            checkout_url: resonse.data.checkout_url,
-            textReference: resonse.textReference,
-          });
-        }
+        // const resonse: any = await initiateChapaPayment({
+        //   packageId,
+        //   token,
+        // }).unwrap();
+        // if (
+        //   resonse &&
+        //   resonse.data &&
+        //   resonse.textReference &&
+        //   resonse.data.checkout_url
+        // ) {
+        //   navigator.navigate('chapa-payment', {
+        //     checkout_url: resonse.data.checkout_url,
+        //     textReference: resonse.textReference,
+        //   });
+        // }
       } catch (err) {
         console.log('Error initializing payment with chapa', err);
       }
@@ -134,6 +136,13 @@ const SubCard: React.FC<SubCardProps> = ({
           </TouchableOpacity>
         </View>
       </Animated.View>
+
+      {paymentModalOpen && (
+        <PaymentsModal
+          paymentModalOpen={paymentModalOpen}
+          setPaymentModalOpen={setPaymentModalOpen}
+        />
+      )}
     </View>
   );
 };
