@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
@@ -20,16 +19,6 @@ const BackWithItem: React.FC<BackWithItemsType> = ({type, isTrial}) => {
         <Ionicons name="chevron-back-outline" color="#000" size={24} />
         <Text style={styles.typeText}>{type}</Text>
       </TouchableOpacity>
-      {/* {isTrial && (
-        <View style={styles.leftContainer}>
-          <Text style={styles.leftContainer_text}>2 days left</Text>
-          <MaterialCommunityIcons
-            name="timer-sand-complete"
-            color="#E2725B"
-            size={20}
-          />
-        </View>
-      )} */}
     </View>
   );
 };

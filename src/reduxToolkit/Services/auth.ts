@@ -488,6 +488,39 @@ export const api = createApi({
         };
       },
     }),
+    makeBankPayment: build.mutation<
+      {},
+      {
+        depositedByName: string;
+        referenceNo: string;
+        subscriptionPackageId: string;
+        token: string;
+      }
+    >({
+      query: data => {
+        const formData = new FormData();
+        console.log(
+          data.depositedByName,
+          ' === ',
+          data.referenceNo,
+          ' === ',
+          data.subscriptionPackageId,
+        );
+        formData.append('depositedByName', data.depositedByName);
+        formData.append('referenceNo', data.referenceNo);
+        formData.append('subscriptionPackageId', data.subscriptionPackageId);
+
+        return {
+          url: 'payment/user/createdirectbankpayment',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${data.token}`,
+          },
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
@@ -527,4 +560,5 @@ export const {
   useInitiateChapaPaymentMutation,
   useVerifyChapaPaymentMutation,
   useGetUserSubscriptionMutation,
+  useMakeBankPaymentMutation,
 } = api;

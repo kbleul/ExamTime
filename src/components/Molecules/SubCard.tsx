@@ -32,6 +32,9 @@ const SubCard: React.FC<SubCardProps> = ({
   const token = useSelector((state: RootState) => state.auth.token);
 
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+
+  const [selectedPackage, setSelectedPackage] = useState<any>(null);
+
   const [initiateChapaPayment] = useInitiateChapaPaymentMutation();
 
   const activeColor = '#FAFAFA'; // Color when card is active
@@ -56,8 +59,9 @@ const SubCard: React.FC<SubCardProps> = ({
     };
   });
 
-  const handlePayment = async (packageId: string) => {
+  const handlePayment = async (packageItem: any) => {
     if (token) {
+      setSelectedPackage(packageItem);
       setPaymentModalOpen(true);
       try {
         // const resonse: any = await initiateChapaPayment({
@@ -127,7 +131,7 @@ const SubCard: React.FC<SubCardProps> = ({
           <TouchableOpacity
             style={[styles.listofPackagesBottom]}
             onPress={() =>
-              !user ? navigator.navigate('Login') : handlePayment(item.id)
+              !user ? navigator.navigate('Login') : handlePayment(item)
             }
             disabled={userSubscribedStatus === item.id}>
             <Text style={styles.listofPackagesBottomtext}>
@@ -137,10 +141,11 @@ const SubCard: React.FC<SubCardProps> = ({
         </View>
       </Animated.View>
 
-      {paymentModalOpen && (
+      {paymentModalOpen && selectedPackage && (
         <PaymentsModal
           paymentModalOpen={paymentModalOpen}
           setPaymentModalOpen={setPaymentModalOpen}
+          selectedPackage={selectedPackage}
         />
       )}
     </View>

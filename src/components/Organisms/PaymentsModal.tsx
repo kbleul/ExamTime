@@ -25,7 +25,8 @@ type methodType = {
 const PaymentsModal: React.FC<{
   paymentModalOpen: boolean;
   setPaymentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({paymentModalOpen, setPaymentModalOpen}) => {
+  selectedPackage: any;
+}> = ({paymentModalOpen, setPaymentModalOpen, selectedPackage}) => {
   const navigator: any = useNavigation();
 
   const [paymentOption, setPaymentOption] = useState<methodType | null>(null);
@@ -79,7 +80,12 @@ const PaymentsModal: React.FC<{
               }
               disabled={!paymentOption}
               onPress={() =>
-                step === 2 ? navigator.navigate('Checkout') : setStep(2)
+                step === 2
+                  ? navigator.navigate('Checkout', {
+                      paymentOption,
+                      subscriptionPackage: selectedPackage,
+                    })
+                  : setStep(2)
               }>
               <Text style={styles.submitBtnText}>Proceed</Text>
             </TouchableOpacity>
@@ -163,7 +169,9 @@ const PaymentInstructions = ({method}: {method: methodType}) => {
       )}
 
       {method.notes.map((note, index) => (
-        <View style={instructionsStyle.notesContainerTop}>
+        <View
+          key={index + '--notes-ins---'}
+          style={instructionsStyle.notesContainerTop}>
           <View style={instructionsStyle.circle} />
 
           <View key={'note--' + index} style={instructionsStyle.notesContainer}>

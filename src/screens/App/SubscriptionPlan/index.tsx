@@ -88,6 +88,7 @@ const Index: React.FC = () => {
                     'Buy now for an exceptional learning experience!',
                 },
               ],
+              allPackages: packages,
             };
 
             newPackagesList.push(newPackage);

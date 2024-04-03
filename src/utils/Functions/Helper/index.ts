@@ -23,6 +23,7 @@ import {ActionCreatorWithPayload, AnyAction} from '@reduxjs/toolkit';
 import {
   useDeleteAccountMutation,
   useLoginMutation,
+  useMakeBankPaymentMutation,
 } from '../../../reduxToolkit/Services/auth';
 import {FormData} from '../../../screens/Auth/Login/Types';
 import {subjectType, userType} from '../../../types';
@@ -30,6 +31,9 @@ import {logoutSuccess} from '../../../reduxToolkit/Features/auth/authSlice';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type DeleteAccountMutationFn = ReturnType<typeof useDeleteAccountMutation>[0];
+type MakeBankPaymentMutationFn = ReturnType<
+  typeof useMakeBankPaymentMutation
+>[0];
 
 export const checkIsOnline = async (navigator?: any) => {
   try {
@@ -321,5 +325,45 @@ export const handleShare = async () => {
     }
   } catch (error: any) {
     Alert.alert(error.message);
+  }
+};
+
+export const handleBankPayment = async (
+  makeBankPayment: MakeBankPaymentMutationFn,
+  depositedByName: string,
+  referenceNo: string,
+  token: string | null,
+  subscriptionPackageId: string,
+  navigator: any,
+) => {
+  console.log('=====================>');
+  if (token) {
+    try {
+      const response = await makeBankPayment({
+        depositedByName,
+        referenceNo,
+        subscriptionPackageId,
+        token,
+      }).unwrap();
+
+      console.log(response);
+
+      // dispatch(
+      //   loginSuccess({
+      //     user: response.user,
+      //     token: response.accessToken,
+      //     isSubscribed: false,
+      //     IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
+      //   }),
+      // );
+    } catch (error) {
+      console.log(error);
+      if (
+        error instanceof TypeError &&
+        error.message === 'Network request failed'
+      ) {
+        navigator.navigate('network-error');
+      }
+    }
   }
 };
