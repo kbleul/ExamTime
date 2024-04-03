@@ -2,9 +2,15 @@ import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import {scale} from 'react-native-size-matters';
-import {number} from 'yup';
+import {style} from '../../screens/App/Study/styles';
 
-const CircleProgressIndicator = ({progress}: {progress: number}) => {
+const CircleProgressIndicator = ({
+  progress,
+  isDark,
+}: {
+  progress: number;
+  isDark?: boolean;
+}) => {
   let amount =
     typeof Math.round(progress) === typeof Math.round(0)
       ? Math.round(progress)
@@ -15,20 +21,44 @@ const CircleProgressIndicator = ({progress}: {progress: number}) => {
   } else if (amount > 100) {
     amount = 100;
   }
-
+  console.log({isDark});
   return (
     <AnimatedCircularProgress
-      size={scale(90)}
-      width={3}
-      backgroundWidth={2}
+      size={scale(isDark ? 70 : 90)}
+      width={isDark ? 6 : 2}
+      backgroundWidth={isDark ? 6 : 2}
       fill={progress}
-      tintColor="white"
-      backgroundColor="#FFE48F"
+      tintColor={isDark ? '#F0E2A1' : 'white'}
+      backgroundColor={isDark ? '#000' : '#FFE48F'}
       rotation={0}>
       {() => (
-        <View style={styles.circleTextContainer}>
-          <Text style={styles.centerText}>{amount}%</Text>
-          <Text style={styles.centerTextSecondary}>Completed</Text>
+        <View
+          style={
+            isDark
+              ? styles.circleTextContainerSecondary
+              : styles.circleTextContainer
+          }>
+          <Text
+            style={
+              isDark
+                ? [styles.centerText, styles.centerTextSecondaryColor]
+                : styles.centerText
+            }>
+            {amount}%
+          </Text>
+          {!isDark && (
+            <Text
+              style={
+                isDark
+                  ? [
+                      styles.centerTextSecondary,
+                      styles.centerTextSecondaryColor,
+                    ]
+                  : styles.centerTextSecondary
+              }>
+              Completed
+            </Text>
+          )}
         </View>
       )}
     </AnimatedCircularProgress>
@@ -40,6 +70,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  circleTextContainerSecondary: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black',
+    width: '100%',
+    height: '100%',
+  },
   centerText: {
     fontFamily: 'PoppinsMedium',
     fontSize: scale(24),
@@ -49,6 +86,10 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsRegular',
     fontSize: scale(7),
     color: 'white',
+  },
+  centerTextSecondaryColor: {
+    fontSize: scale(15),
+    color: '#F0E2A1',
   },
 });
 

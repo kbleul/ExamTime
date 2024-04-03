@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 
 import BackWithItem from '../../../components/Organisms/BackWithItem';
@@ -13,12 +13,8 @@ import Loading from '../../../components/Atoms/Loading';
 import {useUserStatus} from '../../../context/userStatus';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
-import {useFocusEffect} from '@react-navigation/native';
-import {useNavContext} from '../../../context/bottomNav';
 
 const Index: React.FC = () => {
-  const {setShowNavigation} = useNavContext();
-
   const token = useSelector((state: RootState) => state.auth.token);
   const {userStatus} = useUserStatus();
 
@@ -31,12 +27,6 @@ const Index: React.FC = () => {
   const [getUserSubscription, {isLoading: isLoadingUserSubscription}] =
     useGetUserSubscriptionMutation();
   const [data, setPackge] = useState<null | any[]>(null);
-
-  useFocusEffect(
-    useCallback(() => {
-      setShowNavigation(true);
-    }, []),
-  );
 
   useEffect(() => {
     const getPackages = async () => {

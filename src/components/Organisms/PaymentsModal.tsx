@@ -12,8 +12,7 @@ import {
 import {PaymentMethods, screenHeight, screenWidth} from '../../utils/Data/data';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import YoutubePlayer from 'react-native-youtube-iframe';
-
-import dotsImg from '../../assets/Images/banks/dots.png';
+import {useNavigation} from '@react-navigation/native';
 
 type methodType = {
   id: string;
@@ -27,6 +26,8 @@ const PaymentsModal: React.FC<{
   paymentModalOpen: boolean;
   setPaymentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({paymentModalOpen, setPaymentModalOpen}) => {
+  const navigator: any = useNavigation();
+
   const [paymentOption, setPaymentOption] = useState<methodType | null>(null);
   const [step, setStep] = useState(1);
 
@@ -74,10 +75,12 @@ const PaymentsModal: React.FC<{
               style={
                 !paymentOption
                   ? [styles.submitBtn, styles.submitBtnDisabled]
-                  : styles.submitBtn
+                  : [styles.submitBtn, step === 2 && styles.submitBtnNoMargin]
               }
               disabled={!paymentOption}
-              onPress={() => setStep(2)}>
+              onPress={() =>
+                step === 2 ? navigator.navigate('Checkout') : setStep(2)
+              }>
               <Text style={styles.submitBtnText}>Proceed</Text>
             </TouchableOpacity>
           </ScrollView>
@@ -99,7 +102,13 @@ const PaymentOptionCard = ({
   setPaymentOption: React.Dispatch<React.SetStateAction<methodType | null>>;
 }) => {
   return (
-    <View>
+    <View
+      style={
+        step === 2 &&
+        paymentOption &&
+        paymentOption.id === method.id &&
+        optionStyles.wrapper
+      }>
       <TouchableOpacity
         style={optionStyles.container}
         onPress={() => setPaymentOption(method)}>
@@ -132,7 +141,9 @@ const PaymentOptionCard = ({
           )}
         </View>
       </TouchableOpacity>
-      {paymentOption && step === 2 && <PaymentInstructions method={method} />}
+      {step === 2 && paymentOption && paymentOption.id === method.id && (
+        <PaymentInstructions method={method} />
+      )}
     </View>
   );
 };
@@ -152,13 +163,22 @@ const PaymentInstructions = ({method}: {method: methodType}) => {
       )}
 
       {method.notes.map((note, index) => (
-        <View key={'note--' + index} style={instructionsStyle.notesContainer}>
-          <View style={instructionsStyle.indicatorContainer}>
-            {/* <View style={instructionsStyle.circle} />
-            <View style={instructionsStyle.dashed} /> */}
-          </View>
+        <View style={instructionsStyle.notesContainerTop}>
+          <View style={instructionsStyle.circle} />
 
-          <Text style={instructionsStyle.noteText}>{note}</Text>
+          <View key={'note--' + index} style={instructionsStyle.notesContainer}>
+            <Text
+              style={
+                index === method.notes.length - 1
+                  ? [
+                      instructionsStyle.noteText,
+                      instructionsStyle.noteTextBorderless,
+                    ]
+                  : instructionsStyle.noteText
+              }>
+              {note}
+            </Text>
+          </View>
         </View>
       ))}
     </View>
@@ -228,8 +248,11 @@ const styles = StyleSheet.create({
   submitBtn: {
     backgroundColor: '#1E90FF',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 30,
     marginTop: 180,
+  },
+  submitBtnNoMargin: {
+    marginTop: 30,
   },
   submitBtnDisabled: {
     backgroundColor: 'gray',
@@ -243,6 +266,14 @@ const styles = StyleSheet.create({
 });
 
 const optionStyles = StyleSheet.create({
+  wrapper: {
+    borderWidth: 2,
+    borderColor: '#1E90FF',
+    borderRadius: 30,
+    paddingHorizontal: 16,
+    paddingTop: 5,
+    paddingBottom: 10,
+  },
   container: {
     marginVertical: 10,
     flexDirection: 'row',
@@ -310,29 +341,34 @@ const instructionsStyle = StyleSheet.create({
     top: '45%',
     left: '45%',
   },
+  notesContainerTop: {
+    position: 'relative',
+    marginTop: 5,
+  },
   notesContainer: {
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     overflow: 'hidden',
+    marginHorizontal: 4,
+    borderLeftWidth: 1,
+    borderLeftColor: '#1E90FF',
+    borderStyle: 'dashed',
   },
   noteText: {
     color: '#000',
-    fontSize: screenWidth * 0.04,
-    fontFamily: 'PoppinsSemiBold',
+    fontSize: screenWidth * 0.034,
+    fontFamily: 'PoppinsBold',
     width: '90%',
-    paddingVertical: 5,
-    paddingLeft: 30,
+    paddingVertical: 1,
+    paddingLeft: 20,
     borderBottomWidth: 1,
-
     borderColor: '#D9D9D9',
+    marginLeft: 10,
   },
-  indicatorContainer: {
-    height: '100%',
-    borderLeftWidth: 2,
-    borderLeftColor: '#1E90FF',
-    borderStyle: 'dashed',
+  noteTextBorderless: {
+    borderBottomWidth: 0,
   },
   circle: {
     width: 10,
@@ -340,6 +376,11 @@ const instructionsStyle = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 100,
     borderColor: '#1E90FF',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 300,
   },
   dashed: {
     borderLeftWidth: 2,

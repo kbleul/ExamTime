@@ -11,6 +11,7 @@ import SubscriptionPlan from '../../screens/App/SubscriptionPlan/index';
 import Aboutus from '../../screens/App/Aboutus/index';
 import ChapaWebView from '../../screens/App/Payment/ChapaWebView';
 import Login from '../../screens/Auth/Login/Login';
+import Checkout from '../../components/Organisms/Checkout';
 
 const ProfileStackScreens = () => {
   const ProfileStack = createStackNavigator();
@@ -32,6 +33,12 @@ const ProfileStackScreens = () => {
       <ProfileStack.Screen
         name={ProfileMenuItemsAuth['Subscription Plan'].navigate}
         component={SubscriptionPlan}
+        options={{headerShown: false}}
+      />
+
+      <ProfileStack.Screen
+        name="Checkout"
+        component={Checkout}
         options={{headerShown: false}}
       />
 

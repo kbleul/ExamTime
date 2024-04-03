@@ -91,6 +91,11 @@ const Index = () => {
     }, []),
   );
 
+  const handleNavigate = () => {
+    setShowNavigation(false);
+    navigation.navigate('ChallengeScreen');
+  };
+
   if (userStatus === STATUSTYPES.NotAuthorized) {
     return (
       <View style={styles.container}>
@@ -142,9 +147,7 @@ const Index = () => {
           <Text style={[styles.text, styles.subText]}>You got this!</Text>
           <TouchableWithoutFeedback
             onPress={() =>
-              token
-                ? navigation.navigate('ChallengeScreen')
-                : setLoginModalVisible(true)
+              token ? handleNavigate() : setLoginModalVisible(true)
             }>
             <View style={styles.button}>
               <Text style={styles.buttonText}>Start Challenge</Text>
@@ -210,7 +213,6 @@ const RenderIcon = ({
 
 const CourseItem = ({
   item,
-  setLoginModalVisible,
   timerValue,
   setShowAlert,
 }: {

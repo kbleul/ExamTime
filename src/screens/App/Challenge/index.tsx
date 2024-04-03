@@ -1,10 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  BackHandler,
+} from 'react-native';
 import {screenHeight, screenWidth} from '../../../utils/Data/data';
 import {ScrollView} from 'react-native-gesture-handler';
 import WeeksScreen from '../../../components/Organisms/WeeksScreen';
 import WeekDaysScreen from '../../../components/Organisms/WeekDaysScreen';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 import CircleProgressIndicator from '../../../components/Molecules/CircleProgressIndicator';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import UnitCardWithAccordion from '../../../components/Organisms/UnitCardWithAccordion';
@@ -19,10 +25,15 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
 import Loading from '../../../components/Atoms/Loading';
 import MessageBox from '../../../components/Atoms/MessageBox';
+import {useNavContext} from '../../../context/bottomNav';
 
 const Index = () => {
   const navigator: any = useNavigation();
+  const navigationState = useNavigationState(state => state);
+
+  const currentScreen = navigationState.routes[navigationState.index].name;
   const token = useSelector((state: RootState) => state.auth.token);
+  const {setShowNavigation} = useNavContext();
 
   const [isPending, setIsPending] = useState(true);
   const [getChallenges, {isLoading}] = useGetChallengesMutation();
@@ -32,6 +43,33 @@ const Index = () => {
   const savedChallenges = useQuery(Challange);
 
   const realm = useRealm();
+
+  useEffect(() => {
+    const backAction = () => {
+      navigator.navigate('StudySection');
+      setShowNavigation(true);
+
+      return true;
+    };
+
+    let backHandler: any;
+
+    if (currentScreen === 'ChallengeScreen') {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    } else {
+      backHandler && backHandler.remove();
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     savedChallenges && savedChallenges.length > 0
@@ -99,7 +137,7 @@ const Index = () => {
               help you achieve your study goals!
             </Text>
           </View>
-          <CircleProgressIndicator progress={savedChallenges[0].progress} />
+          <CircleProgressIndicator progress={50} isDark={true} />
         </View>
 
         <WeeksScreen />
@@ -213,10 +251,10 @@ const styles = StyleSheet.create({
   Headercontainer: {
     marginVertical: 2,
     flexDirection: 'row',
-    backgroundColor: '#FFA500',
+    backgroundColor: '#F0E2A1',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     width: screenWidth - 20,
     height: screenHeight / 6,
     minHeight: 150,
@@ -226,14 +264,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textContainer: {
-    width: '70%',
+    width: '80%',
     alignItems: 'flex-start',
-    gap: 10,
+    gap: 4,
     justifyContent: 'space-between',
   },
   text: {
     fontFamily: 'PoppinsMedium',
-    color: '#FFFFFF',
+    color: '#000',
     fontSize: screenWidth * 0.037,
   },
   button: {

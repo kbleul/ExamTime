@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {ProfileMenuItemsAuth} from '../../utils/Data/data';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
+import {useNavContext} from '../../context/bottomNav';
 
 const IconContainer: React.FC<{
   item: string;
@@ -15,6 +16,7 @@ const IconContainer: React.FC<{
 }> = ({item, bgColor, navigate, setShowLogoutDialog, setShowLDeleteDialog}) => {
   const navigator = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
+  const {setShowNavigation} = useNavContext();
 
   const handlePress = () => {
     if (user && item === ProfileMenuItemsAuth.Logout.name) {
@@ -33,6 +35,14 @@ const IconContainer: React.FC<{
     if (item === ProfileMenuItemsAuth.Profile.name) {
       navigator.navigate('Profile-Edit');
       return;
+    }
+
+    if (item === ProfileMenuItemsAuth['Subscription Plan'].name) {
+      console.log(
+        'item========>',
+        item === ProfileMenuItemsAuth['Subscription Plan'].name,
+      );
+      setShowNavigation(false);
     }
     navigator.navigate(navigate);
   };
