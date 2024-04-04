@@ -24,7 +24,7 @@ type methodType = {
 
 const PaymentsModal: React.FC<{
   paymentModalOpen: boolean;
-  setPaymentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setPaymentModalOpen: React.Dispatch<React.SetStateAction<any>>;
   selectedPackage: any;
 }> = ({paymentModalOpen, setPaymentModalOpen, selectedPackage}) => {
   const navigator: any = useNavigation();
@@ -68,6 +68,7 @@ const PaymentsModal: React.FC<{
                   step={step}
                   paymentOption={paymentOption}
                   setPaymentOption={setPaymentOption}
+                  setStep={setStep}
                 />
               ))}
             </View>
@@ -80,12 +81,11 @@ const PaymentsModal: React.FC<{
               }
               disabled={!paymentOption}
               onPress={() =>
-                step === 2
-                  ? navigator.navigate('Checkout', {
-                      paymentOption,
-                      subscriptionPackage: selectedPackage,
-                    })
-                  : setStep(2)
+                step === 2 &&
+                navigator.navigate('Checkout', {
+                  paymentOption,
+                  subscriptionPackage: selectedPackage,
+                })
               }>
               <Text style={styles.submitBtnText}>Proceed</Text>
             </TouchableOpacity>
@@ -101,11 +101,13 @@ const PaymentOptionCard = ({
   step,
   paymentOption,
   setPaymentOption,
+  setStep,
 }: {
   method: methodType;
   step: number;
   paymentOption: methodType | null;
   setPaymentOption: React.Dispatch<React.SetStateAction<methodType | null>>;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   return (
     <View
@@ -117,7 +119,10 @@ const PaymentOptionCard = ({
       }>
       <TouchableOpacity
         style={optionStyles.container}
-        onPress={() => setPaymentOption(method)}>
+        onPress={() => {
+          setPaymentOption(method);
+          setStep(2);
+        }}>
         <View style={optionStyles.subContainer}>
           <View
             style={

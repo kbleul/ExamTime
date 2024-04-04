@@ -13,15 +13,21 @@ import {
   useGetStudyMutation,
   useGetTipsMutation,
   useGetTrialStatusMutation,
+  useGetUserSubscriptionMutation,
   usePostExamResultsMutation,
 } from '../reduxToolkit/Services/auth';
 import {answersType} from '../screens/App/PracticeQuestion';
 import {getAllStudies} from '../screens/App/Study/logic';
 import {useNavigation} from '@react-navigation/native';
-import {checkTrialStatus, getExamAnswersFromDB} from './logic';
+import {
+  checkIsSubscribe,
+  checkTrialStatus,
+  getExamAnswersFromDB,
+} from './logic';
 import {fetchTips} from '../utils/Functions/Get';
 import {useUserStatus} from '../context/userStatus';
 import {checkAndUpdateFCMToken} from '../utils/PushNotification';
+import {loginSuccess} from '../reduxToolkit/Features/auth/authSlice';
 
 export type newAnswerType = {
   [id: string]: {
@@ -118,12 +124,14 @@ const useHandleInitialRequests = (
 
   const [getStudy] = useGetStudyMutation();
   const [getTrialStatus] = useGetTrialStatusMutation();
+  const [getUserSubscription] = useGetUserSubscriptionMutation();
 
   const {useQuery, useRealm} = AuthContext;
 
   const realm = useRealm();
 
   const {userStatus, setUserStatus} = useUserStatus();
+
   const savedTakenExams = useQuery(Exam, exam => {
     return exam.filtered('isExamTaken = true');
   });
@@ -190,6 +198,15 @@ const useHandleInitialRequests = (
         }
 
         checkAndUpdateFCMToken(token);
+
+        checkIsSubscribe(
+          token,
+          getUserSubscription,
+          setUserStatus,
+          realm,
+          dispatch,
+          loginSuccess,
+        );
       }
     };
 

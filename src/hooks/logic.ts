@@ -1,14 +1,19 @@
-import {Exam, UserExamAnswers} from '../Realm';
+import {Dispatch, AnyAction, ActionCreatorWithPayload} from '@reduxjs/toolkit';
+import {Exam, UserData, UserExamAnswers} from '../Realm';
 import {logoutSuccess} from '../reduxToolkit/Features/auth/authSlice';
 import {
   useGetExamAnswersMutation,
   useGetTrialStatusMutation,
+  useGetUserSubscriptionMutation,
 } from '../reduxToolkit/Services/auth';
-import {examType} from '../types';
+import {examType, userType} from '../types';
 import {LocalObjectDataKeys, STATUSTYPES} from '../utils/Data/data';
 
 type ExamAnswersMutationFn = ReturnType<typeof useGetExamAnswersMutation>[0];
 type getTrialMutationFn = ReturnType<typeof useGetTrialStatusMutation>[0];
+type getUserSubscriptionMutationFn = ReturnType<
+  typeof useGetUserSubscriptionMutation
+>[0];
 
 type responseType = {
   id: string;
@@ -151,6 +156,54 @@ export const checkTrialStatus = async (
 
         navigation.navigate('Login');
       }
+    }
+  }
+};
+
+export const checkIsSubscribe = async (
+  token: string | null,
+  getUserSubscription: getUserSubscriptionMutationFn,
+  setUserStatus: any,
+  realm: Realm,
+  dispatch: Dispatch<AnyAction>,
+  loginSuccess: ActionCreatorWithPayload<
+    {
+      user: userType;
+      token: string;
+      isSubscribed: boolean;
+      IsDefaultPasswordChanged: boolean;
+    },
+    'auth/loginSuccess'
+  >,
+) => {
+  if (token) {
+    const userData = realm.objects(UserData);
+
+    const usersubscriptions: any = await getUserSubscription({
+      token,
+    }).unwrap();
+    if (
+      usersubscriptions &&
+      usersubscriptions.subscriptionPackage &&
+      usersubscriptions.subscriptionPackage.id &&
+      userData &&
+      userData.length > 0 &&
+      userData[0].user
+    ) {
+      !userData[0].isSubscribed &&
+        realm.write(() => {
+          userData[0].isSubscribed = true;
+        });
+      setUserStatus(STATUSTYPES.Subscribed);
+
+      dispatch(
+        loginSuccess({
+          user: userData[0].user,
+          token,
+          isSubscribed: true,
+          IsDefaultPasswordChanged: true,
+        }),
+      );
     }
   }
 };

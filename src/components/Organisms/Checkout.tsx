@@ -61,8 +61,6 @@ const Checkout = ({route}: {route: any}) => {
     allPackages.find(item => item.value === subscriptionPackage.id),
   );
 
-  const [isChecked, setIsChecked] = useState(false);
-
   const [makeBankPayment, {isLoading, error}] = useMakeBankPaymentMutation();
 
   const schema = yup.object().shape({
@@ -184,19 +182,6 @@ const Checkout = ({route}: {route: any}) => {
           )}
         </View>
 
-        <TouchableOpacity
-          style={styles.checkContainer}
-          onPress={() => setIsChecked(prev => !prev)}>
-          <Feather
-            name={isChecked ? 'check-square' : 'square'}
-            color="gray"
-            size={24}
-          />
-          <Text style={styles.checkText}>
-            click to accept out terms and conditions
-          </Text>
-        </TouchableOpacity>
-
         {error && error.data && error.data.message ? (
           <Text style={[formStyles.error, styles.error]}>
             * {error.data.message}
@@ -223,7 +208,7 @@ const Checkout = ({route}: {route: any}) => {
                 setRefrenceNumber,
               );
             })}
-            disabled={isLoading || !isChecked}>
+            disabled={isLoading}>
             {isLoading ? (
               <ActivityIndicator color={'#FFF'} />
             ) : (
