@@ -21,7 +21,6 @@ const CircleProgressIndicator = ({
   } else if (amount > 100) {
     amount = 100;
   }
-  console.log({isDark});
   return (
     <AnimatedCircularProgress
       size={scale(isDark ? 70 : 90)}

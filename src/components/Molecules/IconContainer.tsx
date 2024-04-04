@@ -38,10 +38,6 @@ const IconContainer: React.FC<{
     }
 
     if (item === ProfileMenuItemsAuth['Subscription Plan'].name) {
-      console.log(
-        'item========>',
-        item === ProfileMenuItemsAuth['Subscription Plan'].name,
-      );
       setShowNavigation(false);
     }
     navigator.navigate(navigate);

@@ -335,34 +335,37 @@ export const handleBankPayment = async (
   token: string | null,
   subscriptionPackageId: string,
   navigator: any,
+  Toast: any,
+  setShowSuccessModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setRefrenceNumber: React.Dispatch<React.SetStateAction<string | null>>,
 ) => {
-  console.log('=====================>');
   if (token) {
     try {
-      const response = await makeBankPayment({
+      await makeBankPayment({
         depositedByName,
         referenceNo,
         subscriptionPackageId,
         token,
       }).unwrap();
 
-      console.log(response);
-
-      // dispatch(
-      //   loginSuccess({
-      //     user: response.user,
-      //     token: response.accessToken,
-      //     isSubscribed: false,
-      //     IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
-      //   }),
-      // );
-    } catch (error) {
+      setRefrenceNumber(referenceNo);
+      setShowSuccessModal(true);
+    } catch (error: any) {
       console.log(error);
       if (
         error instanceof TypeError &&
         error.message === 'Network request failed'
       ) {
         navigator.navigate('network-error');
+      }
+
+      if (error.data && error.data.statusCode === 409) {
+        error.data.message &&
+          Toast.show({
+            type: 'error',
+            text1: error.data.message,
+            text2: 'Try a different refrence number',
+          });
       }
     }
   }

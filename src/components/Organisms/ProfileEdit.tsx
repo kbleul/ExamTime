@@ -155,8 +155,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
       try {
         const result = await changeProfile({token, profileData});
         if (result?.data && result.data.user && user) {
-          console.log('result ======> ', result);
-
           Toast.show({
             type: 'success',
             text1: 'success',
@@ -190,7 +188,6 @@ const ProfileEdit = ({avatar}: {avatar: string | null}) => {
             realm,
           );
         } else {
-          console.log('res=======>ult', result);
           Toast.show({
             type: 'error',
             text1: 'Error updating profile data!',

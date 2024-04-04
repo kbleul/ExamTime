@@ -53,12 +53,7 @@ export const checkUserStatus = (
           IsDefaultPasswordChanged: true,
         }),
       );
-      console.log(
-        '**********************************',
-        savedUserData[0].isSubscribed
-          ? STATUSTYPES.Subscribed
-          : STATUSTYPES.AuthorizedTrial,
-      );
+
       setUserStatus(
         savedUserData[0].isSubscribed
           ? STATUSTYPES.Subscribed

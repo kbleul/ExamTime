@@ -57,12 +57,9 @@ export const handleLogin = async (
 ) => {
   const isOnline = await checkIsOnline();
 
-  console.log('-isOnline--->', isOnline);
-
   setIsLoaginLoading(true);
 
   const savedUserData = realm.objects(UserData);
-  console.log('loggedout ---> ', savedUserData[0].loggedOutUserToken);
   if (
     !isOnline &&
     savedUserData &&

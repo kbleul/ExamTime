@@ -21,6 +21,8 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {handleBankPayment} from '../../utils/Functions/Helper';
 import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import PaymentSuccessfullModal from '../Molecules/PaymentSuccessfullModal';
 
 type CheckoutDataType = {
   depositedByName: string;
@@ -48,24 +50,20 @@ const Checkout = ({route}: {route: any}) => {
     };
   });
 
-  allPackages.forEach(item => {
-    console.log('-->', item);
-  });
-
-  // console.log({
-  //   subscriptionPackage: subscriptionPackage.id,
-  //   allPackages: allPackages.find(item => item.id === subscriptionPackage.id),
-  // });
+  allPackages.forEach(item => {});
 
   const [isFocusGender, setIsFocusGender] = useState(false);
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [refrenceNumber, setRefrenceNumber] = useState<string | null>(null);
+
   const [selectedPackage, setSelectedPackage] = useState<any>(
     allPackages.find(item => item.value === subscriptionPackage.id),
   );
 
   const [isChecked, setIsChecked] = useState(false);
 
-  const [makeBankPayment, {isLoading, isError, error}] =
-    useMakeBankPaymentMutation();
+  const [makeBankPayment, {isLoading, error}] = useMakeBankPaymentMutation();
 
   const schema = yup.object().shape({
     depositedByName: yup.string().required('Deposited by is required.'),
@@ -199,13 +197,20 @@ const Checkout = ({route}: {route: any}) => {
           </Text>
         </TouchableOpacity>
 
+        {error && error.data && error.data.message ? (
+          <Text style={[formStyles.error, styles.error]}>
+            * {error.data.message}
+          </Text>
+        ) : (
+          <Text style={formStyles.error}>{''}</Text>
+        )}
+
         <View
           style={[formStyles.submitBtnContainer, styles.submitBtnContainer]}>
           <TouchableOpacity
             style={[formStyles.submitBtn, styles.submitBtn]}
             touchSoundDisabled
             onPress={handleSubmit(data => {
-              console.log(',,,,,,,,,', selectedPackage);
               handleBankPayment(
                 makeBankPayment,
                 data.depositedByName,
@@ -213,6 +218,9 @@ const Checkout = ({route}: {route: any}) => {
                 token,
                 selectedPackage.value,
                 navigator,
+                Toast,
+                setShowSuccessModal,
+                setRefrenceNumber,
               );
             })}
             disabled={isLoading || !isChecked}>
@@ -224,6 +232,14 @@ const Checkout = ({route}: {route: any}) => {
           </TouchableOpacity>
         </View>
       </View>
+
+      {showSuccessModal && refrenceNumber && (
+        <PaymentSuccessfullModal
+          showSuccessModal={showSuccessModal}
+          setShowSuccessModal={setShowSuccessModal}
+          refrenceNumber={refrenceNumber}
+        />
+      )}
     </ScrollView>
   );
 };
@@ -232,6 +248,7 @@ const styles = StyleSheet.create({
   containerContent: {
     paddingBottom: 100,
   },
+
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -330,7 +347,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   submitBtnContainer: {
-    marginTop: screenHeight * 0.07,
+    marginTop: screenHeight * 0.04,
+  },
+  error: {
+    marginTop: screenHeight * 0.04,
+    fontFamily: 'PoppinsSemiBold',
   },
 });
 

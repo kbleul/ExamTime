@@ -499,13 +499,7 @@ export const api = createApi({
     >({
       query: data => {
         const formData = new FormData();
-        console.log(
-          data.depositedByName,
-          ' === ',
-          data.referenceNo,
-          ' === ',
-          data.subscriptionPackageId,
-        );
+
         formData.append('depositedByName', data.depositedByName);
         formData.append('referenceNo', data.referenceNo);
         formData.append('subscriptionPackageId', data.subscriptionPackageId);

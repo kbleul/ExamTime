@@ -51,7 +51,6 @@ export const getAllStudies = async (
           type: 'error',
           text1: 'Error fetching studies',
         });
-        console.log('======>', error);
         return false;
       }
     }
@@ -405,10 +404,7 @@ export const calculate_and_Assign_ChallangeProgress = (
           : `(unit = "${unknown}" AND section = "${unknown}" AND subject.subject = "${unknown}")`,
       );
 
-    console.log('studylength', study.length);
-
     study.forEach(item => {
-      console.log({pdf: item.pdf.length, vid: item.videoLink.length});
       totalChallangeAmount =
         totalChallangeAmount + item.pdf.length + item.videoLink.length;
     });
