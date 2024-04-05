@@ -165,16 +165,6 @@ export const checkIsSubscribe = async (
   getUserSubscription: getUserSubscriptionMutationFn,
   setUserStatus: any,
   realm: Realm,
-  dispatch: Dispatch<AnyAction>,
-  loginSuccess: ActionCreatorWithPayload<
-    {
-      user: userType;
-      token: string;
-      isSubscribed: boolean;
-      IsDefaultPasswordChanged: boolean;
-    },
-    'auth/loginSuccess'
-  >,
 ) => {
   if (token) {
     const userData = realm.objects(UserData);
@@ -195,15 +185,6 @@ export const checkIsSubscribe = async (
           userData[0].isSubscribed = true;
         });
       setUserStatus(STATUSTYPES.Subscribed);
-
-      dispatch(
-        loginSuccess({
-          user: userData[0].user,
-          token,
-          isSubscribed: true,
-          IsDefaultPasswordChanged: true,
-        }),
-      );
     }
   }
 };

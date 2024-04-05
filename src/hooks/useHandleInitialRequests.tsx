@@ -199,14 +199,7 @@ const useHandleInitialRequests = (
 
         checkAndUpdateFCMToken(token);
 
-        checkIsSubscribe(
-          token,
-          getUserSubscription,
-          setUserStatus,
-          realm,
-          dispatch,
-          loginSuccess,
-        );
+        checkIsSubscribe(token, getUserSubscription, setUserStatus, realm);
       }
     };
 

@@ -72,7 +72,7 @@ const NotificationProvider = ({children}: {children: React.ReactNode}) => {
         }
       }
     }
-  }, [token, getNotifications]);
+  }, [token]);
 
   const deleteNotification = useCallback(
     async (id: string) => {
