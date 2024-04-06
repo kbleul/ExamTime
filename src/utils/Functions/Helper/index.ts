@@ -332,6 +332,7 @@ export const handleBankPayment = async (
   makeBankPayment: MakeBankPaymentMutationFn,
   depositedByName: string,
   referenceNo: string,
+  bankName: string,
   token: string | null,
   subscriptionPackageId: string,
   navigator: any,
@@ -345,6 +346,7 @@ export const handleBankPayment = async (
         depositedByName,
         referenceNo,
         subscriptionPackageId,
+        bankName,
         token,
       }).unwrap();
 

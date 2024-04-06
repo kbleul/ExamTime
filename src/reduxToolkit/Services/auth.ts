@@ -494,6 +494,7 @@ export const api = createApi({
         depositedByName: string;
         referenceNo: string;
         subscriptionPackageId: string;
+        bankName: string;
         token: string;
       }
     >({
@@ -503,6 +504,7 @@ export const api = createApi({
         formData.append('depositedByName', data.depositedByName);
         formData.append('referenceNo', data.referenceNo);
         formData.append('subscriptionPackageId', data.subscriptionPackageId);
+        formData.append('bankName', data.bankName);
 
         return {
           url: 'payment/user/createdirectbankpayment',

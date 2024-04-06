@@ -200,6 +200,7 @@ const Checkout = ({route}: {route: any}) => {
                 makeBankPayment,
                 data.depositedByName,
                 data.referenceNo,
+                paymentOption.name,
                 token,
                 selectedPackage.value,
                 navigator,
