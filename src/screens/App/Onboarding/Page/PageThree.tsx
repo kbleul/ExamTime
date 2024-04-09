@@ -15,6 +15,7 @@ import {
   useCreteGuestUserMutation,
   useGetStudyMutation,
   useGetSubjectMutation,
+  useGetTrialTimesMutation,
 } from '../../../../reduxToolkit/Services/auth';
 import {getSubjectsMutation} from './logic';
 import Loading from '../../../../components/Atoms/Loading';
@@ -46,6 +47,7 @@ const PageThree: React.FC<PagesCounterType> = ({
   const [getStudy] = useGetStudyMutation();
 
   const [createGuest] = useCreteGuestUserMutation();
+  const [getTrialTimes] = useGetTrialTimesMutation();
 
   const [IsLoadingSubjectsRealm, setIsLoadingSubjectsRealm] = useState(true);
   const [relamSaveStatus, setRelamSaveStatus] = useState(-1);
@@ -146,6 +148,7 @@ const PageThree: React.FC<PagesCounterType> = ({
                         setIsLoadingSubjects,
                         setShowOnboarding,
                         createGuest,
+                        getTrialTimes,
                         getStudy,
                         navigator,
                         Toast,

@@ -517,6 +517,14 @@ export const api = createApi({
         };
       },
     }),
+    getTrialTimes: build.mutation<{}, {}>({
+      query: () => {
+        return {
+          url: 'payment/user/guestandusertrialtime',
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -557,4 +565,5 @@ export const {
   useVerifyChapaPaymentMutation,
   useGetUserSubscriptionMutation,
   useMakeBankPaymentMutation,
+  useGetTrialTimesMutation,
 } = api;

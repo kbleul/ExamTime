@@ -38,6 +38,7 @@ class UserData extends Realm.Object {
   user: userType | null = null; // Define the user property as a reference to the User object.
   selectedSubjects?: string[] | [];
   allowedTrialDays: number = 0;
+  allowedTrialDays_AfterLogin: number = 0;
   guestUserToken: string | null = null;
   loggedOutUser: userType | null = null; //saved data for loggedout user without deleting data
   loggedOutUserToken: string | null = null;
@@ -54,6 +55,7 @@ class UserData extends Realm.Object {
       user: 'User?', // Link the 'user' property to the 'User' object.
       selectedSubjects: 'string[]',
       allowedTrialDays: 'int',
+      allowedTrialDays_AfterLogin: 'int',
       guestUserToken: 'string?',
       loggedOutUser: 'User?',
       loggedOutUserToken: 'string?',
@@ -61,9 +63,6 @@ class UserData extends Realm.Object {
     primaryKey: '_id',
   };
 }
-
-
-
 
 class Region extends Realm.Object {
   id: string = '';

@@ -10,6 +10,7 @@ import {subjectType} from '../../../../types';
 import {
   useCreteGuestUserMutation,
   useGetStudyMutation,
+  useGetTrialTimesMutation,
 } from '../../../../reduxToolkit/Services/auth';
 import uuid from 'react-native-uuid';
 import {UserData} from '../../../../Realm';
@@ -18,6 +19,7 @@ import {ToastProps} from 'react-native-toast-message';
 
 type CreateGuestMutationFn = ReturnType<typeof useCreteGuestUserMutation>[0];
 type GetStudyMutationFn = ReturnType<typeof useGetStudyMutation>[0];
+type GetTrialDaytsMutationFn = ReturnType<typeof useGetTrialTimesMutation>[0];
 
 export const calculateDateDifference = (date: string) => {
   const startDate = new Date(date);
@@ -67,6 +69,7 @@ export const createRealmUserData = async (
   setIsLoadingSubjects: React.Dispatch<React.SetStateAction<boolean>>,
   setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>>,
   creteGuestUser: CreateGuestMutationFn,
+  getTrialTimes: GetTrialDaytsMutationFn,
   getStudy: GetStudyMutationFn,
   navigator: any,
   Toast: (props: ToastProps) => JSX.Element,
@@ -89,12 +92,14 @@ export const createRealmUserData = async (
         user: null,
         selectedSubjects: [...selectedSubjects],
         allowedTrialDays: 0,
+        allowedTrialDays_AfterLogin: 0,
         guestUserToken: null,
       });
     });
 
     const guestUserToken: string | null = await createGuestUserUniqueId(
       creteGuestUser,
+      getTrialTimes,
       grade.value.grade,
       realm,
     );
@@ -174,6 +179,7 @@ export const createRealmSubjectsData = async (
 
 const createGuestUserUniqueId = async (
   creteGuestUser: CreateGuestMutationFn,
+  getTrialTimes: GetTrialDaytsMutationFn,
   grade: string,
   realm: Realm,
 ): Promise<string | null> => {
@@ -189,19 +195,25 @@ const createGuestUserUniqueId = async (
       fireBaseToken: savedFirebaseToken ? savedFirebaseToken : '',
     }).unwrap();
 
-    if (response.totalTrialTime) {
-      const totalTrialTime: number = response.totalTrialTime;
+    if (response) {
+      const responseTrial: any = await getTrialTimes({}).unwrap();
+
+      const totalTrialTime: number = responseTrial.guestUserDuration.duration;
+      const totalTrialTime_afterLogin: number =
+        responseTrial.unsubscribedUserDuration.duration;
 
       try {
         realm.write(() => {
           userData[0].deviceId = deviceId.toString();
           userData[0].allowedTrialDays = totalTrialTime;
-          userData[0].guestUserToken = response.accessToken;
-        });
+          userData[0].allowedTrialDays_AfterLogin = totalTrialTime_afterLogin;
 
-        return response.accessToken;
+          userData[0].guestUserToken = response.accessToken;
+
+          return response.accessToken;
+        });
       } catch (err) {
-        console.log('Error saving deviceid for userdata', err);
+        console.log('Error getting trial days', err);
         return null;
       }
     }

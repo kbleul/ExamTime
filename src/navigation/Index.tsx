@@ -17,11 +17,11 @@ const Routes = ({Stack}: any) => {
   const {userStatus, setUserStatus} = useUserStatus();
   const dispatch = useDispatch();
 
-  const {setShowOnboarding} = useOnboardingContext();
+  const {showOnboarding, setShowOnboarding} = useOnboardingContext();
 
   useEffect(() => {
     checkUserStatus(savedUserData, setUserStatus, setShowOnboarding, dispatch);
-  }, []);
+  }, [showOnboarding]);
 
   //used as loading check
   if (userStatus === null) {

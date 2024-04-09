@@ -29,6 +29,10 @@ export const checkUserStatus = (
     setShowOnboarding(false);
 
     if (!savedUserData[0].user) {
+      console.log({
+        allowedTrialDays: savedUserData[0].allowedTrialDays,
+        initialDate: savedUserData[0].initialDate,
+      });
       const dateDiff = calculateDateDifference(savedUserData[0].initialDate);
 
       if (dateDiff > savedUserData[0].allowedTrialDays) {
@@ -63,6 +67,8 @@ export const checkUserStatus = (
       return;
     }
   }
+
+  console.log('object', savedUserData[0]);
 
   setUserStatus(STATUSTYPES.Trial);
 };

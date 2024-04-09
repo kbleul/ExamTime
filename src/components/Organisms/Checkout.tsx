@@ -49,7 +49,6 @@ const Checkout = ({route}: {route: any}) => {
       price: item.price,
     };
   });
-
   allPackages.forEach(item => {});
 
   const [isFocusGender, setIsFocusGender] = useState(false);
