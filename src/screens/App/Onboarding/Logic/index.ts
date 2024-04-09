@@ -27,40 +27,7 @@ export const calculateDateDifference = (date: string) => {
 
   const timeDifference = currentDate.getTime() - startDate.getTime();
   const daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
-
   return daysDifference;
-};
-
-//trialStartDate format for testing = 'Sat Sep 25 2023 06:14:03 GMT-0400';
-export const checkIsTrial = async () => {
-  let status;
-  // Check if trial start date is stored in AsyncStorage
-  const trialStartDate = await AsyncStorage.getItem(
-    LocalStorageDataKeys.trialStartDate,
-  );
-
-  if (!trialStartDate) {
-    // Set trial start date if not already set
-    const currentDate = new Date().toString();
-    await AsyncStorage.setItem(
-      LocalStorageDataKeys.trialStartDate,
-      currentDate,
-    );
-    status = trialStatus.started;
-  } else {
-    // Compare trial start date with current date
-    const daysDifference = calculateDateDifference(trialStartDate);
-
-    if (daysDifference >= 3) {
-      // Trial period has ended
-      status = trialStatus.expired;
-    } else {
-      // Within the trial period
-      status = trialStatus.trial;
-    }
-  }
-
-  return status;
 };
 
 export const createRealmUserData = async (
@@ -209,13 +176,13 @@ const createGuestUserUniqueId = async (
           userData[0].allowedTrialDays_AfterLogin = totalTrialTime_afterLogin;
 
           userData[0].guestUserToken = response.accessToken;
-
-          return response.accessToken;
         });
       } catch (err) {
         console.log('Error getting trial days', err);
         return null;
       }
+
+      return response.accessToken;
     }
 
     return null;

@@ -100,6 +100,7 @@ class User extends Realm.Object {
   verificationCode: string | null = null;
   profilePicture: string | null = null;
   subscriptionStatus: string | null = '';
+  createdAt: string = '';
 
   static schema: Realm.ObjectSchema = {
     name: 'User',
@@ -117,6 +118,7 @@ class User extends Realm.Object {
       verificationCode: 'string?',
       profilePicture: 'string?',
       subscriptionStatus: 'string?',
+      createdAt: 'string',
     },
   };
 }

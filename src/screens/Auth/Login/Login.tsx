@@ -42,7 +42,6 @@ export default function Login() {
           </Text>
         )}
         <LoginForm />
-        {/* <SocialOptions /> */}
       </View>
 
       <AuthNavigatorOption

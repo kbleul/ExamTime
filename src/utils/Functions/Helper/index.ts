@@ -266,6 +266,18 @@ export const DeleteUserAccount = async (
       error.message === 'Network request failed'
     ) {
       navigator.navigate('network-error');
+    } else if (error.data && error.originalStatus) {
+      setShowLastPrompt(false);
+      setShowLDeleteDialog(false);
+
+      await Toast.show({
+        type: 'success',
+        text1: 'success',
+        text2: 'Account deleted successfully',
+        visibilityTime: 4000,
+      });
+
+      removeRealmUserData(realm, savedUserData, true);
     }
     console.log(error);
   }

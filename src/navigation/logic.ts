@@ -58,17 +58,24 @@ export const checkUserStatus = (
         }),
       );
 
+      if (savedUserData[0].isSubscribed) {
+        setUserStatus(STATUSTYPES.Subscribed);
+        return;
+      }
+
+      const createdAt = savedUserData[0].user.createdAt;
+
+      const remainingDays = calculateDateDifference(createdAt);
+
       setUserStatus(
-        savedUserData[0].isSubscribed
-          ? STATUSTYPES.Subscribed
+        savedUserData[0].allowedTrialDays_AfterLogin - remainingDays <= 0
+          ? STATUSTYPES.Unsubscribed
           : STATUSTYPES.AuthorizedTrial,
       );
 
       return;
     }
   }
-
-  console.log('object', savedUserData[0]);
 
   setUserStatus(STATUSTYPES.Trial);
 };

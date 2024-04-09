@@ -34,13 +34,19 @@ const TrialHeader: React.FC<{type: string}> = ({type}) => {
     const getTrialDay = async () => {
       const createdAt = savedUserData[0].initialDate;
 
-      const remainingDays = calculateDateDifference(createdAt);
+      const remainingDays = calculateDateDifference(
+        user ? user.createdAt : createdAt,
+      );
 
-      setTrialDayCounter(savedUserData[0].allowedTrialDays - remainingDays);
+      setTrialDayCounter(
+        user
+          ? savedUserData[0].allowedTrialDays_AfterLogin - remainingDays
+          : savedUserData[0].allowedTrialDays - remainingDays,
+      );
     };
 
     getTrialDay();
-  }, []);
+  }, [user]);
 
   return (
     <View style={HeaderStyle.container}>

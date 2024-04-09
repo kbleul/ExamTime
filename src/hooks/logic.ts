@@ -8,6 +8,7 @@ import {
 } from '../reduxToolkit/Services/auth';
 import {examType, userType} from '../types';
 import {LocalObjectDataKeys, STATUSTYPES} from '../utils/Data/data';
+import {calculateDateDifference} from '../screens/App/Onboarding/Logic';
 
 type ExamAnswersMutationFn = ReturnType<typeof useGetExamAnswersMutation>[0];
 type getTrialMutationFn = ReturnType<typeof useGetTrialStatusMutation>[0];
@@ -119,6 +120,7 @@ export const checkTrialStatus = async (
   userStatus: any,
   navigation: any,
   dispatch: any,
+  realm: Realm,
 ) => {
   if (token) {
     try {
@@ -131,19 +133,7 @@ export const checkTrialStatus = async (
         response[0].remainingDays &&
         userStatus !== STATUSTYPES.Subscribed
       ) {
-        if (parseInt(response[0].remainingDays) <= 0) {
-          setUserStatus((prev: string) => {
-            return prev === STATUSTYPES.Subscribed
-              ? STATUSTYPES.Subscribed
-              : STATUSTYPES.Unsubscribed;
-          });
-        } else if (parseInt(response[0].remainingDays) > 0) {
-          setUserStatus((prev: string) => {
-            return prev === STATUSTYPES.Subscribed
-              ? STATUSTYPES.Subscribed
-              : STATUSTYPES.AuthorizedTrial;
-          });
-        }
+        console.log('<=============-------------================>', token);
       }
     } catch (error: any) {
       console.error(
@@ -153,6 +143,15 @@ export const checkTrialStatus = async (
       );
       if (error.data.tokenExpired || error.status === 401) {
         dispatch(logoutSuccess());
+
+        const savedUser = realm.objects(UserData);
+
+        if (savedUser && savedUser[0]) {
+          calculateDateDifference(savedUser[0].initialDate) >
+          savedUser[0].allowedTrialDays
+            ? setUserStatus(STATUSTYPES.NotAuthorized)
+            : setUserStatus(STATUSTYPES.Trial);
+        }
 
         navigation.navigate('Login');
       }

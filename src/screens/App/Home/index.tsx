@@ -42,7 +42,6 @@ const Index = () => {
       setShowNavigation(true);
     }, []),
   );
-
   if (userStatus === STATUSTYPES.NotAuthorized) {
     return (
       <SafeAreaView style={IndexStyle.container}>

@@ -30,6 +30,7 @@ import {
 import {setObject_to_localStorage} from '../../../../utils/Functions/Set';
 import {getSubjectsMutation} from '../../../App/Onboarding/Page/logic';
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
+import {calculateDateDifference} from '../../../App/Onboarding/Logic';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type GetSubjectsMutationFn = ReturnType<typeof useGetSubjectMutation>[0];
@@ -68,10 +69,6 @@ export const handleLogin = async (
     savedUserData[0].loggedOutUserToken
   ) {
     const user = savedUserData[0].loggedOutUser;
-    console.log({
-      savedPhone: user?.phoneNumber,
-      inputPhone: '+251' + data.phoneNumber,
-    });
     if (user?.phoneNumber === '+251' + data.phoneNumber) {
       user?.subscriptionStatus === 'success' &&
         realm.write(() => {
@@ -103,7 +100,6 @@ export const handleLogin = async (
   }
 
   await checkIsOnline(navigator);
-
   try {
     const response: any = await login({
       phoneNumber: '+251' + data.phoneNumber,
@@ -119,7 +115,20 @@ export const handleLogin = async (
           });
         }
       } else {
-        setUserStatus(STATUSTYPES.NotAuthorized);
+        if (savedUserData[0].isSubscribed) {
+          setUserStatus(STATUSTYPES.Subscribed);
+          return;
+        }
+
+        const createdAt = response?.user?.createdAt;
+
+        const remainingDays = calculateDateDifference(createdAt);
+
+        setUserStatus(
+          savedUserData[0].allowedTrialDays_AfterLogin - remainingDays <= 0
+            ? STATUSTYPES.Unsubscribed
+            : STATUSTYPES.AuthorizedTrial,
+        );
       }
     }
 
@@ -182,7 +191,7 @@ export const handleLogin = async (
     ) {
       navigator.navigate('network-error');
     }
-    console.log(error);
+    console.log('logg in error --> ', error);
     return false;
   }
 };
@@ -256,6 +265,7 @@ export const updateRealmUserData = async (
         region,
         profilePicture,
         grade,
+        createdAt,
       } = user;
       let newUser;
 
@@ -281,6 +291,7 @@ export const updateRealmUserData = async (
           email,
           verificationCode: verificationCode ? verificationCode : null,
           profilePicture,
+          createdAt,
         });
         newUserData.user = newUser;
         newUserData.token = token;

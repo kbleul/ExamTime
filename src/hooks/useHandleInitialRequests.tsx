@@ -27,7 +27,6 @@ import {
 import {fetchTips} from '../utils/Functions/Get';
 import {useUserStatus} from '../context/userStatus';
 import {checkAndUpdateFCMToken} from '../utils/PushNotification';
-import {loginSuccess} from '../reduxToolkit/Features/auth/authSlice';
 
 export type newAnswerType = {
   [id: string]: {
@@ -168,6 +167,7 @@ const useHandleInitialRequests = (
           userStatus,
           navigation,
           dispatch,
+          realm,
         );
 
         if (savedTakenExams.length > 0) {

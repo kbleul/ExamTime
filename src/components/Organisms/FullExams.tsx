@@ -173,13 +173,6 @@ const FullExams: React.FC<{
         />
       )}
 
-      {!token && (
-        <LoginBox
-          title="Signup to Exam Time"
-          subTitle="Signup or login to get access to all previous and modal exams"
-        />
-      )}
-
       <AllExamsModal
         exams={exams}
         showModalsModal={showFullExam}

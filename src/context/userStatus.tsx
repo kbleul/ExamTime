@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import {useContext, createContext, useState} from 'react';
 import {STATUSTYPES} from '../utils/Data/data';
@@ -37,26 +37,22 @@ const UserStatusProvider = ({children}: {children: React.ReactNode}) => {
         ? STATUSTYPES.NotAuthorized
         : STATUSTYPES.Trial;
     } else if (user && savedUserData && savedUserData.length > 0) {
-      return savedUserData[0].isSubscribed
-        ? STATUSTYPES.Subscribed
-        : STATUSTYPES.Unsubscribed;
+      if (savedUserData[0].isSubscribed) {
+        STATUSTYPES.Subscribed;
+      } else {
+        const createdAt = user.createdAt;
+
+        const remainingDays = calculateDateDifference(createdAt);
+        return savedUserData[0].allowedTrialDays_AfterLogin - remainingDays <= 0
+          ? STATUSTYPES.Unsubscribed
+          : STATUSTYPES.AuthorizedTrial;
+      }
     }
 
     return STATUSTYPES.AuthorizedTrial;
   };
 
   const [userStatus, setUserStatus] = useState<string | null>(assignStatus());
-
-  // useEffect(() => {
-  //   if (!user && savedUserData && savedUserData.length > 0) {
-  //     const createdAt = savedUserData[0].initialDate;
-
-  //     const remainingDays = calculateDateDifference(createdAt);
-  //     savedUserData[0].allowedTrialDays - remainingDays <= 0
-  //       ? setUserStatus(STATUSTYPES.NotAuthorized)
-  //       : setUserStatus(STATUSTYPES.Trial);
-  //   }
-  // }, []);
 
   return (
     <UserStatusContext.Provider
