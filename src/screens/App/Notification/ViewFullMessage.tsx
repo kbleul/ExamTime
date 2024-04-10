@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
-  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,7 +12,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {convertTimestampToRelativeTime} from './logic';
 import {useNotification} from '../../../context/notification';
 import Toast from 'react-native-toast-message';
-import {getYoutubeVidId} from '../../../utils/Functions/Get';
+import {handleClickLink} from '../../../utils/Functions/Get';
 import ViewYoutubeModal from '../../../components/Molecules/ViewYoutubeModal';
 
 const ViewFullMessage = ({
@@ -51,14 +50,6 @@ const ViewFullMessage = ({
     setIsLoading(false);
   };
 
-  const handleClickLink = (link: {type: string; link: string}) => {
-    if (link.type === 'youtube' || link.type === 'Youtube') {
-      setViewYoutubeLink(getYoutubeVidId(link.link));
-    } else {
-      Linking.openURL(link.link);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.msgText}>
@@ -74,7 +65,7 @@ const ViewFullMessage = ({
               <TouchableOpacity
                 key={index + '--notification--' + index}
                 touchSoundDisabled
-                onPress={() => handleClickLink(link)}>
+                onPress={() => handleClickLink(link, setViewYoutubeLink)}>
                 <Text style={styles.linksButtonText}>{link.link}</Text>
               </TouchableOpacity>
             ))}

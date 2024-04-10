@@ -10,7 +10,6 @@ const FaqContener = () => {
     <View>
       <View style={styles.faq}>
         <ScrollView
-          style={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}>
           <Text style={styles.faqText}>About Exam Time</Text>
@@ -28,9 +27,6 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: '#4D4D4D',
     paddingHorizontal: 15,
-  },
-  scrollContainer: {
-    // paddingBottom: 40,
   },
   faqInput: {
     display: 'flex',

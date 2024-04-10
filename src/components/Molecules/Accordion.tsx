@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {FAQ, screenHeight, screenWidth} from '../../utils/Data/data';
+import {screenHeight, screenWidth} from '../../utils/Data/data';
 
 import Accordion from 'react-native-collapsible/Accordion';
 import FaqHeader from '../Atoms/FaqHeader';
@@ -14,6 +14,7 @@ export type faqType = {
   id: string;
   question: string;
   answer: string;
+  links: {link: string; type: string}[] | null;
 };
 
 const AccordionComponent = () => {
@@ -73,7 +74,7 @@ const AccordionComponent = () => {
     );
   };
 
-  const renderContent = faqContent => {
+  const renderContent = (faqContent: faqType) => {
     return <FaqContent faqContent={faqContent} />;
   };
 

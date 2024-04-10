@@ -3,6 +3,7 @@ import {checkIsOnline} from '../Helper';
 import {LocalObjectDataKeys} from '../../Data/data';
 import {TipType, subjectType} from '../../../types';
 import {Subject} from '../../../Realm';
+import {Linking} from 'react-native';
 
 type TipMutationFn = ReturnType<typeof useGetTipsMutation>[0];
 
@@ -128,4 +129,18 @@ export const getYoutubeVidId = (videosLink: string) => {
   return videosLink.includes('?v=')
     ? videosLink.split('?v=')[1].split('&')[0]
     : null;
+};
+
+export const handleClickLink = (
+  link: {
+    type: string;
+    link: string;
+  },
+  setViewYoutubeLink: React.Dispatch<React.SetStateAction<string | null>>,
+) => {
+  if (link.type === 'youtube' || link.type === 'Youtube') {
+    setViewYoutubeLink(getYoutubeVidId(link.link));
+  } else {
+    Linking.openURL(link.link);
+  }
 };
