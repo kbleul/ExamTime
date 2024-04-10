@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
+  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,6 +13,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {convertTimestampToRelativeTime} from './logic';
 import {useNotification} from '../../../context/notification';
 import Toast from 'react-native-toast-message';
+import {getYoutubeVidId} from '../../../utils/Functions/Get';
+import ViewYoutubeModal from '../../../components/Molecules/ViewYoutubeModal';
 
 const ViewFullMessage = ({
   notification,
@@ -21,8 +24,10 @@ const ViewFullMessage = ({
   setNotification: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
   const {deleteNotification} = useNotification();
-
   const [isLoading, setIsLoading] = useState(false);
+
+  const [viewYoutubeLink, setViewYoutubeLink] = useState<string | null>(null);
+
   const handleDelete = async () => {
     setIsLoading(true);
     const response = await deleteNotification(notification.id);
@@ -45,6 +50,15 @@ const ViewFullMessage = ({
 
     setIsLoading(false);
   };
+
+  const handleClickLink = (link: {type: string; link: string}) => {
+    if (link.type === 'youtube' || link.type === 'Youtube') {
+      setViewYoutubeLink(getYoutubeVidId(link.link));
+    } else {
+      Linking.openURL(link.link);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.msgText}>
@@ -52,6 +66,21 @@ const ViewFullMessage = ({
           ? notification.notification.notification
           : ' '}
       </Text>
+
+      {notification.notification.links &&
+        notification.notification.links.length > 0 && (
+          <View style={styles.linksContainer}>
+            {notification.notification.links.map((link: any, index: number) => (
+              <TouchableOpacity
+                key={index + '--notification--' + index}
+                touchSoundDisabled
+                onPress={() => handleClickLink(link)}>
+                <Text style={styles.linksButtonText}>{link.link}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
       <View style={styles.msgFooter}>
         <Text style={styles.dateText}>
           {convertTimestampToRelativeTime(
@@ -60,6 +89,7 @@ const ViewFullMessage = ({
               : notification.notification.createdAt,
           )}
         </Text>
+
         <TouchableOpacity
           touchSoundDisabled
           onPress={handleDelete}
@@ -75,6 +105,13 @@ const ViewFullMessage = ({
           )}
         </TouchableOpacity>
       </View>
+
+      {viewYoutubeLink && (
+        <ViewYoutubeModal
+          viewYoutubeLink={viewYoutubeLink}
+          setViewYoutubeLink={setViewYoutubeLink}
+        />
+      )}
     </View>
   );
 };
@@ -96,6 +133,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 20,
+  },
+  linksContainer: {
+    marginVertical: 20,
+    gap: 20,
+  },
+  linksButtonText: {
+    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.035,
+    color: '#5a8edb',
   },
   dateText: {
     fontFamily: 'PoppinsMedium',

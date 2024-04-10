@@ -180,9 +180,11 @@ const PasswordForm = ({
   const navigator = useNavigation();
 
   const user = useSelector((state: RootState) => state.auth.user);
-  const IsDefaultPasswordChanged = useSelector(
-    (state: RootState) => state.auth.IsDefaultPasswordChanged,
-  );
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  const {useQuery} = AuthContext;
+
+  const savedUserData = useQuery(UserData);
 
   const dispatch = useDispatch();
 
@@ -252,7 +254,7 @@ const PasswordForm = ({
               setShowLastPrompt,
               setShowPasswordForm,
               setUserPassword,
-              IsDefaultPasswordChanged,
+              savedUserData[0].guestUserToken,
             ),
           )}>
           {isLoading ? (

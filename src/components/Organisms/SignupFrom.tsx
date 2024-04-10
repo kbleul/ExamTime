@@ -19,7 +19,7 @@ import {
 import {fetchRegions, handleCreateUser} from '../../screens/Auth/Signup/Logic';
 import {formStyles} from '../../screens/Auth/Signup/Styles';
 import {AuthContext} from '../../Realm/model';
-import {Grade} from '../../Realm';
+import {Grade, UserData} from '../../Realm';
 
 const getGrades = (savedGrades: Results<Grade>): {grade: string}[] => {
   const uniqueArray = [];
@@ -112,6 +112,8 @@ const SignupForm: React.FC<seterProps> = ({
   ] = useGetRegionsMutation();
 
   const {useQuery} = AuthContext;
+
+  const savedUserData = useQuery(UserData);
 
   const savedGrades = useQuery(Grade);
 
@@ -348,12 +350,13 @@ const SignupForm: React.FC<seterProps> = ({
               createUser,
               navigator,
               gender,
-              grade,
+              grade ?? '',
               setGenderError,
               region,
               setRegionError,
               setCurrentStep,
               setUnregisteredUser,
+              savedUserData[0].guestUserToken ?? '',
             ),
           )}
           disabled={isLoading}>

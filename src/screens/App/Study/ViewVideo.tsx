@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   BackHandler,
@@ -20,12 +20,7 @@ import {
   calculate_and_Assign_UnitProgress,
 } from './logic';
 import {useNavContext} from '../../../context/bottomNav';
-
-const getYoutubeVidId = (videosLink: string) => {
-  return videosLink.includes('?v=')
-    ? videosLink.split('?v=')[1].split('&')[0]
-    : null;
-};
+import {getYoutubeVidId} from '../../../utils/Functions/Get';
 
 const saveProgress = (
   study: Study,

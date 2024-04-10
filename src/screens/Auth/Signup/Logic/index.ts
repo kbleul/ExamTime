@@ -1,6 +1,7 @@
 import {
   useChangePasswordMutation,
   useCreatePasswordMutation,
+  useCreateUserMutation,
   useLoginMutation,
   useVerifyCodeMutation,
 } from '../../../../reduxToolkit/Services/auth';
@@ -17,7 +18,7 @@ import {checkIsOnline} from '../../../../utils/Functions/Helper';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type CreateUserMutationFn = ReturnType<typeof useLoginMutation>[0];
+type CreateUserMutationFn = ReturnType<typeof useCreateUserMutation>[0];
 type VerifyCodeMutationFnMutationFn = ReturnType<
   typeof useVerifyCodeMutation
 >[0];
@@ -62,6 +63,7 @@ export const handleCreateUser = async (
   setRegionError: React.Dispatch<React.SetStateAction<string | null>>,
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>,
   setUnregisteredUser: React.Dispatch<React.SetStateAction<userType | null>>,
+  guestUserToken: string | null,
 ) => {
   if (
     validate_Gender_and_Region(gender, setGenderError, region, setRegionError)
@@ -78,6 +80,7 @@ export const handleCreateUser = async (
         gender: gender?.toUpperCase(),
         grade,
         fireBaseToken: savedFirebaseToken ? savedFirebaseToken : '',
+        guestUserToken: guestUserToken ?? '',
       }).unwrap();
 
       setUnregisteredUser(response.user);

@@ -23,10 +23,13 @@ import Loading from '../../../components/Atoms/Loading';
 import {useNavContext} from '../../../context/bottomNav';
 import {UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../reduxToolkit/Store';
 const RandomQuestionsView = ({route}: {route: any}) => {
-  //   const {subject} = route.params;
   const navigator: any = useNavigation();
   const {setShowNavigation} = useNavContext();
+
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const {useQuery} = AuthContext;
   const userData = useQuery(UserData);
@@ -42,7 +45,6 @@ const RandomQuestionsView = ({route}: {route: any}) => {
 
   const [exitExamModalVisible, setExitExamModalVisible] = useState(false);
 
-  const [showSideNav, setShowSideNav] = useState(false);
   const [showFullPage, setShowFullPage] = useState(false);
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -73,6 +75,7 @@ const RandomQuestionsView = ({route}: {route: any}) => {
             grade: userData[0].grade?.grade,
             subject: selectedSubject.subject.subject,
             noOfQuestions: amount,
+            token: token ? token : userData[0].guestUserToken ?? '',
           }).unwrap();
 
           setCurrentViewExam(response?.randomQuestions);

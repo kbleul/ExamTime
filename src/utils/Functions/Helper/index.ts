@@ -195,34 +195,37 @@ export const verifyPassword = async (
   setShowLastPrompt: React.Dispatch<React.SetStateAction<boolean>>,
   setShowPasswordForm: React.Dispatch<React.SetStateAction<boolean>>,
   setUserPassword: React.Dispatch<React.SetStateAction<string>>,
-  IsDefaultPasswordChanged: boolean,
+  token: string | null,
 ) => {
   checkIsOnline(navigator);
 
-  try {
-    const response = await login({
-      phoneNumber: data.phoneNumber,
-      password: data.password,
-    }).unwrap();
+  if (token) {
+    try {
+      const response = await login({
+        phoneNumber: data.phoneNumber,
+        password: data.password,
+        token,
+      }).unwrap();
 
-    dispatch(
-      loginSuccess({
-        user: response.user,
-        token: response.accessToken,
-        isSubscribed: false,
-        IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
-      }),
-    );
+      dispatch(
+        loginSuccess({
+          user: response.user,
+          token: response.accessToken,
+          isSubscribed: false,
+          IsDefaultPasswordChanged: response.IsDefaultPasswordChanged,
+        }),
+      );
 
-    setShowLastPrompt(true);
-    setShowPasswordForm(false);
-    setUserPassword(data.password);
-  } catch (error) {
-    if (
-      error instanceof TypeError &&
-      error.message === 'Network request failed'
-    ) {
-      navigator.navigate('network-error');
+      setShowLastPrompt(true);
+      setShowPasswordForm(false);
+      setUserPassword(data.password);
+    } catch (error) {
+      if (
+        error instanceof TypeError &&
+        error.message === 'Network request failed'
+      ) {
+        navigator.navigate('network-error');
+      }
     }
   }
 };

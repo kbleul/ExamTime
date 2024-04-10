@@ -104,6 +104,7 @@ export const handleLogin = async (
     const response: any = await login({
       phoneNumber: '+251' + data.phoneNumber,
       password: data.password,
+      token: savedUserData[0].guestUserToken ?? '',
     }).unwrap();
 
     if (response) {

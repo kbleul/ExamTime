@@ -123,3 +123,9 @@ export const getRealmSubject = (
   const subject = realm.objects(Subject).filtered(`id = "${subjectId}"`);
   return subject;
 };
+
+export const getYoutubeVidId = (videosLink: string) => {
+  return videosLink.includes('?v=')
+    ? videosLink.split('?v=')[1].split('&')[0]
+    : null;
+};

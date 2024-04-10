@@ -26,6 +26,10 @@ export const api = createApi({
         url: 'user/login',
         method: 'POST',
         body: credentials,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${credentials.token}`,
+        },
       }),
     }),
     createUser: build.mutation<{user: userType}, SignupDataType>({
@@ -34,6 +38,10 @@ export const api = createApi({
           url: 'user/create',
           method: 'POST',
           body: credentials,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.guestUserToken}`,
+          },
         };
       },
     }),
@@ -187,6 +195,7 @@ export const api = createApi({
         grade: string;
         subject: string;
         noOfQuestions: number;
+        token: string;
       }
     >({
       query: credentials => {
@@ -199,6 +208,10 @@ export const api = createApi({
             unit: '',
           },
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${credentials.token}`,
+          },
         };
       },
     }),

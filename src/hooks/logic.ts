@@ -1,12 +1,12 @@
-import {Dispatch, AnyAction, ActionCreatorWithPayload} from '@reduxjs/toolkit';
 import {Exam, UserData, UserExamAnswers} from '../Realm';
 import {logoutSuccess} from '../reduxToolkit/Features/auth/authSlice';
 import {
   useGetExamAnswersMutation,
   useGetTrialStatusMutation,
+  useGetTrialTimesMutation,
   useGetUserSubscriptionMutation,
 } from '../reduxToolkit/Services/auth';
-import {examType, userType} from '../types';
+import {examType} from '../types';
 import {LocalObjectDataKeys, STATUSTYPES} from '../utils/Data/data';
 import {calculateDateDifference} from '../screens/App/Onboarding/Logic';
 
@@ -15,6 +15,7 @@ type getTrialMutationFn = ReturnType<typeof useGetTrialStatusMutation>[0];
 type getUserSubscriptionMutationFn = ReturnType<
   typeof useGetUserSubscriptionMutation
 >[0];
+type GetTrialDaytsMutationFn = ReturnType<typeof useGetTrialTimesMutation>[0];
 
 type responseType = {
   id: string;
@@ -115,6 +116,7 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
 
 export const checkTrialStatus = async (
   getTrialStatus: getTrialMutationFn,
+  getTrialTimes: GetTrialDaytsMutationFn,
   token: string,
   setUserStatus: any,
   userStatus: any,
@@ -133,7 +135,32 @@ export const checkTrialStatus = async (
         response[0].remainingDays &&
         userStatus !== STATUSTYPES.Subscribed
       ) {
-        console.log('<=============-------------================>', token);
+        const responseTrial: any = await getTrialTimes({}).unwrap();
+
+        if (
+          responseTrial &&
+          responseTrial.guestUserDuration &&
+          responseTrial.unsubscribedUserDuration
+        ) {
+          const totalTrialTime: number =
+            responseTrial.guestUserDuration.duration;
+          const totalTrialTime_afterLogin: number =
+            responseTrial.unsubscribedUserDuration.duration;
+
+          try {
+            realm.write(() => {
+              const savedUser = realm.objects(UserData);
+
+              if (savedUser && savedUser[0]) {
+                savedUser[0].allowedTrialDays = totalTrialTime;
+                savedUser[0].allowedTrialDays_AfterLogin =
+                  totalTrialTime_afterLogin;
+              }
+            });
+          } catch (error) {
+            console.log('error updating trial duration ---> ', error);
+          }
+        }
       }
     } catch (error: any) {
       console.error(

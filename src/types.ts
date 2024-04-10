@@ -41,11 +41,13 @@ export type SignupDataType = {
   region: string;
   grade: string;
   fireBaseToken: string;
+  guestUserToken?: string;
 };
 
 export type LoginDataType = {
   phoneNumber: string;
   password: string;
+  token: string;
 };
 
 export type OTPDataType = {
