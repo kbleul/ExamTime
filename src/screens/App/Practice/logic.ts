@@ -16,12 +16,17 @@ export const getPreviousExams = async (
   realm: Realm,
   selectedExamType: string,
   token: string | null,
+  setIsLoadingExams: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   if (token) {
+    setIsLoadingExams(true);
+
     try {
       checkIsOnline(navigator);
       let pageNumber = 1;
       let totalPages = 1;
+
+      let viewableArray: any[] = [];
 
       while (pageNumber <= totalPages) {
         try {
@@ -37,31 +42,74 @@ export const getPreviousExams = async (
           ++pageNumber;
           totalPages = response.totalPages;
 
-          setExams(prev => {
-            const newExams = response?.exams.filter(
+          console.log(
+            '================ssss=========>>>>>>>>>>>>> ',
+            response?.exams.filter(
               (exam: examTsType) =>
                 exam.subject.subject === subject &&
                 exam.examType === selectedExamType,
-            );
+            ).length,
+          );
 
-            const tempArr = [];
+          viewableArray = [
+            ...viewableArray,
+            ...response?.exams.filter(
+              (exam: examTsType) =>
+                exam.subject.subject === subject &&
+                exam.examType === selectedExamType,
+            ),
+          ];
 
-            newExams.forEach((exam: any) => {
-              const temp = prev.find(prevExam => prevExam.id === exam.id);
+          // const tempArr = [];
 
-              if (!temp) {
-                tempArr.push(exam);
-              }
-            });
+          // newExams.forEach((exam: any) => {
+          //   const temp = newExams.find(prevExam => prevExam.id === exam.id);
 
-            return newExams;
-          });
+          //   if (!temp) {
+          //     tempArr.push(exam);
+          //   }
+
+          // viewableArray = [
+          //   ...viewableArray,
+          //   response?.exams.filter(
+          //     (exam: examTsType) =>
+          //       exam.subject.subject === subject &&
+          //       exam.examType === selectedExamType,
+          //   ),
+          // ];
+
+          // viewableArray = []
+
+          // setExams(prev => {
+          //   const newExams = response?.exams.filter(
+          //     (exam: examTsType) =>
+          //       exam.subject.subject === subject &&
+          //       exam.examType === selectedExamType,
+          //   );
+
+          //   const tempArr = [];
+
+          //   newExams.forEach((exam: any) => {
+          //     const temp = prev.find(prevExam => prevExam.id === exam.id);
+
+          //     if (!temp) {
+          //       tempArr.push(exam);
+          //     }
+          //   });
+
+          //   return newExams;
+          // });
+
+          console.log({totalPages, pageNumber});
 
           saveExamsToRealmDB(response.exams, realm);
         } catch (err) {
           console.log('error fetching', err);
         }
       }
+
+      setExams([...viewableArray]);
+      setIsLoadingExams(false);
     } catch (err) {
       console.log('-exams', err);
     }

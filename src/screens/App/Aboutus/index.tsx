@@ -101,7 +101,7 @@ const styles = ScaledSheet.create({
     alignItems: 'flex-start',
     flex: 1,
     width: '100%',
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#fff',
     marginTop: 10,
   },
   backicon: {

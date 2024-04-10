@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import {STATUSTYPES, screenHeight, screenWidth} from '../../utils/Data/data';
 import {useGetExamsMutation} from '../../reduxToolkit/Services/exams';
@@ -20,7 +21,6 @@ import {Exam, UserData} from '../../Realm';
 import {AuthContext} from '../../Realm/model';
 import PracticeModeModal from './PracticeModeModal';
 import {getRealmSubject} from '../../utils/Functions/Get';
-import LoginBox from '../Atoms/LoginBox';
 import {useUserStatus} from '../../context/userStatus';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
@@ -63,6 +63,7 @@ const FullExams: React.FC<{
   const [getExams, {isLoading, error}] = useGetExamsMutation();
 
   const [exams, setExams] = useState<examType[] | []>([]);
+  const [isLoadingExams, setIsLoadingExams] = useState(false);
 
   const [selectedExam, setSelectedExam] = useState<examType | null>(null);
 
@@ -91,6 +92,7 @@ const FullExams: React.FC<{
           ExamCatagories.find(item => item.name === selectedExamType)?.type ||
             '',
           token,
+          setIsLoadingExams,
         );
       } else {
         const filteredEXams: any[] = savedExams.filter(
@@ -156,9 +158,15 @@ const FullExams: React.FC<{
         setSelectedExamType={setSelectedExamType}
       />
 
+      {isLoadingExams && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator />
+          <Text>Loading...</Text>
+        </View>
+      )}
       {exams && exams.length > 0 && (
         <Exams
-          isLoading={isLoading}
+          isLoading={isLoading || isLoadingExams ? true : false}
           error={error}
           exams={exams}
           subject={
@@ -208,6 +216,7 @@ const Exams: React.FC<{
   setSelectedExam,
 }) => {
   const [showAllExams, setShowAllExams] = useState(false);
+  console.log(isLoading);
   return (
     <View style={examsStyle.container}>
       {!isLoading &&
@@ -297,10 +306,23 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     marginHorizontal: 5,
   },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.25)', // Adjust the opacity as needed
+    flex: 1,
+    position: 'absolute',
+    zIndex: 400,
+  },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  loadingContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
   },
   title: {
     color: '#008E97',

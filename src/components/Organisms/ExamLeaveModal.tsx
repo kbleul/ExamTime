@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 7,
     width: '90%',
     overflow: 'hidden',
   },

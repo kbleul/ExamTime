@@ -14,7 +14,7 @@ const IconContainer: React.FC<{
   setShowLogoutDialog: React.Dispatch<React.SetStateAction<boolean>>;
   setShowLDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({item, bgColor, navigate, setShowLogoutDialog, setShowLDeleteDialog}) => {
-  const navigator = useNavigation();
+  const navigator: any = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
   const {setShowNavigation} = useNavContext();
 
@@ -34,12 +34,12 @@ const IconContainer: React.FC<{
 
     if (item === ProfileMenuItemsAuth.Profile.name) {
       navigator.navigate('Profile-Edit');
+      setShowNavigation(false);
+
       return;
     }
 
-    if (item === ProfileMenuItemsAuth['Subscription Plan'].name) {
-      setShowNavigation(false);
-    }
+    setShowNavigation(false);
     navigator.navigate(navigate);
   };
 

@@ -27,6 +27,7 @@ const AllExamsModal = ({
   const renderItem = (item: examType, index: number) => {
     return (
       <TouchableOpacity
+        key={item.id + 'modal-exams-' + index}
         touchSoundDisabled
         style={styles.imgContainer}
         onPress={() => {

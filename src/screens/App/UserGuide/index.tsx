@@ -114,7 +114,7 @@ const Index = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F9FCFF',
+    backgroundColor: '#fff',
     flex: 1,
   },
   scrollContainer: {

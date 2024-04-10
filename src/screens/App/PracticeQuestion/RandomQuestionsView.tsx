@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust the opacity as needed
+    backgroundColor: 'rgba(0, 0, 0, 0.25)', // Adjust the opacity as needed
     flex: 1,
     position: 'absolute',
     zIndex: 400,

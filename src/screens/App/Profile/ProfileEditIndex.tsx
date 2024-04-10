@@ -60,7 +60,6 @@ const ProfileEditIndex = () => {
       </View>
 
       <ProfileEdit avatar={avatar} />
-
     </View>
   );
 };
@@ -71,8 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1,
     position: 'relative',
-    paddingBottom: 35,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#fff',
   },
   imageBg: {
     backgroundColor: '#f0efed',

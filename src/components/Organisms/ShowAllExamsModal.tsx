@@ -23,7 +23,7 @@ const ShowAllExamsModal: React.FC<{
           {exams &&
             exams.map((exam, index) => (
               <TouchableOpacity
-                key={exam.id}
+                key={exam.id + '=--->' + index}
                 touchSoundDisabled
                 style={examsStyle.imgContainer}
                 onPress={() => setExitExamModalVisible(false)}>

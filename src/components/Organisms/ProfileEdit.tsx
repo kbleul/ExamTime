@@ -490,7 +490,7 @@ const styles = ScaledSheet.create({
     paddingHorizontal: '20@s',
   },
   container: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#fff',
     height: '75%',
     overflow: 'hidden',
     paddingBottom: '25@vs',
