@@ -141,8 +141,8 @@ const Index = () => {
       <View style={styles.Headercontainer}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>
-            Time to shine! Dive into the challenge phase and conquer the
-            season's biggest learning adventure.
+            Join the challenge phase and get a personalized study plan tailored
+            to your needs and schedule!
           </Text>
           <Text style={[styles.text, styles.subText]}>You got this!</Text>
           <TouchableWithoutFeedback

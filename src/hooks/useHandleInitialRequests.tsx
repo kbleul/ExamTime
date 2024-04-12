@@ -13,6 +13,7 @@ import {
   useGetStudyMutation,
   useGetTipsMutation,
   useGetTrialStatusMutation,
+  useGetTrialTimesMutation,
   useGetUserSubscriptionMutation,
   usePostExamResultsMutation,
 } from '../reduxToolkit/Services/auth';
@@ -23,6 +24,7 @@ import {
   checkIsSubscribe,
   checkTrialStatus,
   getExamAnswersFromDB,
+  updateTrialDayLength,
 } from './logic';
 import {fetchTips} from '../utils/Functions/Get';
 import {useUserStatus} from '../context/userStatus';
@@ -124,6 +126,7 @@ const useHandleInitialRequests = (
   const [getStudy] = useGetStudyMutation();
   const [getTrialStatus] = useGetTrialStatusMutation();
   const [getUserSubscription] = useGetUserSubscriptionMutation();
+  const [getTrialTimes] = useGetTrialTimesMutation();
 
   const {useQuery, useRealm} = AuthContext;
 
@@ -151,6 +154,8 @@ const useHandleInitialRequests = (
       if (data.needsUpdate) {
         setUpdateModalVisible(true);
       }
+
+      updateTrialDayLength(getTrialTimes, realm);
     };
 
     const handleSync = async () => {
@@ -164,7 +169,6 @@ const useHandleInitialRequests = (
           getTrialStatus,
           token ? token : '',
           setUserStatus,
-          userStatus,
           navigation,
           dispatch,
           realm,

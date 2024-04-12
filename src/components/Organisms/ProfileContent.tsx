@@ -47,8 +47,7 @@ const ProfileContent = () => {
             <View style={styles.activityContainer}>
               <Text style={styles.name}>Activities</Text>
               <Text style={styles.activity}>
-                Level up your Exam Time App badge and unlock new features and
-                resources to help you achieve academic excellence!
+                Earn a badge and get discounts!
               </Text>
             </View>
 
@@ -134,8 +133,8 @@ const styles = ScaledSheet.create({
     top: '-50@ms',
     right: '2%',
     transform: [{translateX: 12.5}],
-    width: '140@s',
-    height: '180@vs',
+    width: '130@s',
+    height: '170@vs',
     objectFit: 'contain',
   },
   adsBtnContainer: {

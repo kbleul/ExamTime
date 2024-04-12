@@ -29,13 +29,9 @@ export const checkUserStatus = (
     setShowOnboarding(false);
 
     if (!savedUserData[0].user) {
-      console.log({
-        allowedTrialDays: savedUserData[0].allowedTrialDays,
-        initialDate: savedUserData[0].initialDate,
-      });
       const dateDiff = calculateDateDifference(savedUserData[0].initialDate);
 
-      if (dateDiff > savedUserData[0].allowedTrialDays) {
+      if (dateDiff >= savedUserData[0].allowedTrialDays) {
         //trial is over
         setUserStatus(STATUSTYPES.NotAuthorized);
         return;

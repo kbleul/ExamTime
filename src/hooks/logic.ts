@@ -9,6 +9,7 @@ import {
 import {examType} from '../types';
 import {LocalObjectDataKeys, STATUSTYPES} from '../utils/Data/data';
 import {calculateDateDifference} from '../screens/App/Onboarding/Logic';
+import {checkIsOnline, removeRealmUserData} from '../utils/Functions/Helper';
 
 type ExamAnswersMutationFn = ReturnType<typeof useGetExamAnswersMutation>[0];
 type getTrialMutationFn = ReturnType<typeof useGetTrialStatusMutation>[0];
@@ -116,52 +117,17 @@ const saveDataToRealm = (ansersFromDB: responseType[], realm: Realm) => {
 
 export const checkTrialStatus = async (
   getTrialStatus: getTrialMutationFn,
-  getTrialTimes: GetTrialDaytsMutationFn,
   token: string,
   setUserStatus: any,
-  userStatus: any,
   navigation: any,
   dispatch: any,
   realm: Realm,
 ) => {
   if (token) {
     try {
-      const response: any = await getTrialStatus({
+      await getTrialStatus({
         token,
-      }).unwrap();
-      if (
-        response &&
-        response.length > 0 &&
-        response[0].remainingDays &&
-        userStatus !== STATUSTYPES.Subscribed
-      ) {
-        const responseTrial: any = await getTrialTimes({}).unwrap();
-
-        if (
-          responseTrial &&
-          responseTrial.guestUserDuration &&
-          responseTrial.unsubscribedUserDuration
-        ) {
-          const totalTrialTime: number =
-            responseTrial.guestUserDuration.duration;
-          const totalTrialTime_afterLogin: number =
-            responseTrial.unsubscribedUserDuration.duration;
-
-          try {
-            realm.write(() => {
-              const savedUser = realm.objects(UserData);
-
-              if (savedUser && savedUser[0]) {
-                savedUser[0].allowedTrialDays = totalTrialTime;
-                savedUser[0].allowedTrialDays_AfterLogin =
-                  totalTrialTime_afterLogin;
-              }
-            });
-          } catch (error) {
-            console.log('error updating trial duration ---> ', error);
-          }
-        }
-      }
+      });
     } catch (error: any) {
       console.error(
         'Error checking trial version status. ',
@@ -170,6 +136,9 @@ export const checkTrialStatus = async (
       );
       if (error.data.tokenExpired || error.status === 401) {
         dispatch(logoutSuccess());
+        const savedUserData = realm.objects(UserData);
+
+        removeRealmUserData(realm, savedUserData, true);
 
         const savedUser = realm.objects(UserData);
 
@@ -183,6 +152,44 @@ export const checkTrialStatus = async (
         navigation.navigate('Login');
       }
     }
+  }
+};
+
+export const updateTrialDayLength = async (
+  getTrialTimes: GetTrialDaytsMutationFn,
+  realm: Realm,
+) => {
+  const isConnected = await checkIsOnline();
+  console.log('here');
+  if (isConnected) {
+    try {
+      const responseTrial: any = await getTrialTimes({}).unwrap();
+
+      if (
+        responseTrial &&
+        responseTrial.guestUserDuration &&
+        responseTrial.unsubscribedUserDuration
+      ) {
+        const totalTrialTime: number = responseTrial.guestUserDuration.duration;
+        const totalTrialTime_afterLogin: number =
+          responseTrial.unsubscribedUserDuration.duration;
+
+        try {
+          realm.write(() => {
+            const savedUser = realm.objects(UserData);
+            console.log('here', {totalTrialTime, totalTrialTime_afterLogin});
+
+            if (savedUser && savedUser[0]) {
+              savedUser[0].allowedTrialDays = totalTrialTime;
+              savedUser[0].allowedTrialDays_AfterLogin =
+                totalTrialTime_afterLogin;
+            }
+          });
+        } catch (error) {
+          console.log('error updating trial duration ---> ', error);
+        }
+      }
+    } catch (err) {}
   }
 };
 

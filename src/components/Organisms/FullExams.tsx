@@ -216,7 +216,6 @@ const Exams: React.FC<{
   setSelectedExam,
 }) => {
   const [showAllExams, setShowAllExams] = useState(false);
-  console.log(isLoading);
   return (
     <View style={examsStyle.container}>
       {!isLoading &&

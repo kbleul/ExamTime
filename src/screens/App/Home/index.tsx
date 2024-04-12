@@ -23,7 +23,7 @@ import UpdateModal from '../../../components/Organisms/UpdateModal';
 
 const Index = () => {
   const {userStatus} = useUserStatus();
-
+  console.log({userStatus});
   const [isSyncing, setIsSyncing] = useState(false);
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
 

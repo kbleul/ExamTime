@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   LocalObjectDataKeys,
   LocalStorageDataKeys,
-  trialStatus,
 } from '../../../../utils/Data/data';
 import {getObject_from_localStorage} from '../../../../utils/Functions/Get';
 import Realm from 'realm';
