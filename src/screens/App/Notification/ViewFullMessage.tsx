@@ -14,6 +14,7 @@ import {useNotification} from '../../../context/notification';
 import Toast from 'react-native-toast-message';
 import {handleClickLink} from '../../../utils/Functions/Get';
 import ViewYoutubeModal from '../../../components/Molecules/ViewYoutubeModal';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const ViewFullMessage = ({
   notification,
@@ -51,7 +52,7 @@ const ViewFullMessage = ({
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.msgText}>
         {notification.notification
           ? notification.notification.notification
@@ -103,7 +104,7 @@ const ViewFullMessage = ({
           setViewYoutubeLink={setViewYoutubeLink}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginVertical: 20,
   },
   linksContainer: {
     marginVertical: 20,

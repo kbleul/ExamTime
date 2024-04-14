@@ -19,6 +19,7 @@ export async function requestUserPermission() {
 
   if (enabled) {
     fcmToken = await getFCMToken();
+    console.log('----------------token----------------->  ', fcmToken);
   } else {
     console.log('User has disabled notification permissions', authStatus);
   }
@@ -79,7 +80,6 @@ export async function checkAndUpdateFCMToken(token) {
         console.error('Error fetching data:', error);
       }
     }
-
 
   }
 

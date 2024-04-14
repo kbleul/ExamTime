@@ -106,8 +106,6 @@ const NotificationMsg = ({
         {notificationObject.notification
           ? notificationObject.notification
           : ' '}
-        There are no notifications to show right now!There are no notifications
-        to show right now!There are no notifications to show right now!
       </Text>
       <Text
         style={
