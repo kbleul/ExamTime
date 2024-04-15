@@ -192,7 +192,6 @@ export const handleLogin = async (
     ) {
       navigator.navigate('network-error');
     }
-    console.log('logg in error --> ', error);
     return false;
   }
 };

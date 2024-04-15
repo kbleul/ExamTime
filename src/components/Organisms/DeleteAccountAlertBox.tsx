@@ -69,18 +69,18 @@ const DeleteAccountAlertBox: React.FC<{
 
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
+              style={styles.button}
+              touchSoundDisabled
+              onPress={() => setShowLDeleteDialog(false)}>
+              <Text style={styles.buttonText}>Cancle</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[styles.button, styles.buttonSecondary]}
               touchSoundDisabled
               onPress={() => setShowPasswordForm(true)}>
               <Text style={[styles.buttonText, styles.buttonTextSecondary]}>
                 Delete
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              touchSoundDisabled
-              onPress={() => setShowLDeleteDialog(false)}>
-              <Text style={styles.buttonText}>Cancle</Text>
             </TouchableOpacity>
           </View>
         </>
@@ -111,6 +111,12 @@ const DeleteAccountAlertBox: React.FC<{
 
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
+              style={styles.button}
+              touchSoundDisabled
+              onPress={() => setShowLDeleteDialog(false)}>
+              <Text style={styles.buttonText}>Cancle</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[styles.button, styles.buttonSecondary]}
               touchSoundDisabled
               onPress={() =>
@@ -134,12 +140,6 @@ const DeleteAccountAlertBox: React.FC<{
                   Delete
                 </Text>
               )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              touchSoundDisabled
-              onPress={() => setShowLDeleteDialog(false)}>
-              <Text style={styles.buttonText}>Cancle</Text>
             </TouchableOpacity>
           </View>
         </>
@@ -242,6 +242,12 @@ const PasswordForm = ({
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
+          style={styles.button}
+          touchSoundDisabled
+          onPress={() => setShowLDeleteDialog(false)}>
+          <Text style={styles.buttonText}>Cancle</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={[styles.button, styles.buttonSecondary]}
           touchSoundDisabled
           onPress={handleSubmit(data =>
@@ -264,13 +270,6 @@ const PasswordForm = ({
               Verify
             </Text>
           )}
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          touchSoundDisabled
-          onPress={() => setShowLDeleteDialog(false)}>
-          <Text style={styles.buttonText}>Cancle</Text>
         </TouchableOpacity>
       </View>
     </View>

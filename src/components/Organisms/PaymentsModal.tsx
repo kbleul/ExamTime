@@ -13,6 +13,9 @@ import {PaymentMethods, screenHeight, screenWidth} from '../../utils/Data/data';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import {useNavigation} from '@react-navigation/native';
+import {useInitiateChapaPaymentMutation} from '../../reduxToolkit/Services/auth';
+import {RootState} from '../../reduxToolkit/Store';
+import {useSelector} from 'react-redux';
 
 type methodType = {
   id: string;
@@ -29,8 +32,49 @@ const PaymentsModal: React.FC<{
 }> = ({paymentModalOpen, setPaymentModalOpen, selectedPackage}) => {
   const navigator: any = useNavigation();
 
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  const [initiateChapaPayment] = useInitiateChapaPaymentMutation();
+
   const [paymentOption, setPaymentOption] = useState<methodType | null>(null);
   const [step, setStep] = useState(1);
+
+  const handleChapaPayment = async (packageItem: any) => {
+    if (token) {
+      try {
+        const resonse: any = await initiateChapaPayment({
+          packageId: packageItem.id,
+          token,
+        }).unwrap();
+        if (
+          resonse &&
+          resonse.data &&
+          resonse.textReference &&
+          resonse.data.checkout_url
+        ) {
+          navigator.navigate('chapa-payment', {
+            checkout_url: resonse.data.checkout_url,
+            textReference: resonse.textReference,
+          });
+        }
+      } catch (err) {
+        console.log('Error initializing payment with chapa', err);
+      }
+    }
+  };
+
+  const handleOnPress = () => {
+    if (step === 2 && paymentOption) {
+      if (paymentOption.id === 'pay-chapa-002') {
+        handleChapaPayment(selectedPackage);
+      } else {
+        navigator.navigate('Checkout', {
+          paymentOption,
+          subscriptionPackage: selectedPackage,
+        });
+      }
+    }
+  };
 
   return (
     <Modal
@@ -80,13 +124,7 @@ const PaymentsModal: React.FC<{
                   : [styles.submitBtn, step === 2 && styles.submitBtnNoMargin]
               }
               disabled={!paymentOption}
-              onPress={() =>
-                step === 2 &&
-                navigator.navigate('Checkout', {
-                  paymentOption,
-                  subscriptionPackage: selectedPackage,
-                })
-              }>
+              onPress={handleOnPress}>
               <Text style={styles.submitBtnText}>Proceed</Text>
             </TouchableOpacity>
           </ScrollView>
@@ -139,7 +177,11 @@ const PaymentOptionCard = ({
 
         <View style={optionStyles.imageContainer}>
           <Image
-            style={optionStyles.image}
+            style={
+              method.id === 'pay-chapa-002'
+                ? optionStyles.imageBig
+                : optionStyles.image
+            }
             source={method.imgs[0]}
             resizeMode="cover"
           />
@@ -333,9 +375,13 @@ const optionStyles = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  imageBig: {
+    width: 50,
+    height: 30,
+  },
   imageSecondary: {
     width: 120,
-    height: 50,
+    height: 34,
   },
 });
 

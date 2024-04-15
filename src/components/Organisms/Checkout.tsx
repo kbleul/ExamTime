@@ -16,7 +16,6 @@ import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useMakeBankPaymentMutation} from '../../reduxToolkit/Services/auth';
-import Feather from 'react-native-vector-icons/Feather';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {handleBankPayment} from '../../utils/Functions/Helper';

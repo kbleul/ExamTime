@@ -83,8 +83,8 @@ android {
         applicationId "com.exam_time.exam"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 26
-        versionName "6.0.4"
+        versionCode 27
+        versionName "6.0.5"
         vectorDrawables.useSupportLibrary = true
         resConfigs "en", "US"
     }

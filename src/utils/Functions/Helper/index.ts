@@ -102,8 +102,6 @@ export const removeRealmUserData = async (
         const token = savedUserData[0].token;
         const userData = savedUserData[0].user;
 
-        console.log({token});
-
         savedUserData[0].token = null;
         savedUserData[0].isSubscribed = false;
         savedUserData[0].user = null;
@@ -114,8 +112,6 @@ export const removeRealmUserData = async (
 
           deleteAllSavedRealmData(realm, savedUserData);
         } else {
-          console.log('here', {token});
-
           savedUserData[0].loggedOutUser = null;
           savedUserData[0].loggedOutUserToken = null;
         }

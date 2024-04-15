@@ -42,15 +42,6 @@ export const getPreviousExams = async (
           ++pageNumber;
           totalPages = response.totalPages;
 
-          console.log(
-            '================ssss=========>>>>>>>>>>>>> ',
-            response?.exams.filter(
-              (exam: examTsType) =>
-                exam.subject.subject === subject &&
-                exam.examType === selectedExamType,
-            ).length,
-          );
-
           viewableArray = [
             ...viewableArray,
             ...response?.exams.filter(
@@ -59,48 +50,6 @@ export const getPreviousExams = async (
                 exam.examType === selectedExamType,
             ),
           ];
-
-          // const tempArr = [];
-
-          // newExams.forEach((exam: any) => {
-          //   const temp = newExams.find(prevExam => prevExam.id === exam.id);
-
-          //   if (!temp) {
-          //     tempArr.push(exam);
-          //   }
-
-          // viewableArray = [
-          //   ...viewableArray,
-          //   response?.exams.filter(
-          //     (exam: examTsType) =>
-          //       exam.subject.subject === subject &&
-          //       exam.examType === selectedExamType,
-          //   ),
-          // ];
-
-          // viewableArray = []
-
-          // setExams(prev => {
-          //   const newExams = response?.exams.filter(
-          //     (exam: examTsType) =>
-          //       exam.subject.subject === subject &&
-          //       exam.examType === selectedExamType,
-          //   );
-
-          //   const tempArr = [];
-
-          //   newExams.forEach((exam: any) => {
-          //     const temp = prev.find(prevExam => prevExam.id === exam.id);
-
-          //     if (!temp) {
-          //       tempArr.push(exam);
-          //     }
-          //   });
-
-          //   return newExams;
-          // });
-
-          console.log({totalPages, pageNumber});
 
           saveExamsToRealmDB(response.exams, realm);
         } catch (err) {

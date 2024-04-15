@@ -124,8 +124,8 @@ const Index: React.FC = () => {
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.text}>
-              Upgrade to a subscription plan to access a world of benefits and
-              take your experience to the next level.
+              Upgrade to a subscription plan for enhanced benefits and an
+              elevated experience.
             </Text>
           </View>
 

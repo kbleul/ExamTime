@@ -18,8 +18,7 @@ export async function requestUserPermission() {
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
   if (enabled) {
-    fcmToken = await getFCMToken();
-    console.log('----------------token----------------->  ', fcmToken);
+    await getFCMToken();
   } else {
     console.log('User has disabled notification permissions', authStatus);
   }

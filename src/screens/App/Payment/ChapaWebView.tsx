@@ -30,6 +30,7 @@ const ChapaWebView = ({route}: {route: any}) => {
   const [getStudy] = useGetStudyMutation();
 
   const {checkout_url, textReference} = route.params;
+
   const verifyChapa = async () => {
     if (token) {
       try {
@@ -55,8 +56,9 @@ const ChapaWebView = ({route}: {route: any}) => {
             });
           }
 
-          getAllStudies(getStudy, navigator, token, realm, Toast);
+          await getAllStudies(getStudy, navigator, token, realm, Toast);
 
+          navigator.navigate('Profile');
           navigator.navigate('HomeSection', {
             screen: 'Home',
           });

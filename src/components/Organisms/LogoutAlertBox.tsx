@@ -59,7 +59,7 @@ const LogoutAlertBox: React.FC<{
           style={styles.button}
           touchSoundDisabled
           onPress={() => setShowLogoutDialog(false)}>
-          <Text style={styles.buttonText}>Cancle</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}

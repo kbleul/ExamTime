@@ -7,7 +7,6 @@ import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
-import {useInitiateChapaPaymentMutation} from '../../reduxToolkit/Services/auth';
 import PaymentsModal from '../Organisms/PaymentsModal';
 
 interface SubCardProps {
@@ -34,8 +33,6 @@ const SubCard: React.FC<SubCardProps> = ({
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
-
-  const [initiateChapaPayment] = useInitiateChapaPaymentMutation();
 
   const activeColor = '#FAFAFA'; // Color when card is active
   const inactiveColor = 'white';

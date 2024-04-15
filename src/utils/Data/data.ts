@@ -7,6 +7,8 @@ import img5 from '../../assets/Images/courses/car.png';
 
 import cbe1 from '../../assets/Images/banks/cbe1.png';
 import cbe2 from '../../assets/Images/banks/cbe2.png';
+import chapa1 from '../../assets/Images/banks/chapa1.png';
+import chapa2 from '../../assets/Images/banks/chapa2.png';
 
 export const screenWidth = Dimensions.get('window').width;
 export const screenHeight = Dimensions.get('window').height;
@@ -206,6 +208,17 @@ export const PaymentMethods = [
     id: 'pay001',
     name: 'CBE',
     imgs: [cbe1, cbe2],
+    youtubeLink: 'https://www.youtube.com/watch?v=nqggWaCACjk',
+    notes: [
+      'በኢትዮጽያንግድ ባንክ አካዉንት ስም “ቲንክ ሀብ ኢኖቬሽን” በሂሳብ ቁጥር 1000083513528 ብር ማስተላለፍ',
+      'ከባንኩ ከሚሰጥ ደረሰኝ ላይ የአስገቢው ሰዉ ስም ወይም የሂሳብ ቁጥር ባለቤት እና የደረሰኝ መለያ ቁጥር (Tras . Refe) መረጃዎች በጥንቃቄ ማስገባት',
+      'ማሳሰቢያ፡ መረጃዉን ካስገቡበት በ24 ሰዓት ዉስጥ የSMS መልክት ይደርሶታል፡፡',
+    ],
+  },
+  {
+    id: 'pay-chapa-002',
+    name: 'Chapa',
+    imgs: [chapa1, chapa2],
     youtubeLink: 'https://www.youtube.com/watch?v=nqggWaCACjk',
     notes: [
       'በኢትዮጽያንግድ ባንክ አካዉንት ስም “ቲንክ ሀብ ኢኖቬሽን” በሂሳብ ቁጥር 1000083513528 ብር ማስተላለፍ',
