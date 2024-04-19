@@ -71,7 +71,7 @@ const Index: React.FC = () => {
                 },
                 {
                   available: true,
-                  packagesname: '6 years of previous exams with explanations.',
+                  packagesname: '7 years of previous exams with explanations.',
                 },
                 {
                   available: true,
@@ -83,16 +83,7 @@ const Index: React.FC = () => {
                 },
                 {
                   available: true,
-                  packagesname: 'Unlimited Random Questions',
-                },
-                {
-                  available: true,
                   packagesname: 'Study Challenges',
-                },
-                {
-                  available: true,
-                  packagesname:
-                    'Buy now for an exceptional learning experience!',
                 },
               ],
               allPackages: packages,

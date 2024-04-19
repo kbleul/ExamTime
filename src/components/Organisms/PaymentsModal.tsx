@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useInitiateChapaPaymentMutation} from '../../reduxToolkit/Services/auth';
 import {RootState} from '../../reduxToolkit/Store';
 import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 type methodType = {
   id: string;
@@ -42,23 +43,31 @@ const PaymentsModal: React.FC<{
   const handleChapaPayment = async (packageItem: any) => {
     if (token) {
       try {
-        const resonse: any = await initiateChapaPayment({
+        const response: any = await initiateChapaPayment({
           packageId: packageItem.id,
           token,
         }).unwrap();
         if (
-          resonse &&
-          resonse.data &&
-          resonse.textReference &&
-          resonse.data.checkout_url
+          response &&
+          response.data &&
+          response.textReference &&
+          response.data.checkout_url
         ) {
           navigator.navigate('chapa-payment', {
-            checkout_url: resonse.data.checkout_url,
-            textReference: resonse.textReference,
+            checkout_url: response.data.checkout_url,
+            textReference: response.textReference,
           });
         }
       } catch (err) {
         console.log('Error initializing payment with chapa', err);
+
+        if (err && err.data && err.data.message) {
+          console.log('----');
+          Toast.show({
+            type: 'error',
+            text1: err.data.message,
+          });
+        }
       }
     }
   };
@@ -130,6 +139,7 @@ const PaymentsModal: React.FC<{
           </ScrollView>
         </View>
       </View>
+      <Toast />
     </Modal>
   );
 };

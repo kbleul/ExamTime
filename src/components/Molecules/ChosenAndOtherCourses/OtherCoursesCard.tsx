@@ -55,7 +55,7 @@ const OtherCoursesCard: React.FC<{
           {grade !== 'Driving Licence' && (
             <Text style={useStyle.subTitle}>
               {' '}
-              {grade.includes('12') ? 'National' : 'Reginal'} Exam{' '}
+              {grade.includes('12') ? 'National' : 'Regional'} Exam{' '}
               {isOnboarding && 'Taker'}
             </Text>
           )}

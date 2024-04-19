@@ -170,26 +170,24 @@ const VerificationCodeForm: React.FC<seterProps> = ({
           <Text style={styles.timer}>{timer} seconds</Text>
         )}
 
-        {!isCorrectCode.current && (
-          <TouchableOpacity
-            style={styles.resendButton}
-            touchSoundDisabled
-            onPress={() =>
-              resendOtp(
-                unregisteredUser ? unregisteredUser : null,
-                setUnregisteredUser,
-                resendCode,
-                setOtpValues,
-                setTimer,
-                isCorrectCode,
-                setISResend,
-                navigator,
-                sentOtp,
-              )
-            }>
-            <Text style={styles.resendText}>Resend code</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.resendButton}
+          touchSoundDisabled
+          onPress={() =>
+            resendOtp(
+              unregisteredUser ? unregisteredUser : null,
+              setUnregisteredUser,
+              resendCode,
+              setOtpValues,
+              setTimer,
+              isCorrectCode,
+              setISResend,
+              navigator,
+              sentOtp,
+            )
+          }>
+          <Text style={styles.resendText}>Resend code</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -103,7 +103,7 @@ const ExamLeaveModal: React.FC<{
                       setExitExamModalVisible(false);
                       // filterUnansweredQuestions();
                     }}>
-                    Cancle
+                    Cancel
                   </Text>
                 </TouchableOpacity>
               )}

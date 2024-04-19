@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import PaymentsModal from '../Organisms/PaymentsModal';
+import Toast from 'react-native-toast-message';
 
 interface SubCardProps {
   item: any;
@@ -127,13 +128,15 @@ const SubCard: React.FC<SubCardProps> = ({
           selectedPackage={selectedPackage}
         />
       )}
+
+      <Toast />
     </View>
   );
 };
 const styles = StyleSheet.create({
   card: {
     width: screenWidth * 0.65,
-    height: screenHeight * 0.7,
+    height: screenHeight * 0.65,
     paddingRight: 4,
     borderRadius: 5,
     overflow: 'hidden',

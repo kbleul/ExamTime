@@ -75,7 +75,7 @@ const SubscriptionPlanCards = ({
 
 const styles = StyleSheet.create({
   Cards: {
-    height: screenHeight * 0.74,
+    height: screenHeight * 0.71,
   },
 });
 export default SubscriptionPlanCards;
