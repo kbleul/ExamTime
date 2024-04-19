@@ -30,7 +30,13 @@ const PaymentsModal: React.FC<{
   paymentModalOpen: boolean;
   setPaymentModalOpen: React.Dispatch<React.SetStateAction<any>>;
   selectedPackage: any;
-}> = ({paymentModalOpen, setPaymentModalOpen, selectedPackage}) => {
+  setSelectedPackage: React.Dispatch<React.SetStateAction<any>>;
+}> = ({
+  paymentModalOpen,
+  setPaymentModalOpen,
+  selectedPackage,
+  setSelectedPackage,
+}) => {
   const navigator: any = useNavigation();
 
   const token = useSelector((state: RootState) => state.auth.token);
@@ -82,6 +88,7 @@ const PaymentsModal: React.FC<{
           subscriptionPackage: selectedPackage,
         });
       }
+      setSelectedPackage(null);
     }
   };
 

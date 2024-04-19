@@ -126,6 +126,7 @@ const SubCard: React.FC<SubCardProps> = ({
           paymentModalOpen={paymentModalOpen}
           setPaymentModalOpen={setPaymentModalOpen}
           selectedPackage={selectedPackage}
+          setSelectedPackage={setSelectedPackage}
         />
       )}
 
