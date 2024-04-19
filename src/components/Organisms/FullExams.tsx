@@ -22,7 +22,7 @@ import {AuthContext} from '../../Realm/model';
 import PracticeModeModal from './PracticeModeModal';
 import {getRealmSubject} from '../../utils/Functions/Get';
 import {useUserStatus} from '../../context/userStatus';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import AllExamsModal from '../Molecules/AllExamsModal';
 
@@ -56,7 +56,7 @@ const FullExams: React.FC<{
   const realm = useRealm();
   const token = useSelector((state: RootState) => state.auth.token);
 
-  const {userStatus} = useUserStatus();
+  const {userStatus, setUserStatus} = useUserStatus();
 
   const userData = useQuery(UserData);
 
@@ -71,6 +71,7 @@ const FullExams: React.FC<{
     useState(false);
 
   const [showFullExam, setShowFullExam] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const selectedSubject = getRealmSubject(selectedSubjectId, realm);
@@ -93,6 +94,8 @@ const FullExams: React.FC<{
             '',
           token,
           setIsLoadingExams,
+          setUserStatus,
+          dispatch,
         );
       } else {
         const filteredEXams: any[] = savedExams.filter(
@@ -161,7 +164,7 @@ const FullExams: React.FC<{
       {isLoadingExams && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator />
-          <Text>Loading...</Text>
+          <Text style={styles.loadingText}>Loading...</Text>
         </View>
       )}
       {exams && exams.length > 0 && (
@@ -322,6 +325,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 4,
+  },
+  loadingText: {
+    color: '#000',
+    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.034,
   },
   title: {
     color: '#008E97',

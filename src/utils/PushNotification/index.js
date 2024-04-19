@@ -82,8 +82,6 @@ export async function checkAndUpdateFCMToken(token) {
 
   }
 
-
-
   try {
     //let's assume the endpoinnt to update device token is auth/device-token`
     let response = await fetch(`${Config.API_URL}user/updatefirebasetoken`, {

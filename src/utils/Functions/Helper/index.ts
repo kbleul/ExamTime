@@ -28,6 +28,7 @@ import {
 import {FormData} from '../../../screens/Auth/Login/Types';
 import {subjectType, userType} from '../../../types';
 import {logoutSuccess} from '../../../reduxToolkit/Features/auth/authSlice';
+import {logoutUnAuthorizedUser} from '../../../hooks/logic';
 
 type LoginMutationFn = ReturnType<typeof useLoginMutation>[0];
 type DeleteAccountMutationFn = ReturnType<typeof useDeleteAccountMutation>[0];
@@ -350,6 +351,9 @@ export const handleBankPayment = async (
   Toast: any,
   setShowSuccessModal: React.Dispatch<React.SetStateAction<boolean>>,
   setRefrenceNumber: React.Dispatch<React.SetStateAction<string | null>>,
+  setUserStatus: any,
+  dispatch: Dispatch<AnyAction>,
+  realm: Realm,
 ) => {
   if (token) {
     try {
@@ -380,6 +384,10 @@ export const handleBankPayment = async (
             text2: 'Try a different refrence number',
           });
       }
+
+      logoutUnAuthorizedUser(error, setUserStatus, dispatch, realm, navigator);
+
+      console.log('Bank payment failed -> ', error);
     }
   }
 };

@@ -24,7 +24,6 @@ export const checkUserStatus = (
                       if > 3 then AuthRoutes
                       else AppRoutes - trial mode
     */
-
   if (savedUserData && savedUserData[0]) {
     setShowOnboarding(false);
 

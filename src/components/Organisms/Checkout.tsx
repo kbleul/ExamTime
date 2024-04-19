@@ -16,12 +16,14 @@ import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useMakeBankPaymentMutation} from '../../reduxToolkit/Services/auth';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import {handleBankPayment} from '../../utils/Functions/Helper';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import PaymentSuccessfullModal from '../Molecules/PaymentSuccessfullModal';
+import {useUserStatus} from '../../context/userStatus';
+import {AuthContext} from '../../Realm/model';
 
 type CheckoutDataType = {
   depositedByName: string;
@@ -38,6 +40,12 @@ const Checkout = ({route}: {route: any}) => {
 
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
+  const {setUserStatus} = useUserStatus();
+  const dispatch = useDispatch();
+
+  const {useRealm} = AuthContext;
+
+  const realm = useRealm();
 
   const {paymentOption, subscriptionPackage} = route.params;
 
@@ -205,6 +213,9 @@ const Checkout = ({route}: {route: any}) => {
                 Toast,
                 setShowSuccessModal,
                 setRefrenceNumber,
+                setUserStatus,
+                dispatch,
+                realm,
               );
             })}
             disabled={isLoading}>

@@ -141,7 +141,6 @@ const useHandleInitialRequests = (
   const dispatch = useDispatch();
 
   const userData = useQuery(UserData);
-
   const [getTips] = useGetTipsMutation();
   useEffect(() => {
     const checkVersionStatus = async () => {
@@ -163,8 +162,6 @@ const useHandleInitialRequests = (
       // if (nextAppState === 'background' || nextAppState === 'inactive') {
       const isConnected = await checkIsOnline();
       if (isConnected) {
-        token && getAllStudies(getStudy, navigation, token, realm, Toast);
-
         checkTrialStatus(
           getTrialStatus,
           token ? token : '',
@@ -173,6 +170,8 @@ const useHandleInitialRequests = (
           dispatch,
           realm,
         );
+
+        token && getAllStudies(getStudy, navigation, token, realm, Toast);
 
         if (savedTakenExams.length > 0) {
           // Perform data sync with the database

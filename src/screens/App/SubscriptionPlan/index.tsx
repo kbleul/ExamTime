@@ -22,6 +22,10 @@ const Index: React.FC = () => {
     null | string
   >(null);
 
+  const [subscriptionEndDate, setSubscriptionEndDate] = useState<null | string>(
+    null,
+  );
+
   const [getSubscriptionPackages, {isLoading}] =
     useGetSubscriptionPackagesMutation();
   const [getUserSubscription, {isLoading: isLoadingUserSubscription}] =
@@ -32,17 +36,20 @@ const Index: React.FC = () => {
     const getPackages = async () => {
       try {
         const packages: any[] = await getSubscriptionPackages({}).unwrap();
-
         if (token && userStatus === STATUSTYPES.Subscribed) {
           const usersubscriptions: any = await getUserSubscription({
             token,
           }).unwrap();
           if (
             usersubscriptions &&
-            usersubscriptions.subscriptionPackage &&
-            usersubscriptions.subscriptionPackage.id
+            usersubscriptions.subscription &&
+            usersubscriptions.subscription.subscriptionPackage &&
+            usersubscriptions.subscription.subscriptionPackage.id
           ) {
-            setUserSubscribedStatus(usersubscriptions.subscriptionPackage.id);
+            setUserSubscribedStatus(
+              usersubscriptions.subscription.subscriptionPackage.id,
+            );
+            setSubscriptionEndDate(usersubscriptions.endOfSubscription);
           }
         }
 
@@ -123,10 +130,24 @@ const Index: React.FC = () => {
             <BackWithItem type="Subscription Plan" isTrial={false} />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>
-              Upgrade to a subscription plan for enhanced benefits and an
-              elevated experience.
-            </Text>
+            {!subscriptionEndDate && (
+              <Text style={styles.text}>
+                Upgrade to a subscription plan for enhanced benefits and an
+                elevated experience.
+              </Text>
+            )}
+
+            {subscriptionEndDate && (
+              <Text style={styles.text}>
+                Upgrade to a subscription plan for enhanced benefits and an
+                elevated experience. Your plan is set to end on
+                {subscriptionEndDate && (
+                  <Text style={styles.textBold}>
+                    {' ' + subscriptionEndDate}
+                  </Text>
+                )}
+              </Text>
+            )}
           </View>
 
           <View style={styles.HorizontalList}>
@@ -164,6 +185,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     padding: 10,
     textAlign: 'left',
+  },
+  textBold: {
+    fontFamily: 'PoppinsSemiBold',
   },
   textContainer: {
     overflow: 'hidden',

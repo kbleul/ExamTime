@@ -60,31 +60,13 @@ const SubCard: React.FC<SubCardProps> = ({
     if (token) {
       setSelectedPackage(packageItem);
       setPaymentModalOpen(true);
-      try {
-        // const resonse: any = await initiateChapaPayment({
-        //   packageId,
-        //   token,
-        // }).unwrap();
-        // if (
-        //   resonse &&
-        //   resonse.data &&
-        //   resonse.textReference &&
-        //   resonse.data.checkout_url
-        // ) {
-        //   navigator.navigate('chapa-payment', {
-        //     checkout_url: resonse.data.checkout_url,
-        //     textReference: resonse.textReference,
-        //   });
-        // }
-      } catch (err) {
-        console.log('Error initializing payment with chapa', err);
-      }
     }
   };
 
   if (!item.planname) {
     return <View style={{width: spacer}} key={index} />;
   }
+
   return (
     <View style={{width: size}} key={index}>
       <Animated.View style={[styles.card, style]}>

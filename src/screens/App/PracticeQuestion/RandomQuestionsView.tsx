@@ -23,16 +23,21 @@ import Loading from '../../../components/Atoms/Loading';
 import {useNavContext} from '../../../context/bottomNav';
 import {UserData} from '../../../Realm';
 import {AuthContext} from '../../../Realm/model';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
+import {logoutUnAuthorizedUser} from '../../../hooks/logic';
+import {useUserStatus} from '../../../context/userStatus';
 const RandomQuestionsView = ({route}: {route: any}) => {
   const navigator: any = useNavigation();
   const {setShowNavigation} = useNavContext();
 
   const token = useSelector((state: RootState) => state.auth.token);
+  const {useQuery, useRealm} = AuthContext;
+  const realm = useRealm();
 
-  const {useQuery} = AuthContext;
   const userData = useQuery(UserData);
+  const {setUserStatus} = useUserStatus();
+  const dispatch = useDispatch();
 
   const flatListRef = useRef<FlatList<any> | null>(null);
 
@@ -78,6 +83,15 @@ const RandomQuestionsView = ({route}: {route: any}) => {
             token: token ? token : userData[0].guestUserToken ?? '',
           }).unwrap();
 
+          response.error &&
+            logoutUnAuthorizedUser(
+              response.error,
+              setUserStatus,
+              dispatch,
+              realm,
+              navigator,
+            );
+
           setCurrentViewExam(response?.randomQuestions);
           setExam(response?.randomQuestions);
 
@@ -96,6 +110,13 @@ const RandomQuestionsView = ({route}: {route: any}) => {
         } catch (err: any) {
           console.log(err);
           backHandler && backHandler.remove();
+          logoutUnAuthorizedUser(
+            err,
+            setUserStatus,
+            dispatch,
+            realm,
+            navigator,
+          );
         }
       }
     };

@@ -52,14 +52,11 @@ const Practice = () => {
 
   useEffect(() => {
     const unsubscribe = navigator.addListener('blur', () => {
-      // Your side effects when the screen loses focus
       setSelectedSubject(null);
       setSubjectsArray(null);
-      // Add your side effect code here
     });
 
     return () => {
-      // Cleanup the subscription when the component unmounts
       unsubscribe();
     };
   }, [navigator]);

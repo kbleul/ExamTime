@@ -3,7 +3,7 @@ import {checkIsOnline} from '../../../utils/Functions/Helper';
 import {useGetExamsMutation} from '../../../reduxToolkit/Services/exams';
 import {LocalObjectDataKeys} from '../../../utils/Data/data';
 import {examQuestionType, examType as examTsType} from '../../../types';
-import Config from 'react-native-config';
+import {logoutUnAuthorizedUser} from '../../../hooks/logic';
 
 type GetRegionsMutationFn = ReturnType<typeof useGetExamsMutation>[0];
 
@@ -17,6 +17,8 @@ export const getPreviousExams = async (
   selectedExamType: string,
   token: string | null,
   setIsLoadingExams: React.Dispatch<React.SetStateAction<boolean>>,
+  setUserStatus: any,
+  dispatch: any,
 ) => {
   if (token) {
     setIsLoadingExams(true);
@@ -39,6 +41,15 @@ export const getPreviousExams = async (
             },
           }).unwrap();
 
+          response.error &&
+            logoutUnAuthorizedUser(
+              response.error,
+              setUserStatus,
+              dispatch,
+              realm,
+              navigator,
+            );
+
           ++pageNumber;
           totalPages = response.totalPages;
 
@@ -60,7 +71,8 @@ export const getPreviousExams = async (
       setExams([...viewableArray]);
       setIsLoadingExams(false);
     } catch (err) {
-      console.log('-exams', err);
+      console.log('fetch previous exams --> ', err);
+      logoutUnAuthorizedUser(err, setUserStatus, dispatch, realm, navigator);
     }
   }
 };

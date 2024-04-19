@@ -125,34 +125,56 @@ export const checkTrialStatus = async (
 ) => {
   if (token) {
     try {
-      await getTrialStatus({
+      const result = await getTrialStatus({
         token,
       });
+      result.error &&
+        logoutUnAuthorizedUser(
+          result.error,
+          setUserStatus,
+          dispatch,
+          realm,
+          navigation,
+        );
     } catch (error: any) {
-      console.error(
-        'Error checking trial version status. ',
-        error.data.tokenExpired || error.status === 401,
-        error,
-      );
-      if (error.data.tokenExpired || error.status === 401) {
-        dispatch(logoutSuccess());
-        const savedUserData = realm.objects(UserData);
-
-        removeRealmUserData(realm, savedUserData, true);
-
-        const savedUser = realm.objects(UserData);
-
-        if (savedUser && savedUser[0]) {
-          calculateDateDifference(savedUser[0].initialDate) >
-          savedUser[0].allowedTrialDays
-            ? setUserStatus(STATUSTYPES.NotAuthorized)
-            : setUserStatus(STATUSTYPES.Trial);
-        }
-
-        navigation.navigate('Login');
-      }
+      console.log('Error checking trial version status. ', error);
+      logoutUnAuthorizedUser(error, setUserStatus, dispatch, realm, navigation);
     }
   }
+};
+
+export const logoutUnAuthorizedUser = (
+  error: any,
+  setUserStatus: any,
+  dispatch: any,
+  realm: Realm,
+  navigation: any,
+) => {
+  setTimeout(() => {
+    if (
+      (error.status && error.status === 401) ||
+      (error.data &&
+        error.data.tokenExpired &&
+        error.data.tokenExpired &&
+        error.data.tokenExpired)
+    ) {
+      dispatch(logoutSuccess());
+      const savedUserData = realm.objects(UserData);
+
+      removeRealmUserData(realm, savedUserData, true);
+
+      const savedUser = realm.objects(UserData);
+
+      if (savedUser && savedUser[0]) {
+        calculateDateDifference(savedUser[0].initialDate) >
+        savedUser[0].allowedTrialDays
+          ? setUserStatus(STATUSTYPES.NotAuthorized)
+          : setUserStatus(STATUSTYPES.Trial);
+      }
+
+      navigation.navigate('Login');
+    }
+  }, 1000);
 };
 
 export const updateTrialDayLength = async (
@@ -160,7 +182,6 @@ export const updateTrialDayLength = async (
   realm: Realm,
 ) => {
   const isConnected = await checkIsOnline();
-  console.log('here');
   if (isConnected) {
     try {
       const responseTrial: any = await getTrialTimes({}).unwrap();
@@ -177,7 +198,6 @@ export const updateTrialDayLength = async (
         try {
           realm.write(() => {
             const savedUser = realm.objects(UserData);
-            console.log('here', {totalTrialTime, totalTrialTime_afterLogin});
 
             if (savedUser && savedUser[0]) {
               savedUser[0].allowedTrialDays = totalTrialTime;
@@ -205,10 +225,12 @@ export const checkIsSubscribe = async (
     const usersubscriptions: any = await getUserSubscription({
       token,
     }).unwrap();
+
     if (
       usersubscriptions &&
-      usersubscriptions.subscriptionPackage &&
-      usersubscriptions.subscriptionPackage.id &&
+      usersubscriptions.subscription &&
+      usersubscriptions.subscription.subscriptionPackage &&
+      usersubscriptions.subscription.subscriptionPackage.id &&
       userData &&
       userData.length > 0 &&
       userData[0].user
