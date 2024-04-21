@@ -147,7 +147,7 @@ const useHandleInitialRequests = (
       const data = await checkVersion({
         platform: 'android',
         bundleId: 'com.exam_time.exam',
-        currentVersion: '6.0.5',
+        currentVersion: '6.0.6',
       });
 
       if (data.needsUpdate) {
