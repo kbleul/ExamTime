@@ -15,7 +15,7 @@ const SubjectsProgress = () => {
       <Text style={styles.headerTitle}>Progress on studies</Text>
 
       <BarChart
-        barWidth={12}
+        barWidth={9}
         noOfSections={2}
         barBorderRadius={20}
         data={studyProgress}

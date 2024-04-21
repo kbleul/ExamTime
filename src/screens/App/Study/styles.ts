@@ -60,14 +60,32 @@ export const unitCardStyles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 4,
   },
+  topcontainerSecondary: {
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+  },
   menuContainer: {
     width: '20%',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  indexText: {
+    paddingVertical: 15,
+    width: '90%',
+    marginRight: '10%',
+    borderWidth: 1,
+    textAlign: 'center',
+    backgroundColor: '#5D4A99',
+    fontFamily: 'PoppinsMedium',
+    fontSize: screenWidth * 0.05,
+    color: '#fff',
+  },
   textContainer: {
     width: '70%',
     position: 'relative',
+  },
+  textContainerSecondary: {
+    paddingHorizontal: 8,
   },
   textTitleSubject: {
     color: '#1e90ff',
@@ -77,6 +95,9 @@ export const unitCardStyles = StyleSheet.create({
     height: screenWidth * 0.06,
     overflow: 'hidden',
   },
+  textTitleSubjectSecondary: {
+    color: '#5D4A99',
+  },
   textTitle: {
     color: '#1e90ff',
     fontFamily: 'PoppinsMedium',
@@ -84,6 +105,11 @@ export const unitCardStyles = StyleSheet.create({
     textTransform: 'capitalize',
     height: screenWidth * 0.06,
     overflow: 'hidden',
+  },
+  textTitleSecondary: {
+    marginTop: 10,
+    color: '#5D4A99',
+    fontSize: screenWidth * 0.042,
   },
   textSubTitle: {
     color: '#000',
@@ -94,9 +120,16 @@ export const unitCardStyles = StyleSheet.create({
     height: screenWidth * 0.07,
     overflow: 'hidden',
   },
+  textSubTitleSecondary: {
+    bottom: 0,
+    paddingHorizontal: 8,
+  },
   downBtn: {
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
+  },
+  downBtnSecondary: {
+    paddingBottom: 10,
   },
 });
 

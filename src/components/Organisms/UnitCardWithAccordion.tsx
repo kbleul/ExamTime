@@ -54,19 +54,28 @@ const UnitCardWithAccordion = ({
   setShowAccordianId,
   showSubject,
   isChallenge,
+  index,
 }: {
   study: Study;
   showAccordianId: string | null;
   setShowAccordianId: React.Dispatch<React.SetStateAction<string | null>>;
   showSubject?: boolean;
   isChallenge: boolean;
+  index: number;
 }) => {
   const [showContent, setShowContent] = useState(false);
   return (
     <View style={unitCardStyles.container}>
       <TouchableOpacity
         touchSoundDisabled
-        style={unitCardStyles.topcontainer}
+        style={
+          isChallenge && index
+            ? [
+                unitCardStyles.topcontainer,
+                unitCardStyles.topcontainerSecondary,
+              ]
+            : unitCardStyles.topcontainer
+        }
         onPress={() => {
           if (showAccordianId !== study.id) {
             setShowAccordianId(study.id);
@@ -77,20 +86,60 @@ const UnitCardWithAccordion = ({
           }
         }}>
         <View style={unitCardStyles.menuContainer}>
-          <AntDesign name="menuunfold" size={40} color="#EEEAFF" />
+          {isChallenge && index ? (
+            <Text style={unitCardStyles.indexText}>{index}</Text>
+          ) : (
+            <AntDesign name="menuunfold" size={40} color="#EEEAFF" />
+          )}
         </View>
-        <View style={unitCardStyles.textContainer}>
-          <Text style={unitCardStyles.textTitle}>
+        <View
+          style={
+            isChallenge && index
+              ? [
+                  unitCardStyles.textContainer,
+                  unitCardStyles.textContainerSecondary,
+                ]
+              : unitCardStyles.textContainer
+          }>
+          <Text
+            style={
+              isChallenge && index
+                ? [unitCardStyles.textTitle, unitCardStyles.textTitleSecondary]
+                : unitCardStyles.textTitle
+            }>
             {showSubject && (
-              <Text style={unitCardStyles.textTitleSubject}>
+              <Text
+                style={
+                  isChallenge && index
+                    ? [
+                        unitCardStyles.textTitleSubject,
+                        unitCardStyles.textTitleSubjectSecondary,
+                      ]
+                    : unitCardStyles.textTitleSubject
+                }>
                 {study.subject?.subject + ' | '}
               </Text>
             )}
             {study.unit}
           </Text>
-          <Text style={unitCardStyles.textSubTitle}>{study.title}</Text>
+          <Text
+            style={
+              isChallenge && index
+                ? [
+                    unitCardStyles.textSubTitle,
+                    unitCardStyles.textSubTitleSecondary,
+                  ]
+                : unitCardStyles.textSubTitle
+            }>
+            {study.title}
+          </Text>
         </View>
-        <View style={unitCardStyles.downBtn}>
+        <View
+          style={
+            isChallenge && index
+              ? [unitCardStyles.downBtn, unitCardStyles.downBtnSecondary]
+              : unitCardStyles.downBtn
+          }>
           <AntDesign
             name={
               showContent && study.id === showAccordianId

@@ -68,7 +68,6 @@ const PaymentsModal: React.FC<{
         console.log('Error initializing payment with chapa', err);
 
         if (err && err.data && err.data.message) {
-          console.log('----');
           Toast.show({
             type: 'error',
             text1: err.data.message,

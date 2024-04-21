@@ -24,7 +24,7 @@ const CircleProgressIndicator = ({
   return (
     <AnimatedCircularProgress
       size={scale(isDark ? 70 : 90)}
-      width={isDark ? 6 : 2}
+      width={isDark ? 6 : 5}
       backgroundWidth={isDark ? 6 : 2}
       fill={progress}
       tintColor={isDark ? '#F0E2A1' : 'white'}

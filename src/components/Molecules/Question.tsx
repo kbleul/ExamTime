@@ -337,11 +337,6 @@ const QuestionChoice: React.FC<{
         }>
         {choiceLetter}
       </Text>
-      {/* <RenderHtml
-        contentWidth={screenWidth}
-        source={{html: choiceText}}
-        tagsStyles={tagsStylesChoice}
-      /> */}
 
       {isHtml(choiceText) ? (
         <RenderHtml
@@ -421,7 +416,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     borderColor: '#F5A52D',
-    marginTop: 3,
+    marginTop: 0,
   },
   readParagraphText: {
     fontSize: 12,
@@ -445,7 +440,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   choiceContainer: {
-    paddingTop: 25,
     flex: 1,
     marginHorizontal: 3,
   },
@@ -520,30 +514,5 @@ const questionChoiceStyles = StyleSheet.create({
     lineHeight: 22,
   },
 });
-
-// const paragraphStyle = StyleSheet.create({
-//   container: {
-//     width: '100%',
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'flex-end',
-//     paddingBottom: 15,
-//   },
-//   paragraphContainer: {
-//     paddingTop: 8,
-//   },
-//   title: {
-//     fontSize: 18,
-//     fontFamily: 'Montserrat-SemiBold',
-//     color: 'black',
-//   },
-//   paraText: {
-//     marginBottom: 10,
-//     fontSize: 14,
-//     fontFamily: 'Montserrat-Regular',
-//     color: '#4d4d4d',
-//     lineHeight: 23,
-//   },
-// });
 
 export default memo(Question);

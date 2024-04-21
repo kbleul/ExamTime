@@ -33,7 +33,7 @@ const SubjectSelectViewBox: React.FC<{
   });
 
   const realm = useRealm();
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -111,6 +111,7 @@ const SubjectsButton: React.FC<{
 const styles = StyleSheet.create({
   subjectsContainer: {
     flexDirection: 'row',
+    paddingTop: 10,
   },
   subjectsImgContainer: {
     alignItems: 'center',

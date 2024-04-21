@@ -5,11 +5,11 @@ export const IndexStyle = StyleSheet.create({
   container: {
     flex: screenHeight,
     width: '100%',
-    paddingTop: screenHeight * 0.02,
     padding: 5,
+    paddingTop: screenHeight * 0.02,
     backgroundColor: '#F9FCFF',
   },
   ScrollView: {
-    height: screenHeight,
+    height: screenHeight - screenHeight * 0.09,
   },
 });

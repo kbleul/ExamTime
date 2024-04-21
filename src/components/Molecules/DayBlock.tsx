@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     paddingBottom: screenHeight * 0.014,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#000',
     borderRadius: screenWidth * 0.01,
     overflow: 'hidden',
     marginHorizontal: screenWidth * 0.0155,

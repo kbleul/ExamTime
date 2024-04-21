@@ -166,10 +166,6 @@ export const logoutUnAuthorizedUser = (
       const savedUser = realm.objects(UserData);
 
       if (savedUser && savedUser[0]) {
-        console.log('===========>', {
-          userdate: calculateDateDifference(savedUser[0].initialDate),
-          allowedTrialDays: savedUser[0].allowedTrialDays,
-        });
         calculateDateDifference(savedUser[0].initialDate) >=
         savedUser[0].allowedTrialDays
           ? setUserStatus(STATUSTYPES.NotAuthorized)

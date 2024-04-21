@@ -69,6 +69,13 @@ export const frameTwostyles = StyleSheet.create({
     paddingLeft: screenWidth * 0.02,
     paddingRight: screenWidth * 0.02,
   },
+  indicatorContainer: {
+    width: '30%',
+    height: '100%',
+    padding: screenWidth * 0.098,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   rightBoxContainer: {
     width: screenWidth * 0.28,
     height: screenWidth * 0.28,

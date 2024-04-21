@@ -32,7 +32,6 @@ const SubCard: React.FC<SubCardProps> = ({
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
   const {userStatus} = useUserStatus();
-  console.log({userStatus});
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
   PriceName: {
     color: 'black',
     fontFamily: 'PoppinsSemiBold',
-    fontSize: screenWidth * 0.06,
+    fontSize: screenWidth * 0.08,
     textAlign: 'center',
   },
   PriceDate: {

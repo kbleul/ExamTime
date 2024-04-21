@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   ThisContainerHeaderWeekText: {
     textAlign: 'center',
     fontSize: scale(13),
-    fontFamily: 'PoppinsMedium',
-    color: '#BBBCC3',
+    fontFamily: 'PoppinsSemiBold',
+    color: '#000',
   },
   ViewCalander: {
     flexDirection: 'row',

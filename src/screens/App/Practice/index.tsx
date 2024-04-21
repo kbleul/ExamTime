@@ -101,20 +101,24 @@ const Practice = () => {
               <Text style={styles.headerSubTitle}>Choose your Subject</Text>
             </View>
 
-            <View style={styles.container}>
+            <View>
               {userStatus === STATUSTYPES.NotAuthorized && (
-                <LoginBox
-                  title="Your trial period has ended!"
-                  subTitle="Please login or create an account to use the app's functions."
-                />
+                <View style={styles.container}>
+                  <LoginBox
+                    title="Your trial period has ended!"
+                    subTitle="Please login or create an account to use the app's functions."
+                  />
+                </View>
               )}
 
               {userStatus === STATUSTYPES.Unsubscribed && (
-                <LoginBox
-                  title="Your free trial period has ended!"
-                  subTitle="Please subscribe to keep using ExamTime"
-                  isSubscribe
-                />
+                <View style={styles.container}>
+                  <LoginBox
+                    title="Your free trial period has ended!"
+                    subTitle="Please subscribe to keep using ExamTime"
+                    isSubscribe
+                  />
+                </View>
               )}
 
               {userStatus !== STATUSTYPES.NotAuthorized &&
@@ -148,10 +152,6 @@ const Practice = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-    paddingTop: screenHeight * 0.045,
-  },
   ScrollView: {
     flex: 1,
   },
@@ -173,11 +173,10 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsLight',
     fontSize: screenWidth * 0.045,
     color: '#C1C2C6',
-    lineHeight: screenHeight * 0.04, //34
   },
-  BOX1: {
-    height: availableHeight - 20,
-    borderWidth: 1,
+  container: {
+    paddingHorizontal: 10,
+    paddingTop: screenHeight * 0.045,
   },
 });
 

@@ -153,9 +153,11 @@ export const FrameTwo: React.FC<{
             <Text style={frameTwostyles.secondText}>{text}</Text>
           </View>
         </View>
-        <CircleProgressIndicator
-          progress={getAggrgategaStudiesProgress(realm)}
-        />
+        <View style={frameTwostyles.indicatorContainer}>
+          <CircleProgressIndicator
+            progress={getAggrgategaStudiesProgress(realm)}
+          />
+        </View>
       </ImageBackground>
     </View>
   );

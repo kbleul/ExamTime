@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   gradesTitle: {
     textAlign: 'center',
     color: '#000',
-    fontFamily: 'PoppinsBold',
+    fontFamily: 'PoppinsMedium',
     fontSize: screenWidth * 0.032,
     lineHeight: screenWidth * 0.04,
   },

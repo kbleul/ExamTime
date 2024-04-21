@@ -127,7 +127,7 @@ const Index = () => {
           style={styles.headerContainerTop}
           onPress={() => navigator.goBack()}>
           <AntDesign name="left" size={screenWidth * 0.05} color="#000" />
-          <Text style={styles.headerTitle}>Challenge phase</Text>
+          <Text style={styles.headerTitle}>Challenge Phase</Text>
         </TouchableOpacity>
 
         <View style={styles.Headercontainer}>
@@ -140,10 +140,12 @@ const Index = () => {
           <CircleProgressIndicator progress={50} isDark={true} />
         </View>
 
-        <WeeksScreen />
-        <WeekDaysScreen />
+        <View style={styles.sectionContainers}>
+          <WeeksScreen />
+          <WeekDaysScreen />
 
-        <ChallangeStudies />
+          <ChallangeStudies />
+        </View>
       </ScrollView>
     </View>
   );
@@ -204,6 +206,7 @@ const ChallangeStudies = () => {
           setShowAccordianId={setShowAccordianId}
           showSubject={true}
           isChallenge={true}
+          index={index + 1}
         />
       ))}
     </View>
@@ -218,7 +221,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FCFF',
     paddingTop: 40,
     paddingBottom: 20,
-    paddingHorizontal: 10,
   },
   loadingContainer: {
     alignItems: 'center',
@@ -239,10 +241,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 6,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   headerTitle: {
     fontFamily: 'PoppinsMedium',
-    fontSize: screenWidth * 0.06, //28
+    fontSize: screenWidth * 0.055,
     color: '#000',
     lineHeight: screenHeight * 0.05, //34
     marginTop: screenWidth * 0.009,
@@ -256,9 +260,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     width: screenWidth - 20,
-    height: screenHeight / 6,
-    minHeight: 150,
-    borderRadius: 15,
+    height: screenHeight / 7,
+    minHeight: 140,
+    borderTopRightRadius: 28,
+    borderBottomRightRadius: 28,
     overflow: 'hidden',
     position: 'relative',
     marginBottom: 10,
@@ -299,6 +304,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     bottom: 0,
+  },
+  sectionContainers: {
+    paddingHorizontal: 10,
   },
 });
 

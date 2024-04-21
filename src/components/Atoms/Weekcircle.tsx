@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   circle: {
     width: scale(32),
     height: scale(32),
-    borderRadius: scale(32),
+    borderRadius: 6,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   activeCircle: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#000',
   },
   inactiveCircle: {
     justifyContent: 'center',
@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
   idInactiveText: {
     fontSize: scale(18),
     textAlign: 'center',
-    fontFamily: 'PoppinsBold',
-    color: '#494949',
+    fontFamily: 'PoppinsExtraBold',
+    color: '#000',
   },
   idActiveText: {
     textAlign: 'center',
     fontSize: scale(18),
-    fontFamily: 'PoppinsBold',
+    fontFamily: 'PoppinsExtraBold',
     color: 'white',
   },
 });

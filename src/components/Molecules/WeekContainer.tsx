@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     marginVertical: screenHeight * 0.001,
   },
   weekText: {
-    color: '#828484',
-    fontSize: scale(12),
+    color: '#000',
+    fontSize: scale(14),
     fontFamily: 'PoppinsSemiBold',
   },
 });

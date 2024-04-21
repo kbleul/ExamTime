@@ -399,7 +399,7 @@ const styles = ScaledSheet.create({
     resizeMode: 'contain',
     position: 'absolute',
     right: 0,
-    bottom: -10,
+    bottom: -screenWidth * 0.05,
   },
   subjectsContainer: {
     paddingHorizontal: 15,
