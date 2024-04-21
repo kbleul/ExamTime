@@ -61,7 +61,7 @@ const PageTwo: React.FC<PagesCounterType> = ({pageCounter, setPageCounter}) => {
 
       <View style={style.titleContainer}>
         <Text style={style.title}>Hello.</Text>
-        <Text style={style.subtitle}>What Grade are you in?</Text>
+        <Text style={style.subtitle}>What grade are you in?</Text>
       </View>
 
       {!isLoading && !error && gradesArray && (

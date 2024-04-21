@@ -208,7 +208,7 @@ export const PaymentMethods = [
     id: 'pay001',
     name: 'CBE',
     imgs: [cbe1, cbe2],
-    youtubeLink: 'https://www.youtube.com/watch?v=nqggWaCACjk',
+    youtubeLink: 'https://www.youtube.com/watch?v=Rg8eXFY6Di0',
     notes: [
       'በኢትዮጽያንግድ ባንክ አካዉንት ስም “THINK HUB ET SOFTWARE DEV PLC” ወይም "ቲንክ ሀብ ኢት" በሂሳብ ቁጥር 1000551860527 ብር ማስተላለፍ',
       'ከባንኩ ከሚሰጥ ደረሰኝ ላይ የአስገቢው ሰዉ ስም ወይም የሂሳብ ቁጥር ባለቤት እና የደረሰኝ መለያ ቁጥር (Tras . Refe) መረጃዎች በጥንቃቄ ማስገባት',
@@ -219,7 +219,7 @@ export const PaymentMethods = [
     id: 'pay-chapa-002',
     name: 'Chapa',
     imgs: [chapa1, chapa2],
-    youtubeLink: 'https://www.youtube.com/watch?v=nqggWaCACjk',
+    youtubeLink: 'https://www.youtube.com/watch?v=bIOmthZwZR8',
     notes: [
       'ቻፓ የሚለውን ምረጡ',
       'ከሚመጡት አማራጮች ውስጥ የምትፈልጉትን የሞባይል የክፍያ መንገድ ምረጡ',

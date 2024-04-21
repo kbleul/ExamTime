@@ -13,6 +13,7 @@ import Loading from '../../../components/Atoms/Loading';
 import {useUserStatus} from '../../../context/userStatus';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../reduxToolkit/Store';
+import Toast from 'react-native-toast-message';
 
 const Index: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
@@ -150,6 +151,7 @@ const Index: React.FC = () => {
           </View>
         </ScrollView>
       )}
+      <Toast />
     </View>
   );
 };

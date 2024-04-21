@@ -9,6 +9,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../reduxToolkit/Store';
 import PaymentsModal from '../Organisms/PaymentsModal';
 import Toast from 'react-native-toast-message';
+import {useUserStatus} from '../../context/userStatus';
 
 interface SubCardProps {
   item: any;
@@ -30,7 +31,8 @@ const SubCard: React.FC<SubCardProps> = ({
   const navigator: any = useNavigation();
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
-
+  const {userStatus} = useUserStatus();
+  console.log({userStatus});
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
@@ -57,11 +59,22 @@ const SubCard: React.FC<SubCardProps> = ({
     };
   });
 
-  const handlePayment = async (packageItem: any) => {
-    if (token) {
-      setSelectedPackage(packageItem);
-      setPaymentModalOpen(true);
+  const handleBuyNow = () => {
+    if (!user && !token) {
+      navigator.navigate('Login');
+      return;
     }
+
+    if (userStatus === 'Subscribed') {
+      Toast.show({
+        type: 'error',
+        text1: 'You are already subscribed!',
+        text2: 'You can by another subscription after your current one ends.',
+      });
+      return;
+    }
+    setSelectedPackage(item);
+    setPaymentModalOpen(true);
   };
 
   if (!item.planname) {
@@ -110,10 +123,9 @@ const SubCard: React.FC<SubCardProps> = ({
         <View style={[styles.Button]}>
           <TouchableOpacity
             style={[styles.listofPackagesBottom]}
-            onPress={() =>
-              !user ? navigator.navigate('Login') : handlePayment(item)
-            }
-            disabled={userSubscribedStatus === item.id}>
+            onPress={handleBuyNow}
+            disabled={userSubscribedStatus === item.id}
+            touchSoundDisabled>
             <Text style={styles.listofPackagesBottomtext}>
               {userSubscribedStatus === item.id ? 'Current Plan' : 'Buy Now'}
             </Text>
@@ -129,8 +141,6 @@ const SubCard: React.FC<SubCardProps> = ({
           setSelectedPackage={setSelectedPackage}
         />
       )}
-
-      <Toast />
     </View>
   );
 };

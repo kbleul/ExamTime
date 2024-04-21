@@ -241,17 +241,17 @@ const Checkout = ({route}: {route: any}) => {
 
 const styles = StyleSheet.create({
   containerContent: {
-    paddingBottom: 100,
+    paddingBottom: 0,
   },
 
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 30,
+    paddingTop: screenHeight * 0.06,
   },
   topContainer: {
-    paddingTop: screenHeight * 0.01,
-    paddingBottom: 10,
+    paddingTop: screenHeight * 0.015,
+    paddingBottom: screenHeight * 0.025,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderColor: '#ECEDED',
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   submitBtnContainer: {
-    marginTop: screenHeight * 0.04,
+    marginTop: screenHeight * 0.01,
   },
   error: {
     marginTop: screenHeight * 0.04,
