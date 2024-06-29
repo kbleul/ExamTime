@@ -1,8 +1,60 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# ExamTime App
+
+<img src="./assets/logo.png" alt="App Logo" width="200">
+
+This app is a cross-platform application built using React Native and TypeScript, designed to help high school students in Ethiopia prepare for their national exams. The app provides access to PDFs, videos, a random exam generator, and all previous national exams for all subjects, and is built for offline use first.
+
+## 📱 Features
+
+- **Offline Access**: Access all study materials without an internet connection.
+- **PDFs**: View and download PDFs of study guides and textbooks.
+- **Videos**: Watch educational videos tailored to the national exam curriculum.
+- **Random Exam Generator**: Generate random exams to practice under test conditions.
+- **Previous National Exams**: Access all previous national exams for all subjects.
+
+## 📈 Technologies Used
+
+![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white&style=for-the-badge)
+![React Native](https://img.shields.io/badge/-React%20Native-61DAFB?logo=react&logoColor=white&style=for-the-badge)
+![TypeScript](https://img.shields.io/badge/-TypeScript-007ACC?logo=typescript&logoColor=white&style=for-the-badge)
+![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=next.js&logoColor=white&style=for-the-badge)
+![Realm](https://img.shields.io/badge/-Realm-39477F?logo=realm&logoColor=white&style=for-the-badge)
+![Redux Toolkit](https://img.shields.io/badge/-Redux%20Toolkit-764ABC?logo=redux&logoColor=white&style=for-the-badge)
+
+- **React Native**: For building the cross-platform app.
+- **TypeScript**: For type-safe JavaScript code.
+- **Redux Toolkit**: For state management.
+- **React Navigation**: For navigation and routing.
+- **Realm**: For offline data storage.
+
+### APP Screenshots
+
+<table>
+  <tr>
+    <td><img src="./profile_assets/1.png" alt="Frontend Screenshot" width="300"></td>
+       <td><img src="./profile_assets/7.jpg" alt="Frontend Screenshot" width="300"></td>
+  </tr>
+  <tr>
+    <td><img src="./profile_assets/3.png" alt="Frontend Screenshot" width="300"></td>
+    <td><img src="./profile_assets/4.png" alt="Frontend Screenshot" width="300"></td>
+  </tr>
+  <tr>
+    <td><img src="./profile_assets/5.png" alt="Frontend Screenshot" width="300"></td>
+    <td><img src="./profile_assets/6.png" alt="Frontend Screenshot" width="300"></td>
+  </tr>
+    <tr>
+    <td><img src="./profile_assets/8.png" alt="Frontend Screenshot" width="300"></td>
+    <td><img src="./profile_assets/9.png" alt="Frontend Screenshot" width="300"></td>
+  </tr>
+   <tr>
+    <td><img src="./profile_assets/2.png" alt="Frontend Screenshot" width="300"></td>
+   
+  </tr>
+</table>
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
